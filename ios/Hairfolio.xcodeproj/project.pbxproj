@@ -13,14 +13,20 @@
 		00C302E91ABCBA2D00DB3ED1 /* libRCTNetwork.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302DC1ABCB9D200DB3ED1 /* libRCTNetwork.a */; };
 		00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302E41ABCB9EE00DB3ED1 /* libRCTVibration.a */; };
 		00E356F31AD99517003FC87E /* hairfolioTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* hairfolioTests.m */; };
+		041A2FF41D5CECD3008B1593 /* SF-UI-Display-Black.otf in Resources */ = {isa = PBXBuildFile; fileRef = 041A2FEB1D5CECD3008B1593 /* SF-UI-Display-Black.otf */; settings = {ASSET_TAGS = (); }; };
+		041A2FF51D5CECD3008B1593 /* SF-UI-Display-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 041A2FEC1D5CECD3008B1593 /* SF-UI-Display-Bold.otf */; settings = {ASSET_TAGS = (); }; };
+		041A2FF61D5CECD3008B1593 /* SF-UI-Display-Heavy.otf in Resources */ = {isa = PBXBuildFile; fileRef = 041A2FED1D5CECD3008B1593 /* SF-UI-Display-Heavy.otf */; settings = {ASSET_TAGS = (); }; };
+		041A2FF71D5CECD3008B1593 /* SF-UI-Display-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 041A2FEE1D5CECD3008B1593 /* SF-UI-Display-Light.otf */; settings = {ASSET_TAGS = (); }; };
+		041A2FF81D5CECD3008B1593 /* SF-UI-Display-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 041A2FEF1D5CECD3008B1593 /* SF-UI-Display-Medium.otf */; settings = {ASSET_TAGS = (); }; };
+		041A2FF91D5CECD3008B1593 /* SF-UI-Display-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 041A2FF01D5CECD3008B1593 /* SF-UI-Display-Regular.otf */; settings = {ASSET_TAGS = (); }; };
+		041A2FFA1D5CECD3008B1593 /* SF-UI-Display-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 041A2FF11D5CECD3008B1593 /* SF-UI-Display-Semibold.otf */; settings = {ASSET_TAGS = (); }; };
+		041A2FFB1D5CECD3008B1593 /* SF-UI-Display-Thin.otf in Resources */ = {isa = PBXBuildFile; fileRef = 041A2FF21D5CECD3008B1593 /* SF-UI-Display-Thin.otf */; settings = {ASSET_TAGS = (); }; };
+		041A2FFC1D5CECD3008B1593 /* SF-UI-Display-Ultralight.otf in Resources */ = {isa = PBXBuildFile; fileRef = 041A2FF31D5CECD3008B1593 /* SF-UI-Display-Ultralight.otf */; settings = {ASSET_TAGS = (); }; };
 		0453CAA71D40F9730033DF87 /* hairfolio.eot in Resources */ = {isa = PBXBuildFile; fileRef = 0453CA9F1D40F9730033DF87 /* hairfolio.eot */; settings = {ASSET_TAGS = (); }; };
 		0453CAA81D40F9730033DF87 /* hairfolio.svg in Resources */ = {isa = PBXBuildFile; fileRef = 0453CAA01D40F9730033DF87 /* hairfolio.svg */; settings = {ASSET_TAGS = (); }; };
 		0453CAA91D40F9730033DF87 /* hairfolio.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0453CAA11D40F9730033DF87 /* hairfolio.ttf */; settings = {ASSET_TAGS = (); }; };
 		0453CAAA1D40F9730033DF87 /* hairfolio.woff in Resources */ = {isa = PBXBuildFile; fileRef = 0453CAA21D40F9730033DF87 /* hairfolio.woff */; settings = {ASSET_TAGS = (); }; };
 		0453CAAB1D40F9730033DF87 /* hairfolio.woff2 in Resources */ = {isa = PBXBuildFile; fileRef = 0453CAA31D40F9730033DF87 /* hairfolio.woff2 */; settings = {ASSET_TAGS = (); }; };
-		0453CAAC1D40F9730033DF87 /* Montserrat-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0453CAA41D40F9730033DF87 /* Montserrat-Bold.ttf */; settings = {ASSET_TAGS = (); }; };
-		0453CAAD1D40F9730033DF87 /* Montserrat-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0453CAA51D40F9730033DF87 /* Montserrat-Regular.ttf */; settings = {ASSET_TAGS = (); }; };
-		0453CAAE1D40F9730033DF87 /* Montserrat-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0453CAA61D40F9730033DF87 /* Montserrat-SemiBold.ttf */; settings = {ASSET_TAGS = (); }; };
 		0453CABE1D40FEFF0033DF87 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 0453CAB91D40FEFF0033DF87 /* Default.png */; settings = {ASSET_TAGS = (); }; };
 		0453CABF1D40FEFF0033DF87 /* Default-736h@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0453CABA1D40FEFF0033DF87 /* Default-736h@3x.png */; settings = {ASSET_TAGS = (); }; };
 		0453CAC01D40FEFF0033DF87 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0453CABB1D40FEFF0033DF87 /* Default-568h@2x.png */; settings = {ASSET_TAGS = (); }; };
@@ -146,15 +152,21 @@
 		0164B388F0E849DCBA650265 /* RNVectorIcons.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 0; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNVectorIcons.xcodeproj; path = "../node_modules/react-native-vector-icons/RNVectorIcons.xcodeproj"; sourceTree = "<group>"; };
 		041A2FDE1D5CE28B008B1593 /* Hairfolio.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hairfolio.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		041A2FDF1D5CE28B008B1593 /* HairfolioTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HairfolioTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		041A2FEB1D5CECD3008B1593 /* SF-UI-Display-Black.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-UI-Display-Black.otf"; sourceTree = "<group>"; };
+		041A2FEC1D5CECD3008B1593 /* SF-UI-Display-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-UI-Display-Bold.otf"; sourceTree = "<group>"; };
+		041A2FED1D5CECD3008B1593 /* SF-UI-Display-Heavy.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-UI-Display-Heavy.otf"; sourceTree = "<group>"; };
+		041A2FEE1D5CECD3008B1593 /* SF-UI-Display-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-UI-Display-Light.otf"; sourceTree = "<group>"; };
+		041A2FEF1D5CECD3008B1593 /* SF-UI-Display-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-UI-Display-Medium.otf"; sourceTree = "<group>"; };
+		041A2FF01D5CECD3008B1593 /* SF-UI-Display-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-UI-Display-Regular.otf"; sourceTree = "<group>"; };
+		041A2FF11D5CECD3008B1593 /* SF-UI-Display-Semibold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-UI-Display-Semibold.otf"; sourceTree = "<group>"; };
+		041A2FF21D5CECD3008B1593 /* SF-UI-Display-Thin.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-UI-Display-Thin.otf"; sourceTree = "<group>"; };
+		041A2FF31D5CECD3008B1593 /* SF-UI-Display-Ultralight.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-UI-Display-Ultralight.otf"; sourceTree = "<group>"; };
 		0437A9983780464B85DE2EDF /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 0; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
 		0453CA9F1D40F9730033DF87 /* hairfolio.eot */ = {isa = PBXFileReference; lastKnownFileType = file; path = hairfolio.eot; sourceTree = "<group>"; };
 		0453CAA01D40F9730033DF87 /* hairfolio.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = hairfolio.svg; sourceTree = "<group>"; };
 		0453CAA11D40F9730033DF87 /* hairfolio.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = hairfolio.ttf; sourceTree = "<group>"; };
 		0453CAA21D40F9730033DF87 /* hairfolio.woff */ = {isa = PBXFileReference; lastKnownFileType = file; path = hairfolio.woff; sourceTree = "<group>"; };
 		0453CAA31D40F9730033DF87 /* hairfolio.woff2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = hairfolio.woff2; sourceTree = "<group>"; };
-		0453CAA41D40F9730033DF87 /* Montserrat-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Bold.ttf"; sourceTree = "<group>"; };
-		0453CAA51D40F9730033DF87 /* Montserrat-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Regular.ttf"; sourceTree = "<group>"; };
-		0453CAA61D40F9730033DF87 /* Montserrat-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-SemiBold.ttf"; sourceTree = "<group>"; };
 		0453CAB91D40FEFF0033DF87 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		0453CABA1D40FEFF0033DF87 /* Default-736h@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-736h@3x.png"; sourceTree = "<group>"; };
 		0453CABB1D40FEFF0033DF87 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
@@ -272,14 +284,20 @@
 		0453CA9E1D40F9730033DF87 /* fonts */ = {
 			isa = PBXGroup;
 			children = (
+				041A2FEB1D5CECD3008B1593 /* SF-UI-Display-Black.otf */,
+				041A2FEC1D5CECD3008B1593 /* SF-UI-Display-Bold.otf */,
+				041A2FED1D5CECD3008B1593 /* SF-UI-Display-Heavy.otf */,
+				041A2FEE1D5CECD3008B1593 /* SF-UI-Display-Light.otf */,
+				041A2FEF1D5CECD3008B1593 /* SF-UI-Display-Medium.otf */,
+				041A2FF01D5CECD3008B1593 /* SF-UI-Display-Regular.otf */,
+				041A2FF11D5CECD3008B1593 /* SF-UI-Display-Semibold.otf */,
+				041A2FF21D5CECD3008B1593 /* SF-UI-Display-Thin.otf */,
+				041A2FF31D5CECD3008B1593 /* SF-UI-Display-Ultralight.otf */,
 				0453CA9F1D40F9730033DF87 /* hairfolio.eot */,
 				0453CAA01D40F9730033DF87 /* hairfolio.svg */,
 				0453CAA11D40F9730033DF87 /* hairfolio.ttf */,
 				0453CAA21D40F9730033DF87 /* hairfolio.woff */,
 				0453CAA31D40F9730033DF87 /* hairfolio.woff2 */,
-				0453CAA41D40F9730033DF87 /* Montserrat-Bold.ttf */,
-				0453CAA51D40F9730033DF87 /* Montserrat-Regular.ttf */,
-				0453CAA61D40F9730033DF87 /* Montserrat-SemiBold.ttf */,
 			);
 			name = fonts;
 			path = hairfolio/fonts;
@@ -620,24 +638,30 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0453CAAD1D40F9730033DF87 /* Montserrat-Regular.ttf in Resources */,
 				0453CAAA1D40F9730033DF87 /* hairfolio.woff in Resources */,
 				0453CAC11D40FEFF0033DF87 /* Default-667h@2x.png in Resources */,
 				0453CAA71D40F9730033DF87 /* hairfolio.eot in Resources */,
 				0453CABF1D40FEFF0033DF87 /* Default-736h@3x.png in Resources */,
+				041A2FFB1D5CECD3008B1593 /* SF-UI-Display-Thin.otf in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				0453CAC01D40FEFF0033DF87 /* Default-568h@2x.png in Resources */,
-				0453CAAE1D40F9730033DF87 /* Montserrat-SemiBold.ttf in Resources */,
-				0453CAAC1D40F9730033DF87 /* Montserrat-Bold.ttf in Resources */,
 				0453CAAB1D40F9730033DF87 /* hairfolio.woff2 in Resources */,
+				041A2FF61D5CECD3008B1593 /* SF-UI-Display-Heavy.otf in Resources */,
+				041A2FF51D5CECD3008B1593 /* SF-UI-Display-Bold.otf in Resources */,
 				0453CAA91D40F9730033DF87 /* hairfolio.ttf in Resources */,
+				041A2FFC1D5CECD3008B1593 /* SF-UI-Display-Ultralight.otf in Resources */,
 				0453CAA81D40F9730033DF87 /* hairfolio.svg in Resources */,
 				0453CAC21D40FEFF0033DF87 /* Default@2x.png in Resources */,
+				041A2FF81D5CECD3008B1593 /* SF-UI-Display-Medium.otf in Resources */,
 				0453CABE1D40FEFF0033DF87 /* Default.png in Resources */,
 				2BFA05CE204C41C0A87890E2 /* Entypo.ttf in Resources */,
 				26D10631361D4C7C9949ABC2 /* EvilIcons.ttf in Resources */,
 				6469DD9D41D14F0989667CDB /* FontAwesome.ttf in Resources */,
+				041A2FF91D5CECD3008B1593 /* SF-UI-Display-Regular.otf in Resources */,
+				041A2FFA1D5CECD3008B1593 /* SF-UI-Display-Semibold.otf in Resources */,
 				B9A2B91B43E240DF9185AD6C /* Foundation.ttf in Resources */,
+				041A2FF41D5CECD3008B1593 /* SF-UI-Display-Black.otf in Resources */,
+				041A2FF71D5CECD3008B1593 /* SF-UI-Display-Light.otf in Resources */,
 				FAEDA34C281A48E7BC8D7385 /* Ionicons.ttf in Resources */,
 				9C20236082CB4C839A070908 /* MaterialIcons.ttf in Resources */,
 				6D5930CAB34D4CE6898343E8 /* Octicons.ttf in Resources */,

@@ -27,7 +27,7 @@ export default class Hello extends PureComponent {
     return (<View style={{
       flex: 1,
       justifyContent: 'center',
-      backgroundColor: COLORS.PRIMARY.BLUE
+      backgroundColor: COLORS.LIGHT
     }}>
       <View style={{padding: 10}}>
         <FormButton

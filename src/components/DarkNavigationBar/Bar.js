@@ -60,9 +60,7 @@ export default class LoginNavigationbar extends PureComponent {
         RightButton: (route, navigator, index) => null
       }}
       style={{
-        backgroundColor: COLORS.PRIMARY.WHITE,
-        borderBottomWidth: 1,
-        borderBottomColor: COLORS.SEMIDARK2
+        backgroundColor: COLORS.DARK
       }}
       {...this.props}
     />);

@@ -1,8 +1,9 @@
 export const COLORS = {
-  DARK: '#58595B',
+  DARK: '#393939',
+  LIGHT: '#F4F4F4',
+
   SEMIDARK: '#bebebf',
   SEMIDARK2: '#D1D3D4',
-  LIGHT: '#E6E7E8',
   EXTRALIGHT: '#FDFDFD',
   PRIMARY: {
     BLUE: '#00BEDA',
@@ -22,7 +23,7 @@ export const COLORS = {
 };
 
 export const FONTS = {
-  REGULAR: 'Montserrat-Regular',
-  BOLD: 'Montserrat-Bold',
-  SEMIBOLD: 'Montserrat-SemiBold'
+  REGULAR: 'SFUIDisplay-Regular',
+  BOLD: 'SFUIDisplay-Bold',
+  SEMIBOLD: 'SFUIDisplay-Semibold'
 };

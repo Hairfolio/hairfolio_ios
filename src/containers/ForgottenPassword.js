@@ -37,7 +37,7 @@ export default class ForgottenPassword extends PureComponent {
       onWillFocus={this.onWillFocus}
       style={{
         flex: 1,
-        backgroundColor: COLORS.PRIMARY.WHITE,
+        backgroundColor: COLORS.LIGHT,
         paddingTop: NAVBAR_HEIGHT
       }}
       title="terms & conditions"

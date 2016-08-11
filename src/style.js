@@ -1,7 +1,7 @@
 // design where 750x1334@2x but rn use
 // the 320xY@1x coordinates
 export const SCALE = {
-  w: (size) => size * 320 / 375,
+  w: (size) => size / 2 * (320 / 375),
   h: (size) => size / 2
 };
 
@@ -9,6 +9,9 @@ export const COLORS = {
   DARK: '#393939',
   LIGHT: '#F4F4F4',
   WHITE: 'white',
+
+  FB: '#3B5998',
+  IG: '#F3328C',
 
   SEMIDARK: '#bebebf',
   SEMIDARK2: '#D1D3D4',
@@ -32,6 +35,8 @@ export const COLORS = {
 
 export const FONTS = {
   REGULAR: 'SFUIDisplay-Regular',
+  MEDIUM: 'SFUIDisplay-Medium',
   BOLD: 'SFUIDisplay-Bold',
+  HEAVY: 'SFUIDisplay-Heavy',
   SEMIBOLD: 'SFUIDisplay-Semibold'
 };

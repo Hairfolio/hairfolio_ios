@@ -4,11 +4,10 @@ import PureComponent from '../components/PureComponent';
 import {View, Text, TouchableOpacity, Platform} from 'react-native';
 import connect from '../lib/connect';
 import {app} from '../selectors/app';
-import {COLORS, FONTS} from '../style';
+import {COLORS, FONTS, SCALE} from '../style';
 import NavigationSetting from '../navigation/NavigationSetting';
 
 import SimpleButton from '../components/Buttons/Simple';
-import TextInput from '../components/Form/TextInput';
 import OnboardingLayout from '../components/OnboardingLayout';
 import KeyboardScrollView from '../components/KeyboardScrollView';
 import KeyboardPaddingView from '../components/KeyboardPaddingView';
@@ -54,84 +53,51 @@ export default class Register extends PureComponent {
             height: Dims.deviceHeight
           }}>
             <OnboardingLayout>
-              <Text style={{
-                fontFamily: FONTS.REGULAR,
-                color: COLORS.PRIMARY.WHITE,
-                fontSize: 16.2,
-                textAlign: 'center',
-                marginBottom: 17
-              }}>REGISTRATION</Text>
-              <View style={{
-                borderRadius: 14,
-                backgroundColor: COLORS.PRIMARY.WHITE,
-                paddingTop: 4,
-                paddingBottom: 4,
-                width: 273
-              }}>
-                <View style={{
-                  paddingLeft: 15,
-                  paddingRight: 15
-                }}>
-                  <TextInput
-                    icon="registration_name_icon"
-                    placeholder="Name"
-                  />
-                </View>
-                <View style={{height: 1, backgroundColor: COLORS.LIGHT}}/>
-                <View style={{
-                  paddingLeft: 15,
-                  paddingRight: 15
-                }}>
-                  <TextInput
-                    icon="modal_medical_adherence_icon"
-                    placeholder="Prescription  Number"
-                  />
-                </View>
-                <View style={{height: 1, backgroundColor: COLORS.LIGHT}}/>
-                <View style={{
-                  paddingLeft: 15,
-                  paddingRight: 15
-                }}>
-                  <TextInput
-                    icon="log_in_email_address_icon"
-                    placeholder="Email Address"
-                  />
-                </View>
-                <View style={{height: 1, backgroundColor: COLORS.LIGHT}}/>
-                <View style={{
-                  paddingLeft: 15,
-                  paddingRight: 15
-                }}>
-                  <TextInput
-                    icon="registration_create_password_icon"
-                    placeholder="Create a Password"
-                  />
-                </View>
-                <View style={{
-                  paddingLeft: 4,
-                  paddingRight: 4
-                }}>
-                  <SimpleButton
-                    label="SIGN UP"
-                    onPress={() => {
-
-                    }}
-                  />
-                </View>
-              </View>
-              <TouchableOpacity
-                onPress={() => {
-                  _.last(this.context.navigators).jumpTo(login);
-                }}
-                style={{marginTop: 24}}
+              <View
+                style={{flex: 1, justifyContent: 'space-between'}}
               >
-                <Text style={{
-                  fontFamily: FONTS.REGULAR,
-                  fontSize: 12.8,
-                  color: COLORS.PRIMARY.WHITE,
-                  textAlign: 'center'
-                }}>Aready Registered? <Text style={{fontFamily: FONTS.BOLD}}>Log in</Text>.</Text>
-              </TouchableOpacity>
+                <View>
+                  <View style={{paddingBottom: 10}}>
+                    <SimpleButton
+                      color={COLORS.FB}
+                      icon="facebook"
+                      label="Use Facebook"
+                      onPress={() => {
+                      }}
+                    />
+                  </View>
+                  <View style={{paddingBottom: 10}}>
+                    <SimpleButton
+                      color={COLORS.IG}
+                      icon="instagram"
+                      label="Use Instagram"
+                      onPress={() => {
+                      }}
+                    />
+                  </View>
+                  <View style={{paddingBottom: 10}}>
+                    <SimpleButton
+                      color={COLORS.DARK}
+                      icon="email"
+                      label="Use your email"
+                      onPress={() => {
+                      }}
+                    />
+                  </View>
+                </View>
+                <TouchableOpacity
+                  onPress={() => {
+                    _.last(this.context.navigators).jumpTo(login);
+                  }}
+                >
+                  <Text style={{
+                    fontFamily: FONTS.MEDIUM,
+                    fontSize: SCALE.h(28),
+                    color: COLORS.WHITE,
+                    textAlign: 'center'
+                  }}>Aready a Member? <Text style={{fontFamily: FONTS.HEAVY}}>Sign in</Text></Text>
+                </TouchableOpacity>
+              </View>
             </OnboardingLayout>
           </View>
         </KeyboardScrollView>

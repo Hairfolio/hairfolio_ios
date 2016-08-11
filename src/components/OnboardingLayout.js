@@ -18,7 +18,7 @@ export default class OnboardingLayout extends PureComponent {
       }}
     >
       <View style={{
-        flex: 1,
+        flex: 5,
         justifyContent: 'flex-end',
         alignItems: 'center'
       }}>
@@ -29,7 +29,13 @@ export default class OnboardingLayout extends PureComponent {
         />
       </View>
 
-      <View style={{flex: 2, paddingTop: SCALE.h(80)}}>
+      <View style={{
+        flex: 7,
+        paddingTop: SCALE.h(80),
+        paddingLeft: SCALE.w(69),
+        paddingRight: SCALE.w(69),
+        paddingBottom: SCALE.h(42)
+      }}>
         {this.props.children}
       </View>
     </View>);

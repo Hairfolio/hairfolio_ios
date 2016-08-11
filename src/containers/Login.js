@@ -1,18 +1,18 @@
 import React from 'react';
 import _ from 'lodash';
 import PureComponent from '../components/PureComponent';
-import {View, Text, Platform, TouchableOpacity} from 'react-native';
+import {View, Text, TouchableOpacity, Platform} from 'react-native';
 import connect from '../lib/connect';
 import {app} from '../selectors/app';
-import {COLORS, FONTS} from '../style';
+import {COLORS, FONTS, SCALE} from '../style';
 import NavigationSetting from '../navigation/NavigationSetting';
+
+import SimpleButton from '../components/Buttons/Simple';
+import OnboardingLayout from '../components/OnboardingLayout';
 import KeyboardScrollView from '../components/KeyboardScrollView';
 import KeyboardPaddingView from '../components/KeyboardPaddingView';
 
-import SimpleButton from '../components/Buttons/Simple';
-import TextInput from '../components/Form/TextInput';
-
-import {forgottenPasswordStack} from '../routes';
+import {register, forgottenPasswordStack} from '../routes';
 
 import {Dims} from '../constants';
 
@@ -29,9 +29,9 @@ export default class Login extends PureComponent {
   render() {
     return (<NavigationSetting
       leftAction={() => {
-        _.last(this.context.navigators).jumpBack();
+        _.last(this.context.navigators).jumpTo(register);
       }}
-      leftIcon="back_arrow"
+      leftIcon="back"
       onWillBlur={this.onWillBlur}
       onWillFocus={this.onWillFocus}
       style={{
@@ -50,72 +50,67 @@ export default class Login extends PureComponent {
           style={{flex: 1}}
         >
           <View style={{
-            height: Dims.deviceHeight,
-            alignItems: 'center',
-            justifyContent: 'center'
+            height: Dims.deviceHeight
           }}>
-            <View style={{
-              height: 368
-            }}>
-              <Text style={{
-                fontFamily: FONTS.REGULAR,
-                color: COLORS.PRIMARY.WHITE,
-                fontSize: 16.2,
-                textAlign: 'center',
-                marginBottom: 17
-              }}>LOG IN</Text>
-              <View style={{
-                borderRadius: 14,
-                backgroundColor: COLORS.PRIMARY.WHITE,
-                paddingTop: 4,
-                paddingBottom: 4,
-                width: 273
-              }}>
-                <View style={{
-                  paddingLeft: 15,
-                  paddingRight: 15
-                }}>
-                  <TextInput
-                    icon="log_in_email_address_icon"
-                    placeholder="Email Address"
-                  />
-                </View>
-                <View style={{height: 1, backgroundColor: COLORS.LIGHT}}/>
-                <View style={{
-                  paddingLeft: 15,
-                  paddingRight: 15
-                }}>
-                  <TextInput
-                    icon="registration_create_password_icon"
-                    placeholder="Password"
-                  />
-                </View>
-                <View style={{
-                  paddingLeft: 4,
-                  paddingRight: 4
-                }}>
-                  <SimpleButton
-                    label="LOGIN"
-                    onPress={() => {
-
-                    }}
-                  />
-                </View>
-              </View>
-              <TouchableOpacity
-                onPress={() => {
-                  _.first(this.context.navigators).jumpTo(forgottenPasswordStack);
-                }}
-                style={{marginTop: 24}}
+            <OnboardingLayout>
+              <View
+                style={{flex: 1, justifyContent: 'space-between'}}
               >
-                <Text style={{
-                  fontFamily: FONTS.REGULAR,
-                  fontSize: 12.8,
-                  color: COLORS.PRIMARY.WHITE,
-                  textAlign: 'center'
-                }}>I forgot my login information</Text>
-              </TouchableOpacity>
-            </View>
+                <View>
+                  <View style={{paddingBottom: 10}}>
+                    <SimpleButton
+                      color={COLORS.FB}
+                      icon="facebook"
+                      label="Sign In with Facebook"
+                      onPress={() => {
+                      }}
+                    />
+                  </View>
+                  <View style={{paddingBottom: 10}}>
+                    <SimpleButton
+                      color={COLORS.IG}
+                      icon="instagram"
+                      label="Sign In with Instagram"
+                      onPress={() => {
+                      }}
+                    />
+                  </View>
+                  <View style={{paddingBottom: SCALE.h(54)}}>
+                    <SimpleButton
+                      color={COLORS.DARK}
+                      icon="email"
+                      label="Sign In with email"
+                      onPress={() => {
+                      }}
+                    />
+                  </View>
+                  <TouchableOpacity
+                    onPress={() => {
+                      _.first(this.context.navigators).jumpTo(forgottenPasswordStack);
+                    }}
+                  >
+                    <Text style={{
+                      fontFamily: FONTS.MEDIUM,
+                      fontSize: SCALE.h(28),
+                      color: COLORS.WHITE,
+                      textAlign: 'center'
+                    }}>Forgot your password?</Text>
+                  </TouchableOpacity>
+                </View>
+                <TouchableOpacity
+                  onPress={() => {
+                    _.last(this.context.navigators).jumpTo(register);
+                  }}
+                >
+                  <Text style={{
+                    fontFamily: FONTS.MEDIUM,
+                    fontSize: SCALE.h(28),
+                    color: COLORS.WHITE,
+                    textAlign: 'center'
+                  }}>Don’t Have an Account? <Text style={{fontFamily: FONTS.HEAVY}}>Sign up</Text></Text>
+                </TouchableOpacity>
+              </View>
+            </OnboardingLayout>
           </View>
         </KeyboardScrollView>
       </KeyboardPaddingView>

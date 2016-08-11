@@ -11,6 +11,8 @@ import OnboardingLayout from '../components/OnboardingLayout';
 
 import {loginStack, forgottenPasswordStack} from '../routes';
 
+import {COLORS} from '../style';
+
 @connect(app)
 export default class Hello extends PureComponent {
   static propTypes = {
@@ -18,22 +20,23 @@ export default class Hello extends PureComponent {
   };
 
   static contextTypes = {
-    navigators: React.PropTypes.array.isRequired,
-    bubblesStackRoute: React.PropTypes.object.isRequired
+    navigators: React.PropTypes.array.isRequired
   };
 
   render() {
     return (<OnboardingLayout>
-      <View style={{padding: 10}}>
+      <View style={{paddingBottom: 10}}>
         <SimpleButton
+          color={COLORS.DARK}
           label="SIGNUP/SIGNIN"
           onPress={() => {
             _.last(this.context.navigators).jumpTo(loginStack);
           }}
         />
       </View>
-      <View style={{padding: 10}}>
+      <View style={{paddingBottom: 10}}>
         <SimpleButton
+          color={COLORS.DARK}
           label="FORGOTTEN PASSWORD"
           onPress={() => {
             _.last(this.context.navigators).jumpTo(forgottenPasswordStack);

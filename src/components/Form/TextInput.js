@@ -27,7 +27,7 @@ export default class FormTextInput extends PureComponent {
         justifyContent: 'center'
       }}>
         <Icon
-          color={COLORS.PRIMARY.RED}
+          color={COLORS.DARK}
           name={this.props.icon}
           size={19}
         />

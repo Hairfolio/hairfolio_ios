@@ -9,7 +9,7 @@ import NavigationSetting from '../navigation/NavigationSetting';
 import KeyboardScrollView from '../components/KeyboardScrollView';
 import KeyboardPaddingView from '../components/KeyboardPaddingView';
 
-import FormButton from '../components/Buttons/Form';
+import SimpleButton from '../components/Buttons/Simple';
 import TextInput from '../components/Form/TextInput';
 
 import {forgottenPasswordStack} from '../routes';
@@ -36,7 +36,7 @@ export default class Login extends PureComponent {
       onWillFocus={this.onWillFocus}
       style={{
         flex: 1,
-        backgroundColor: COLORS.PRIMARY.BLUE
+        backgroundColor: 'transparent'
       }}
     >
       <KeyboardPaddingView
@@ -94,7 +94,7 @@ export default class Login extends PureComponent {
                   paddingLeft: 4,
                   paddingRight: 4
                 }}>
-                  <FormButton
+                  <SimpleButton
                     label="LOGIN"
                     onPress={() => {
 

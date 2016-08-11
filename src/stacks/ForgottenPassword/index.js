@@ -60,7 +60,7 @@ export default class ForgottenPasswordStack extends PureComponent {
         onWillFocus={this.onWillFocus}
         style={{
           flex: 1,
-          backgroundColor: COLORS.LIGHT
+          backgroundColor: 'transparent'
         }}
       >
         <Navigator

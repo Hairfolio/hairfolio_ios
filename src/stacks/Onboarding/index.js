@@ -60,7 +60,7 @@ export default class OnboardingStack extends PureComponent {
         onWillFocus={this.onWillFocus}
         style={{
           flex: 1,
-          backgroundColor: COLORS.PRIMARY.BLUE
+          backgroundColor: 'transparent'
         }}
       >
         <Navigator

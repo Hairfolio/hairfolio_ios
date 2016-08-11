@@ -28,7 +28,7 @@ export default class TopLoginNavigationButton extends PureComponent {
         }, this.props.type === 'left' ? {paddingLeft: 12} : {paddingRight: 12}]}
       >
         <Icon
-          color={COLORS.PRIMARY.RED}
+          color={COLORS.WHITE}
           name={this.props.icon}
           size={18}
         />

@@ -1,6 +1,14 @@
+// design where 750x1334 but rn use
+// the 320x569 coordinates
+export const SCALE = {
+  w: (size) => size * 320 / 750,
+  h: (size) => size * 569 / 1334
+};
+
 export const COLORS = {
   DARK: '#393939',
   LIGHT: '#F4F4F4',
+  WHITE: 'white',
 
   SEMIDARK: '#bebebf',
   SEMIDARK2: '#D1D3D4',

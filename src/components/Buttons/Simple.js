@@ -8,7 +8,7 @@ import {
 import {COLORS, FONTS} from '../../style';
 import PureComponent from '../PureComponent';
 
-export default class FormButton extends PureComponent {
+export default class SimpleButton extends PureComponent {
   static propTypes = {
     disabled: PropTypes.bool,
     label: PropTypes.string.isRequired,
@@ -21,7 +21,8 @@ export default class FormButton extends PureComponent {
       onPress={this.props.onPress}
       style={{
         backgroundColor: COLORS.PRIMARY.RED,
-        padding: 19,
+        padding: 18,
+        borderRadius: 14,
         alignItems: 'center'
       }}
     >

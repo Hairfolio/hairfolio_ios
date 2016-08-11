@@ -7,8 +7,9 @@ import {app} from '../selectors/app';
 import {COLORS, FONTS} from '../style';
 import NavigationSetting from '../navigation/NavigationSetting';
 
-import FormButton from '../components/Buttons/Form';
+import SimpleButton from '../components/Buttons/Simple';
 import TextInput from '../components/Form/TextInput';
+import OnboardingLayout from '../components/OnboardingLayout';
 import KeyboardScrollView from '../components/KeyboardScrollView';
 import KeyboardPaddingView from '../components/KeyboardPaddingView';
 
@@ -31,12 +32,12 @@ export default class Register extends PureComponent {
       leftAction={() => {
         _.first(this.context.navigators).jumpTo(hello);
       }}
-      leftIcon="back_arrow"
+      leftIcon="back"
       onWillBlur={this.onWillBlur}
       onWillFocus={this.onWillFocus}
       style={{
         flex: 1,
-        backgroundColor: COLORS.PRIMARY.BLUE
+        backgroundColor: 'transparent'
       }}
     >
       <KeyboardPaddingView
@@ -50,13 +51,9 @@ export default class Register extends PureComponent {
           style={{flex: 1}}
         >
           <View style={{
-            height: Dims.deviceHeight,
-            alignItems: 'center',
-            justifyContent: 'center'
+            height: Dims.deviceHeight
           }}>
-            <View style={{
-              height: 368
-            }}>
+            <OnboardingLayout>
               <Text style={{
                 fontFamily: FONTS.REGULAR,
                 color: COLORS.PRIMARY.WHITE,
@@ -114,7 +111,7 @@ export default class Register extends PureComponent {
                   paddingLeft: 4,
                   paddingRight: 4
                 }}>
-                  <FormButton
+                  <SimpleButton
                     label="SIGN UP"
                     onPress={() => {
 
@@ -135,7 +132,7 @@ export default class Register extends PureComponent {
                   textAlign: 'center'
                 }}>Aready Registered? <Text style={{fontFamily: FONTS.BOLD}}>Log in</Text>.</Text>
               </TouchableOpacity>
-            </View>
+            </OnboardingLayout>
           </View>
         </KeyboardScrollView>
       </KeyboardPaddingView>

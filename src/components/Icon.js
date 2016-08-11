@@ -4,7 +4,7 @@ import PureComponent from './PureComponent';
 import fontelloConfig from '../../fontello.json';
 import {createIconSetFromFontello} from 'react-native-vector-icons';
 
-var Icon = createIconSetFromFontello(fontelloConfig, 'marmo', 'marmo.ttf');
+var Icon = createIconSetFromFontello(fontelloConfig, 'hairfolio', 'hairfolio.ttf');
 
 export default class WrappedIcon extends PureComponent {
   setNativeProps(props) {

@@ -14,7 +14,7 @@ export default class TopLoginNavigationButton extends PureComponent {
   render() {
     return (<View style={{flex: 1, justifyContent: 'center'}}>
       <Text style={{
-        color: COLORS.PRIMARY.BLUE,
+        color: COLORS.WHITE,
         fontSize: 16,
         fontFamily: FONTS.REGULAR
       }}>{this.props.title.toUpperCase()}</Text>

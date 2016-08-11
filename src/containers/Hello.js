@@ -6,9 +6,8 @@ import _ from 'lodash';
 
 import {app} from '../selectors/app';
 
-import {COLORS} from '../style';
-
-import FormButton from '../components/Buttons/Form';
+import SimpleButton from '../components/Buttons/Simple';
+import OnboardingLayout from '../components/OnboardingLayout';
 
 import {loginStack, forgottenPasswordStack} from '../routes';
 
@@ -24,13 +23,9 @@ export default class Hello extends PureComponent {
   };
 
   render() {
-    return (<View style={{
-      flex: 1,
-      justifyContent: 'center',
-      backgroundColor: COLORS.LIGHT
-    }}>
+    return (<OnboardingLayout>
       <View style={{padding: 10}}>
-        <FormButton
+        <SimpleButton
           label="SIGNUP/SIGNIN"
           onPress={() => {
             _.last(this.context.navigators).jumpTo(loginStack);
@@ -38,13 +33,13 @@ export default class Hello extends PureComponent {
         />
       </View>
       <View style={{padding: 10}}>
-        <FormButton
+        <SimpleButton
           label="FORGOTTEN PASSWORD"
           onPress={() => {
             _.last(this.context.navigators).jumpTo(forgottenPasswordStack);
           }}
         />
       </View>
-    </View>);
+    </OnboardingLayout>);
   }
 };

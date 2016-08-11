@@ -22,6 +22,7 @@
 		041A2FFA1D5CECD3008B1593 /* SF-UI-Display-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 041A2FF11D5CECD3008B1593 /* SF-UI-Display-Semibold.otf */; settings = {ASSET_TAGS = (); }; };
 		041A2FFB1D5CECD3008B1593 /* SF-UI-Display-Thin.otf in Resources */ = {isa = PBXBuildFile; fileRef = 041A2FF21D5CECD3008B1593 /* SF-UI-Display-Thin.otf */; settings = {ASSET_TAGS = (); }; };
 		041A2FFC1D5CECD3008B1593 /* SF-UI-Display-Ultralight.otf in Resources */ = {isa = PBXBuildFile; fileRef = 041A2FF31D5CECD3008B1593 /* SF-UI-Display-Ultralight.otf */; settings = {ASSET_TAGS = (); }; };
+		041A30031D5D0807008B1593 /* libRNSpinkit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 041A30021D5D07F9008B1593 /* libRNSpinkit.a */; };
 		0453CAA71D40F9730033DF87 /* hairfolio.eot in Resources */ = {isa = PBXBuildFile; fileRef = 0453CA9F1D40F9730033DF87 /* hairfolio.eot */; settings = {ASSET_TAGS = (); }; };
 		0453CAA81D40F9730033DF87 /* hairfolio.svg in Resources */ = {isa = PBXBuildFile; fileRef = 0453CAA01D40F9730033DF87 /* hairfolio.svg */; settings = {ASSET_TAGS = (); }; };
 		0453CAA91D40F9730033DF87 /* hairfolio.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0453CAA11D40F9730033DF87 /* hairfolio.ttf */; settings = {ASSET_TAGS = (); }; };
@@ -96,6 +97,13 @@
 			remoteGlobalIDString = 13B07F861A680F5B00A75B9A;
 			remoteInfo = hairfolio;
 		};
+		041A30011D5D07F9008B1593 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 041A2FFD1D5D07F8008B1593 /* RNSpinkit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D42CB3511B2538DE00FD0AE2;
+			remoteInfo = RNSpinkit;
+		};
 		0453CADA1D4117380033DF87 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 0164B388F0E849DCBA650265 /* RNVectorIcons.xcodeproj */;
@@ -161,6 +169,7 @@
 		041A2FF11D5CECD3008B1593 /* SF-UI-Display-Semibold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-UI-Display-Semibold.otf"; sourceTree = "<group>"; };
 		041A2FF21D5CECD3008B1593 /* SF-UI-Display-Thin.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-UI-Display-Thin.otf"; sourceTree = "<group>"; };
 		041A2FF31D5CECD3008B1593 /* SF-UI-Display-Ultralight.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-UI-Display-Ultralight.otf"; sourceTree = "<group>"; };
+		041A2FFD1D5D07F8008B1593 /* RNSpinkit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNSpinkit.xcodeproj; path = "../node_modules/react-native-spinkit/ios/RNSpinkit.xcodeproj"; sourceTree = "<group>"; };
 		0437A9983780464B85DE2EDF /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 0; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
 		0453CA9F1D40F9730033DF87 /* hairfolio.eot */ = {isa = PBXFileReference; lastKnownFileType = file; path = hairfolio.eot; sourceTree = "<group>"; };
 		0453CAA01D40F9730033DF87 /* hairfolio.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = hairfolio.svg; sourceTree = "<group>"; };
@@ -211,6 +220,7 @@
 				00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */,
 				00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */,
 				00C302E81ABCBA2D00DB3ED1 /* libRCTImage.a in Frameworks */,
+				041A30031D5D0807008B1593 /* libRNSpinkit.a in Frameworks */,
 				133E29F31AD74F7200F7D852 /* libRCTLinking.a in Frameworks */,
 				00C302E91ABCBA2D00DB3ED1 /* libRCTNetwork.a in Frameworks */,
 				139105C61AF99C1200B5F7CC /* libRCTSettings.a in Frameworks */,
@@ -279,6 +289,14 @@
 				00E356F11AD99517003FC87E /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		041A2FFE1D5D07F8008B1593 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				041A30021D5D07F9008B1593 /* libRNSpinkit.a */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		0453CA9E1D40F9730033DF87 /* fonts */ = {
@@ -362,6 +380,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				041A2FFD1D5D07F8008B1593 /* RNSpinkit.xcodeproj */,
 				146833FF1AC3E56700842450 /* React.xcodeproj */,
 				00C302A71ABCB8CE00DB3ED1 /* RCTActionSheet.xcodeproj */,
 				00C302B51ABCB90400DB3ED1 /* RCTGeolocation.xcodeproj */,
@@ -534,6 +553,10 @@
 					ProjectRef = 146833FF1AC3E56700842450 /* React.xcodeproj */;
 				},
 				{
+					ProductGroup = 041A2FFE1D5D07F8008B1593 /* Products */;
+					ProjectRef = 041A2FFD1D5D07F8008B1593 /* RNSpinkit.xcodeproj */;
+				},
+				{
 					ProductGroup = 0453CACD1D4117380033DF87 /* Products */;
 					ProjectRef = 0164B388F0E849DCBA650265 /* RNVectorIcons.xcodeproj */;
 				},
@@ -580,6 +603,13 @@
 			fileType = archive.ar;
 			path = libRCTVibration.a;
 			remoteRef = 00C302E31ABCB9EE00DB3ED1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		041A30021D5D07F9008B1593 /* libRNSpinkit.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNSpinkit.a;
+			remoteRef = 041A30011D5D07F9008B1593 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		0453CADB1D4117380033DF87 /* libRNVectorIcons.a */ = {

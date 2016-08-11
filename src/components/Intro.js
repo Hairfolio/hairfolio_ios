@@ -1,6 +1,9 @@
 import React from 'react';
 import {View} from 'react-native';
 import PureComponent from './PureComponent';
+import Spinner from 'react-native-spinkit';
+
+import {SCALE, COLORS} from '../style';
 
 // no animation here !
 
@@ -11,10 +14,21 @@ export default class Intro extends PureComponent {
   };
 
   componentDidMount() {
-    this.props.onReady();
+    setTimeout(this.props.onReady, 300);
   }
 
   render() {
-    return <View />;
+    return (<View
+      style={{flex: 1}}
+    >
+      <View style={{flex: 1}} />
+      <View style={{flex: 1, alignItems: 'center', paddingTop: SCALE.h(144)}}>
+        <Spinner
+          color={COLORS.DARK}
+          size={SCALE.h(46)}
+          type="FadingCircleAlt"
+        />
+      </View>
+    </View>);
   }
 };

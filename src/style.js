@@ -34,9 +34,8 @@ export const COLORS = {
 };
 
 export const FONTS = {
-  REGULAR: 'SFUIDisplay-Regular',
-  MEDIUM: 'SFUIDisplay-Medium',
-  BOLD: 'SFUIDisplay-Bold',
-  HEAVY: 'SFUIDisplay-Heavy',
-  SEMIBOLD: 'SFUIDisplay-Semibold'
+  MEDIUM: 'Avenir-Medium',
+  BOLD: 'Avenir-Bold',
+  HEAVY: 'Avenir-Heavy',
+  SEMIBOLD: 'Avenir-Semibold'
 };

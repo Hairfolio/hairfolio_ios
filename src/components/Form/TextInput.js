@@ -46,7 +46,7 @@ export default class FormTextInput extends PureComponent {
           flex: 1,
           borderWidth: 0,
           textAlignVertical: 'center',
-          fontFamily: FONTS.REGULAR,
+          fontFamily: FONTS.MEDIUM,
           fontSize: 12.8,
           color: COLORS.DARK
         }}

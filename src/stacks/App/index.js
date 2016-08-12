@@ -57,6 +57,10 @@ export default class AppStack extends PureComponent {
     */
   }
 
+  jumpTo(route) {
+    this._nav.jumpTo(route);
+  }
+
   render() {
     return (
       <NavigationSetting

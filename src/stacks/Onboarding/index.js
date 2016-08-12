@@ -1,5 +1,5 @@
 import React from 'React';
-import {Platform, BackAndroid, View, StatusBar} from 'react-native';
+import {Platform, BackAndroid, View, StatusBar, Image} from 'react-native';
 import {autobind} from 'core-decorators';
 
 import Navigator from '../../navigation/Navigator';
@@ -83,52 +83,63 @@ export default class OnboardingStack extends PureComponent {
           backgroundColor: 'transparent'
         }}
       >
-        <KeyboardPaddingView
-          style={{flex: 1}}
+        <Image
+          source={require('../../images/onboarding.jpg')}
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0
+          }}
         >
-          <KeyboardScrollView
-            scrollEnabled={false}
-            scrollToTopOnBlur
-            showsVerticalScrollIndicator={false}
-            space={Platform.OS === 'ios' ? 60 : 90}
+          <KeyboardPaddingView
             style={{flex: 1}}
           >
-            <View style={{height: Dims.deviceHeight}}>
-              <View style={{
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                right: 0,
-                height: 9 / 24 * Dims.deviceHeight,
-                justifyContent: 'flex-end',
-                alignItems: 'center'
-              }}>
-                <Icon
-                  color={COLORS.WHITE}
-                  name="logo"
-                  size={SCALE.h(172)}
+            <KeyboardScrollView
+              scrollEnabled={false}
+              scrollToTopOnBlur
+              showsVerticalScrollIndicator={false}
+              space={Platform.OS === 'ios' ? 60 : 90}
+              style={{flex: 1}}
+            >
+              <View style={{height: Dims.deviceHeight}}>
+                <View style={{
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  height: 9 / 24 * Dims.deviceHeight,
+                  justifyContent: 'flex-end',
+                  alignItems: 'center'
+                }}>
+                  <Icon
+                    color={COLORS.WHITE}
+                    name="logo"
+                    size={SCALE.h(172)}
+                  />
+                </View>
+                <Navigator
+                  backgroundStyle={{
+                    paddingTop: 9 / 24 * Dims.deviceHeight + SCALE.h(80),
+                    paddingLeft: SCALE.w(69),
+                    paddingRight: SCALE.w(69),
+                    paddingBottom: SCALE.h(42)
+                  }}
+                  initialRoute={register}
+                  initialRouteStack={[
+                    register,
+                    register2,
+                    login,
+                    loginEmail
+                  ]}
+                  navigationBar={<NavigationBar ref={(navBar) => this._navBar = navBar} />}
+                  ref={(navigator) => this._nav = navigator && navigator.navigator()}
                 />
               </View>
-              <Navigator
-                backgroundStyle={{
-                  paddingTop: 9 / 24 * Dims.deviceHeight + SCALE.h(80),
-                  paddingLeft: SCALE.w(69),
-                  paddingRight: SCALE.w(69),
-                  paddingBottom: SCALE.h(42)
-                }}
-                initialRoute={register}
-                initialRouteStack={[
-                  register,
-                  register2,
-                  login,
-                  loginEmail
-                ]}
-                navigationBar={<NavigationBar ref={(navBar) => this._navBar = navBar} />}
-                ref={(navigator) => this._nav = navigator && navigator.navigator()}
-              />
-            </View>
-          </KeyboardScrollView>
-        </KeyboardPaddingView>
+            </KeyboardScrollView>
+          </KeyboardPaddingView>
+        </Image>
       </NavigationSetting>
     );
   }

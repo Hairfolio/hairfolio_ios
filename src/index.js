@@ -3,7 +3,7 @@ import {autobind} from 'core-decorators';
 import _ from 'lodash';
 import PureComponent from './components/PureComponent';
 import {Provider} from 'react-redux';
-import {View, Image, TextInput, NativeModules, Animated, StatusBar} from 'react-native';
+import {View, TextInput, NativeModules, Animated, StatusBar} from 'react-native';
 import dismissKeyboard from 'react-native/Libraries/Utilities/dismissKeyboard';
 
 import Navigator from './navigation/Navigator';
@@ -105,19 +105,10 @@ export default class Root extends PureComponent {
               left: 0,
               right: 0,
               bottom: 0,
-              opacity: this.appOpacity
+              opacity: this.appOpacity,
+              backgroundColor: 'white'
             }}
           >
-            <Image
-              source={require('./images/onboarding.jpg')}
-              style={{
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                right: 0,
-                bottom: 0
-              }}
-            />
             <Provider store={store}>
               <Navigator
                 backgroundStyle={{flex: 1}}

@@ -1,7 +1,7 @@
 import React from 'react';
 import _ from 'lodash';
 import PureComponent from '../components/PureComponent';
-import {View, Text} from 'react-native';
+import {View, InteractionManager} from 'react-native';
 import connect from '../lib/connect';
 import {app} from '../selectors/app';
 import {COLORS, FONTS, SCALE} from '../style';
@@ -11,7 +11,7 @@ import SimpleButton from '../components/Buttons/Simple';
 
 import {BOTTOMBAR_HEIGHT, STATUSBAR_HEIGHT} from '../constants';
 
-import {loginStack, login} from '../routes';
+import {loginStack, login, search} from '../routes';
 
 @connect(app)
 export default class Profile extends PureComponent {
@@ -43,6 +43,7 @@ export default class Profile extends PureComponent {
           onPress={() => {
             loginStack.scene().jumpTo(login);
             _.first(this.context.navigators).jumpTo(loginStack);
+            InteractionManager.runAfterInteractions(() => _.last(this.context.navigators).jumpTo(search));
           }}
           ref="submit"
         />

@@ -26,6 +26,7 @@
 		041A30311D5D1725008B1593 /* Avenir-MediumOblique.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 041A30251D5D1725008B1593 /* Avenir-MediumOblique.ttf */; settings = {ASSET_TAGS = (); }; };
 		041A30321D5D1725008B1593 /* Avenir-Oblique.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 041A30261D5D1725008B1593 /* Avenir-Oblique.ttf */; settings = {ASSET_TAGS = (); }; };
 		041A30331D5D1725008B1593 /* Avenir-Roman.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 041A30271D5D1725008B1593 /* Avenir-Roman.ttf */; settings = {ASSET_TAGS = (); }; };
+		041A30591D5E244D008B1593 /* libRNImagePicker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 041A30561D5E2449008B1593 /* libRNImagePicker.a */; };
 		0453CAA71D40F9730033DF87 /* hairfolio.eot in Resources */ = {isa = PBXBuildFile; fileRef = 0453CA9F1D40F9730033DF87 /* hairfolio.eot */; settings = {ASSET_TAGS = (); }; };
 		0453CAA81D40F9730033DF87 /* hairfolio.svg in Resources */ = {isa = PBXBuildFile; fileRef = 0453CAA01D40F9730033DF87 /* hairfolio.svg */; settings = {ASSET_TAGS = (); }; };
 		0453CAA91D40F9730033DF87 /* hairfolio.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0453CAA11D40F9730033DF87 /* hairfolio.ttf */; settings = {ASSET_TAGS = (); }; };
@@ -107,6 +108,13 @@
 			remoteGlobalIDString = D42CB3511B2538DE00FD0AE2;
 			remoteInfo = RNSpinkit;
 		};
+		041A30551D5E2449008B1593 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 041A30471D5E2448008B1593 /* RNImagePicker.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 014A3B5C1C6CF33500B6D375;
+			remoteInfo = RNImagePicker;
+		};
 		0453CADA1D4117380033DF87 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 0164B388F0E849DCBA650265 /* RNVectorIcons.xcodeproj */;
@@ -176,6 +184,7 @@
 		041A30251D5D1725008B1593 /* Avenir-MediumOblique.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Avenir-MediumOblique.ttf"; sourceTree = "<group>"; };
 		041A30261D5D1725008B1593 /* Avenir-Oblique.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Avenir-Oblique.ttf"; sourceTree = "<group>"; };
 		041A30271D5D1725008B1593 /* Avenir-Roman.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Avenir-Roman.ttf"; sourceTree = "<group>"; };
+		041A30471D5E2448008B1593 /* RNImagePicker.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNImagePicker.xcodeproj; path = "../node_modules/react-native-image-picker/ios/RNImagePicker.xcodeproj"; sourceTree = "<group>"; };
 		0437A9983780464B85DE2EDF /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 0; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
 		0453CA9F1D40F9730033DF87 /* hairfolio.eot */ = {isa = PBXFileReference; lastKnownFileType = file; path = hairfolio.eot; sourceTree = "<group>"; };
 		0453CAA01D40F9730033DF87 /* hairfolio.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = hairfolio.svg; sourceTree = "<group>"; };
@@ -223,6 +232,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				146834051AC3E58100842450 /* libReact.a in Frameworks */,
+				041A30591D5E244D008B1593 /* libRNImagePicker.a in Frameworks */,
 				00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */,
 				00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */,
 				00C302E81ABCBA2D00DB3ED1 /* libRCTImage.a in Frameworks */,
@@ -301,6 +311,14 @@
 			isa = PBXGroup;
 			children = (
 				041A30021D5D07F9008B1593 /* libRNSpinkit.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		041A30481D5E2448008B1593 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				041A30561D5E2449008B1593 /* libRNImagePicker.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -389,6 +407,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				041A30471D5E2448008B1593 /* RNImagePicker.xcodeproj */,
 				041A2FFD1D5D07F8008B1593 /* RNSpinkit.xcodeproj */,
 				146833FF1AC3E56700842450 /* React.xcodeproj */,
 				00C302A71ABCB8CE00DB3ED1 /* RCTActionSheet.xcodeproj */,
@@ -562,6 +581,10 @@
 					ProjectRef = 146833FF1AC3E56700842450 /* React.xcodeproj */;
 				},
 				{
+					ProductGroup = 041A30481D5E2448008B1593 /* Products */;
+					ProjectRef = 041A30471D5E2448008B1593 /* RNImagePicker.xcodeproj */;
+				},
+				{
 					ProductGroup = 041A2FFE1D5D07F8008B1593 /* Products */;
 					ProjectRef = 041A2FFD1D5D07F8008B1593 /* RNSpinkit.xcodeproj */;
 				},
@@ -619,6 +642,13 @@
 			fileType = archive.ar;
 			path = libRNSpinkit.a;
 			remoteRef = 041A30011D5D07F9008B1593 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		041A30561D5E2449008B1593 /* libRNImagePicker.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNImagePicker.a;
+			remoteRef = 041A30551D5E2449008B1593 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		0453CADB1D4117380033DF87 /* libRNVectorIcons.a */ = {

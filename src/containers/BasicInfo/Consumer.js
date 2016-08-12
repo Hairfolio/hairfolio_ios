@@ -1,7 +1,8 @@
 import React from 'react';
 import _ from 'lodash';
 import PureComponent from '../../components/PureComponent';
-import RN, {View, StyleSheet, TouchableOpacity} from 'react-native';
+import RN, {View, StyleSheet, TouchableOpacity, Image} from 'react-native';
+import ImagePicker from 'react-native-image-picker';
 import connect from '../../lib/connect';
 import {app} from '../../selectors/app';
 import {COLORS, SCALE} from '../../style';
@@ -26,9 +27,7 @@ export default class BasicInfoConsumer extends PureComponent {
     navigators: React.PropTypes.array.isRequired
   };
 
-  state = {
-    pushSelected: false
-  };
+  state = {};
 
   render() {
     return (<NavigationSetting
@@ -58,23 +57,44 @@ export default class BasicInfoConsumer extends PureComponent {
           space={90}
           style={{flex: 1}}
         >
-          <TouchableOpacity style={{
-            marginTop: SCALE.h(34),
-            marginBottom: SCALE.h(34),
-            alignSelf: 'center',
-            height: SCALE.h(150),
-            width: SCALE.h(150),
-            borderRadius: SCALE.h(150) / 2,
-            backgroundColor: COLORS.WHITE,
+          <TouchableOpacity
+            onPress={() => {
+              ImagePicker.showImagePicker({
+                //noData: true
+              }, response => {
+                if (response.uri)
+                  this.setState({pictureURI: response.uri});
+              });
+            }}
+            style={{
+              marginTop: SCALE.h(34),
+              marginBottom: SCALE.h(34),
+              alignSelf: 'center',
+              height: SCALE.h(150),
+              width: SCALE.h(150),
+              borderRadius: SCALE.h(150) / 2,
+              backgroundColor: COLORS.WHITE,
 
-            alignItems: 'center',
-            justifyContent: 'center'
-          }}>
-            <Icon
-              color={COLORS.DARK}
-              name="camera"
-              size={SCALE.h(65)}
-            />
+              alignItems: 'center',
+              justifyContent: 'center',
+              overflow: 'hidden'
+            }}
+          >
+            {!this.state.pictureURI ?
+              <Icon
+                color={COLORS.DARK}
+                name="camera"
+                size={SCALE.h(65)}
+              />
+            :
+              <Image
+                source={{uri: this.state.pictureURI}}
+                style={{
+                  height: SCALE.h(150),
+                  width: SCALE.h(150)
+                }}
+              />
+            }
           </TouchableOpacity>
           <InlineTextInput
             getRefNode={() => {

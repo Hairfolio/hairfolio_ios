@@ -23,6 +23,16 @@ export default class OnboardingStack extends PureComponent {
     navigators: React.PropTypes.array.isRequired
   };
 
+  static childContextTypes = {
+    setBannerError: React.PropTypes.func.isRequired
+  };
+
+  getChildContext() {
+    return {
+      setBannerError: (err) => this._navBar.error(err)
+    };
+  }
+
   @autobind
   onWillFocus() {
     if (Platform.OS !== 'ios')
@@ -107,7 +117,7 @@ export default class OnboardingStack extends PureComponent {
                   login,
                   loginEmail
                 ]}
-                navigationBar={<NavigationBar />}
+                navigationBar={<NavigationBar ref={(navBar) => this._navBar = navBar} />}
                 ref={(navigator) => this._nav = navigator && navigator.navigator()}
               />
             </View>

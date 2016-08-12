@@ -18,7 +18,8 @@ export default class Login extends PureComponent {
   };
 
   static contextTypes = {
-    navigators: React.PropTypes.array.isRequired
+    navigators: React.PropTypes.array.isRequired,
+    setBannerError: React.PropTypes.func.isRequired
   };
 
   render() {
@@ -44,6 +45,7 @@ export default class Login extends PureComponent {
               icon="facebook"
               label="Sign In with Facebook"
               onPress={() => {
+                this.context.setBannerError('Not ready');
               }}
             />
           </View>
@@ -53,6 +55,7 @@ export default class Login extends PureComponent {
               icon="instagram"
               label="Sign In with Instagram"
               onPress={() => {
+                this.context.setBannerError('Not ready');
               }}
             />
           </View>
@@ -62,7 +65,7 @@ export default class Login extends PureComponent {
               icon="email"
               label="Sign In with email"
               onPress={() => {
-                _.last(this.context.navigators).jumpTo(loginEmail)
+                _.last(this.context.navigators).jumpTo(loginEmail);
               }}
             />
           </View>

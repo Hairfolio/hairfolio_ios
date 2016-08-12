@@ -9,7 +9,17 @@ export default class BannerErrorContainer extends PureComponent {
     children: React.PropTypes.node.isRequired
   };
 
+  static childContextTypes = {
+    setBannerError: React.PropTypes.func.isRequired
+  };
+
   state = {};
+
+  getChildContext() {
+    return {
+      setBannerError: (err) => this.error(err)
+    };
+  }
 
   errorHeight = new Animated.Value(0);
 
@@ -33,7 +43,7 @@ export default class BannerErrorContainer extends PureComponent {
   }
 
   render() {
-    return (<View {...this.props}>
+    return (<View {...this.props} pointerEvents="box-none">
       <TouchableOpacity
         onPress={() => this.error()}
       >
@@ -59,7 +69,9 @@ export default class BannerErrorContainer extends PureComponent {
           </View>
         </Animated.View>
       </TouchableOpacity>
-      {this.props.children}
+      <View pointerEvents="box-none" style={{flex: 1, position: 'relative'}}>
+        {this.props.children}
+      </View>
     </View>);
   }
 }

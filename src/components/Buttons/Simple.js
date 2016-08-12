@@ -27,7 +27,8 @@ export default class SimpleButton extends PureComponent {
         height: SCALE.h(17 * 2 + 48),
         justifyContent: 'center',
         alignItems: 'center',
-        flexDirection: 'row'
+        flexDirection: 'row',
+        borderRadius: 1
       }}
     >
       {this.props.icon && <Icon

@@ -7,11 +7,10 @@ import _ from 'lodash';
 import {app} from '../selectors/app';
 
 import SimpleButton from '../components/Buttons/Simple';
-import OnboardingLayout from '../components/OnboardingLayout';
 
 import {loginStack, forgottenPasswordStack} from '../routes';
 
-import {COLORS} from '../style';
+import {COLORS, SCALE} from '../style';
 
 @connect(app)
 export default class Hello extends PureComponent {
@@ -24,7 +23,11 @@ export default class Hello extends PureComponent {
   };
 
   render() {
-    return (<OnboardingLayout>
+    return (<View style={{
+      flex: 1,
+      justifyContent: 'center',
+      padding: SCALE.w(69)
+    }}>
       <View style={{paddingBottom: 10}}>
         <SimpleButton
           color={COLORS.DARK}
@@ -43,6 +46,6 @@ export default class Hello extends PureComponent {
           }}
         />
       </View>
-    </OnboardingLayout>);
+    </View>);
   }
 };

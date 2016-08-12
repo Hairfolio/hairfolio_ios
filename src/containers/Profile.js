@@ -9,7 +9,7 @@ import NavigationSetting from '../navigation/NavigationSetting';
 import {BOTTOMBAR_HEIGHT, STATUSBAR_HEIGHT} from '../constants';
 
 @connect(app)
-export default class Landing extends PureComponent {
+export default class Profile extends PureComponent {
   static propTypes = {
     appVersion: React.PropTypes.string.isRequired
   };
@@ -34,7 +34,7 @@ export default class Landing extends PureComponent {
           fontFamily: FONTS.MEDIUM,
           fontSize: SCALE.h(26),
           color: COLORS.TEXT
-        }}>Landing Page</Text>
+        }}>CreatePost</Text>
       </View>
     </NavigationSetting>);
   }

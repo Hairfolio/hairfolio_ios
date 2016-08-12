@@ -11,6 +11,9 @@ export const COLORS = {
   LIGHT: '#F4F4F4',
   WHITE: 'white',
 
+  BOTTOMBAR_BORDER: '#979797',
+  BOTTOMBAR_SELECTED : '#3C3C3C',
+
   TEXT: '#A7A7A7',
 
   RED: '#FF3333',

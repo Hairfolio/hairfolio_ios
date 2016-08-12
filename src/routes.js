@@ -9,7 +9,11 @@ import BasicInfoConsumer from './containers/BasicInfo/Consumer';
 import Login from './containers/Login';
 import LoginEmail from './containers/LoginEmail';
 import ForgottenPassword from './containers/ForgottenPassword';
-import Landing from './containers/Landing';
+import Feed from './containers/Feed';
+import Search from './containers/Search';
+import CreatePost from './containers/CreatePost';
+import Favourites from './containers/Favourites';
+import Profile from './containers/Profile';
 import OnboardingStack from './stacks/Onboarding';
 import ForgottenPasswordStack from './stacks/ForgottenPassword';
 import SignupConsumerStack from './stacks/SignupConsumer';
@@ -59,11 +63,46 @@ class ForgottenPasswordRoute extends Route {
     ...CustomScenesConfig.FadeInOut
   };
 }
-class LandingRoute extends Route {
-  SceneComponent = Landing;
+
+class FeedRoute extends Route {
+  SceneComponent = Feed;
   SceneConfig = {
     ...CustomScenesConfig.FadeInOut
   };
+
+  icon = 'back';
+}
+class SearchRoute extends Route {
+  SceneComponent = Search;
+  SceneConfig = {
+    ...CustomScenesConfig.FadeInOut
+  };
+
+  icon = 'back';
+}
+class CreatePostRoute extends Route {
+  SceneComponent = CreatePost;
+  SceneConfig = {
+    ...CustomScenesConfig.FadeInOut
+  };
+
+  icon = 'back';
+}
+class FavouritesRoute extends Route {
+  SceneComponent = Favourites;
+  SceneConfig = {
+    ...CustomScenesConfig.FadeInOut
+  };
+
+  icon = 'back';
+}
+class ProfileRoute extends Route {
+  SceneComponent = Profile;
+  SceneConfig = {
+    ...CustomScenesConfig.FadeInOut
+  };
+
+  icon = 'back';
 }
 
 class OnboardingStackRoute extends Route {
@@ -98,7 +137,11 @@ export const basicInfoConsumer = new BasicInfoConsumerRoute();
 export const login = new LoginRoute();
 export const loginEmail = new LoginEmailRoute();
 export const forgottenPassword = new ForgottenPasswordRoute();
-export const landing = new LandingRoute();
+export const feed = new FeedRoute();
+export const search = new SearchRoute();
+export const createPost = new CreatePostRoute();
+export const favourites = new FavouritesRoute();
+export const profile = new ProfileRoute();
 export const loginStack = new OnboardingStackRoute();
 export const forgottenPasswordStack = new ForgottenPasswordStackRoute();
 export const signupConsumerStack = new SignupConsumerStackRoute();
@@ -112,7 +155,11 @@ export const constructors = {
   LoginRoute,
   LoginEmailRoute,
   ForgottenPasswordRoute,
-  LandingRoute,
+  FeedRoute,
+  SearchRoute,
+  CreatePostRoute,
+  FavouritesRoute,
+  ProfileRoute,
   OnboardingStackRoute,
   ForgottenPasswordStackRoute,
   SignupConsumerStackRoute,

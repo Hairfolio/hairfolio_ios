@@ -9,7 +9,7 @@ import NavigationBar from '../../components/AppBottomBar/Bar';
 
 import PureComponent from '../../components/PureComponent';
 
-import {landing} from '../../routes';
+import {search, feed, createPost, favourites, profile} from '../../routes';
 
 export default class AppStack extends PureComponent {
   static propTypes = {};
@@ -66,9 +66,9 @@ export default class AppStack extends PureComponent {
         }}
       >
         <Navigator
-          initialRoute={landing}
+          initialRoute={search}
           initialRouteStack={[
-            landing
+            search, feed, createPost, favourites, profile
           ]}
           navigationBar={<NavigationBar />}
           ref={(navigator) => this._nav = navigator && navigator.navigator()}

@@ -10,7 +10,7 @@ import {app} from '../selectors/app';
 
 import SimpleButton from '../components/Buttons/Simple';
 
-import {loginStack, forgottenPasswordStack, signupConsumerStack} from '../routes';
+import {loginStack, forgottenPasswordStack, signupConsumerStack, appStack} from '../routes';
 
 import {COLORS, SCALE} from '../style';
 
@@ -67,6 +67,15 @@ export default class Hello extends PureComponent {
             label="SIGNUP CONSUMER"
             onPress={() => {
               _.last(this.context.navigators).jumpTo(signupConsumerStack);
+            }}
+          />
+        </View>
+        <View style={{paddingBottom: 10}}>
+          <SimpleButton
+            color={COLORS.DARK}
+            label="APP"
+            onPress={() => {
+              _.last(this.context.navigators).jumpTo(appStack);
             }}
           />
         </View>

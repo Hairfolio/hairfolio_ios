@@ -1,4 +1,5 @@
 import {Navigator, Platform, Dimensions, NativeModules} from 'react-native';
+import {SCALE} from './style';
 
 export const EMPTY = 'EMPTY';
 export const LOADING = 'LOADING';
@@ -10,6 +11,8 @@ export const UPDATING = 'UPDATING';
 export const UPDATING_ERROR = 'UPDATING_ERROR';
 
 export const NAVBAR_HEIGHT = Navigator.NavigationBar.Styles.General.TotalNavHeight;
+export const BOTTOMBAR_HEIGHT = SCALE.h(105);
+export const STATUSBAR_HEIGHT = 20;
 
 var {
     width: deviceWidth,

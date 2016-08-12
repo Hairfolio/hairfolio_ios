@@ -9,9 +9,11 @@ import BasicInfoConsumer from './containers/BasicInfo/Consumer';
 import Login from './containers/Login';
 import LoginEmail from './containers/LoginEmail';
 import ForgottenPassword from './containers/ForgottenPassword';
+import Landing from './containers/Landing';
 import OnboardingStack from './stacks/Onboarding';
 import ForgottenPasswordStack from './stacks/ForgottenPassword';
 import SignupConsumerStack from './stacks/SignupConsumer';
+import AppStack from './stacks/App';
 
 class HelloRoute extends Route {
   SceneComponent = Hello;
@@ -57,6 +59,12 @@ class ForgottenPasswordRoute extends Route {
     ...CustomScenesConfig.FadeInOut
   };
 }
+class LandingRoute extends Route {
+  SceneComponent = Landing;
+  SceneConfig = {
+    ...CustomScenesConfig.FadeInOut
+  };
+}
 
 class OnboardingStackRoute extends Route {
   SceneComponent = OnboardingStack;
@@ -76,6 +84,12 @@ class SignupConsumerStackRoute extends Route {
     ...CustomScenesConfig.FadeInOut
   };
 }
+class AppStackRoute extends Route {
+  SceneComponent = AppStack;
+  SceneConfig = {
+    ...CustomScenesConfig.FadeInOut
+  };
+}
 
 export const hello = new HelloRoute();
 export const register = new RegisterRoute();
@@ -84,9 +98,11 @@ export const basicInfoConsumer = new BasicInfoConsumerRoute();
 export const login = new LoginRoute();
 export const loginEmail = new LoginEmailRoute();
 export const forgottenPassword = new ForgottenPasswordRoute();
+export const landing = new LandingRoute();
 export const loginStack = new OnboardingStackRoute();
 export const forgottenPasswordStack = new ForgottenPasswordStackRoute();
 export const signupConsumerStack = new SignupConsumerStackRoute();
+export const appStack = new AppStackRoute();
 
 export const constructors = {
   HelloRoute,
@@ -96,7 +112,9 @@ export const constructors = {
   LoginRoute,
   LoginEmailRoute,
   ForgottenPasswordRoute,
+  LandingRoute,
   OnboardingStackRoute,
   ForgottenPasswordStackRoute,
-  SignupConsumerStackRoute
+  SignupConsumerStackRoute,
+  AppStackRoute
 };

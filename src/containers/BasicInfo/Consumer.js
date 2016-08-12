@@ -14,7 +14,7 @@ import KeyboardPaddingView from '../../components/KeyboardPaddingView';
 import KeyboardScrollView from '../../components/KeyboardScrollView';
 import BannerErrorContainer from '../../components/BannerErrorContainer';
 
-import {hello} from '../../routes';
+import {loginStack, appStack} from '../../routes';
 
 import {NAVBAR_HEIGHT} from '../../constants';
 
@@ -33,12 +33,13 @@ export default class BasicInfoConsumer extends PureComponent {
   render() {
     return (<NavigationSetting
       leftAction={() => {
-        _.first(this.context.navigators).jumpTo(hello);
+        _.first(this.context.navigators).jumpTo(loginStack);
       }}
       leftIcon="back"
       onWillBlur={this.onWillBlur}
       onWillFocus={this.onWillFocus}
       rightAction={() => {
+        _.first(this.context.navigators).jumpTo(appStack);
       }}
       rightLabel="Next"
       style={{

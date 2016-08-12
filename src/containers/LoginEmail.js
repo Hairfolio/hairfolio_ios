@@ -10,7 +10,7 @@ import NavigationSetting from '../navigation/NavigationSetting';
 import TextInput from '../components/Form/TextInput';
 import SimpleButton from '../components/Buttons/Simple';
 
-import {login, register, forgottenPasswordStack} from '../routes';
+import {login, register, forgottenPasswordStack, appStack} from '../routes';
 
 @connect(app)
 export default class LoginEmail extends PureComponent {
@@ -65,6 +65,7 @@ export default class LoginEmail extends PureComponent {
               color={COLORS.DARK}
               label="Sign In"
               onPress={() => {
+                _.first(this.context.navigators).jumpTo(appStack);
               }}
               ref="submit"
             />

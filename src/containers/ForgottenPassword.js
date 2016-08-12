@@ -9,7 +9,7 @@ import NavigationSetting from '../navigation/NavigationSetting';
 
 import InlineTextInput from '../components/Form/InlineTextInput';
 
-import {hello} from '../routes';
+import {loginStack} from '../routes';
 
 import {NAVBAR_HEIGHT} from '../constants';
 
@@ -30,7 +30,7 @@ export default class ForgottenPassword extends PureComponent {
   render() {
     return (<NavigationSetting
       leftAction={() => {
-        _.first(this.context.navigators).jumpTo(hello);
+        _.first(this.context.navigators).jumpTo(loginStack);
       }}
       leftIcon="back"
       onWillBlur={this.onWillBlur}

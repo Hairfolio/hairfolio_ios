@@ -28,7 +28,10 @@ export default class Picker extends PureComponent {
     return (<View>
       <TouchableOpacity
         onPress={() => {
-          this.setState({active: true});
+          this.setState({
+            active: true,
+            selected: _.isFinite(this.state.selected) ? this.state.selected : 0
+          });
         }}
         style={{
           backgroundColor: COLORS.WHITE,
@@ -86,7 +89,7 @@ export default class Picker extends PureComponent {
               onPress={() => {
                 this.setState({active: false});
                 if (this.props.onDone)
-                  this.props.onDone();
+                  this.props.onDone(this.props.choices[this.state.selected]);
               }}
             >
               <Text style={{

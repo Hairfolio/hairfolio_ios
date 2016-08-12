@@ -9,7 +9,7 @@ import NavigationSetting from '../navigation/NavigationSetting';
 
 import Picker from '../components/Form/Picker';
 
-import {register} from '../routes';
+import {register, signupConsumerStack} from '../routes';
 
 @connect(app)
 export default class Register2 extends PureComponent {
@@ -18,7 +18,8 @@ export default class Register2 extends PureComponent {
   };
 
   static contextTypes = {
-    navigators: React.PropTypes.array.isRequired
+    navigators: React.PropTypes.array.isRequired,
+    setBannerError: React.PropTypes.func.isRequired
   };
 
   render() {
@@ -52,7 +53,18 @@ export default class Register2 extends PureComponent {
               label: 'Brand'
             }
           ]}
-          onChange={(type) => {
+          onDone={(item = {}) => {
+            if (!item)
+              return;
+
+            switch (item.label) {
+              case 'Consumer':
+                _.first(this.context.navigators).jumpTo(signupConsumerStack);
+                break;
+              default:
+                this.context.setBannerError('Not Ready');
+                break;
+            }
           }}
           placeholder="Select account type"
         />

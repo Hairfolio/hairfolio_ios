@@ -69,6 +69,10 @@ export default class OnboardingStack extends PureComponent {
     */
   }
 
+  jumpTo(route) {
+    this._nav.jumpTo(route);
+  }
+
   render() {
     return (
       <NavigationSetting

@@ -23,10 +23,6 @@ export default class Register extends PureComponent {
 
   render() {
     return (<NavigationSetting
-      leftAction={() => {
-        _.first(this.context.navigators).jumpTo(hello);
-      }}
-      leftIcon="back"
       onWillBlur={this.onWillBlur}
       onWillFocus={this.onWillFocus}
       style={{

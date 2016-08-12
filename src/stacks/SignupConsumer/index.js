@@ -11,6 +11,8 @@ import PureComponent from '../../components/PureComponent';
 
 import {basicInfoConsumer} from '../../routes';
 
+import {COLORS} from '../../style';
+
 export default class SignupConsumerStack extends PureComponent {
   static propTypes = {};
 
@@ -62,7 +64,7 @@ export default class SignupConsumerStack extends PureComponent {
         onWillFocus={this.onWillFocus}
         style={{
           flex: 1,
-          backgroundColor: 'transparent'
+          backgroundColor: COLORS.LIGHT
         }}
       >
         <Navigator

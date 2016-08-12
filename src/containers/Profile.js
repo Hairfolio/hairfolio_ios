@@ -1,4 +1,5 @@
 import React from 'react';
+import _ from 'lodash';
 import PureComponent from '../components/PureComponent';
 import {View, Text} from 'react-native';
 import connect from '../lib/connect';
@@ -6,7 +7,11 @@ import {app} from '../selectors/app';
 import {COLORS, FONTS, SCALE} from '../style';
 import NavigationSetting from '../navigation/NavigationSetting';
 
+import SimpleButton from '../components/Buttons/Simple';
+
 import {BOTTOMBAR_HEIGHT, STATUSBAR_HEIGHT} from '../constants';
+
+import {loginStack, login} from '../routes';
 
 @connect(app)
 export default class Profile extends PureComponent {
@@ -28,13 +33,19 @@ export default class Profile extends PureComponent {
       }}
     >
       <View style={{
-        flex: 1
+        flex: 1,
+        padding: 20,
+        justifyContent: 'center'
       }}>
-        <Text style={{
-          fontFamily: FONTS.MEDIUM,
-          fontSize: SCALE.h(26),
-          color: COLORS.TEXT
-        }}>Profile</Text>
+        <SimpleButton
+          color={COLORS.DARK}
+          label="Log Out"
+          onPress={() => {
+            loginStack.scene().jumpTo(login);
+            _.first(this.context.navigators).jumpTo(loginStack);
+          }}
+          ref="submit"
+        />
       </View>
     </NavigationSetting>);
   }

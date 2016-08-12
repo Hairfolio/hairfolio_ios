@@ -3,8 +3,8 @@ import EventEmitter from 'EventEmitter';
 class FocusEmitter {
   ee = new EventEmitter();
 
-  focus() {
-    this.ee.emit('focus');
+  focus(refNode) {
+    this.ee.emit('focus', {refNode});
   }
 
   onFocus(handle) {

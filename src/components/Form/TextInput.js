@@ -15,6 +15,7 @@ export default class FormTextInput extends PureComponent {
   static propTypes = {
     check: React.PropTypes.bool,
     error: React.PropTypes.bool,
+    getRefNode: React.PropTypes.func,
     onFocus: React.PropTypes.func
   };
 
@@ -23,7 +24,7 @@ export default class FormTextInput extends PureComponent {
       <TextInput
         {...this.props}
         onFocus={(e) => {
-          focusEmitter.focus();
+          focusEmitter.focus(this.props.getRefNode ? this.props.getRefNode() : null);
           if (this.props.onFocus)
             this.props.onFocus(e);
         }}

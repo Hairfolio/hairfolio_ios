@@ -67,7 +67,7 @@ export default class KeyboardScrollView extends PureComponent {
   }
 
   @autobind
-  onTextInputFocus() {
+  onTextInputFocus({refNode}) {
     const node = TextInput.State.currentlyFocusedField();
     if (!node)
       return;
@@ -85,7 +85,7 @@ export default class KeyboardScrollView extends PureComponent {
     const scrollView = this.refs.scrollview.getScrollResponder();
     this.scrollTimeout = setTimeout(() => {
       scrollView.scrollResponderScrollNativeHandleToKeyboard(
-        node, this.props.space || 100, true
+        refNode || node, this.props.space || 100, true
       );
     }, 220);
     this.refs.scrollview.setNativeProps({

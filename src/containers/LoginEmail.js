@@ -1,7 +1,7 @@
 import React from 'react';
 import _ from 'lodash';
 import PureComponent from '../components/PureComponent';
-import {View, TouchableOpacity, Text} from 'react-native';
+import RN, {View, TouchableOpacity, Text} from 'react-native';
 import connect from '../lib/connect';
 import {app} from '../selectors/app';
 import {COLORS, FONTS, SCALE} from '../style';
@@ -19,26 +19,10 @@ export default class LoginEmail extends PureComponent {
   };
 
   static contextTypes = {
-    navigators: React.PropTypes.array.isRequired,
-    kbScrollViewEmitter: React.PropTypes.object
+    navigators: React.PropTypes.array.isRequired
   };
 
   state = {};
-
-  componentDidMount() {
-    this.listeners = [
-      this.context.kbScrollViewEmitter.addListener('focus', () => {
-        this.setState({hideBack: true});
-      }),
-      this.context.kbScrollViewEmitter.addListener('blur', () => {
-        this.setState({hideBack: false});
-      })
-    ];
-  }
-
-  componentWillUnmount() {
-    _.each(this.listener, l => l.remove());
-  }
 
   render() {
     return (<NavigationSetting
@@ -60,12 +44,18 @@ export default class LoginEmail extends PureComponent {
           <View style={{paddingBottom: 10}}>
             <TextInput
               check
+              getRefNode={() => {
+                return RN.findNodeHandle(this.refs.submit);
+              }}
               placeholder="Email"
             />
           </View>
           <View style={{paddingBottom: 10}}>
             <TextInput
               error
+              getRefNode={() => {
+                return RN.findNodeHandle(this.refs.submit);
+              }}
               placeholder="Password"
               secureTextEntry
             />
@@ -76,6 +66,7 @@ export default class LoginEmail extends PureComponent {
               label="Sign In"
               onPress={() => {
               }}
+              ref="submit"
             />
           </View>
           <TouchableOpacity

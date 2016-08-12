@@ -24,7 +24,7 @@ export default class TopLoginNavigationButton extends PureComponent {
         onPress={this.props.action}
         style={[{
           flex: 1,
-          justifyContent: 'center'
+          justifyContent: 'flex-start'
         }, this.props.type === 'left' ? {paddingLeft: 12} : {paddingRight: 12}]}
       >
         <Icon

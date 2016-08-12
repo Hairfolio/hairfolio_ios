@@ -7,6 +7,8 @@ import {app} from '../selectors/app';
 import {COLORS, FONTS, SCALE} from '../style';
 import NavigationSetting from '../navigation/NavigationSetting';
 
+import Picker from '../components/Form/Picker';
+
 import {register} from '../routes';
 
 @connect(app)
@@ -35,7 +37,25 @@ export default class Register2 extends PureComponent {
       <View
         style={{flex: 1, justifyContent: 'space-between'}}
       >
-        
+        <Picker
+          choices={[
+            {
+              label: 'Consumer'
+            },
+            {
+              label: 'Stylist'
+            },
+            {
+              label: 'Salon'
+            },
+            {
+              label: 'Brand'
+            }
+          ]}
+          onChange={(type) => {
+          }}
+          placeholder="Select account type"
+        />
       </View>
     </NavigationSetting>);
   }

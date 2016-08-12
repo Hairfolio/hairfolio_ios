@@ -47,7 +47,7 @@ export default class Root extends PureComponent {
     };
   }
 
-  appOpacity = new Animated.Value(Platform.OS === 'ios' ? 1 : 0);
+  appOpacity = new Animated.Value(/*Platform.OS === 'ios' ? 1 : */0);
 
   @autobind
   onReady() {
@@ -59,8 +59,10 @@ export default class Root extends PureComponent {
       _.each(services, service => service.ready());
 
       // android need workaround because of https://github.com/facebook/react-native/issues/7367
-      if (Platform.OS === 'ios')
-        LayoutAnimation.easeInEaseOut();
+      // and because of the big background image and offthread decoding
+      // layoutAnimation is not an option on iOS neither for this app!
+      //if (Platform.OS === 'ios')
+      //  LayoutAnimation.easeInEaseOut();
       this.setState({ready: true});
     });
   }
@@ -78,24 +80,28 @@ export default class Root extends PureComponent {
               dismissKeyboard();
           }, 150);
         }}
-        style={{flex: 1}}
+        style={{flex: 1, position: 'relative'}}
       >
-        {!this.state.ready ?
+        {!this.state.introDone &&
           <Intro onReady={this.onReady} />
-        :
-          <Animated.View
+        }
+        {this.state.ready && <Animated.View
             onLayout={() => setTimeout(() => requestAnimationFrame(() => {
-              if (Platform.OS === 'ios')
+              /*if (Platform.OS === 'ios')
                 return;
-
+              */
               Animated.spring(this.appOpacity, {
                 toValue: 1,
                 duration: 300
-              }).start();
+              }).start(() => this.setState({introDone: true}));
             }), 300)}
             style={{
-              opacity: this.appOpacity,
-              flex: 1
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              opacity: this.appOpacity
             }}
           >
             <Image

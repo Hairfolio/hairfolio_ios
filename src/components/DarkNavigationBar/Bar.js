@@ -1,30 +1,14 @@
 import React from 'react';
-import {Navigator, Platform} from 'react-native';
+import {Navigator} from 'react-native';
 import ChannelResponder from '../Channel/ChannelResponder';
-import TopNavigationButton from './TopNavigationButton';
+import TopNavigationIcon from './TopNavigationIcon';
+import TopNavigationText from './TopNavigationText';
 import TopNavigationTitle from './TopNavigationTitle';
 import PureComponent from '../PureComponent';
 
 import {COLORS} from '../../style';
 
 export default class LoginNavigationbar extends PureComponent {
-  static contextTypes = {
-    focusEmitter: React.PropTypes.object.isRequired
-  };
-
-  state = {
-    ready: Platform.OS === 'ios'
-  };
-
-  componentWillMount() {
-    this.l = this.context.focusEmitter.addListener('willfocus', () =>
-      this.setState({ready: true})
-    );
-  }
-
-  componentWillUnmount() {
-    this.l.remove();
-  }
 
   updateProgress(progress, fromIndex, toIndex) {
     this.refs.navbar.updateProgress(progress, fromIndex, toIndex);
@@ -33,9 +17,6 @@ export default class LoginNavigationbar extends PureComponent {
   handleWillFocus(route) {}
 
   render() {
-    if (!this.state.ready)
-      return null;
-
     return (<Navigator.NavigationBar
       ref="navbar"
       routeMapper={{
@@ -55,9 +36,18 @@ export default class LoginNavigationbar extends PureComponent {
               leftDisabled: 'disabled'
             }}
           >
-            <TopNavigationButton index={index} navigator={navigator} type="left" />
+            <TopNavigationIcon index={index} navigator={navigator} type="left" />
           </ChannelResponder>),
-        RightButton: (route, navigator, index) => null
+        RightButton: (route, navigator, index) => (<ChannelResponder
+            channel={route.navigationChannel}
+            properties={{
+              rightLabel: 'label',
+              rightAction: 'action',
+              rightDisabled: 'disabled'
+            }}
+          >
+            <TopNavigationText index={index} navigator={navigator} type="right" />
+          </ChannelResponder>)
       }}
       style={{
         backgroundColor: COLORS.DARK

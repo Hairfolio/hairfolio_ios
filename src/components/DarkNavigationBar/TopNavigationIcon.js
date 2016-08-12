@@ -6,7 +6,7 @@ import PureComponent from '../PureComponent';
 
 import {COLORS, SCALE} from '../../style';
 
-export default class TopLoginNavigationButton extends PureComponent {
+export default class TopLoginNavigationIcon extends PureComponent {
   static propTypes = {
     action: React.PropTypes.func,
     icon: React.PropTypes.string,
@@ -30,7 +30,7 @@ export default class TopLoginNavigationButton extends PureComponent {
         <Icon
           color={COLORS.WHITE}
           name={this.props.icon}
-          size={SCALE.h(36)}
+          size={SCALE.h(18)}
         />
       </TouchableOpacity>
     </View>);

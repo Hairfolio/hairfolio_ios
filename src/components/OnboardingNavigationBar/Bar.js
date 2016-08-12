@@ -1,27 +1,10 @@
 import React from 'react';
-import {Navigator, Platform} from 'react-native';
+import {Navigator} from 'react-native';
 import ChannelResponder from '../Channel/ChannelResponder';
 import TopNavigationButton from './TopNavigationButton';
 import PureComponent from '../PureComponent';
 
 export default class LoginNavigationbar extends PureComponent {
-  static contextTypes = {
-    focusEmitter: React.PropTypes.object.isRequired
-  };
-
-  state = {
-    ready: Platform.OS === 'ios'
-  };
-
-  componentWillMount() {
-    this.l = this.context.focusEmitter.addListener('willfocus', () =>
-      this.setState({ready: true})
-    );
-  }
-
-  componentWillUnmount() {
-    this.l.remove();
-  }
 
   updateProgress(progress, fromIndex, toIndex) {
     this.refs.navbar.updateProgress(progress, fromIndex, toIndex);
@@ -30,9 +13,6 @@ export default class LoginNavigationbar extends PureComponent {
   handleWillFocus(route) {}
 
   render() {
-    if (!this.state.ready)
-      return null;
-
     return (<Navigator.NavigationBar
       ref="navbar"
       routeMapper={{

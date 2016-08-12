@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, Text} from 'react-native';
 
-import {COLORS, FONTS} from '../../style';
+import {COLORS, FONTS, SCALE} from '../../style';
 
 import PureComponent from '../PureComponent';
 
@@ -15,9 +15,9 @@ export default class TopLoginNavigationButton extends PureComponent {
     return (<View style={{flex: 1, justifyContent: 'center'}}>
       <Text style={{
         color: COLORS.WHITE,
-        fontSize: 16,
+        fontSize: SCALE.h(34),
         fontFamily: FONTS.MEDIUM
-      }}>{this.props.title.toUpperCase()}</Text>
+      }}>{this.props.title}</Text>
     </View>);
   }
 }

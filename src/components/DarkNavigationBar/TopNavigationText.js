@@ -1,22 +1,21 @@
 import React from 'react';
-import {View, TouchableOpacity} from 'react-native';
+import {View, TouchableOpacity, Text} from 'react-native';
 
-import Icon from '../Icon';
 import PureComponent from '../PureComponent';
 
-import {COLORS} from '../../style';
+import {COLORS, SCALE, FONTS} from '../../style';
 
-export default class TopLoginNavigationButton extends PureComponent {
+export default class TopLoginNavigationText extends PureComponent {
   static propTypes = {
     action: React.PropTypes.func,
-    icon: React.PropTypes.string,
     index: React.PropTypes.number,
+    label: React.PropTypes.string,
     navigator: React.PropTypes.object,
     type: React.PropTypes.string
   };
 
   render() {
-    if (!this.props.icon)
+    if (!this.props.label)
       return null;
 
     return (<View style={{flex: 1}}>
@@ -27,11 +26,11 @@ export default class TopLoginNavigationButton extends PureComponent {
           justifyContent: 'center'
         }, this.props.type === 'left' ? {paddingLeft: 12} : {paddingRight: 12}]}
       >
-        <Icon
-          color={COLORS.WHITE}
-          name={this.props.icon}
-          size={18}
-        />
+        <Text style={{
+          fontFamily: FONTS.ROMAN,
+          fontSize: SCALE.h(34),
+          color: COLORS.WHITE
+        }}>{this.props.label}</Text>
       </TouchableOpacity>
     </View>);
   }

@@ -3,7 +3,7 @@ import {autobind} from 'core-decorators';
 import _ from 'lodash';
 import PureComponent from './components/PureComponent';
 import {Provider} from 'react-redux';
-import {View, Image, TextInput, NativeModules, Animated, Platform, LayoutAnimation} from 'react-native';
+import {View, Image, TextInput, NativeModules, Animated, StatusBar} from 'react-native';
 import dismissKeyboard from 'react-native/Libraries/Utilities/dismissKeyboard';
 
 import Navigator from './navigation/Navigator';
@@ -45,6 +45,10 @@ export default class Root extends PureComponent {
       },
       services
     };
+  }
+
+  componentDidMount() {
+    StatusBar.setHidden(true);
   }
 
   appOpacity = new Animated.Value(/*Platform.OS === 'ios' ? 1 : */0);

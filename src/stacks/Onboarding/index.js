@@ -1,5 +1,5 @@
 import React from 'React';
-import {Platform, BackAndroid, View} from 'react-native';
+import {Platform, BackAndroid, View, StatusBar} from 'react-native';
 import {autobind} from 'core-decorators';
 
 import Navigator from '../../navigation/Navigator';
@@ -35,6 +35,8 @@ export default class OnboardingStack extends PureComponent {
 
   @autobind
   onWillFocus() {
+    StatusBar.setHidden(true, 'fade');
+
     if (Platform.OS !== 'ios')
       BackAndroid.addEventListener('hardwareBackPress', this.onBackAndroid);
   }

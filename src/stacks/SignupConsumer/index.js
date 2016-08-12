@@ -1,5 +1,5 @@
 import React from 'React';
-import {Platform, BackAndroid} from 'react-native';
+import {Platform, BackAndroid, StatusBar} from 'react-native';
 import {autobind} from 'core-decorators';
 
 import Navigator from '../../navigation/Navigator';
@@ -20,6 +20,9 @@ export default class SignupConsumerStack extends PureComponent {
 
   @autobind
   onWillFocus() {
+    StatusBar.setHidden(false, 'fade');
+    StatusBar.setBarStyle('light-content', true);
+
     if (Platform.OS !== 'ios')
       BackAndroid.addEventListener('hardwareBackPress', this.onBackAndroid);
   }

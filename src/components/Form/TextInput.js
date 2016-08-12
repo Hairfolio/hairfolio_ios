@@ -1,9 +1,10 @@
 import React from 'react';
 import {View, TextInput} from 'react-native';
 import PureComponent from '../PureComponent';
-import Icon from '../Icon';
 
-import {COLORS, FONTS} from '../../style';
+import {COLORS, FONTS, SCALE} from '../../style';
+
+import Icon from '../Icon';
 
 import focusEmitter from './focusEmitter';
 
@@ -12,26 +13,13 @@ import focusEmitter from './focusEmitter';
 export default class FormTextInput extends PureComponent {
 
   static propTypes = {
-    icon: React.PropTypes.string.isRequired,
+    check: React.PropTypes.bool,
+    error: React.PropTypes.bool,
     onFocus: React.PropTypes.func
   };
 
   render() {
-    return (<View style={{
-      height: 51,
-      flexDirection: 'row'
-    }}>
-      <View style={{
-        width: 30,
-        alignItems: 'flex-start',
-        justifyContent: 'center'
-      }}>
-        <Icon
-          color={COLORS.DARK}
-          name={this.props.icon}
-          size={19}
-        />
-      </View>
+    return (<View style={{position: 'relative'}}>
       <TextInput
         {...this.props}
         onFocus={(e) => {
@@ -39,19 +27,41 @@ export default class FormTextInput extends PureComponent {
           if (this.props.onFocus)
             this.props.onFocus(e);
         }}
-        placeholderTextColor={COLORS.LIGHT}
+        placeholderTextColor={COLORS.LIGHT2}
         ref="ti"
-        selectionColor={COLORS.LIGHT}
+        selectionColor={COLORS.LIGHT2}
         style={{
+          backgroundColor: 'white',
+          paddingLeft: SCALE.w(26),
+          paddingRight: SCALE.w(26),
+          height: SCALE.h(17 * 2 + 48),
+          borderRadius: 1,
           flex: 1,
           borderWidth: 0,
           textAlignVertical: 'center',
-          fontFamily: FONTS.MEDIUM,
-          fontSize: 12.8,
-          color: COLORS.DARK
+          fontFamily: FONTS.ROMAN,
+          fontSize: SCALE.h(30),
+          color: this.props.error ? COLORS.RED : COLORS.DARK
         }}
         underlineColorAndroid="transparent"
       />
+      {this.props.check &&
+        <View style={{
+          position: 'absolute',
+          right: 0,
+          top: 0,
+          bottom: 0,
+          width: SCALE.w(90),
+          alignItems: 'center',
+          justifyContent: 'center'
+        }}>
+          <Icon
+            color={COLORS.DARK}
+            name="check"
+            size={SCALE.h(28)}
+          />
+        </View>
+      }
     </View>);
   }
 };

@@ -6,6 +6,7 @@ import Hello from './containers/Hello';
 import Register from './containers/Register';
 import Register2 from './containers/Register2';
 import Login from './containers/Login';
+import LoginEmail from './containers/LoginEmail';
 import ForgottenPassword from './containers/ForgottenPassword';
 import OnboardingStack from './stacks/Onboarding';
 import ForgottenPasswordStack from './stacks/ForgottenPassword';
@@ -35,6 +36,12 @@ class LoginRoute extends Route {
     ...CustomScenesConfig.FadeInOut
   };
 }
+class LoginEmailRoute extends Route {
+  SceneComponent = LoginEmail;
+  SceneConfig = {
+    ...CustomScenesConfig.FadeInOut
+  };
+}
 
 class ForgottenPasswordRoute extends Route {
   SceneComponent = ForgottenPassword;
@@ -60,6 +67,7 @@ export const hello = new HelloRoute();
 export const register = new RegisterRoute();
 export const register2 = new Register2Route();
 export const login = new LoginRoute();
+export const loginEmail = new LoginEmailRoute();
 export const forgottenPassword = new ForgottenPasswordRoute();
 export const loginStack = new OnboardingStackRoute();
 export const forgottenPasswordStack = new ForgottenPasswordStackRoute();
@@ -69,6 +77,7 @@ export const constructors = {
   RegisterRoute,
   Register2Route,
   LoginRoute,
+  LoginEmailRoute,
   ForgottenPasswordRoute,
   OnboardingStackRoute,
   ForgottenPasswordStackRoute

@@ -13,7 +13,7 @@ import KeyboardScrollView from '../../components/KeyboardScrollView';
 import KeyboardPaddingView from '../../components/KeyboardPaddingView';
 
 import {COLORS, SCALE} from '../../style';
-import {register, login, register2} from '../../routes';
+import {register, login, register2, loginEmail} from '../../routes';
 import {Dims} from '../../constants';
 
 export default class OnboardingStack extends PureComponent {
@@ -104,7 +104,8 @@ export default class OnboardingStack extends PureComponent {
                 initialRouteStack={[
                   register,
                   register2,
-                  login
+                  login,
+                  loginEmail
                 ]}
                 navigationBar={<NavigationBar />}
                 ref={(navigator) => this._nav = navigator && navigator.navigator()}

@@ -11,6 +11,8 @@ export const COLORS = {
   LIGHT: '#F4F4F4',
   WHITE: 'white',
 
+  RED: '#FF3333',
+
   FB: '#3B5998',
   IG: '#F3328C'
 };

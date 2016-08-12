@@ -4,6 +4,7 @@ import {autobind} from 'core-decorators';
 import _ from 'lodash';
 import focusEmitter from './Form/focusEmitter';
 import PureComponent from './PureComponent';
+import EventEmitter from 'EventEmitter';
 
 // handles automatically scrolling to the textInput
 // support multiple instance in multiple views
@@ -22,6 +23,16 @@ export default class KeyboardScrollView extends PureComponent {
     scrolling:  React.PropTypes.func.isRequired
   };
 
+  static childContextTypes = {
+    kbScrollViewEmitter: React.PropTypes.object
+  };
+
+  getChildContext() {
+    return {
+      kbScrollViewEmitter: this.ee
+    };
+  }
+
   componentDidMount() {
     var verb = Platform.OS === 'ios' ? 'Will' : 'Did';
     this.listeners = [
@@ -36,8 +47,17 @@ export default class KeyboardScrollView extends PureComponent {
     _.each(this.listeners, l => l.remove());
   }
 
+  ee = new EventEmitter();
+
   @autobind
   onTextInputBlur() {
+    if (!this.focus)
+      return;
+
+    this.focus = false;
+
+    this.ee.emit('blur');
+
     if (this.props.scrollToTopOnBlur)
       this.refs.scrollview.getScrollResponder().scrollTo({x: 0, y: 0, animated: true});
 
@@ -57,6 +77,10 @@ export default class KeyboardScrollView extends PureComponent {
     });
     if (!eligible)
       return;
+
+    this.focus = true;
+
+    this.ee.emit('focus');
 
     const scrollView = this.refs.scrollview.getScrollResponder();
     this.scrollTimeout = setTimeout(() => {

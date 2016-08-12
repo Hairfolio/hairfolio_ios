@@ -26,7 +26,7 @@ export default class FormInlineTextInput extends PureComponent {
           if (this.props.onFocus)
             this.props.onFocus(e);
         }}
-        placeholderTextColor={COLORS.LIGHT2}
+        placeholderTextColor={COLORS.TEXT}
         ref="ti"
         selectionColor={COLORS.LIGHT2}
         style={{
@@ -46,6 +46,7 @@ export default class FormInlineTextInput extends PureComponent {
       {this.props.help &&
         <View style={{
           position: 'absolute',
+          backgroundColor: 'transparent',
           right: 0,
           top: 0,
           bottom: 0,
@@ -54,7 +55,10 @@ export default class FormInlineTextInput extends PureComponent {
         }}>
           <Text
             style={{
-              textAlign: 'right'
+              textAlign: 'right',
+              fontFamily: FONTS.ROMAN,
+              fontSize: SCALE.h(28),
+              color: COLORS.TEXT
             }}
           >
             {this.props.help}

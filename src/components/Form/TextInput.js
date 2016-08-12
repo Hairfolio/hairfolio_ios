@@ -28,7 +28,7 @@ export default class FormTextInput extends PureComponent {
           if (this.props.onFocus)
             this.props.onFocus(e);
         }}
-        placeholderTextColor={COLORS.LIGHT2}
+        placeholderTextColor={COLORS.TEXT}
         ref="ti"
         selectionColor={COLORS.LIGHT2}
         style={{

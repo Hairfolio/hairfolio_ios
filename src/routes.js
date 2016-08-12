@@ -70,7 +70,7 @@ class FeedRoute extends Route {
     ...CustomScenesConfig.FadeInOut
   };
 
-  icon = 'back';
+  icon = 'house';
 }
 class SearchRoute extends Route {
   SceneComponent = Search;
@@ -78,7 +78,7 @@ class SearchRoute extends Route {
     ...CustomScenesConfig.FadeInOut
   };
 
-  icon = 'back';
+  icon = 'loupe';
 }
 class CreatePostRoute extends Route {
   SceneComponent = CreatePost;
@@ -86,7 +86,7 @@ class CreatePostRoute extends Route {
     ...CustomScenesConfig.FadeInOut
   };
 
-  icon = 'back';
+  icon = 'camera';
 }
 class FavouritesRoute extends Route {
   SceneComponent = Favourites;
@@ -94,15 +94,13 @@ class FavouritesRoute extends Route {
     ...CustomScenesConfig.FadeInOut
   };
 
-  icon = 'back';
+  icon = 'star';
 }
 class ProfileRoute extends Route {
   SceneComponent = Profile;
   SceneConfig = {
     ...CustomScenesConfig.FadeInOut
   };
-
-  icon = 'back';
 }
 
 class OnboardingStackRoute extends Route {

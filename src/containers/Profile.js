@@ -34,7 +34,7 @@ export default class Profile extends PureComponent {
           fontFamily: FONTS.MEDIUM,
           fontSize: SCALE.h(26),
           color: COLORS.TEXT
-        }}>CreatePost</Text>
+        }}>Profile</Text>
       </View>
     </NavigationSetting>);
   }

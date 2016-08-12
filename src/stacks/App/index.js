@@ -9,6 +9,8 @@ import NavigationBar from '../../components/AppBottomBar/Bar';
 
 import PureComponent from '../../components/PureComponent';
 
+import {COLORS} from '../../style';
+
 import {search, feed, createPost, favourites, profile} from '../../routes';
 
 export default class AppStack extends PureComponent {
@@ -62,7 +64,7 @@ export default class AppStack extends PureComponent {
         onWillFocus={this.onWillFocus}
         style={{
           flex: 1,
-          backgroundColor: 'transparent'
+          backgroundColor: COLORS.WHITE
         }}
       >
         <Navigator

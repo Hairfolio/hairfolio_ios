@@ -1,5 +1,6 @@
 import React from 'react';
-import {View, StyleSheet, TouchableOpacity, Image} from 'react-native';
+import _ from 'lodash';
+import {View, StyleSheet, TouchableWithoutFeedback, Image} from 'react-native';
 import PureComponent from '../PureComponent';
 import {BOTTOMBAR_HEIGHT} from '../../constants';
 import {COLORS, FONTS, SCALE} from '../../style';
@@ -11,6 +12,11 @@ import {search, feed, createPost, favourites, profile} from '../../routes';
 export default class LoginNavigationbar extends PureComponent {
 
   static propTypes = {
+    navState: React.PropTypes.shape({
+      routeStack: React.PropTypes.arrayOf(React.PropTypes.object),
+      presentedIndex: React.PropTypes.number
+    }),
+    navigator: React.PropTypes.object,
     profilePic: React.PropTypes.string.isRequired
   };
 
@@ -18,7 +24,22 @@ export default class LoginNavigationbar extends PureComponent {
     profilePic: 'http://www.disneyclips.com/imagesnewb/images/clipdonhead.gif'
   };
 
+  state = {};
+
+  componentWillMount() {
+    this.setState({
+      selected: _.map(this.props.navState.routeStack, (route, i) =>
+        i === this.props.navState.presentedIndex
+      )
+    });
+  }
+
   updateProgress(progress, fromIndex, toIndex) {
+    this.setState({
+      selected: _.map(this.state.selected, (color, i) =>
+        i === toIndex
+      )
+    });
   }
 
   handleWillFocus(route) {}
@@ -26,39 +47,43 @@ export default class LoginNavigationbar extends PureComponent {
   renderItem(route, opts = {}) {
     opts.borders = opts.borders || {};
     opts.height = opts.height || BOTTOMBAR_HEIGHT;
+    opts.itemSize = opts.itemSize || SCALE.h(54);
 
-    return (<View style={{
-      flex: 1,
-      borderTopWidth: StyleSheet.hairlineWidth,
-      borderLeftWidth: opts.borders.left ? StyleSheet.hairlineWidth : 0,
-      borderRightWidth: opts.borders.right ? StyleSheet.hairlineWidth : 0,
-      borderColor: COLORS.BOTTOMBAR_BORDER,
-      height: opts.height,
-      alignItems: 'center',
-      justifyContent: 'center'
-    }}>
-      <TouchableOpacity
-        onPress={() => {}}
-      >
+    return (<TouchableWithoutFeedback
+      onPress={() => {
+        this.props.navigator.jumpTo(route);
+      }}
+    >
+      <View style={{
+        flex: 1,
+        borderTopWidth: StyleSheet.hairlineWidth,
+        borderLeftWidth: opts.borders.left ? StyleSheet.hairlineWidth : 0,
+        borderRightWidth: opts.borders.right ? StyleSheet.hairlineWidth : 0,
+        borderColor: COLORS.BOTTOMBAR_BORDER,
+        height: opts.height,
+        alignItems: 'center',
+        justifyContent: 'center'
+      }}>
         {!opts.picture ?
           <Icon
-            color={COLORS.BOTTOMBAR_SELECTED}
+            color={this.state.selected[this.props.navState.routeStack.indexOf(route)] ? COLORS.BOTTOMBAR_SELECTED : COLORS.BOTTOMBAR_NOTSELECTED}
             name={route.icon}
-            size={SCALE.h(54)}
+            size={opts.itemSize}
           />
         :
           <Image
             resizeMode="contain"
             source={{uri: opts.picture}}
             style={{
-              height: SCALE.h(54),
-              width: SCALE.h(54),
-              borderRadius: SCALE.h(54) / 2
+              height: opts.itemSize,
+              width: opts.itemSize,
+              borderRadius: opts.itemSize / 2,
+              opacity: this.state.selected[this.props.navState.routeStack.indexOf(route)] ? 1 : 0.7
             }}
           />
         }
-      </TouchableOpacity>
-    </View>);
+      </View>
+    </TouchableWithoutFeedback>);
   }
 
   render() {
@@ -76,7 +101,11 @@ export default class LoginNavigationbar extends PureComponent {
     >
       {this.renderItem(feed)}
       {this.renderItem(search, {borders: {left: true}})}
-      {this.renderItem(createPost, {borders: {left: true, right: true}, height: SCALE.h(120)})}
+      {this.renderItem(createPost, {
+        borders: {left: true, right: true},
+        height: SCALE.h(120),
+        itemSize: SCALE.h(65)
+      })}
       {this.renderItem(favourites, {borders: {right: true}})}
       {this.renderItem(profile, {picture: this.props.profilePic})}
     </View>);

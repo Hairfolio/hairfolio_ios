@@ -3,6 +3,7 @@ import _ from 'lodash';
 import PureComponent from '../components/PureComponent';
 import {View, Text, TouchableOpacity} from 'react-native';
 import connect from '../lib/connect';
+import {registrationActions} from '../actions/registration';
 import {app} from '../selectors/app';
 import {COLORS, FONTS, SCALE} from '../style';
 import NavigationSetting from '../navigation/NavigationSetting';
@@ -14,7 +15,8 @@ import {login, hello, register2} from '../routes';
 @connect(app)
 export default class Register extends PureComponent {
   static propTypes = {
-    appVersion: React.PropTypes.string.isRequired
+    appVersion: React.PropTypes.string.isRequired,
+    dispatch: React.PropTypes.func.isRequired
   };
 
   static contextTypes = {
@@ -40,6 +42,7 @@ export default class Register extends PureComponent {
               icon="facebook"
               label="Use Facebook"
               onPress={() => {
+                this.props.dispatch(registrationActions.setMethod('facebook'));
                 _.last(this.context.navigators).jumpTo(register2);
               }}
             />
@@ -50,6 +53,7 @@ export default class Register extends PureComponent {
               icon="instagram"
               label="Use Instagram"
               onPress={() => {
+                this.props.dispatch(registrationActions.setMethod('instagram'));
                 _.last(this.context.navigators).jumpTo(register2);
               }}
             />
@@ -60,6 +64,7 @@ export default class Register extends PureComponent {
               icon="email"
               label="Use your email"
               onPress={() => {
+                this.props.dispatch(registrationActions.setMethod('email'));
                 _.last(this.context.navigators).jumpTo(register2);
               }}
             />

@@ -2,9 +2,11 @@ import {combineReducers} from 'redux';
 
 // Reducers
 import app from './reducers/app';
+import registration from './reducers/registration';
 
 const rootReducer = combineReducers({
-  app
+  app,
+  registration
 });
 
 export default rootReducer;

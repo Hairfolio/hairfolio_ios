@@ -4,6 +4,7 @@ import PureComponent from '../components/PureComponent';
 import {View} from 'react-native';
 import connect from '../lib/connect';
 import {app} from '../selectors/app';
+import {registration} from '../selectors/registration';
 import {COLORS, FONTS, SCALE} from '../style';
 import NavigationSetting from '../navigation/NavigationSetting';
 
@@ -11,10 +12,11 @@ import Picker from '../components/Form/Picker';
 
 import {register, signupConsumerStack} from '../routes';
 
-@connect(app)
+@connect(app, registration)
 export default class Register2 extends PureComponent {
   static propTypes = {
-    appVersion: React.PropTypes.string.isRequired
+    appVersion: React.PropTypes.string.isRequired,
+    registrationMethod: React.PropTypes.string
   };
 
   static contextTypes = {
@@ -59,7 +61,10 @@ export default class Register2 extends PureComponent {
 
             switch (item.label) {
               case 'Consumer':
-                _.first(this.context.navigators).jumpTo(signupConsumerStack);
+                if (this.props.registrationMethod === 'email')
+                  _.first(this.context.navigators).jumpTo(signupConsumerStack);
+                else
+                  this.context.setBannerError(`${this.props.registrationMethod} Not Ready`);
                 break;
               default:
                 this.context.setBannerError('Not Ready');

@@ -10,7 +10,6 @@ import NavigationBar from '../../components/OnboardingNavigationBar/Bar';
 import PureComponent from '../../components/PureComponent';
 import Icon from '../../components/Icon';
 import KeyboardScrollView from '../../components/KeyboardScrollView';
-import KeyboardPaddingView from '../../components/KeyboardPaddingView';
 
 import {COLORS, SCALE} from '../../style';
 import {register, login, register2, loginEmail} from '../../routes';
@@ -93,52 +92,48 @@ export default class OnboardingStack extends PureComponent {
             bottom: 0
           }}
         >
-          <KeyboardPaddingView
+          <KeyboardScrollView
+            scrollEnabled={false}
+            scrollToTopOnBlur
+            showsVerticalScrollIndicator={false}
+            space={Platform.OS === 'ios' ? 60 : 90}
             style={{flex: 1}}
           >
-            <KeyboardScrollView
-              scrollEnabled={false}
-              scrollToTopOnBlur
-              showsVerticalScrollIndicator={false}
-              space={Platform.OS === 'ios' ? 60 : 90}
-              style={{flex: 1}}
-            >
-              <View style={{height: Dims.deviceHeight}}>
-                <View style={{
-                  position: 'absolute',
-                  top: 0,
-                  left: 0,
-                  right: 0,
-                  height: 9 / 24 * Dims.deviceHeight,
-                  justifyContent: 'flex-end',
-                  alignItems: 'center'
-                }}>
-                  <Icon
-                    color={COLORS.WHITE}
-                    name="logo"
-                    size={SCALE.h(172)}
-                  />
-                </View>
-                <Navigator
-                  backgroundStyle={{
-                    paddingTop: 9 / 24 * Dims.deviceHeight + SCALE.h(80),
-                    paddingLeft: SCALE.w(69),
-                    paddingRight: SCALE.w(69),
-                    paddingBottom: SCALE.h(42)
-                  }}
-                  initialRoute={register}
-                  initialRouteStack={[
-                    register,
-                    register2,
-                    login,
-                    loginEmail
-                  ]}
-                  navigationBar={<NavigationBar ref={(navBar) => this._navBar = navBar} />}
-                  ref={(navigator) => this._nav = navigator && navigator.navigator()}
+            <View style={{height: Dims.deviceHeight}}>
+              <View style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                height: 9 / 24 * Dims.deviceHeight,
+                justifyContent: 'flex-end',
+                alignItems: 'center'
+              }}>
+                <Icon
+                  color={COLORS.WHITE}
+                  name="logo"
+                  size={SCALE.h(172)}
                 />
               </View>
-            </KeyboardScrollView>
-          </KeyboardPaddingView>
+              <Navigator
+                backgroundStyle={{
+                  paddingTop: 9 / 24 * Dims.deviceHeight + SCALE.h(80),
+                  paddingLeft: SCALE.w(69),
+                  paddingRight: SCALE.w(69),
+                  paddingBottom: SCALE.h(42)
+                }}
+                initialRoute={register}
+                initialRouteStack={[
+                  register,
+                  register2,
+                  login,
+                  loginEmail
+                ]}
+                navigationBar={<NavigationBar ref={(navBar) => this._navBar = navBar} />}
+                ref={(navigator) => this._nav = navigator && navigator.navigator()}
+              />
+            </View>
+          </KeyboardScrollView>
         </Image>
       </NavigationSetting>
     );

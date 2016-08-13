@@ -12,6 +12,7 @@ import EventEmitter from 'EventEmitter';
 export default class KeyboardScrollView extends PureComponent {
   static propTypes = {
     onScroll: React.PropTypes.func,
+    onLayout: React.PropTypes.func,
     scrollEnabled: React.PropTypes.bool,
     scrollToTopOnBlur: React.PropTypes.bool,
     space: React.PropTypes.number
@@ -78,14 +79,14 @@ export default class KeyboardScrollView extends PureComponent {
     if (!eligible)
       return;
 
-    this.focus = true;
+    this.focus = refNode || node;
 
     this.ee.emit('focus');
 
     const scrollView = this.refs.scrollview.getScrollResponder();
     this.scrollTimeout = setTimeout(() => {
       scrollView.scrollResponderScrollNativeHandleToKeyboard(
-        refNode || node, this.props.space || 100, true
+        this.focus, this.props.space || 100, true
       );
     }, 220);
     this.refs.scrollview.setNativeProps({
@@ -98,6 +99,16 @@ export default class KeyboardScrollView extends PureComponent {
       <ScrollView
         keyboardShouldPersistTaps
         {...this.props}
+        // ensure compatibility with KeyboardPaddingView
+        onLayout={(e) => {
+          if (this.focus)
+            this.refs.scrollview.getScrollResponder().scrollResponderScrollNativeHandleToKeyboard(
+              this.focus, this.props.space || 100, true
+            );
+
+          if (this.props.onLayout)
+            this.props.onLayout(e);
+        }}
         onScroll={(e) => {
           // see src/index for the necessity of this
           this.context.scrolling(true);

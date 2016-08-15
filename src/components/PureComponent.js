@@ -31,7 +31,9 @@ export default class Button extends Component {
     super(props);
 
     this.render = _.wrap(this.render, (render) => {
-      if (__DEV__ && Platform.OS === 'ios')
+      let isNode = ('undefined' !== typeof global) && ('[object global]' === Object.prototype.toString.call(global));
+      let isWebWorker = !isNode && ('undefined' !== typeof WorkerGlobalScope) && ('function' === typeof importScripts) && (navigator instanceof WorkerNavigator);
+      if (isWebWorker)
         console.log(`rendering ${this.constructor.name} with`, props);
       return render.call(this);
     });

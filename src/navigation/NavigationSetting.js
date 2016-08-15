@@ -7,10 +7,13 @@ import PureComponent from '../components/PureComponent';
 import StaticContainer from '../components/StaticContainer';
 import ChannelEmitter from '../components/Channel/ChannelEmitter';
 
+import appEmitter from '../appEmitter';
+
 
 export default class NavigationSetting extends PureComponent {
   static propTypes = {
     children: React.PropTypes.node,
+    forceUpdateEvents: React.PropTypes.array,
     onBlur: React.PropTypes.func,
     onFocus: React.PropTypes.func,
     onWillBlur: React.PropTypes.func,
@@ -98,6 +101,10 @@ export default class NavigationSetting extends PureComponent {
         this.emitter.emit('willblur');
       })
     ];
+
+    this.listeners.concat(_.map(this.props.forceUpdateEvents, event =>
+      appEmitter.addListener(event, () => this.refs.sc.forceUpdate())
+    ));
   }
 
   componentDidMount() {

@@ -35,14 +35,23 @@ export default class CustomNavigator extends PureComponent {
       this.forceEventsForRoute(stack[stack.length - 1]);
     };
 
+    var _jumpTo = this.refs.nav.jumpTo;
+    this.refs.nav.jumpTo = (route) => {
+      if (this.refs.nav.nextRoute === route)
+        return;
+      return _jumpTo.call(this.refs.nav, route);
+    };
+
     _.each([
       'push',
       'jumpTo',
       'jumpBack',
     ], action =>
-      this.refs.nav[action] = _.wrap(this.refs.nav[action], (action, ...args) =>
-        requestAnimationFrame(() => action.apply(this.refs.nav, args))
-      )
+      this.refs.nav[action] = _.wrap(this.refs.nav[action], (action, ...args) => {
+        if (this.refs.nav.isCurrentlyFocusing)
+          return;
+        requestAnimationFrame(() => action.apply(this.refs.nav, args));
+      })
     );
 
     this.l1 = this.refs.nav.navigationContext.addListener('willfocus', (e) => {

@@ -82,16 +82,17 @@ export default class OnboardingStack extends PureComponent {
           backgroundColor: 'transparent'
         }}
       >
-        <Image
-          source={require('../../images/onboarding.jpg')}
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0
-          }}
-        >
+        <View style={{flex: 1}}>
+          <Image
+            source={require('../../images/onboarding.jpg')}
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0
+            }}
+          />
           <KeyboardScrollView
             scrollEnabled={false}
             scrollToTopOnBlur
@@ -134,7 +135,7 @@ export default class OnboardingStack extends PureComponent {
               />
             </View>
           </KeyboardScrollView>
-        </Image>
+        </View>
       </NavigationSetting>
     );
   }

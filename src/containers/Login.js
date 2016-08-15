@@ -1,7 +1,7 @@
 import React from 'react';
 import _ from 'lodash';
 import PureComponent from '../components/PureComponent';
-import {View, Text, TouchableOpacity} from 'react-native';
+import {View, Text, TouchableOpacity, InteractionManager} from 'react-native';
 import connect from '../lib/connect';
 import {app} from '../selectors/app';
 import {COLORS, FONTS, SCALE} from '../style';
@@ -9,7 +9,7 @@ import NavigationSetting from '../navigation/NavigationSetting';
 
 import SimpleButton from '../components/Buttons/Simple';
 
-import {register, forgottenPasswordStack, loginEmail} from '../routes';
+import {register, forgottenPasswordStack, loginEmail, loginIG, oauthStack, loginStack} from '../routes';
 
 @connect(app)
 export default class Login extends PureComponent {
@@ -21,6 +21,23 @@ export default class Login extends PureComponent {
     navigators: React.PropTypes.array.isRequired,
     setBannerError: React.PropTypes.func.isRequired
   };
+
+  oauth(which, callback) {
+    which.scene().prepare((err, token) => {
+      _.first(this.context.navigators).jumpTo(loginStack);
+
+      if (err)
+        InteractionManager.runAfterInteractions(() =>
+          this.context.setBannerError(err)
+        );
+      else {
+        _.first(this.context.navigators).jumpTo(loginStack);
+        callback(token);
+      }
+    });
+    oauthStack.scene().jumpTo(which);
+    _.first(this.context.navigators).jumpTo(oauthStack);
+  }
 
   render() {
     return (<NavigationSetting
@@ -54,9 +71,9 @@ export default class Login extends PureComponent {
               color={COLORS.IG}
               icon="instagram"
               label="Sign In with Instagram"
-              onPress={() => {
-                this.context.setBannerError('Not ready');
-              }}
+              onPress={() => this.oauth(loginIG, token => {
+                console.log(token);
+              })}
             />
           </View>
           <View style={{paddingBottom: SCALE.h(54)}}>

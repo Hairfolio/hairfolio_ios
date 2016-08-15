@@ -109,6 +109,10 @@ export default class NavigationSetting extends PureComponent {
     _.each(this.listeners, l => l.remove());
   }
 
+  forceUpdateContent() {
+    this.refs.sc.forceUpdate();
+  }
+
   render() {
     return (
       <View style={this.props.style}>
@@ -116,7 +120,7 @@ export default class NavigationSetting extends PureComponent {
           channel={_.last(this.context.navigationChannels)}
           {..._.omit(this.props, _.keys(this.constructor.propTypes))}
         />
-        <StaticContainer shouldUpdate={this.state.isFocused}>
+        <StaticContainer ref="sc" shouldUpdate={this.state.isFocused}>
           {this.state.display && this.props.children}
         </StaticContainer>
       </View>

@@ -16,7 +16,7 @@ import services from './services';
 
 import Intro from './components/Intro';
 
-import {hello, loginStack, forgottenPasswordStack, signupConsumerStack, appStack} from './routes';
+import {hello, oauthStack, loginStack, forgottenPasswordStack, signupConsumerStack, appStack} from './routes';
 
 import {appActions} from './actions/app';
 
@@ -118,7 +118,8 @@ export default class Root extends PureComponent {
                   loginStack,
                   forgottenPasswordStack,
                   signupConsumerStack,
-                  appStack
+                  appStack,
+                  oauthStack
                 ]}
               />
             </Provider>

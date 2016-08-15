@@ -3,6 +3,7 @@ import Route from './navigation/Route';
 import CustomScenesConfig from './stacks/ScenesConfig';
 
 import Hello from './containers/Hello';
+import LoginIG from './containers/LoginIG';
 import Register from './containers/Register';
 import Register2 from './containers/Register2';
 import BasicInfoConsumer from './containers/BasicInfo/Consumer';
@@ -18,9 +19,16 @@ import OnboardingStack from './stacks/Onboarding';
 import ForgottenPasswordStack from './stacks/ForgottenPassword';
 import SignupConsumerStack from './stacks/SignupConsumer';
 import AppStack from './stacks/App';
+import OAuthStack from './stacks/OAuth';
 
 class HelloRoute extends Route {
   SceneComponent = Hello;
+  SceneConfig = {
+    ...CustomScenesConfig.FadeInOut
+  };
+}
+class LoginIGRoute extends Route {
+  SceneComponent = LoginIG;
   SceneConfig = {
     ...CustomScenesConfig.FadeInOut
   };
@@ -127,8 +135,15 @@ class AppStackRoute extends Route {
     ...CustomScenesConfig.FadeInOut
   };
 }
+class OAuthStackRoute extends Route {
+  SceneComponent = OAuthStack;
+  SceneConfig = {
+    ...CustomScenesConfig.FadeInOut
+  };
+}
 
 export const hello = new HelloRoute();
+export const loginIG = new LoginIGRoute();
 export const register = new RegisterRoute();
 export const register2 = new Register2Route();
 export const basicInfoConsumer = new BasicInfoConsumerRoute();
@@ -144,9 +159,11 @@ export const loginStack = new OnboardingStackRoute();
 export const forgottenPasswordStack = new ForgottenPasswordStackRoute();
 export const signupConsumerStack = new SignupConsumerStackRoute();
 export const appStack = new AppStackRoute();
+export const oauthStack = new OAuthStackRoute();
 
 export const constructors = {
   HelloRoute,
+  LoginIGRoute,
   RegisterRoute,
   Register2Route,
   BasicInfoConsumerRoute,
@@ -161,5 +178,6 @@ export const constructors = {
   OnboardingStackRoute,
   ForgottenPasswordStackRoute,
   SignupConsumerStackRoute,
-  AppStackRoute
+  AppStackRoute,
+  OAuthStackRoute
 };

@@ -45,6 +45,9 @@ const finalStore = compose(
     if (_.get(action, 'meta.immediate') && !action.asyncResult)
       return safeNotify();
 
+    if (_.get(action, 'meta.immediateAsyncResult') && action.asyncResult)
+      return safeNotify();
+
     if (imBatch)
       return;
 

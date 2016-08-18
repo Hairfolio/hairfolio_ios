@@ -1,7 +1,7 @@
 import React from 'react';
 import _ from 'lodash';
 import PureComponent from '../components/PureComponent';
-import {View, Text, TouchableOpacity, InteractionManager} from 'react-native';
+import {View, Text, InteractionManager} from 'react-native';
 import connect from '../lib/connect';
 import {app} from '../selectors/app';
 import {COLORS, FONTS, SCALE} from '../style';
@@ -107,7 +107,7 @@ export default class Login extends PureComponent {
                   redirectUri: this.props.environment.get('insta_redirect_url'),
                   type: 'Instagram'
                 }, token => {
-                  console.log(token);
+                  this.context.setBannerError('Instagram login not ready');
                 })
               )}
             />

@@ -29,7 +29,8 @@ export const registrationActions = {
       return {
         type: registrationTypes.GET_ENVIRONMENT,
         meta: {
-          immediate: true
+          immediate: true,
+          immediateAsyncResult: true
         },
         payload: {
           promise: fetch.fetch('/sessions/environment')

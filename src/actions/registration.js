@@ -54,7 +54,32 @@ export const registrationActions = {
         payload: {
           promise: fetch.fetch('/sessions/facebook', {
             method: 'POST',
-            'facebook_token': token
+            body: {
+              'facebook_token': token
+            }
+          })
+        }
+      };
+    };
+  },
+
+  signupWithFacebook(token, type) {
+    return ({services: {fetch}}) => {
+      return {
+        type: registrationTypes.LOGIN,
+        meta: {
+          immediate: true,
+          immediateAsyncResult: true
+        },
+        payload: {
+          promise: fetch.fetch('/users/facebook', {
+            method: 'POST',
+            body: {
+              'facebook_token': token,
+              user: {
+                'account_type': type
+              }
+            }
           })
         }
       };

@@ -1,5 +1,6 @@
 import React from 'react';
 import _ from 'lodash';
+import reactMixin from 'react-mixin';
 import PureComponent from '../components/PureComponent';
 import {View, Text} from 'react-native';
 import connect from '../lib/connect';
@@ -18,11 +19,14 @@ import {registrationActions} from '../actions/registration';
 import {environment} from '../selectors/environment';
 import {user} from '../selectors/user';
 
-import {LOADING} from '../constants';
+import oauthMixin from '../mixins/oauth';
+import ensureEnvironmentIsReadyMixin from '../mixins/ensureEnvironmentIsReady';
 
-import {register, forgottenPasswordStack, loginEmail, loginOAuth, oauthStack, loginStack} from '../routes';
+import {register, forgottenPasswordStack, loginEmail, loginStack} from '../routes';
 
 @connect(app, environment, user)
+@reactMixin.decorate(oauthMixin)
+@reactMixin.decorate(ensureEnvironmentIsReadyMixin)
 export default class Login extends PureComponent {
   static propTypes = {
     appVersion: React.PropTypes.string.isRequired,
@@ -38,31 +42,6 @@ export default class Login extends PureComponent {
   };
 
   state = {};
-
-  oauth(options, callback) {
-    this.setState({oauth: LOADING});
-
-    loginOAuth.scene().prepare(options, (err, token) => {
-      _.first(this.context.navigators).jumpTo(loginStack, () => {
-        this.setState({oauth: null});
-
-        if (err)
-          this.context.setBannerError(err);
-        else
-          callback(token);
-      });
-    });
-    _.first(this.context.navigators).jumpTo(oauthStack);
-  }
-
-  ensureEnvironmentIsReady(callback) {
-    if (utils.isReady(this.props.environmentState))
-      return callback();
-
-    this.props.dispatch(registrationActions.getEnvironment())
-      .then(throwOnFail)
-      .then(callback, () => this.context.setBannerError('Something went wrong...'));
-  }
 
   render() {
     return (<NavigationSetting
@@ -89,7 +68,7 @@ export default class Login extends PureComponent {
               icon="facebook"
               label="Sign In with Facebook"
               onPress={() => this.ensureEnvironmentIsReady(() =>
-                this.oauth({
+                this.oauth(loginStack, {
                   authorize: 'https://www.facebook.com/dialog/oauth',
                   clientId: this.props.environment.get('facebook_app_id'),
                   redirectUri: this.props.environment.get('facebook_redirect_url'),
@@ -112,7 +91,7 @@ export default class Login extends PureComponent {
               icon="instagram"
               label="Sign In with Instagram"
               onPress={() => this.ensureEnvironmentIsReady(() =>
-                this.oauth({
+                this.oauth(loginStack, {
                   authorize: 'https://api.instagram.com/oauth/authorize/',
                   clientId: this.props.environment.get('insta_client_id'),
                   redirectUri: this.props.environment.get('insta_redirect_url'),

@@ -10,11 +10,13 @@ import {
 } from 'react-native';
 import {COLORS, FONTS, SCALE} from '../../style';
 import PureComponent from '../PureComponent';
+import CustomTouchableOpacity from '../CustomTouchableOpacity';
 import Icon from '../Icon';
 
 export default class Picker extends PureComponent {
   static propTypes = {
     choices: PropTypes.array.isRequired,
+    disabled: PropTypes.bool,
     onChange: PropTypes.func,
     onDone: PropTypes.func,
     placeholder: PropTypes.string
@@ -26,46 +28,48 @@ export default class Picker extends PureComponent {
 
   render() {
     return (<View>
-      <TouchableOpacity
+      <CustomTouchableOpacity
+        disabled={this.props.disabled}
         onPress={() => {
           this.setState({
             active: true,
             selected: _.isFinite(this.state.selected) ? this.state.selected : 0
           });
         }}
-        style={{
+      >
+        <View style={{
           backgroundColor: COLORS.WHITE,
           height: SCALE.h(17 * 2 + 48),
           flexDirection: 'row',
           borderRadius: 1
-        }}
-      >
-        <View style={{
-          flex: 1,
-          alignItems: 'center',
-          paddingLeft: SCALE.w(24),
-          flexDirection: 'row'
         }}>
-          <Text style={{
-            fontFamily: FONTS.ROMAN,
-            fontSize: SCALE.h(34),
-            color: COLORS.DARK
-          }}>{_.get(this.props.choices, [this.state.selected, 'label'], this.props.placeholder)}</Text>
+          <View style={{
+            flex: 1,
+            alignItems: 'center',
+            paddingLeft: SCALE.w(24),
+            flexDirection: 'row'
+          }}>
+            <Text style={{
+              fontFamily: FONTS.ROMAN,
+              fontSize: SCALE.h(34),
+              color: COLORS.DARK
+            }}>{_.get(this.props.choices, [this.state.selected, 'label'], this.props.placeholder)}</Text>
+          </View>
+          <View style={{
+            width: SCALE.w(102),
+            justifyContent: 'center',
+            alignItems: 'center',
+            borderLeftWidth: 1,
+            borderLeftColor: COLORS.DARK
+          }}>
+            <Icon
+              color={COLORS.DARK}
+              name="down"
+              size={SCALE.h(19)}
+            />
+          </View>
         </View>
-        <View style={{
-          width: SCALE.w(102),
-          justifyContent: 'center',
-          alignItems: 'center',
-          borderLeftWidth: 1,
-          borderLeftColor: COLORS.DARK
-        }}>
-          <Icon
-            color={COLORS.DARK}
-            name="down"
-            size={SCALE.h(19)}
-          />
-        </View>
-      </TouchableOpacity>
+      </CustomTouchableOpacity>
       <Modal
         animationType={"slide"}
         transparent

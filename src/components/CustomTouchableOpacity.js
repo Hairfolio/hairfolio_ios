@@ -13,7 +13,9 @@ export default class CustomTouchableOpacity extends PureComponent {
       <TouchableOpacity
         {...this.props}
       >
-        <View style={{opacity: this.props.disabled ? 0.7 : 1}}>
+        <View style={{
+          opacity: this.props.disabled ? 0.7 : 1
+        }}>
           {this.props.children}
         </View>
       </TouchableOpacity>

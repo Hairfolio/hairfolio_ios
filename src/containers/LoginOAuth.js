@@ -46,8 +46,14 @@ export default class LoginOAuth extends PureComponent {
         onLoadStart={(e) => {
           var trigger = this.state.redirectUri + '#access_token=';
           var i = e.nativeEvent.url.indexOf(trigger);
-          if (i > -1)
-            return this.callback(null, e.nativeEvent.url.substr(trigger.length));
+          if (i > -1) {
+            var token = e.nativeEvent.url.substr(trigger.length);
+
+            var next = token.indexOf('&');
+            next = next !== -1 ? token = token.substr(0, next) : token;
+
+            return this.callback(null, token);
+          }
         }}
         source={{
           uri: `${this.state.authorize}?client_id=${this.state.clientId}&redirect_uri=${this.state.redirectUri}&response_type=token`}}

@@ -14,16 +14,9 @@ function checkStatus(response) {
   if (response.status >= 200 && response.status < 300)
     return response;
   else {
-    var text = response._bodyText;
-    var data;
-    try {
-      data = JSON.parse(text);
-    } catch (e) {}
-
     error = new FetchError(response.statusText);
     error.response = response;
-    error.data = data;
-    error.text = text;
+    error.jsonData = response.jsonData;
     throw error;
   }
 }
@@ -64,11 +57,18 @@ export default class Fetch {
     console.log(uri, opts);
 
     return window.fetch(uri, opts)
+      .then((response) => {
+        if (response.json)
+          return response.json().then((json) => {
+            response.jsonData = json;
+            return response;
+          });
+        return response;
+      })
       .then(checkStatus)
-      .then((response) => response.json && response.json())
-      .then((result) => {
-        console.log('result received for ', uri, result);
-        return result;
+      .then((response) => {
+        console.log('result received for ', uri, response.jsonData);
+        return response.jsonData;
       })
       .catch((e) => {
         console.log('error received for', uri, e);

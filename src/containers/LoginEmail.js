@@ -1,7 +1,8 @@
 import React from 'react';
 import _ from 'lodash';
+import reactMixin from 'react-mixin';
 import PureComponent from '../components/PureComponent';
-import RN, {View, TouchableOpacity, Text} from 'react-native';
+import RN, {View, Text} from 'react-native';
 import connect from '../lib/connect';
 import {app} from '../selectors/app';
 import {COLORS, FONTS, SCALE} from '../style';
@@ -9,17 +10,34 @@ import NavigationSetting from '../navigation/NavigationSetting';
 
 import TextInput from '../components/Form/TextInput';
 import SimpleButton from '../components/Buttons/Simple';
+import CustomTouchableOpacity from '../components/CustomTouchableOpacity';
+
+import formMixin from '../mixins/form';
+
+import utils from '../utils';
+
+import {throwOnFail} from '../lib/reduxPromiseMiddleware';
+
+import {user} from '../selectors/user';
+import {environment} from '../selectors/environment';
+
+import {registrationActions} from '../actions/registration';
 
 import {login, register, forgottenPasswordStack, appStack} from '../routes';
 
-@connect(app)
+@connect(app, user, environment)
+@reactMixin.decorate(formMixin)
 export default class LoginEmail extends PureComponent {
   static propTypes = {
-    appVersion: React.PropTypes.string.isRequired
+    appVersion: React.PropTypes.string.isRequired,
+    dispatch: React.PropTypes.func.isRequired,
+    environmentState: React.PropTypes.string.isRequired,
+    userState: React.PropTypes.string.isRequired
   };
 
   static contextTypes = {
-    navigators: React.PropTypes.array.isRequired
+    navigators: React.PropTypes.array.isRequired,
+    setBannerError: React.PropTypes.func.isRequired
   };
 
   state = {};
@@ -29,6 +47,7 @@ export default class LoginEmail extends PureComponent {
       leftAction={() => {
         _.last(this.context.navigators).jumpTo(login);
       }}
+      leftDisabled={utils.isLoading([this.props.environmentState, this.props.userState])}
       leftIcon={this.state.hideBack ? null : 'back'}
       onWillBlur={this.onWillBlur}
       onWillFocus={this.onWillFocus}
@@ -48,6 +67,8 @@ export default class LoginEmail extends PureComponent {
                 return RN.findNodeHandle(this.refs.submit);
               }}
               placeholder="Email"
+              ref={(r) => this.addFormItem(r, 'email')}
+              validation={(v) => !!v}
             />
           </View>
           <View style={{paddingBottom: 10}}>
@@ -57,20 +78,35 @@ export default class LoginEmail extends PureComponent {
                 return RN.findNodeHandle(this.refs.submit);
               }}
               placeholder="Password"
+              ref={(r) => this.addFormItem(r, 'password')}
               secureTextEntry
+              validation={(v) => !!v}
             />
           </View>
           <View style={{paddingBottom: SCALE.h(54)}}>
             <SimpleButton
               color={COLORS.DARK}
+              disabled={utils.isLoading([this.props.environmentState, this.props.userState])}
               label="Sign In"
               onPress={() => {
-                _.first(this.context.navigators).jumpTo(appStack);
+                if (!this.checkErrors()) {
+                  var value = this.getFormValue();
+
+                  this.props.dispatch(registrationActions.getEnvironment()).then(throwOnFail)
+                    .then(() => this.props.dispatch(registrationActions.loginWithEmail(value, 'consumer')).then(throwOnFail))
+                    .then(() => {
+                      //_.first(this.context.navigators).jumpTo(appStack);
+                    }, (e) => {
+                      console.log(e);
+                      this.context.setBannerError(e);
+                    });
+                }
               }}
               ref="submit"
             />
           </View>
-          <TouchableOpacity
+          <CustomTouchableOpacity
+            disabled={utils.isLoading([this.props.environmentState, this.props.userState])}
             onPress={() => {
               _.first(this.context.navigators).jumpTo(forgottenPasswordStack);
             }}
@@ -81,9 +117,10 @@ export default class LoginEmail extends PureComponent {
               color: COLORS.WHITE,
               textAlign: 'center'
             }}>Forgot your password?</Text>
-          </TouchableOpacity>
+          </CustomTouchableOpacity>
         </View>
-        <TouchableOpacity
+        <CustomTouchableOpacity
+          disabled={utils.isLoading([this.props.environmentState, this.props.userState])}
           onPress={() => {
             _.last(this.context.navigators).jumpTo(register);
           }}
@@ -94,7 +131,7 @@ export default class LoginEmail extends PureComponent {
             color: COLORS.WHITE,
             textAlign: 'center'
           }}>Don’t Have an Account? <Text style={{fontFamily: FONTS.HEAVY}}>Sign up</Text></Text>
-        </TouchableOpacity>
+        </CustomTouchableOpacity>
       </View>
     </NavigationSetting>);
   }

@@ -111,5 +111,27 @@ export const registrationActions = {
         }
       };
     };
+  },
+
+  loginWithEmail(value, type) {
+    return ({services: {fetch}}) => {
+      return {
+        type: registrationTypes.LOGIN,
+        meta: {
+          immediate: true,
+          immediateAsyncResult: true
+        },
+        payload: {
+          promise: fetch.fetch('/sessions', {
+            method: 'POST',
+            body: {
+              session: {
+                ...value
+              }
+            }
+          })
+        }
+      };
+    };
   }
 };

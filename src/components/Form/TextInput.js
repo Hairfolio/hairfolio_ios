@@ -13,22 +13,47 @@ import focusEmitter from './focusEmitter';
 export default class FormTextInput extends PureComponent {
 
   static propTypes = {
-    check: React.PropTypes.bool,
-    error: React.PropTypes.bool,
     getRefNode: React.PropTypes.func,
-    onFocus: React.PropTypes.func
+    onChangeText: React.PropTypes.func,
+    onFocus: React.PropTypes.func,
+    validation: React.PropTypes.func
   };
+
+  state = {};
+
+  setInError() {
+    this.setState({error: true});
+  }
+
+  getValue() {
+    return this.state.value;
+  }
+
+  isValide() {
+    return this.props.validation(this.getValue());
+  }
 
   render() {
     return (<View style={{position: 'relative'}}>
       <TextInput
         {...this.props}
+        onChangeText={(value) => {
+          this.setState({value}, () => {
+            if (this.state.error)
+              this.setState({
+                error: !this.isValide()
+              });
+          });
+
+          if (this.props.onChangeText)
+            this.props.onChangeText(value);
+        }}
         onFocus={(e) => {
           focusEmitter.focus(this.props.getRefNode ? this.props.getRefNode() : null);
           if (this.props.onFocus)
             this.props.onFocus(e);
         }}
-        placeholderTextColor={COLORS.TEXT}
+        placeholderTextColor={this.state.error ? COLORS.RED : COLORS.TEXT}
         ref="ti"
         selectionColor={COLORS.LIGHT2}
         style={{
@@ -42,11 +67,11 @@ export default class FormTextInput extends PureComponent {
           textAlignVertical: 'center',
           fontFamily: FONTS.ROMAN,
           fontSize: SCALE.h(30),
-          color: this.props.error ? COLORS.RED : COLORS.DARK
+          color: this.state.error ? COLORS.RED : COLORS.DARK
         }}
         underlineColorAndroid="transparent"
       />
-      {this.props.check &&
+      {this.state.check &&
         <View style={{
           position: 'absolute',
           right: 0,

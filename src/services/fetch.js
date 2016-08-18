@@ -9,16 +9,10 @@ export class FetchError {
 }
 
 function checkStatus(response) {
-  var error;
-
   if (response.status >= 200 && response.status < 300)
     return response;
-  else {
-    error = new FetchError(response.statusText);
-    error.response = response;
-    error.jsonData = response.jsonData;
-    throw error;
-  }
+  else
+    throw new Error((response.jsonData && (response.jsonData.error || response.jsonData.errors)) || 'API Error');
 }
 
 export default class Fetch {

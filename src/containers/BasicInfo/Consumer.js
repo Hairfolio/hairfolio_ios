@@ -16,15 +16,29 @@ import BannerErrorContainer from '../../components/BannerErrorContainer';
 
 import {loginStack, appStack} from '../../routes';
 
+import {throwOnFail} from '../../lib/reduxPromiseMiddleware';
+
 import formMixin from '../../mixins/form';
+
+import {user} from '../../selectors/user';
+import {environment} from '../../selectors/environment';
+
+import {registrationActions} from '../../actions/registration';
+
+import ensureEnvironmentIsReadyMixin from '../../mixins/ensureEnvironmentIsReady';
 
 import {NAVBAR_HEIGHT} from '../../constants';
 
-@connect(app)
+@connect(app, user, environment)
 @reactMixin.decorate(formMixin)
+@reactMixin.decorate(ensureEnvironmentIsReadyMixin)
 export default class BasicInfoConsumer extends PureComponent {
   static propTypes = {
-    appVersion: React.PropTypes.string.isRequired
+    appVersion: React.PropTypes.string.isRequired,
+    dispatch: React.PropTypes.func.isRequired,
+    environment: React.PropTypes.object.isRequired,
+    environmentState: React.PropTypes.string.isRequired,
+    userState: React.PropTypes.string.isRequired
   };
 
   static contextTypes = {
@@ -45,7 +59,15 @@ export default class BasicInfoConsumer extends PureComponent {
         if (!this.checkErrors()) {
           var value = this.getFormValue();
           value['password_confirmation'] = value.password;
-          _.first(this.context.navigators).jumpTo(appStack);
+
+          this.ensureEnvironmentIsReady()
+            .then(() => this.props.dispatch(registrationActions.signupWithEmail(value, 'consumer')).then(throwOnFail))
+            .then(() => {
+              //_.first(this.context.navigators).jumpTo(appStack);
+            }, (e) => {
+              console.log(e);
+              this.refs.ebc.error('Signup failed');
+            });
         }
       }}
       rightLabel="Next"

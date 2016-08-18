@@ -67,21 +67,23 @@ export default class Login extends PureComponent {
               disabled={utils.isLoading([this.props.environmentState, this.props.userState, this.state.oauth])}
               icon="facebook"
               label="Sign In with Facebook"
-              onPress={() => this.ensureEnvironmentIsReady(() =>
-                this.oauth(loginStack, {
-                  authorize: 'https://www.facebook.com/dialog/oauth',
-                  clientId: this.props.environment.get('facebook_app_id'),
-                  redirectUri: this.props.environment.get('facebook_redirect_url'),
-                  type: 'Facebook'
-                }, token => {
-                  this.props.dispatch(registrationActions.loginWithFacebook(token))
-                    .then(throwOnFail)
-                    .then(() => {}, (e) => {
+              onPress={() =>
+                this.ensureEnvironmentIsReady()
+                  .then(() => this.oauth(loginStack, {
+                    authorize: 'https://www.facebook.com/dialog/oauth',
+                    clientId: this.props.environment.get('facebook_app_id'),
+                    redirectUri: this.props.environment.get('facebook_redirect_url'),
+                    type: 'Facebook'
+                  }))
+                  .then(token => this.props.dispatch(registrationActions.loginWithFacebook(token)).then(throwOnFail))
+                  .then(
+                    () => {},
+                    (e) => {
                       console.log(e);
                       this.context.setBannerError('Facebook login failed');
-                    });
-                })
-              )}
+                    }
+                  )
+              }
             />
           </View>
           <View style={{paddingBottom: 10}}>
@@ -90,16 +92,22 @@ export default class Login extends PureComponent {
               disabled={utils.isLoading([this.props.environmentState, this.props.userState, this.state.oauth])}
               icon="instagram"
               label="Sign In with Instagram"
-              onPress={() => this.ensureEnvironmentIsReady(() =>
-                this.oauth(loginStack, {
-                  authorize: 'https://api.instagram.com/oauth/authorize/',
-                  clientId: this.props.environment.get('insta_client_id'),
-                  redirectUri: this.props.environment.get('insta_redirect_url'),
-                  type: 'Instagram'
-                }, token => {
-                  this.context.setBannerError('Instagram login not ready');
-                })
-              )}
+              onPress={() =>
+                this.ensureEnvironmentIsReady()
+                  .then(() => this.oauth(loginStack, {
+                    authorize: 'https://api.instagram.com/oauth/authorize/',
+                    clientId: this.props.environment.get('insta_client_id'),
+                    redirectUri: this.props.environment.get('insta_redirect_url'),
+                    type: 'Instagram'
+                  }))
+                  .then(
+                    () => this.context.setBannerError('Instagram login not ready')
+                  )
+                  .catch((e) => {
+                    console.log(e);
+                    this.context.setBannerError('Instagram login failed');
+                  })
+              }
             />
           </View>
           <View style={{paddingBottom: SCALE.h(54)}}>

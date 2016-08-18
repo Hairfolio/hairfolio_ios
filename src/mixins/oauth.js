@@ -7,16 +7,18 @@ export default {
   oauth(destStack, options, callback) {
     this.setState({oauth: LOADING});
 
-    loginOAuth.scene().prepare(options, (err, token) => {
-      _.first(this.context.navigators).jumpTo(destStack, () => {
-        this.setState({oauth: null});
+    return new Promise((resolve, reject) => {
+      loginOAuth.scene().prepare(options, (err, token) => {
+        _.first(this.context.navigators).jumpTo(destStack, () => {
+          this.setState({oauth: null});
 
-        if (err)
-          this.context.setBannerError(err);
-        else
-          callback(token);
+          if (err)
+            reject(err);
+          else
+            resolve(token);
+        });
       });
+      _.first(this.context.navigators).jumpTo(oauthStack);
     });
-    _.first(this.context.navigators).jumpTo(oauthStack);
   }
 };

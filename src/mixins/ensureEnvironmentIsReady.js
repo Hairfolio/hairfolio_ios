@@ -5,10 +5,9 @@ import {throwOnFail} from '../lib/reduxPromiseMiddleware';
 export default {
   ensureEnvironmentIsReady(callback) {
     if (utils.isReady(this.props.environmentState))
-      return callback();
+      return Promise.resolve(this.props.environment);
 
-    this.props.dispatch(registrationActions.getEnvironment())
-      .then(throwOnFail)
-      .then(callback, () => this.context.setBannerError('Something went wrong...'));
+    return this.props.dispatch(registrationActions.getEnvironment())
+      .then(throwOnFail);
   }
 };

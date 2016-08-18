@@ -86,32 +86,45 @@ export default class Register2 extends PureComponent {
                 if (this.props.registrationMethod === 'email')
                   _.first(this.context.navigators).jumpTo(signupConsumerStack);
                 else if (this.props.registrationMethod === 'facebook')
-                  this.ensureEnvironmentIsReady(() =>
-                    this.oauth(loginStack, {
+                  this.ensureEnvironmentIsReady()
+                    .then(() => this.oauth(loginStack, {
                       authorize: 'https://www.facebook.com/dialog/oauth',
                       clientId: this.props.environment.get('facebook_app_id'),
                       redirectUri: this.props.environment.get('facebook_redirect_url'),
                       type: 'Facebook'
-                    }, token => {
+                    }))
+                    .then(token =>
                       this.props.dispatch(registrationActions.signupWithFacebook(token, 'consumer'))
                         .then(throwOnFail)
-                        .then(() => {}, (e) => {
-                          console.log(e);
-                          this.context.setBannerError('Facebook signup failed');
-                        });
-                    })
-                  );
+                    )
+                    .then(
+                      () => {},
+                      (e) => {
+                        console.log(e);
+                        this.context.setBannerError('Facebook signup failed');
+                      }
+                    );
                 else if (this.props.registrationMethod === 'instagram')
-                  this.ensureEnvironmentIsReady(() =>
-                    this.oauth(loginStack, {
+                  this.ensureEnvironmentIsReady()
+                    .then(() => this.oauth(loginStack, {
                       authorize: 'https://api.instagram.com/oauth/authorize/',
                       clientId: this.props.environment.get('insta_client_id'),
                       redirectUri: this.props.environment.get('insta_redirect_url'),
                       type: 'Instagram'
-                    }, token => {
-                      this.context.setBannerError('Instagram signup not ready');
-                    })
-                  );
+                    }))
+                    .then(token =>
+                      this.props.dispatch(registrationActions.signupWithFacebook(token, 'consumer'))
+                        .then(throwOnFail)
+                    )
+                    .then(
+                      () => {
+                        this.context.setBannerError('Instagram signup not ready');
+                      },
+                      (e) => {
+                        console.log(e);
+                        this.context.setBannerError('Instagram signup failed');
+                      }
+                    );
                 else
                   this.context.setBannerError(`${this.props.registrationMethod} Not Ready`);
                 break;

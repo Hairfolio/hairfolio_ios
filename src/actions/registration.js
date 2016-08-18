@@ -84,5 +84,28 @@ export const registrationActions = {
         }
       };
     };
+  },
+
+  signupWithEmail(value, type) {
+    return ({services: {fetch}}) => {
+      return {
+        type: registrationTypes.LOGIN,
+        meta: {
+          immediate: true,
+          immediateAsyncResult: true
+        },
+        payload: {
+          promise: fetch.fetch('/users', {
+            method: 'POST',
+            body: {
+              user: {
+                ...value,
+                'account_type': type
+              }
+            }
+          })
+        }
+      };
+    };
   }
 };

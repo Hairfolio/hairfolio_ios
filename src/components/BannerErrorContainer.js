@@ -59,7 +59,8 @@ export default class BannerErrorContainer extends PureComponent {
             bottom: 0,
             height: SCALE.h(70),
             alignItems: 'center',
-            justifyContent: 'center'
+            justifyContent: 'center',
+            overflow: 'hidden'
           }}>
             <Text style={{
               fontFamily: FONTS.ROMAN,

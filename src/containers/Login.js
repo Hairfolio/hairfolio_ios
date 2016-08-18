@@ -71,6 +71,7 @@ export default class Login extends PureComponent {
                     authorize: 'https://www.facebook.com/dialog/oauth',
                     clientId: this.props.environment.get('facebook_app_id'),
                     redirectUri: this.props.environment.get('facebook_redirect_url'),
+                    scope: 'email',
                     type: 'Facebook'
                   }))
                   .then(token => this.props.dispatch(registrationActions.loginWithFacebook(token)).then(throwOnFail))
@@ -78,7 +79,7 @@ export default class Login extends PureComponent {
                     () => {},
                     (e) => {
                       console.log(e);
-                      this.context.setBannerError('Facebook login failed');
+                      this.context.setBannerError(e);
                     }
                   )
               }
@@ -96,15 +97,20 @@ export default class Login extends PureComponent {
                     authorize: 'https://api.instagram.com/oauth/authorize/',
                     clientId: this.props.environment.get('insta_client_id'),
                     redirectUri: this.props.environment.get('insta_redirect_url'),
-                    type: 'Instagram'
+                    type: 'Instagram',
+                    scope: 'basic'
                   }))
-                  .then(
-                    () => this.context.setBannerError('Instagram login not ready')
-                  )
-                  .catch((e) => {
-                    console.log(e);
-                    this.context.setBannerError('Instagram login failed');
+                  .then(token => {
+                    throw (new Error('Instagram signin not ready'));
+                    //this.props.dispatch(registrationActions.loginWithInstagram(token)).then(throwOnFail)
                   })
+                  .then(
+                    () => {},
+                    (e) => {
+                      console.log(e);
+                      this.context.setBannerError(e);
+                    }
+                  )
               }
             />
           </View>

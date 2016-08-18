@@ -10,12 +10,13 @@ export default class LoginOAuth extends PureComponent {
 
   i = 0;
 
-  prepare({authorize, redirectUri, clientId, type}, callback) {
+  prepare({authorize, redirectUri, clientId, type, scope}, callback) {
     this.setState({
       authorize,
       redirectUri,
       clientId,
       callback: callback,
+      scope,
       type,
       i: this.i++
     });
@@ -58,7 +59,7 @@ export default class LoginOAuth extends PureComponent {
           }
         }}
         source={{
-          uri: `${this.state.authorize}?client_id=${this.state.clientId}&redirect_uri=${this.state.redirectUri}&response_type=token`}}
+          uri: `${this.state.authorize}?client_id=${this.state.clientId}&redirect_uri=${this.state.redirectUri}&response_type=token&scope=${this.state.scope}`}}
         style={{flex: 1}}
       /> : null}
     </NavigationSetting>);

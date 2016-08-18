@@ -44,10 +44,14 @@ export const cloudinaryActions = {
           }, resolve, () => reject('resize failed'));
         }).then((uri) => {
           var formdata = new FormData();
-          formdata.append('file', uri);
-          formdata.append('upload_preset', getState().environment.get('cloudinary_preset'));
+          formdata.append('file', {
+            type: 'image/jpeg',
+            uri,
+            name: 'upload.jpg'
+          });
+          formdata.append('upload_preset', getState().environment.environment.get('cloud_preset'));
           return window.fetch(
-            `https://api.cloudinary.com/v1_1/${getState().environment.get('cloud_name')}/image/upload`,
+            `https://api.cloudinary.com/v1_1/${getState().environment.environment.get('cloud_name')}/image/upload`,
             {
               method: 'POST',
               headers: {
@@ -62,6 +66,7 @@ export const cloudinaryActions = {
               return response;
             else {
               var error = new Error('Cloudinary Error');
+              console.log(response.jsonData);
               error.data = response.jsonData;
               throw error;
             }

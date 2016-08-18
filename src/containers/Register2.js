@@ -89,6 +89,7 @@ export default class Register2 extends PureComponent {
                       authorize: 'https://www.facebook.com/dialog/oauth',
                       clientId: this.props.environment.get('facebook_app_id'),
                       redirectUri: this.props.environment.get('facebook_redirect_url'),
+                      scope: 'email',
                       type: 'Facebook'
                     }))
                     .then(token =>
@@ -99,7 +100,7 @@ export default class Register2 extends PureComponent {
                       () => {},
                       (e) => {
                         console.log(e);
-                        this.context.setBannerError('Facebook signup failed');
+                        this.context.setBannerError(e);
                       }
                     );
                 else if (this.props.registrationMethod === 'instagram')
@@ -108,19 +109,20 @@ export default class Register2 extends PureComponent {
                       authorize: 'https://api.instagram.com/oauth/authorize/',
                       clientId: this.props.environment.get('insta_client_id'),
                       redirectUri: this.props.environment.get('insta_redirect_url'),
-                      type: 'Instagram'
+                      type: 'Instagram',
+                      scope: 'basic'
                     }))
-                    .then(token =>
-                      this.props.dispatch(registrationActions.signupWithFacebook(token, 'consumer'))
-                        .then(throwOnFail)
-                    )
+                    .then(token => {
+                      throw (new Error('Instagram signup not ready'));
+                      //this.props.dispatch(registrationActions.signupWithInstagram(token, 'consumer'))
+                      //  .then(throwOnFail)
+                    })
                     .then(
                       () => {
-                        this.context.setBannerError('Instagram signup not ready');
                       },
                       (e) => {
                         console.log(e);
-                        this.context.setBannerError('Instagram signup failed');
+                        this.context.setBannerError(e);
                       }
                     );
                 else

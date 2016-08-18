@@ -1,4 +1,5 @@
 import utils from '../utils';
+import _ from 'lodash';
 
 export class FetchError {
   constructor(message) {
@@ -11,8 +12,15 @@ export class FetchError {
 function checkStatus(response) {
   if (response.status >= 200 && response.status < 300)
     return response;
-  else
-    throw new Error((response.jsonData && (response.jsonData.error || response.jsonData.errors)) || 'API Error');
+  else {
+    var err = response.jsonData && (response.jsonData.error || response.jsonData.errors);
+    if (_.isObject(err))
+      err = JSON.stringify(err);
+
+    err = err || 'API Error';
+
+    throw new Error(err);
+  }
 }
 
 export default class Fetch {

@@ -28,7 +28,7 @@ export default class BannerErrorContainer extends PureComponent {
 
     if (err)
       this.setState({
-        err
+        err: err.toString()
       }, () =>
         Animated.spring(this.errorHeight, {
           toValue: SCALE.h(70),

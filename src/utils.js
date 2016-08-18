@@ -26,5 +26,13 @@ export default {
   },
   isLoadingError(state) {
     return is(LOADING_ERROR, state);
+  },
+  parseJSON(response) {
+    if (response.json)
+      return response.json().then((json) => {
+        response.jsonData = json;
+        return response;
+      });
+    return response;
   }
 };

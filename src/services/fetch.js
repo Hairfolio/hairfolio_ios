@@ -57,14 +57,7 @@ export default class Fetch {
     console.log(uri, opts);
 
     return window.fetch(uri, opts)
-      .then((response) => {
-        if (response.json)
-          return response.json().then((json) => {
-            response.jsonData = json;
-            return response;
-          });
-        return response;
-      })
+      .then(utils.parseJSON)
       .then(checkStatus)
       .then((response) => {
         console.log('result received for ', uri, response.jsonData);

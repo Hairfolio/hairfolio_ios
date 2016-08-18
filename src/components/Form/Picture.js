@@ -1,4 +1,5 @@
 import React from 'react';
+import _ from 'lodash';
 import Spinner from 'react-native-spinkit';
 import ImagePicker from 'react-native-image-picker';
 import {View, Image} from 'react-native';
@@ -46,7 +47,8 @@ export default class FormPicture extends PureComponent {
         disabled={this.props.disabled}
         onPress={() => {
           ImagePicker.showImagePicker({
-            noData: true
+            noData: true,
+            allowsEditing: true
           }, response => {
             if (response.error)
               this.props.onError(response.error);
@@ -55,7 +57,7 @@ export default class FormPicture extends PureComponent {
                 transforming: true,
                 pictureURI: response.uri
               });
-              this.props.transform(response.uri)
+              this.props.transform(response.uri, _.pick(response, ['height', 'width']))
                 .then(
                   (value) =>
                     this.setState({

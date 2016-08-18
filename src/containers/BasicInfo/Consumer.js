@@ -23,6 +23,7 @@ import {user} from '../../selectors/user';
 import {environment} from '../../selectors/environment';
 
 import {registrationActions} from '../../actions/registration';
+import {cloudinaryActions} from '../../actions/cloudinary';
 
 import {NAVBAR_HEIGHT} from '../../constants';
 
@@ -92,6 +93,12 @@ export default class BasicInfoConsumer extends PureComponent {
                 this.refs.ebc.error(error);
               }}
               ref={(r) => this.addFormItem(r, 'avatar_cloudinary_id')}
+              transform={(uri, metas) =>
+                this.props.dispatch(registrationActions.getEnvironment())
+                  .then(throwOnFail)
+                  .then(() => this.props.dispatch(cloudinaryActions.upload(uri, metas, {maxHW: 512}, 'register-pick')))
+                  .then(throwOnFail)
+              }
               validation={(v) => !!v}
             />
           </View>

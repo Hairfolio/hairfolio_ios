@@ -103,7 +103,7 @@ export default class BasicInfoConsumer extends PureComponent {
                   .then(() => this.props.dispatch(cloudinaryActions.upload(uri, metas, {maxHW: 512}, 'register-pick')))
                   .then(throwOnFail)
               }
-              validation={(v) => true/*!!v*/}
+              validation={(v) => !!v}
             />
           </View>
           <InlineTextInput

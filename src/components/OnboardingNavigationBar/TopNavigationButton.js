@@ -1,7 +1,8 @@
 import React from 'react';
-import {View, TouchableOpacity} from 'react-native';
+import {View} from 'react-native';
 
 import Icon from '../Icon';
+import CustomTouchableOpacity from '../CustomTouchableOpacity';
 import PureComponent from '../PureComponent';
 
 import {COLORS, SCALE} from '../../style';
@@ -9,6 +10,7 @@ import {COLORS, SCALE} from '../../style';
 export default class TopLoginNavigationButton extends PureComponent {
   static propTypes = {
     action: React.PropTypes.func,
+    disabled: React.PropTypes.bool,
     icon: React.PropTypes.string,
     index: React.PropTypes.number,
     navigator: React.PropTypes.object,
@@ -20,7 +22,8 @@ export default class TopLoginNavigationButton extends PureComponent {
       return null;
 
     return (<View style={{flex: 1}}>
-      <TouchableOpacity
+      <CustomTouchableOpacity
+        disabled={this.props.disabled}
         onPress={this.props.action}
         style={[{
           flex: 1,
@@ -32,7 +35,7 @@ export default class TopLoginNavigationButton extends PureComponent {
           name={this.props.icon}
           size={SCALE.h(36)}
         />
-      </TouchableOpacity>
+      </CustomTouchableOpacity>
     </View>);
   }
 }

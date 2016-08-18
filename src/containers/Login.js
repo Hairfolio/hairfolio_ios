@@ -8,6 +8,7 @@ import {COLORS, FONTS, SCALE} from '../style';
 import NavigationSetting from '../navigation/NavigationSetting';
 
 import SimpleButton from '../components/Buttons/Simple';
+import CustomTouchableOpacity from '../components/CustomTouchableOpacity';
 
 import utils from '../utils';
 
@@ -62,6 +63,7 @@ export default class Login extends PureComponent {
       leftAction={() => {
         _.last(this.context.navigators).jumpTo(register);
       }}
+      leftDisabled={utils.isLoading([this.props.environmentState])}
       leftIcon="back"
       onWillBlur={this.onWillBlur}
       onWillFocus={this.onWillFocus}
@@ -121,7 +123,8 @@ export default class Login extends PureComponent {
               }}
             />
           </View>
-          <TouchableOpacity
+          <CustomTouchableOpacity
+            disabled={utils.isLoading([this.props.environmentState])}
             onPress={() => {
               _.first(this.context.navigators).jumpTo(forgottenPasswordStack);
             }}
@@ -132,9 +135,10 @@ export default class Login extends PureComponent {
               color: COLORS.WHITE,
               textAlign: 'center'
             }}>Forgot your password?</Text>
-          </TouchableOpacity>
+          </CustomTouchableOpacity>
         </View>
-        <TouchableOpacity
+        <CustomTouchableOpacity
+          disabled={utils.isLoading([this.props.environmentState])}
           onPress={() => {
             _.last(this.context.navigators).jumpTo(register);
           }}
@@ -145,7 +149,7 @@ export default class Login extends PureComponent {
             color: COLORS.WHITE,
             textAlign: 'center'
           }}>Don’t Have an Account? <Text style={{fontFamily: FONTS.HEAVY}}>Sign up</Text></Text>
-        </TouchableOpacity>
+        </CustomTouchableOpacity>
       </View>
     </NavigationSetting>);
   }

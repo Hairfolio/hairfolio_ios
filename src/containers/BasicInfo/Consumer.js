@@ -1,5 +1,6 @@
 import React from 'react';
 import _ from 'lodash';
+import reactMixin from 'react-mixin';
 import PureComponent from '../../components/PureComponent';
 import RN, {View, StyleSheet, TouchableOpacity, Image} from 'react-native';
 import ImagePicker from 'react-native-image-picker';
@@ -15,9 +16,12 @@ import BannerErrorContainer from '../../components/BannerErrorContainer';
 
 import {loginStack, appStack} from '../../routes';
 
+import formMixin from '../../mixins/form';
+
 import {NAVBAR_HEIGHT} from '../../constants';
 
 @connect(app)
+@reactMixin.decorate(formMixin)
 export default class BasicInfoConsumer extends PureComponent {
   static propTypes = {
     appVersion: React.PropTypes.string.isRequired
@@ -38,7 +42,11 @@ export default class BasicInfoConsumer extends PureComponent {
       onWillBlur={this.onWillBlur}
       onWillFocus={this.onWillFocus}
       rightAction={() => {
-        _.first(this.context.navigators).jumpTo(appStack);
+        if (!this.checkErrors()) {
+          var value = this.getFormValue();
+          value['password_confirmation'] = value.password;
+          _.first(this.context.navigators).jumpTo(appStack);
+        }
       }}
       rightLabel="Next"
       style={{
@@ -99,32 +107,39 @@ export default class BasicInfoConsumer extends PureComponent {
           </TouchableOpacity>
           <InlineTextInput
             getRefNode={() => {
-              return RN.findNodeHandle(this.refs.last);
+              return RN.findNodeHandle(this.fields.password);
             }}
-            placeholder="Email"
+            placeholder="First Name"
+            ref={(r) => this.addFormItem(r, 'first_name')}
+            validation={(v) => !!v}
           />
           <View style={{height: StyleSheet.hairlineWidth}} />
           <InlineTextInput
             getRefNode={() => {
-              return RN.findNodeHandle(this.refs.last);
+              return RN.findNodeHandle(this.fields.password);
             }}
             placeholder="Last Name"
+            ref={(r) => this.addFormItem(r, 'last_name')}
+            validation={(v) => !!v}
           />
           <View style={{height: StyleSheet.hairlineWidth}} />
           <InlineTextInput
             getRefNode={() => {
-              return RN.findNodeHandle(this.refs.last);
+              return RN.findNodeHandle(this.fields.password);
             }}
             placeholder="Email"
+            ref={(r) => this.addFormItem(r, 'email')}
+            validation={(v) => !!v}
           />
           <View style={{height: StyleSheet.hairlineWidth}} />
           <InlineTextInput
             getRefNode={() => {
-              return RN.findNodeHandle(this.refs.last);
+              return RN.findNodeHandle(this.fields.password);
             }}
             help="At least 6 characters"
             placeholder="Password"
-            ref="last"
+            ref={(r) => this.addFormItem(r, 'password')}
+            validation={(v) => v && v.length >= 6}
           />
         </KeyboardScrollView>
       </BannerErrorContainer>

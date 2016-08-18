@@ -9,11 +9,17 @@ const initialState = new (Record({
   environment: new Map({})
 }));
 
+const revive = environment => initialState.merge({
+  state: environment.state === READY ? READY : EMPTY,
+  ...environment
+});
+
 export default function registrationReducer(state = initialState, action) {
 
   switch (action.type) {
     case appTypes.REVIVE_STATE: {
-      return initialState;
+      const {environment} = action.payload;
+      return environment ? revive(environment) : initialState;
     }
 
     case registrationTypes.GET_ENVIRONMENT_PENDING.toString(): {

@@ -9,7 +9,10 @@ const initialState = new (Record({
   data: new Map({})
 }));
 
-const revive = state => initialState.merge({data: state.data});
+const revive = user => initialState.merge({
+  state: user.state === READY ? READY : EMPTY,
+  ...user
+});
 
 export default function userReducer(state = initialState, action) {
 

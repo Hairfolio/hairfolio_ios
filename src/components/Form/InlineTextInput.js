@@ -11,7 +11,6 @@ import focusEmitter from './focusEmitter';
 export default class FormInlineTextInput extends PureComponent {
 
   static propTypes = {
-    error: React.PropTypes.bool,
     getRefNode: React.PropTypes.func,
     help: React.PropTypes.string,
     onChangeText: React.PropTypes.func,

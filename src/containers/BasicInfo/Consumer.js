@@ -17,6 +17,7 @@ import {loginStack, appStack} from '../../routes';
 
 import {throwOnFail} from '../../lib/reduxPromiseMiddleware';
 
+import utils from '../../utils';
 import formMixin from '../../mixins/form';
 
 import {user} from '../../selectors/user';
@@ -49,6 +50,7 @@ export default class BasicInfoConsumer extends PureComponent {
       leftAction={() => {
         _.first(this.context.navigators).jumpTo(loginStack);
       }}
+      leftDisabled={utils.isLoading([this.props.environmentState, this.props.userState])}
       leftIcon="back"
       onWillBlur={this.onWillBlur}
       onWillFocus={this.onWillFocus}
@@ -63,10 +65,11 @@ export default class BasicInfoConsumer extends PureComponent {
               //_.first(this.context.navigators).jumpTo(appStack);
             }, (e) => {
               console.log(e);
-              this.refs.ebc.error('Signup failed');
+              this.refs.ebc.error(e);
             });
         }
       }}
+      rightDisabled={utils.isLoading([this.props.environmentState, this.props.userState])}
       rightLabel="Next"
       style={{
         flex: 1,
@@ -89,6 +92,7 @@ export default class BasicInfoConsumer extends PureComponent {
             alignSelf: 'center'
           }}>
             <PictureInput
+              disabled={utils.isLoading([this.props.environmentState, this.props.userState])}
               onError={(error) => {
                 this.refs.ebc.error(error);
               }}
@@ -99,7 +103,7 @@ export default class BasicInfoConsumer extends PureComponent {
                   .then(() => this.props.dispatch(cloudinaryActions.upload(uri, metas, {maxHW: 512}, 'register-pick')))
                   .then(throwOnFail)
               }
-              validation={(v) => !!v}
+              validation={(v) => true/*!!v*/}
             />
           </View>
           <InlineTextInput

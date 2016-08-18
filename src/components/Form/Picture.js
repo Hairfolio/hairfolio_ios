@@ -15,7 +15,7 @@ import Icon from '../Icon';
 export default class FormPicture extends PureComponent {
 
   static propTypes = {
-    disabled: React.PropTypes.func,
+    disabled: React.PropTypes.bool,
     onError: React.PropTypes.func.isRequired,
     transform: React.PropTypes.func.isRequired,
     validation: React.PropTypes.func

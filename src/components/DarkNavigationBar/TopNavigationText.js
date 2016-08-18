@@ -1,13 +1,15 @@
 import React from 'react';
-import {View, TouchableOpacity, Text} from 'react-native';
+import {View, Text} from 'react-native';
 
 import PureComponent from '../PureComponent';
+import CustomTouchableOpacity from '../CustomTouchableOpacity';
 
 import {COLORS, SCALE, FONTS} from '../../style';
 
 export default class TopLoginNavigationText extends PureComponent {
   static propTypes = {
     action: React.PropTypes.func,
+    disabled: React.PropTypes.bool,
     index: React.PropTypes.number,
     label: React.PropTypes.string,
     navigator: React.PropTypes.object,
@@ -19,7 +21,8 @@ export default class TopLoginNavigationText extends PureComponent {
       return null;
 
     return (<View style={{flex: 1}}>
-      <TouchableOpacity
+      <CustomTouchableOpacity
+        disabled={this.props.disabled}
         onPress={this.props.action}
         style={[{
           flex: 1,
@@ -31,7 +34,7 @@ export default class TopLoginNavigationText extends PureComponent {
           fontSize: SCALE.h(34),
           color: COLORS.WHITE
         }}>{this.props.label}</Text>
-      </TouchableOpacity>
+      </CustomTouchableOpacity>
     </View>);
   }
 }

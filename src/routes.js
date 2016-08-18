@@ -3,7 +3,7 @@ import Route from './navigation/Route';
 import CustomScenesConfig from './stacks/ScenesConfig';
 
 import Hello from './containers/Hello';
-import LoginIG from './containers/LoginIG';
+import LoginOAuth from './containers/LoginOAuth';
 import Register from './containers/Register';
 import Register2 from './containers/Register2';
 import BasicInfoConsumer from './containers/BasicInfo/Consumer';
@@ -27,8 +27,8 @@ class HelloRoute extends Route {
     ...CustomScenesConfig.FadeInOut
   };
 }
-class LoginIGRoute extends Route {
-  SceneComponent = LoginIG;
+class LoginOAuthRoute extends Route {
+  SceneComponent = LoginOAuth;
   SceneConfig = {
     ...CustomScenesConfig.FadeInOut
   };
@@ -143,7 +143,7 @@ class OAuthStackRoute extends Route {
 }
 
 export const hello = new HelloRoute();
-export const loginIG = new LoginIGRoute();
+export const loginOAuth = new LoginOAuthRoute();
 export const register = new RegisterRoute();
 export const register2 = new Register2Route();
 export const basicInfoConsumer = new BasicInfoConsumerRoute();
@@ -163,7 +163,7 @@ export const oauthStack = new OAuthStackRoute();
 
 export const constructors = {
   HelloRoute,
-  LoginIGRoute,
+  LoginOAuthRoute,
   RegisterRoute,
   Register2Route,
   BasicInfoConsumerRoute,

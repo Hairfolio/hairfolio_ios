@@ -5,18 +5,20 @@ import NavigationSetting from '../navigation/NavigationSetting';
 
 import {NAVBAR_HEIGHT} from '../constants';
 
-export default class LoginIG extends PureComponent {
-
+export default class LoginOAuth extends PureComponent {
   state = {};
 
   i = 0;
 
-  prepare(callback) {
+  prepare({authorize, redirectUri, clientId, type}, callback) {
     this.setState({
+      authorize,
+      redirectUri,
+      clientId,
       callback: callback,
+      type,
       i: this.i++
     });
-    this.refs.ns.forceUpdateContent();
   }
 
   callback(err, token) {
@@ -25,8 +27,6 @@ export default class LoginIG extends PureComponent {
       callback: null
     }, () => callback(err, token));
   }
-
-  redirect_uri = 'http://hairfolio.com/login-ig';
 
   render() {
     return (<NavigationSetting
@@ -39,17 +39,18 @@ export default class LoginIG extends PureComponent {
         flex: 1,
         paddingTop: NAVBAR_HEIGHT
       }}
-      title="Instagram"
+      title={this.state.type}
     >
       {this.state.callback ? <WebView
         key={this.state.i}
         onLoadStart={(e) => {
-          var trigger = this.redirect_uri + '#access_token=';
+          var trigger = this.state.redirectUri + '#access_token=';
           var i = e.nativeEvent.url.indexOf(trigger);
           if (i > -1)
             return this.callback(null, e.nativeEvent.url.substr(trigger.length));
         }}
-        source={{uri: `https://api.instagram.com/oauth/authorize/?client_id=d1138d5c6e0a4dfd95974e9506be921b&redirect_uri=${this.redirect_uri}&response_type=token`}}
+        source={{
+          uri: `${this.state.authorize}?client_id=${this.state.clientId}&redirect_uri=${this.state.redirectUri}&response_type=token`}}
         style={{flex: 1}}
       /> : null}
     </NavigationSetting>);

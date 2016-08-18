@@ -10,7 +10,7 @@ import NavigationBar from '../../components/DarkNavigationBar/Bar';
 import PureComponent from '../../components/PureComponent';
 
 import {COLORS} from '../../style';
-import {loginIG} from '../../routes';
+import {loginOAuth} from '../../routes';
 
 export default class ForgottenPasswordStack extends PureComponent {
   static propTypes = {};
@@ -71,9 +71,9 @@ export default class ForgottenPasswordStack extends PureComponent {
         }}
       >
         <Navigator
-          initialRoute={loginIG}
+          initialRoute={loginOAuth}
           initialRouteStack={[
-            loginIG
+            loginOAuth
           ]}
           navigationBar={<NavigationBar />}
           ref={(navigator) => this._nav = navigator && navigator.navigator()}

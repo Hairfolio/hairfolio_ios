@@ -9,7 +9,7 @@ import NavigationSetting from '../navigation/NavigationSetting';
 
 import SimpleButton from '../components/Buttons/Simple';
 
-import {register, forgottenPasswordStack, loginEmail, loginIG, oauthStack, loginStack} from '../routes';
+import {register, forgottenPasswordStack, loginEmail, loginOAuth, oauthStack, loginStack} from '../routes';
 
 @connect(app)
 export default class Login extends PureComponent {
@@ -22,8 +22,8 @@ export default class Login extends PureComponent {
     setBannerError: React.PropTypes.func.isRequired
   };
 
-  oauth(which, callback) {
-    which.scene().prepare((err, token) => {
+  oauth(options, callback) {
+    loginOAuth.scene().prepare(options, (err, token) => {
       _.first(this.context.navigators).jumpTo(loginStack);
 
       if (err)
@@ -35,7 +35,6 @@ export default class Login extends PureComponent {
         callback(token);
       }
     });
-    oauthStack.scene().jumpTo(which);
     _.first(this.context.navigators).jumpTo(oauthStack);
   }
 
@@ -61,9 +60,14 @@ export default class Login extends PureComponent {
               color={COLORS.FB}
               icon="facebook"
               label="Sign In with Facebook"
-              onPress={() => {
-                this.context.setBannerError('Not ready');
-              }}
+              onPress={() => this.oauth({
+                authorize: 'https://www.facebook.com/dialog/oauth',
+                clientId: '653107098196959',
+                redirectUri: 'https://www.facebook.com/connect/login_success.html',
+                type: 'Facebook'
+              }, token => {
+                console.log(token);
+              })}
             />
           </View>
           <View style={{paddingBottom: 10}}>
@@ -71,7 +75,12 @@ export default class Login extends PureComponent {
               color={COLORS.IG}
               icon="instagram"
               label="Sign In with Instagram"
-              onPress={() => this.oauth(loginIG, token => {
+              onPress={() => this.oauth({
+                authorize: 'https://api.instagram.com/oauth/authorize/',
+                clientId: '8d59a9fc913e4fb08d89e14c7de1b651',
+                redirectUri: 'http://hairfolio.com/login-ig',
+                type: 'Instagram'
+              }, token => {
                 console.log(token);
               })}
             />

@@ -24,17 +24,9 @@ RCT_EXPORT_METHOD(get:(RCTResponseSenderBlock)callback)
 {
   
   
-  NSString *lambdaQualifier;
-  
-#ifdef PROD_LAMBDA
-  lambdaQualifier = @"prod";
-#else
-  lambdaQualifier = @"dev";
-#endif
-  
-  
   NSMutableDictionary *initialState = [NSMutableDictionary dictionaryWithDictionary:@{
-                                                                                      @"cache.app.version": [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"]
+                                                                                      @"cache.app.version": [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"],
+                                                                      @"cache.app.host": @"http://hairfolio.herokuapp.com/"
                                                                                       }];
   
   // Let's load user defaults we saved previously with Settings

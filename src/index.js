@@ -23,6 +23,9 @@ import {appActions} from './actions/app';
 NativeModules.UIManager.setLayoutAnimationEnabledExperimental &&
   NativeModules.UIManager.setLayoutAnimationEnabledExperimental(true);
 
+
+global.ENABLE_RENDER_DEBUG = false;
+
 export default class Root extends PureComponent {
 
   static propTypes = {

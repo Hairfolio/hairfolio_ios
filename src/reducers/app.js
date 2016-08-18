@@ -2,11 +2,10 @@ import {Record} from 'immutable';
 import {appTypes} from '../actions/app';
 
 const initialState = new (Record({
-  version: null
+  version: null,
+  host: null
 }));
-const revive = state => initialState.merge({
-  version: state.version
-});
+const revive = state => initialState.merge(state);
 
 export default function intlReducer(state = initialState, action) {
 

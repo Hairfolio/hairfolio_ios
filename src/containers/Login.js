@@ -9,12 +9,22 @@ import NavigationSetting from '../navigation/NavigationSetting';
 
 import SimpleButton from '../components/Buttons/Simple';
 
+import utils from '../utils';
+
+import {throwOnFail} from '../lib/reduxPromiseMiddleware';
+
+import {registrationActions} from '../actions/registration';
+import {environment} from '../selectors/environment';
+
 import {register, forgottenPasswordStack, loginEmail, loginOAuth, oauthStack, loginStack} from '../routes';
 
-@connect(app)
+@connect(app, environment)
 export default class Login extends PureComponent {
   static propTypes = {
-    appVersion: React.PropTypes.string.isRequired
+    appVersion: React.PropTypes.string.isRequired,
+    dispatch: React.PropTypes.func.isRequired,
+    environment: React.PropTypes.object.isRequired,
+    environmentState: React.PropTypes.string.isRequired
   };
 
   static contextTypes = {
@@ -38,6 +48,15 @@ export default class Login extends PureComponent {
     _.first(this.context.navigators).jumpTo(oauthStack);
   }
 
+  ensureEnvironmentIsReady(callback) {
+    if (utils.isReady(this.props.environmentState))
+      return callback();
+
+    this.props.dispatch(registrationActions.getEnvironment())
+      .then(throwOnFail)
+      .then(callback, () => this.context.setBannerError('Something went wrong...'));
+  }
+
   render() {
     return (<NavigationSetting
       leftAction={() => {
@@ -58,36 +77,43 @@ export default class Login extends PureComponent {
           <View style={{paddingBottom: 10}}>
             <SimpleButton
               color={COLORS.FB}
+              disabled={utils.isLoading([this.props.environmentState])}
               icon="facebook"
               label="Sign In with Facebook"
-              onPress={() => this.oauth({
-                authorize: 'https://www.facebook.com/dialog/oauth',
-                clientId: '653107098196959',
-                redirectUri: 'https://www.facebook.com/connect/login_success.html',
-                type: 'Facebook'
-              }, token => {
-                console.log(token);
-              })}
+              onPress={() => this.ensureEnvironmentIsReady(() =>
+                this.oauth({
+                  authorize: 'https://www.facebook.com/dialog/oauth',
+                  clientId: this.props.environment.get('facebook_app_id'),
+                  redirectUri: this.props.environment.get('facebook_redirect_url'),
+                  type: 'Facebook'
+                }, token => {
+                  console.log(token);
+                })
+              )}
             />
           </View>
           <View style={{paddingBottom: 10}}>
             <SimpleButton
               color={COLORS.IG}
+              disabled={utils.isLoading([this.props.environmentState])}
               icon="instagram"
               label="Sign In with Instagram"
-              onPress={() => this.oauth({
-                authorize: 'https://api.instagram.com/oauth/authorize/',
-                clientId: '8d59a9fc913e4fb08d89e14c7de1b651',
-                redirectUri: 'http://hairfolio.com/login-ig',
-                type: 'Instagram'
-              }, token => {
-                console.log(token);
-              })}
+              onPress={() => this.ensureEnvironmentIsReady(() =>
+                this.oauth({
+                  authorize: 'https://api.instagram.com/oauth/authorize/',
+                  clientId: this.props.environment.get('insta_client_id'),
+                  redirectUri: this.props.environment.get('insta_redirect_url'),
+                  type: 'Instagram'
+                }, token => {
+                  console.log(token);
+                })
+              )}
             />
           </View>
           <View style={{paddingBottom: SCALE.h(54)}}>
             <SimpleButton
               color={COLORS.DARK}
+              disabled={utils.isLoading([this.props.environmentState])}
               icon="email"
               label="Sign In with email"
               onPress={() => {

@@ -1,8 +1,8 @@
-import {LOADING, LOADING_ERROR} from './constants';
+import {LOADING, LOADING_ERROR, READY} from './constants';
 
 var is = (what, state) => {
   if (!state)
-    return [];
+    return false;
 
   if (state.constructor !== Array)
     state = [state];
@@ -10,7 +10,7 @@ var is = (what, state) => {
   var isList = [];
 
   state.forEach((v) => {
-    if (v === LOADING)
+    if (v === what)
       isList.push(v);
   });
 
@@ -18,6 +18,9 @@ var is = (what, state) => {
 };
 
 export default {
+  isReady(state) {
+    return is(READY, state);
+  },
   isLoading(state) {
     return is(LOADING, state);
   },

@@ -50,7 +50,11 @@ export default class CustomNavigator extends PureComponent {
       this.refs.nav[action] = _.wrap(this.refs.nav[action], (action, ...args) => {
         if (this.refs.nav.isCurrentlyFocusing)
           return;
-        requestAnimationFrame(() => action.apply(this.refs.nav, args));
+        requestAnimationFrame(() => {
+          action.apply(this.refs.nav, args);
+          if (_.isFunction(_.last(args)))
+            InteractionManager.runAfterInteractions(_.last(args));
+        });
       })
     );
 

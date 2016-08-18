@@ -20,13 +20,11 @@ import {throwOnFail} from '../lib/reduxPromiseMiddleware';
 import {registrationActions} from '../actions/registration';
 
 import oauthMixin from '../mixins/oauth';
-import ensureEnvironmentIsReadyMixin from '../mixins/ensureEnvironmentIsReady';
 
 import {register, signupConsumerStack, loginStack} from '../routes';
 
 @connect(app, registration, user, environment)
 @reactMixin.decorate(oauthMixin)
-@reactMixin.decorate(ensureEnvironmentIsReadyMixin)
 export default class Register2 extends PureComponent {
   static propTypes = {
     appVersion: React.PropTypes.string.isRequired,
@@ -86,7 +84,7 @@ export default class Register2 extends PureComponent {
                 if (this.props.registrationMethod === 'email')
                   _.first(this.context.navigators).jumpTo(signupConsumerStack);
                 else if (this.props.registrationMethod === 'facebook')
-                  this.ensureEnvironmentIsReady()
+                  this.props.dispatch(registrationActions.getEnvironment()).then(throwOnFail)
                     .then(() => this.oauth(loginStack, {
                       authorize: 'https://www.facebook.com/dialog/oauth',
                       clientId: this.props.environment.get('facebook_app_id'),
@@ -105,7 +103,7 @@ export default class Register2 extends PureComponent {
                       }
                     );
                 else if (this.props.registrationMethod === 'instagram')
-                  this.ensureEnvironmentIsReady()
+                  this.props.dispatch(registrationActions.getEnvironment()).then(throwOnFail)
                     .then(() => this.oauth(loginStack, {
                       authorize: 'https://api.instagram.com/oauth/authorize/',
                       clientId: this.props.environment.get('insta_client_id'),

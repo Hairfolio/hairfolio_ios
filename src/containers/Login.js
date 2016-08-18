@@ -20,13 +20,11 @@ import {environment} from '../selectors/environment';
 import {user} from '../selectors/user';
 
 import oauthMixin from '../mixins/oauth';
-import ensureEnvironmentIsReadyMixin from '../mixins/ensureEnvironmentIsReady';
 
 import {register, forgottenPasswordStack, loginEmail, loginStack} from '../routes';
 
 @connect(app, environment, user)
 @reactMixin.decorate(oauthMixin)
-@reactMixin.decorate(ensureEnvironmentIsReadyMixin)
 export default class Login extends PureComponent {
   static propTypes = {
     appVersion: React.PropTypes.string.isRequired,
@@ -68,7 +66,7 @@ export default class Login extends PureComponent {
               icon="facebook"
               label="Sign In with Facebook"
               onPress={() =>
-                this.ensureEnvironmentIsReady()
+                this.props.dispatch(registrationActions.getEnvironment()).then(throwOnFail)
                   .then(() => this.oauth(loginStack, {
                     authorize: 'https://www.facebook.com/dialog/oauth',
                     clientId: this.props.environment.get('facebook_app_id'),
@@ -93,7 +91,7 @@ export default class Login extends PureComponent {
               icon="instagram"
               label="Sign In with Instagram"
               onPress={() =>
-                this.ensureEnvironmentIsReady()
+                this.props.dispatch(registrationActions.getEnvironment()).then(throwOnFail)
                   .then(() => this.oauth(loginStack, {
                     authorize: 'https://api.instagram.com/oauth/authorize/',
                     clientId: this.props.environment.get('insta_client_id'),

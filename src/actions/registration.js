@@ -3,6 +3,7 @@
  */
 
 import Enum from '../lib/enum';
+import utils from '../utils';
 
 export const registrationTypes = new Enum(
   'SET_METHOD',
@@ -29,7 +30,7 @@ export const registrationActions = {
   },
 
   getEnvironment() {
-    return ({services: {fetch}}) => {
+    return ({getState, services: {fetch}}) => {
       return {
         type: registrationTypes.GET_ENVIRONMENT,
         meta: {
@@ -37,7 +38,10 @@ export const registrationActions = {
           immediateAsyncResult: true
         },
         payload: {
-          promise: fetch.fetch('/sessions/environment')
+          promise: utils.isReady(getState().environment.state) ?
+            Promise.resolve(getState().environment.environment.toJS())
+          :
+            fetch.fetch('/sessions/environment')
         }
       };
     };

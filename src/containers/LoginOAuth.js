@@ -23,6 +23,8 @@ export default class LoginOAuth extends PureComponent {
 
   callback(err, token) {
     var callback = this.state.callback;
+    if (!callback)
+      return;
     this.setState({
       callback: null
     }, () => callback(err, token));

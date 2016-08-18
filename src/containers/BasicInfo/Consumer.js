@@ -25,13 +25,10 @@ import {environment} from '../../selectors/environment';
 
 import {registrationActions} from '../../actions/registration';
 
-import ensureEnvironmentIsReadyMixin from '../../mixins/ensureEnvironmentIsReady';
-
 import {NAVBAR_HEIGHT} from '../../constants';
 
 @connect(app, user, environment)
 @reactMixin.decorate(formMixin)
-@reactMixin.decorate(ensureEnvironmentIsReadyMixin)
 export default class BasicInfoConsumer extends PureComponent {
   static propTypes = {
     appVersion: React.PropTypes.string.isRequired,
@@ -60,7 +57,7 @@ export default class BasicInfoConsumer extends PureComponent {
           var value = this.getFormValue();
           value['password_confirmation'] = value.password;
 
-          this.ensureEnvironmentIsReady()
+          this.props.dispatch(registrationActions.getEnvironment()).then(throwOnFail)
             .then(() => this.props.dispatch(registrationActions.signupWithEmail(value, 'consumer')).then(throwOnFail))
             .then(() => {
               //_.first(this.context.navigators).jumpTo(appStack);

@@ -33,6 +33,10 @@ export default class FormTextInput extends PureComponent {
     return this.props.validation(this.getValue());
   }
 
+  clear() {
+    this.setState({value: ''});
+  }
+
   render() {
     return (<View style={{position: 'relative'}}>
       <TextInput
@@ -70,6 +74,7 @@ export default class FormTextInput extends PureComponent {
           color: this.state.error ? COLORS.RED : COLORS.DARK
         }}
         underlineColorAndroid="transparent"
+        value={this.state.value}
       />
       {this.state.check &&
         <View style={{

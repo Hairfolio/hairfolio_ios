@@ -22,5 +22,9 @@ export default {
 
   getFormValue() {
     return _.mapValues(this.fields, ref => ref.getValue());
+  },
+
+  clearValues() {
+    _.each(this.fields, ref => ref.clear());
   }
 };

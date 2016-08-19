@@ -32,6 +32,10 @@ export default class FormInlineTextInput extends PureComponent {
     return this.props.validation(this.getValue());
   }
 
+  clear() {
+    this.setState({value: ''});
+  }
+
   render() {
     return (<View style={{position: 'relative'}}>
       <TextInput

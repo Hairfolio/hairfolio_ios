@@ -19,6 +19,7 @@ import {loginStack, appStack} from '../../routes';
 import {throwOnFail} from '../../lib/reduxPromiseMiddleware';
 
 import utils from '../../utils';
+import appEmitter from '../../appEmitter';
 import formMixin from '../../mixins/form';
 
 import {user} from '../../selectors/user';
@@ -65,7 +66,9 @@ export default class BasicInfoConsumer extends PureComponent {
           this.props.dispatch(registrationActions.getEnvironment()).then(throwOnFail)
             .then(() => this.props.dispatch(registrationActions.signupWithEmail(value, 'consumer')).then(throwOnFail))
             .then(() => {
-              //_.first(this.context.navigators).jumpTo(appStack);
+              this.clearValues();
+              appEmitter.emit('login');
+              _.first(this.context.navigators).jumpTo(appStack);
             }, (e) => {
               console.log(e);
               this.refs.ebc.error(e);

@@ -41,6 +41,13 @@ export default class FormPicture extends PureComponent {
     return this.props.validation(this.getValue());
   }
 
+  clear() {
+    this.setState({
+      value: null,
+      pictureURI: null
+    });
+  }
+
   render() {
     return (<View>
       <CustomTouchableOpacity

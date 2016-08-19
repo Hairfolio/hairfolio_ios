@@ -97,6 +97,7 @@ export default class LoginEmail extends PureComponent {
                   this.props.dispatch(registrationActions.getEnvironment()).then(throwOnFail)
                     .then(() => this.props.dispatch(registrationActions.loginWithEmail(value, 'consumer')).then(throwOnFail))
                     .then(() => {
+                      this.clearValues();
                       appEmitter.emit('login');
                       _.first(this.context.navigators).jumpTo(appStack);
                     }, (e) => {

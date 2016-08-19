@@ -14,6 +14,7 @@ import {user} from '../selectors/user';
 import {environment} from '../selectors/environment';
 
 import utils from '../utils';
+import appEmitter from '../appEmitter';
 
 import {throwOnFail} from '../lib/reduxPromiseMiddleware';
 
@@ -21,7 +22,7 @@ import {registrationActions} from '../actions/registration';
 
 import oauthMixin from '../mixins/oauth';
 
-import {register, signupConsumerStack, loginStack} from '../routes';
+import {register, signupConsumerStack, loginStack, appStack} from '../routes';
 
 @connect(app, registration, user, environment)
 @reactMixin.decorate(oauthMixin)
@@ -97,7 +98,10 @@ export default class Register2 extends PureComponent {
                         .then(throwOnFail)
                     )
                     .then(
-                      () => {},
+                      () => {
+                        appEmitter.emit('login');
+                        _.first(this.context.navigators).jumpTo(appStack);
+                      },
                       (e) => {
                         console.log(e);
                         this.context.setBannerError(e);

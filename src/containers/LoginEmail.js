@@ -1,5 +1,6 @@
 import React from 'react';
 import _ from 'lodash';
+import validator from 'validator';
 import reactMixin from 'react-mixin';
 import PureComponent from '../components/PureComponent';
 import RN, {View, Text} from 'react-native';
@@ -68,7 +69,7 @@ export default class LoginEmail extends PureComponent {
               }}
               placeholder="Email"
               ref={(r) => this.addFormItem(r, 'email')}
-              validation={(v) => !!v}
+              validation={(v) => validator.isEmail(v)}
             />
           </View>
           <View style={{paddingBottom: 10}}>
@@ -80,7 +81,7 @@ export default class LoginEmail extends PureComponent {
               placeholder="Password"
               ref={(r) => this.addFormItem(r, 'password')}
               secureTextEntry
-              validation={(v) => !!v}
+              validation={(v) => validator.isLength(v, {min: 6})}
             />
           </View>
           <View style={{paddingBottom: SCALE.h(54)}}>

@@ -1,5 +1,6 @@
 import React from 'react';
 import _ from 'lodash';
+import validator from 'validator';
 import reactMixin from 'react-mixin';
 import PureComponent from '../../components/PureComponent';
 import RN, {View, StyleSheet} from 'react-native';
@@ -133,7 +134,7 @@ export default class BasicInfoConsumer extends PureComponent {
             }}
             placeholder="Email"
             ref={(r) => this.addFormItem(r, 'email')}
-            validation={(v) => !!v}
+            validation={(v) => validator.isEmail(v)}
           />
           <View style={{height: StyleSheet.hairlineWidth}} />
           <InlineTextInput
@@ -143,7 +144,7 @@ export default class BasicInfoConsumer extends PureComponent {
             help="At least 6 characters"
             placeholder="Password"
             ref={(r) => this.addFormItem(r, 'password')}
-            validation={(v) => v && v.length >= 6}
+            validation={(v) => validator.isLength(v, {min: 6})}
           />
         </KeyboardScrollView>
       </BannerErrorContainer>

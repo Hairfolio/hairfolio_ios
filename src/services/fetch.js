@@ -14,8 +14,14 @@ function checkStatus(response) {
     return response;
   else {
     var err = response.jsonData && (response.jsonData.error || response.jsonData.errors);
+
     if (_.isObject(err))
-      err = JSON.stringify(err);
+      err = _.map(err, (value, key) => {
+        if (_.isArray(value))
+          value = value.join(', ');
+
+        return `${key}: ${value}`;
+      }).join('\n');
 
     err = err || 'API Error';
 

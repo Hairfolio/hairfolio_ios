@@ -45,7 +45,7 @@ export default class Fetch {
 
     var token = '';
     if (utils.isReady(this.store.getState().user.state))
-      token = this.store.getState().user.data.auth_token;
+      token = this.store.getState().user.data.get('auth_token');
 
     if (token)
       opts.headers.Authorization = token;

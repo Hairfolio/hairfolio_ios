@@ -139,7 +139,18 @@ export const registrationActions = {
 
   logout() {
     return ({services: {fetch}, getState}) => {
-      fetch.fetch(`/sessions/${getState().user.data.id}`, {method: 'DELETE'})
+      fetch.fetch(`/sessions/${getState().user.data.get('id')}`, {method: 'DELETE'})
+        .catch(e => console.log(e));
+
+      return {
+        type: registrationTypes.LOGOUT
+      };
+    };
+  },
+
+  destroy() {
+    return ({services: {fetch}, getState}) => {
+      fetch.fetch(`/users/${getState().user.data.get('id')}`, {method: 'DELETE'})
         .catch(e => console.log(e));
 
       return {

@@ -60,6 +60,17 @@ export default class Profile extends PureComponent {
           }}
           ref="submit"
         />
+        <View style={{height: 20}} />
+        <SimpleButton
+          color={COLORS.DARK}
+          label="Destroy"
+          onPress={() => {
+            this.props.dispatch(registrationActions.destroy());
+            appEmitter.emit('logout');
+            _.first(this.context.navigators).jumpTo(loginStack);
+          }}
+          ref="submit"
+        />
       </View>
     </NavigationSetting>);
   }

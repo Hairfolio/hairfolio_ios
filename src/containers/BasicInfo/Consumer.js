@@ -22,17 +22,19 @@ import formMixin from '../../mixins/form';
 
 import {user} from '../../selectors/user';
 import {environment} from '../../selectors/environment';
+import {cloudinary} from '../../selectors/cloudinary';
 
 import {registrationActions} from '../../actions/registration';
 import {cloudinaryActions} from '../../actions/cloudinary';
 
 import {NAVBAR_HEIGHT} from '../../constants';
 
-@connect(app, user, environment)
+@connect(app, user, environment, cloudinary)
 @reactMixin.decorate(formMixin)
 export default class BasicInfoConsumer extends PureComponent {
   static propTypes = {
     appVersion: React.PropTypes.string.isRequired,
+    cloudinaryStates: React.PropTypes.object.isRequired,
     dispatch: React.PropTypes.func.isRequired,
     environment: React.PropTypes.object.isRequired,
     environmentState: React.PropTypes.string.isRequired,
@@ -50,7 +52,7 @@ export default class BasicInfoConsumer extends PureComponent {
       leftAction={() => {
         _.first(this.context.navigators).jumpTo(loginStack);
       }}
-      leftDisabled={utils.isLoading([this.props.environmentState, this.props.userState])}
+      leftDisabled={utils.isLoading([this.props.environmentState, this.props.userState, this.props.cloudinaryStates.get('register-pick')])}
       leftIcon="back"
       onWillBlur={this.onWillBlur}
       onWillFocus={this.onWillFocus}
@@ -69,7 +71,7 @@ export default class BasicInfoConsumer extends PureComponent {
             });
         }
       }}
-      rightDisabled={utils.isLoading([this.props.environmentState, this.props.userState])}
+      rightDisabled={utils.isLoading([this.props.environmentState, this.props.userState, this.props.cloudinaryStates.get('register-pick')])}
       rightLabel="Next"
       style={{
         flex: 1,
@@ -92,7 +94,7 @@ export default class BasicInfoConsumer extends PureComponent {
             alignSelf: 'center'
           }}>
             <PictureInput
-              disabled={utils.isLoading([this.props.environmentState, this.props.userState])}
+              disabled={utils.isLoading([this.props.environmentState, this.props.userState, this.props.cloudinaryStates.get('register-pick')])}
               onError={(error) => {
                 this.refs.ebc.error(error);
               }}
@@ -102,8 +104,9 @@ export default class BasicInfoConsumer extends PureComponent {
                   .then(throwOnFail)
                   .then(() => this.props.dispatch(cloudinaryActions.upload(uri, metas, {maxHW: 512}, 'register-pick')))
                   .then(throwOnFail)
+                  .then(({public_id}) => public_id)
               }
-              validation={(v) => true/*!!v*/}
+              validation={(v) => !!v}
             />
           </View>
           <InlineTextInput

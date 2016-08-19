@@ -26,6 +26,7 @@ export const cloudinaryActions = {
         immediate: true
       },
       payload: {
+        data: {handle},
         promise: new Promise((resolve, reject) => {
           ImageEditor.cropImage(uri, {
             offset: {
@@ -66,15 +67,17 @@ export const cloudinaryActions = {
               return response;
             else {
               var error = new Error('Cloudinary Error');
-              console.log(response.jsonData);
               error.data = response.jsonData;
+              error.handle = handle;
               throw error;
             }
           })
           .then((response) => {
             var r = response.jsonData;
-            console.log(r);
-            return r.public_id;
+            return {
+              handle,
+              'public_id': r.public_id
+            };
           });
         })
       }

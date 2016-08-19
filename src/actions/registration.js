@@ -14,7 +14,8 @@ export const registrationTypes = new Enum(
   'LOGIN',
   'LOGIN_PENDING',
   'LOGIN_SUCCESS',
-  'LOGIN_ERROR'
+  'LOGIN_ERROR',
+  'LOGOUT'
 );
 
 /**
@@ -131,6 +132,18 @@ export const registrationActions = {
             }
           })
         }
+      };
+    };
+  },
+
+
+  logout() {
+    return ({services: {fetch}, getState}) => {
+      fetch.fetch(`/sessions/${getState().user.data.id}`, {method: 'DELETE'})
+        .catch(e => console.log(e));
+
+      return {
+        type: registrationTypes.LOGOUT
       };
     };
   }

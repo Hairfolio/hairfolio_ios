@@ -12,6 +12,7 @@ import SimpleButton from '../components/Buttons/Simple';
 import CustomTouchableOpacity from '../components/CustomTouchableOpacity';
 
 import utils from '../utils';
+import appEmitter from '../appEmitter';
 
 import {throwOnFail} from '../lib/reduxPromiseMiddleware';
 
@@ -21,7 +22,7 @@ import {user} from '../selectors/user';
 
 import oauthMixin from '../mixins/oauth';
 
-import {register, forgottenPasswordStack, loginEmail, loginStack} from '../routes';
+import {register, forgottenPasswordStack, loginEmail, loginStack, appStack} from '../routes';
 
 @connect(app, environment, user)
 @reactMixin.decorate(oauthMixin)
@@ -76,7 +77,10 @@ export default class Login extends PureComponent {
                   }))
                   .then(token => this.props.dispatch(registrationActions.loginWithFacebook(token)).then(throwOnFail))
                   .then(
-                    () => {},
+                    () => {
+                      appEmitter.emit('login');
+                      _.first(this.context.navigators).jumpTo(appStack);
+                    },
                     (e) => {
                       console.log(e);
                       this.context.setBannerError(e);

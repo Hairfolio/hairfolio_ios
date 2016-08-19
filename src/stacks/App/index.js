@@ -1,6 +1,8 @@
 import React from 'React';
-import {Platform, BackAndroid, StatusBar} from 'react-native';
+import _ from 'lodash';
+import {Platform, BackAndroid, StatusBar, InteractionManager} from 'react-native';
 import {autobind} from 'core-decorators';
+import connect from '../../lib/connect';
 
 import Navigator from '../../navigation/Navigator';
 import NavigationSetting from '../../navigation/NavigationSetting';
@@ -9,16 +11,35 @@ import NavigationBar from '../../components/AppBottomBar/Bar';
 
 import PureComponent from '../../components/PureComponent';
 
+import appEmitter from '../../appEmitter';
+
 import {COLORS} from '../../style';
 
 import {search, feed, createPost, favourites, profile} from '../../routes';
 
+import {user} from '../../selectors/user';
+import {environment} from '../../selectors/environment';
+
+@connect(user, environment)
 export default class AppStack extends PureComponent {
-  static propTypes = {};
+  static propTypes = {
+    environment: React.PropTypes.object.isRequired,
+    user: React.PropTypes.object.isRequired
+  };
 
   static contextTypes = {
     navigators: React.PropTypes.array.isRequired
   };
+
+  componentWillMount() {
+    this.listeners = [
+      appEmitter.addListener('logout', () => this.onLogout())
+    ];
+  }
+
+  componentWillUnmount() {
+    _.each(this.listeners, l => l.remove());
+  }
 
   @autobind
   onWillFocus() {
@@ -57,13 +78,27 @@ export default class AppStack extends PureComponent {
     */
   }
 
+  onLogout() {
+    InteractionManager.runAfterInteractions(() => this._nav.jumpTo(search));
+  }
+
   jumpTo(route) {
     this._nav.jumpTo(route);
   }
 
   render() {
+    var profilePic;
+
+    if (this.props.user.get('avatar_cloudinary_id'))
+      profilePic = `http://res.cloudinary.com/${this.props.environment.get('cloud_name')}/image/upload/${this.props.user.get('avatar_cloudinary_id')}.jpg`;
+    else if (this.props.user.get('facebook_id'))
+      profilePic = `http://res.cloudinary.com/${this.props.environment.get('cloud_name')}/image/facebook/${this.props.user.get('facebook_id')}.jpg`;
+    else if (this.props.user.get('insta_id'))
+      profilePic = `http://res.cloudinary.com/${this.props.environment.get('cloud_name')}/image/instagram/${this.props.user.get('insta_id')}.jpg`;
+
     return (
       <NavigationSetting
+        forceUpdateEvents={['login']}
         onWillBlur={this.onWillBlur}
         onWillFocus={this.onWillFocus}
         style={{
@@ -76,7 +111,7 @@ export default class AppStack extends PureComponent {
           initialRouteStack={[
             search, feed, createPost, favourites, profile
           ]}
-          navigationBar={<NavigationBar />}
+          navigationBar={<NavigationBar profilePic={profilePic} />}
           ref={(navigator) => this._nav = navigator && navigator.navigator()}
         />
       </NavigationSetting>

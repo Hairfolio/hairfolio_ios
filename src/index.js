@@ -14,6 +14,8 @@ import storecache from './storecache';
 import storecacheConfig from './storecache.config';
 import services from './services';
 
+import utils from './utils';
+
 import Intro from './components/Intro';
 
 import {hello, oauthStack, loginStack, forgottenPasswordStack, signupConsumerStack, appStack} from './routes';
@@ -65,6 +67,11 @@ export default class Root extends PureComponent {
       _.each(services, service => service.setStore(store));
       _.each(services, service => service.ready());
 
+      this.initialRoute = loginStack;
+
+      if (utils.isReady(store.getState().user.state))
+        this.initialRoute = appStack;
+
       // android need workaround because of https://github.com/facebook/react-native/issues/7367
       // and because of the big background image and offthread decoding
       // layoutAnimation is not an option on iOS neither for this app!
@@ -115,7 +122,7 @@ export default class Root extends PureComponent {
             <Provider store={store}>
               <Navigator
                 backgroundStyle={{flex: 1}}
-                initialRoute={loginStack}
+                initialRoute={this.initialRoute}
                 initialRouteStack={[
                   hello,
                   loginStack,

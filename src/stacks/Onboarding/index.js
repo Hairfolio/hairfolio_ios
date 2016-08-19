@@ -1,5 +1,6 @@
 import React from 'React';
-import {Platform, BackAndroid, View, StatusBar, Image} from 'react-native';
+import _ from 'lodash';
+import {Platform, BackAndroid, View, StatusBar, Image, InteractionManager} from 'react-native';
 import {autobind} from 'core-decorators';
 
 import Navigator from '../../navigation/Navigator';
@@ -10,6 +11,11 @@ import NavigationBar from '../../components/OnboardingNavigationBar/Bar';
 import PureComponent from '../../components/PureComponent';
 import Icon from '../../components/Icon';
 import KeyboardScrollView from '../../components/KeyboardScrollView';
+
+import appEmitter from '../../appEmitter';
+
+import store from '../../store';
+import utils from '../../utils';
 
 import {COLORS, SCALE} from '../../style';
 import {register, login, register2, loginEmail} from '../../routes';
@@ -30,6 +36,18 @@ export default class OnboardingStack extends PureComponent {
     return {
       setBannerError: (err) => this._navBar.error(err)
     };
+  }
+
+  componentWillMount() {
+    this.initialRoute = utils.isReady(store.getState().user.state) ? login : register;
+
+    this.listeners = [
+      appEmitter.addListener('login', () => this.onLogin())
+    ];
+  }
+
+  componentWillUnmount() {
+    _.each(this.listeners, l => l.remove());
   }
 
   @autobind
@@ -66,6 +84,10 @@ export default class OnboardingStack extends PureComponent {
 
     return true;
     */
+  }
+
+  onLogin() {
+    InteractionManager.runAfterInteractions(() => this._nav.jumpTo(login));
   }
 
   jumpTo(route) {
@@ -123,7 +145,7 @@ export default class OnboardingStack extends PureComponent {
                   paddingRight: SCALE.w(69),
                   paddingBottom: SCALE.h(42)
                 }}
-                initialRoute={register}
+                initialRoute={this.initialRoute}
                 initialRouteStack={[
                   register,
                   register2,

@@ -72,7 +72,7 @@ export default class LoginNavigationbar extends PureComponent {
           />
         :
           <Image
-            resizeMode="contain"
+            resizeMode="cover"
             source={{uri: opts.picture}}
             style={{
               height: opts.itemSize,

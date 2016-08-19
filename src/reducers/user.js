@@ -39,6 +39,10 @@ export default function userReducer(state = initialState, action) {
       });
     }
 
+    case registrationTypes.LOGOUT: {
+      return initialState;
+    }
+
   }
 
   return state;

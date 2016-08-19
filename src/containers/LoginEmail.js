@@ -16,6 +16,7 @@ import CustomTouchableOpacity from '../components/CustomTouchableOpacity';
 import formMixin from '../mixins/form';
 
 import utils from '../utils';
+import appEmitter from '../appEmitter';
 
 import {throwOnFail} from '../lib/reduxPromiseMiddleware';
 
@@ -96,7 +97,8 @@ export default class LoginEmail extends PureComponent {
                   this.props.dispatch(registrationActions.getEnvironment()).then(throwOnFail)
                     .then(() => this.props.dispatch(registrationActions.loginWithEmail(value, 'consumer')).then(throwOnFail))
                     .then(() => {
-                      //_.first(this.context.navigators).jumpTo(appStack);
+                      appEmitter.emit('login');
+                      _.first(this.context.navigators).jumpTo(appStack);
                     }, (e) => {
                       console.log(e);
                       this.context.setBannerError(e);

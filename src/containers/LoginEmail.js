@@ -70,7 +70,7 @@ export default class LoginEmail extends PureComponent {
               }}
               placeholder="Email"
               ref={(r) => this.addFormItem(r, 'email')}
-              validation={(v) => validator.isEmail(v)}
+              validation={(v) => !!v && validator.isEmail(v)}
             />
           </View>
           <View style={{paddingBottom: 10}}>
@@ -82,7 +82,7 @@ export default class LoginEmail extends PureComponent {
               placeholder="Password"
               ref={(r) => this.addFormItem(r, 'password')}
               secureTextEntry
-              validation={(v) => validator.isLength(v, {min: 6})}
+              validation={(v) => !!v && validator.isLength(v, {min: 6})}
             />
           </View>
           <View style={{paddingBottom: SCALE.h(54)}}>

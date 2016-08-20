@@ -137,7 +137,7 @@ export default class BasicInfoConsumer extends PureComponent {
             }}
             placeholder="Email"
             ref={(r) => this.addFormItem(r, 'email')}
-            validation={(v) => validator.isEmail(v)}
+            validation={(v) => !!v && validator.isEmail(v)}
           />
           <View style={{height: StyleSheet.hairlineWidth}} />
           <InlineTextInput
@@ -147,7 +147,7 @@ export default class BasicInfoConsumer extends PureComponent {
             help="At least 6 characters"
             placeholder="Password"
             ref={(r) => this.addFormItem(r, 'password')}
-            validation={(v) => validator.isLength(v, {min: 6})}
+            validation={(v) => !!v && validator.isLength(v, {min: 6})}
           />
         </KeyboardScrollView>
       </BannerErrorContainer>

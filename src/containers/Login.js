@@ -104,12 +104,12 @@ export default class Login extends PureComponent {
                     type: 'Instagram',
                     scope: 'basic'
                   }))
-                  .then(token => {
-                    throw (new Error('Instagram signin not ready'));
-                    //this.props.dispatch(registrationActions.loginWithInstagram(token)).then(throwOnFail)
-                  })
+                  .then(token => this.props.dispatch(registrationActions.loginWithInstagram(token)).then(throwOnFail))
                   .then(
-                    () => {},
+                    () => {
+                      appEmitter.emit('login');
+                      _.first(this.context.navigators).jumpTo(appStack);
+                    },
                     (e) => {
                       console.log(e);
                       this.context.setBannerError(e);

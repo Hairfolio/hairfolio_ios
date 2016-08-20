@@ -94,7 +94,7 @@ export default class AppStack extends PureComponent {
     else if (this.props.user.get('facebook_id'))
       profilePic = `http://res.cloudinary.com/${this.props.environment.get('cloud_name')}/image/facebook/${this.props.user.get('facebook_id')}.jpg`;
     else if (this.props.user.get('insta_id'))
-      profilePic = `http://res.cloudinary.com/${this.props.environment.get('cloud_name')}/image/instagram/${this.props.user.get('insta_id')}.jpg`;
+      profilePic = `http://res.cloudinary.com/${this.props.environment.get('cloud_name')}/image/instagram_name/${this.props.user.get('email').split('@')[0]}.jpg`;
 
     return (
       <NavigationSetting

@@ -116,13 +116,13 @@ export default class Register2 extends PureComponent {
                       type: 'Instagram',
                       scope: 'basic'
                     }))
-                    .then(token => {
-                      throw (new Error('Instagram signup not ready'));
-                      //this.props.dispatch(registrationActions.signupWithInstagram(token, 'consumer'))
-                      //  .then(throwOnFail)
-                    })
+                    .then(token => this.props.dispatch(registrationActions.signupWithInstagram(token, 'consumer'))
+                      .then(throwOnFail)
+                    )
                     .then(
                       () => {
+                        appEmitter.emit('login');
+                        _.first(this.context.navigators).jumpTo(appStack);
                       },
                       (e) => {
                         console.log(e);

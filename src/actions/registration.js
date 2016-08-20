@@ -91,6 +91,49 @@ export const registrationActions = {
     };
   },
 
+  loginWithInstagram(token) {
+    return ({services: {fetch}}) => {
+      return {
+        type: registrationTypes.LOGIN,
+        meta: {
+          immediate: true,
+          immediateAsyncResult: true
+        },
+        payload: {
+          promise: fetch.fetch('/sessions/instagram', {
+            method: 'POST',
+            body: {
+              'insta_token': token
+            }
+          })
+        }
+      };
+    };
+  },
+
+  signupWithInstagram(token, type) {
+    return ({services: {fetch}}) => {
+      return {
+        type: registrationTypes.LOGIN,
+        meta: {
+          immediate: true,
+          immediateAsyncResult: true
+        },
+        payload: {
+          promise: fetch.fetch('/users/instagram', {
+            method: 'POST',
+            body: {
+              'insta_token': token,
+              user: {
+                'account_type': type
+              }
+            }
+          })
+        }
+      };
+    };
+  },
+
   signupWithEmail(value, type) {
     return ({services: {fetch}}) => {
       return {

@@ -33,7 +33,9 @@ export default class BannerErrorContainer extends PureComponent {
         Animated.spring(this.errorHeight, {
           toValue: SCALE.h(70),
           duration: 300
-        }).start()
+        }).start(() => {
+          setTimeout(() => this.error(), 2000);
+        })
       );
     else
       Animated.spring(this.errorHeight, {

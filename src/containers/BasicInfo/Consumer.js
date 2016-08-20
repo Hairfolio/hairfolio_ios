@@ -114,6 +114,7 @@ export default class BasicInfoConsumer extends PureComponent {
             />
           </View>
           <InlineTextInput
+            autoCorrect={false}
             getRefNode={() => {
               return RN.findNodeHandle(this.fields.password);
             }}
@@ -123,6 +124,7 @@ export default class BasicInfoConsumer extends PureComponent {
           />
           <View style={{height: StyleSheet.hairlineWidth}} />
           <InlineTextInput
+            autoCorrect={false}
             getRefNode={() => {
               return RN.findNodeHandle(this.fields.password);
             }}
@@ -132,21 +134,27 @@ export default class BasicInfoConsumer extends PureComponent {
           />
           <View style={{height: StyleSheet.hairlineWidth}} />
           <InlineTextInput
+            autoCapitalize="none"
+            autoCorrect={false}
             getRefNode={() => {
               return RN.findNodeHandle(this.fields.password);
             }}
+            keyboardType="email-address"
             placeholder="Email"
             ref={(r) => this.addFormItem(r, 'email')}
             validation={(v) => !!v && validator.isEmail(v)}
           />
           <View style={{height: StyleSheet.hairlineWidth}} />
           <InlineTextInput
+            autoCapitalize="none"
+            autoCorrect={false}
             getRefNode={() => {
               return RN.findNodeHandle(this.fields.password);
             }}
             help="At least 6 characters"
             placeholder="Password"
             ref={(r) => this.addFormItem(r, 'password')}
+            secureTextEntry
             validation={(v) => !!v && validator.isLength(v, {min: 6})}
           />
         </KeyboardScrollView>

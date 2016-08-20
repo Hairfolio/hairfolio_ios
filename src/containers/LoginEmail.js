@@ -64,10 +64,12 @@ export default class LoginEmail extends PureComponent {
         <View>
           <View style={{paddingBottom: 10}}>
             <TextInput
-              check
+              autoCapitalize="none"
+              autoCorrect={false}
               getRefNode={() => {
                 return RN.findNodeHandle(this.refs.submit);
               }}
+              keyboardType="email-address"
               placeholder="Email"
               ref={(r) => this.addFormItem(r, 'email')}
               validation={(v) => !!v && validator.isEmail(v)}
@@ -75,7 +77,8 @@ export default class LoginEmail extends PureComponent {
           </View>
           <View style={{paddingBottom: 10}}>
             <TextInput
-              error
+              autoCapitalize="none"
+              autoCorrect={false}
               getRefNode={() => {
                 return RN.findNodeHandle(this.refs.submit);
               }}

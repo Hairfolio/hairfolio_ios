@@ -3,17 +3,15 @@ import _ from 'lodash';
 import validator from 'validator';
 import reactMixin from 'react-mixin';
 import PureComponent from '../components/PureComponent';
-import {View, Text} from 'react-native';
+import {View, Text, StyleSheet} from 'react-native';
 import connect from '../lib/connect';
 import {app} from '../selectors/app';
 import {COLORS, FONTS, SCALE} from '../style';
 import NavigationSetting from '../navigation/NavigationSetting';
 
-import InlineTextInput from '../components/Form/InlineTextInput';
+import MultilineTextInput from '../components/Form/MultilineTextInput';
+import PickerInput from '../components/Form/PickerInput';
 import BannerErrorContainer from '../components/BannerErrorContainer';
-
-import {loginStack} from '../routes';
-
 
 import {throwOnFail} from '../lib/reduxPromiseMiddleware';
 
@@ -49,6 +47,8 @@ export default class StylistInfo extends PureComponent {
       rightAction={() => {
         if (this.checkErrors())
           return;
+
+        console.log(this.getFormValue());
       }}
       rightDisabled={this.state.submitting}
       rightLabel="Next"
@@ -66,13 +66,23 @@ export default class StylistInfo extends PureComponent {
           height: SCALE.h(34)
         }} />
 
-        <InlineTextInput
+        <MultilineTextInput
           autoCapitalize="none"
           autoCorrect={false}
           keyboardType="email-address"
-          placeholder="Email"
+          max={300}
+          placeholder="Short professional description…"
           ref={(r) => this.addFormItem(r, 'email')}
-          validation={(v) => !!v && validator.isEmail(v)}
+          validation={(v) => !!v && validator.isLength(v, {max: 300})}
+        />
+
+        <View style={{height: StyleSheet.hairlineWidth}} />
+
+        <PickerInput
+          choices={_.map(_.range(0, 20), i => ({label: i.toString()}))}
+          placeholder="Years of experience"
+          ref={(r) => this.addFormItem(r, 'experience')}
+          validation={(v) => !!v}
         />
 
         <Text style={{

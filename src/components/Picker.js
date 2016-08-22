@@ -8,10 +8,10 @@ import {
   Modal,
   PickerIOS
 } from 'react-native';
-import {COLORS, FONTS, SCALE} from '../../style';
-import PureComponent from '../PureComponent';
-import CustomTouchableOpacity from '../CustomTouchableOpacity';
-import Icon from '../Icon';
+import {COLORS, FONTS, SCALE} from './../style';
+import PureComponent from './PureComponent';
+import CustomTouchableOpacity from './CustomTouchableOpacity';
+import Icon from './Icon';
 
 export default class Picker extends PureComponent {
   static propTypes = {

@@ -122,7 +122,7 @@ export default class Root extends PureComponent {
             <Provider store={store}>
               <Navigator
                 backgroundStyle={{flex: 1}}
-                initialRoute={this.initialRoute}
+                initialRoute={hello/*this.initialRoute*/}
                 initialRouteStack={[
                   hello,
                   loginStack,

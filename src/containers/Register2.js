@@ -8,7 +8,7 @@ import {app} from '../selectors/app';
 import {registration} from '../selectors/registration';
 import NavigationSetting from '../navigation/NavigationSetting';
 
-import Picker from '../components/Form/Picker';
+import Picker from '../components/Picker';
 
 import {user} from '../selectors/user';
 import {environment} from '../selectors/environment';

@@ -87,7 +87,7 @@ export default class OnboardingStack extends PureComponent {
   }
 
   onLogin() {
-    InteractionManager.runAfterInteractions(() => this._nav.jumpTo(login));
+    requestAnimationFrame(() => InteractionManager.runAfterInteractions(() => this._nav.jumpTo(login)));
   }
 
   jumpTo(route) {

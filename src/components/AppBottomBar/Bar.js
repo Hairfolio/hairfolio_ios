@@ -72,6 +72,7 @@ export default class LoginNavigationbar extends PureComponent {
           />
         :
           <Image
+            key={opts.picture}
             resizeMode="cover"
             source={{uri: opts.picture}}
             style={{

@@ -32,7 +32,7 @@ export default {
       return response.json().then((json) => {
         response.jsonData = json;
         return response;
-      });
+      }, () => response);
     return response;
   }
 };

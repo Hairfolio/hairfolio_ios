@@ -15,6 +15,10 @@ export const registrationTypes = new Enum(
   'LOGIN_PENDING',
   'LOGIN_SUCCESS',
   'LOGIN_ERROR',
+  'FORGOT_PASSWORD',
+  'FORGOT_PASSWORD_PENDING',
+  'FORGOT_PASSWORD_SUCCESS',
+  'FORGOT_PASSWORD_ERROR',
   'LOGOUT'
 );
 
@@ -43,6 +47,24 @@ export const registrationActions = {
             Promise.resolve(getState().environment.environment.toJS())
           :
             fetch.fetch('/sessions/environment')
+        }
+      };
+    };
+  },
+
+  forgotPassword(email) {
+    return ({services: {fetch}}) => {
+      return {
+        type: registrationTypes.FORGOT_PASSWORD,
+        meta: {
+          immediate: true,
+          immediateAsyncResult: true
+        },
+        payload: {
+          promise: fetch.fetch('/sessions/forgot_pwd', {
+            method: 'POST',
+            body: {email}
+          })
         }
       };
     };

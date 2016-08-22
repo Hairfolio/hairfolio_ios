@@ -7,6 +7,7 @@ import LoginOAuth from './containers/LoginOAuth';
 import Register from './containers/Register';
 import Register2 from './containers/Register2';
 import BasicInfo from './containers/BasicInfo';
+import BrandInfo from './containers/BrandInfo';
 import SalonInfo from './containers/SalonInfo';
 import SalonStylists from './containers/SalonStylists';
 import SalonSP from './containers/SalonSP';
@@ -65,6 +66,12 @@ class BasicInfoRoute extends Route {
 }
 class SalonInfoRoute extends Route {
   SceneComponent = SalonInfo;
+  SceneConfig = {
+    ...CustomScenesConfig.FadeInOut
+  };
+}
+class BrandInfoRoute extends Route {
+  SceneComponent = BrandInfo;
   SceneConfig = {
     ...CustomScenesConfig.FadeInOut
   };
@@ -227,6 +234,7 @@ export const login = new LoginRoute();
 export const loginEmail = new LoginEmailRoute();
 export const forgottenPassword = new ForgottenPasswordRoute();
 export const salonInfo = new SalonInfoRoute();
+export const brandInfo = new BrandInfoRoute();
 export const salonStylists = new SalonStylistsRoute();
 export const salonSP = new SalonSPRoute();
 export const stylistInfo = new StylistInfoRoute();
@@ -281,6 +289,7 @@ export const basicInfoStylist = new BasicInfoRoute({
 });
 export const basicInfoBrand = new BasicInfoRoute({
   accountType: 'brand',
+  nextRoute: brandInfo,
   detailFields: [
     {
       placeholder: 'Brand Name',
@@ -314,6 +323,7 @@ export const constructors = {
   SalonStylistsRoute,
   SalonSPRoute,
   StylistInfoRoute,
+  BrandInfoRoute,
   StylistCertificatesRoute,
   StylistEducationRoute,
   StylistPlaceOfWorkRoute,

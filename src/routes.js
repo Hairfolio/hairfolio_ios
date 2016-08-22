@@ -7,6 +7,9 @@ import LoginOAuth from './containers/LoginOAuth';
 import Register from './containers/Register';
 import Register2 from './containers/Register2';
 import BasicInfo from './containers/BasicInfo';
+import SalonInfo from './containers/SalonInfo';
+import SalonStylists from './containers/SalonStylists';
+import SalonSP from './containers/SalonSP';
 import StylistInfo from './containers/StylistInfo';
 import StylistEducation from './containers/StylistEducation';
 import StylistCertificates from './containers/StylistCertificates';
@@ -56,6 +59,24 @@ class Register2Route extends Route {
 }
 class BasicInfoRoute extends Route {
   SceneComponent = BasicInfo;
+  SceneConfig = {
+    ...CustomScenesConfig.FadeInOut
+  };
+}
+class SalonInfoRoute extends Route {
+  SceneComponent = SalonInfo;
+  SceneConfig = {
+    ...CustomScenesConfig.FadeInOut
+  };
+}
+class SalonStylistsRoute extends Route {
+  SceneComponent = SalonStylists;
+  SceneConfig = {
+    ...CustomScenesConfig.FadeInOut
+  };
+}
+class SalonSPRoute extends Route {
+  SceneComponent = SalonSP;
   SceneConfig = {
     ...CustomScenesConfig.FadeInOut
   };
@@ -205,6 +226,9 @@ export const register2 = new Register2Route();
 export const login = new LoginRoute();
 export const loginEmail = new LoginEmailRoute();
 export const forgottenPassword = new ForgottenPasswordRoute();
+export const salonInfo = new SalonInfoRoute();
+export const salonStylists = new SalonStylistsRoute();
+export const salonSP = new SalonSPRoute();
 export const stylistInfo = new StylistInfoRoute();
 export const stylistEducation = new StylistEducationRoute();
 export const stylistCertificates = new StylistCertificatesRoute();
@@ -267,6 +291,7 @@ export const basicInfoBrand = new BasicInfoRoute({
 });
 export const basicInfoSalon = new BasicInfoRoute({
   accountType: 'salon',
+  nextRoute: salonInfo,
   detailFields: [
     {
       placeholder: 'Salon Name',
@@ -285,6 +310,9 @@ export const constructors = {
   LoginRoute,
   LoginEmailRoute,
   ForgottenPasswordRoute,
+  SalonInfoRoute,
+  SalonStylistsRoute,
+  SalonSPRoute,
   StylistInfoRoute,
   StylistCertificatesRoute,
   StylistEducationRoute,

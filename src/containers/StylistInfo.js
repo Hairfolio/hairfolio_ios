@@ -118,7 +118,7 @@ export default class StylistInfo extends PureComponent {
         <View style={{height: StyleSheet.hairlineWidth}} />
 
         <PageInput
-          page={stylistPlaceOfWork}
+          page={stylistProductExperience}
           placeholder="Product experience"
           ref={(r) => this.addFormItem(r, 'product_experience')}
           validation={(v) => true}

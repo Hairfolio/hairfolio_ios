@@ -7,6 +7,7 @@ import LoginOAuth from './containers/LoginOAuth';
 import Register from './containers/Register';
 import Register2 from './containers/Register2';
 import BasicInfo from './containers/BasicInfo';
+import StylistInfo from './containers/StylistInfo';
 import Login from './containers/Login';
 import LoginEmail from './containers/LoginEmail';
 import ForgottenPassword from './containers/ForgottenPassword';
@@ -51,6 +52,12 @@ class Register2Route extends Route {
 }
 class BasicInfoRoute extends Route {
   SceneComponent = BasicInfo;
+  SceneConfig = {
+    ...CustomScenesConfig.FadeInOut
+  };
+}
+class StylistInfoRoute extends Route {
+  SceneComponent = StylistInfo;
   SceneConfig = {
     ...CustomScenesConfig.FadeInOut
   };
@@ -170,6 +177,7 @@ export const register2 = new Register2Route();
 export const login = new LoginRoute();
 export const loginEmail = new LoginEmailRoute();
 export const forgottenPassword = new ForgottenPasswordRoute();
+export const stylistInfo = new StylistInfoRoute();
 export const feed = new FeedRoute();
 export const search = new SearchRoute();
 export const createPost = new CreatePostRoute();
@@ -199,9 +207,10 @@ export const basicInfoConsumer = new BasicInfoRoute({
   ],
   title: 'Consumer Account'
 });
+
 export const basicInfoStylist = new BasicInfoRoute({
   accountType: 'stylist',
-  nextRoute: appStack,
+  nextRoute: stylistInfo,
   detailFields: [
     {
       placeholder: 'First Name',
@@ -216,7 +225,6 @@ export const basicInfoStylist = new BasicInfoRoute({
 });
 export const basicInfoBrand = new BasicInfoRoute({
   accountType: 'brand',
-  nextRoute: appStack,
   detailFields: [
     {
       placeholder: 'Brand Name',
@@ -227,7 +235,6 @@ export const basicInfoBrand = new BasicInfoRoute({
 });
 export const basicInfoSalon = new BasicInfoRoute({
   accountType: 'salon',
-  nextRoute: appStack,
   detailFields: [
     {
       placeholder: 'Salon Name',
@@ -246,6 +253,7 @@ export const constructors = {
   LoginRoute,
   LoginEmailRoute,
   ForgottenPasswordRoute,
+  StylistInfoRoute,
   FeedRoute,
   SearchRoute,
   CreatePostRoute,

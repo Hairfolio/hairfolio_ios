@@ -42,7 +42,7 @@ export default class BasicInfo extends PureComponent {
     dispatch: React.PropTypes.func.isRequired,
     environment: React.PropTypes.object.isRequired,
     environmentState: React.PropTypes.string.isRequired,
-    nextRoute: React.PropTypes.object.isRequired,
+    nextRoute: React.PropTypes.object,
     title: React.PropTypes.string.isRequired,
     userState: React.PropTypes.string.isRequired
   };
@@ -52,6 +52,18 @@ export default class BasicInfo extends PureComponent {
   };
 
   state = {};
+
+  jumpToNext() {
+    if (!this.props.nextRoute)
+      return;
+
+    var firstNavigator = _.first(this.context.navigators);
+    var lastNavigator = _.last(this.context.navigators);
+
+    var navigator = (firstNavigator.getCurrentRoutes().indexOf(this.props.nextRoute) !== -1) ? firstNavigator : lastNavigator;
+
+    navigator.jumpTo(this.props.nextRoute);
+  }
 
   render() {
     return (<NavigationSetting
@@ -64,7 +76,7 @@ export default class BasicInfo extends PureComponent {
       onWillFocus={this.onWillFocus}
       rightAction={() => {
         if (this.props.accountType !== 'consumer')
-          return;
+          return this.jumpToNext();
 
         if (!this.checkErrors()) {
           var value = this.getFormValue();
@@ -75,7 +87,7 @@ export default class BasicInfo extends PureComponent {
             .then(() => {
               this.clearValues();
               appEmitter.emit('login');
-              _.first(this.context.navigators).jumpTo(this.props.nextRoute);
+              this.jumpToNext();
             }, (e) => {
               console.log(e);
               this.refs.ebc.error(e);

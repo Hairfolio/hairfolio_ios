@@ -22,7 +22,7 @@ import {registrationActions} from '../actions/registration';
 
 import oauthMixin from '../mixins/oauth';
 
-import {register, signupConsumerStack, loginStack, appStack} from '../routes';
+import {register, signupConsumerStack, signupStylistStack, signupBrandStack, signupSalonStack, loginStack, appStack} from '../routes';
 
 @connect(app, registration, user, environment)
 @reactMixin.decorate(oauthMixin)
@@ -80,62 +80,64 @@ export default class Register2 extends PureComponent {
             if (!item)
               return;
 
-            switch (item.label) {
-              case 'Consumer':
-                if (this.props.registrationMethod === 'email')
-                  _.first(this.context.navigators).jumpTo(signupConsumerStack);
-                else if (this.props.registrationMethod === 'facebook')
-                  this.props.dispatch(registrationActions.getEnvironment()).then(throwOnFail)
-                    .then(() => this.oauth(loginStack, {
-                      authorize: 'https://www.facebook.com/dialog/oauth',
-                      clientId: this.props.environment.get('facebook_app_id'),
-                      redirectUri: this.props.environment.get('facebook_redirect_url'),
-                      scope: 'email',
-                      type: 'Facebook'
-                    }))
-                    .then(token =>
-                      this.props.dispatch(registrationActions.signupWithFacebook(token, 'consumer'))
-                        .then(throwOnFail)
-                    )
-                    .then(
-                      () => {
-                        appEmitter.emit('login');
-                        _.first(this.context.navigators).jumpTo(appStack);
-                      },
-                      (e) => {
-                        console.log(e);
-                        this.context.setBannerError(e);
-                      }
-                    );
-                else if (this.props.registrationMethod === 'instagram')
-                  this.props.dispatch(registrationActions.getEnvironment()).then(throwOnFail)
-                    .then(() => this.oauth(loginStack, {
-                      authorize: 'https://api.instagram.com/oauth/authorize/',
-                      clientId: this.props.environment.get('insta_client_id'),
-                      redirectUri: this.props.environment.get('insta_redirect_url'),
-                      type: 'Instagram',
-                      scope: 'basic'
-                    }))
-                    .then(token => this.props.dispatch(registrationActions.signupWithInstagram(token, 'consumer'))
-                      .then(throwOnFail)
-                    )
-                    .then(
-                      () => {
-                        appEmitter.emit('login');
-                        _.first(this.context.navigators).jumpTo(appStack);
-                      },
-                      (e) => {
-                        console.log(e);
-                        this.context.setBannerError(e);
-                      }
-                    );
-                else
-                  this.context.setBannerError(`${this.props.registrationMethod} Not Ready`);
-                break;
-              default:
-                this.context.setBannerError(`${item.label} Not Ready`);
-                break;
-            }
+            if (this.props.registrationMethod === 'email')
+              return _.first(this.context.navigators).jumpTo(({
+                Consumer: signupConsumerStack,
+                Stylist: signupStylistStack,
+                Salon: signupSalonStack,
+                Brand: signupBrandStack
+              })[item.label]);
+
+            var type = ({
+              Consumer: 'consumer',
+              Stylist: 'stylist',
+              Salon: 'salon',
+              Brand: 'brand'
+            })[item.label];
+
+            if (type !== 'consumer')
+              return this.context.setBannerError(`${item.label} not ready`);
+
+            var login;
+
+            if (this.props.registrationMethod === 'facebook')
+              login = this.props.dispatch(registrationActions.getEnvironment()).then(throwOnFail)
+                .then(() => this.oauth(loginStack, {
+                  authorize: 'https://www.facebook.com/dialog/oauth',
+                  clientId: this.props.environment.get('facebook_app_id'),
+                  redirectUri: this.props.environment.get('facebook_redirect_url'),
+                  scope: 'email',
+                  type: 'Facebook'
+                }))
+                .then(token =>
+                  this.props.dispatch(registrationActions.signupWithFacebook(token, type))
+                    .then(throwOnFail)
+                );
+
+            if (this.props.registrationMethod === 'instagram')
+              login = this.props.dispatch(registrationActions.getEnvironment()).then(throwOnFail)
+                .then(() => this.oauth(loginStack, {
+                  authorize: 'https://api.instagram.com/oauth/authorize/',
+                  clientId: this.props.environment.get('insta_client_id'),
+                  redirectUri: this.props.environment.get('insta_redirect_url'),
+                  type: 'Instagram',
+                  scope: 'basic'
+                }))
+                .then(token => this.props.dispatch(registrationActions.signupWithInstagram(token, type))
+                  .then(throwOnFail)
+                );
+
+            login
+              .then(
+                () => {
+                  appEmitter.emit('login');
+                  _.first(this.context.navigators).jumpTo(appStack);
+                },
+                (e) => {
+                  console.log(e);
+                  this.context.setBannerError(e);
+                }
+              );
           }}
           placeholder="Select account type"
         />

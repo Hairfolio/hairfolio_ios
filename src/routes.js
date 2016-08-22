@@ -6,7 +6,7 @@ import Hello from './containers/Hello';
 import LoginOAuth from './containers/LoginOAuth';
 import Register from './containers/Register';
 import Register2 from './containers/Register2';
-import BasicInfoConsumer from './containers/BasicInfo/Consumer';
+import BasicInfo from './containers/BasicInfo';
 import Login from './containers/Login';
 import LoginEmail from './containers/LoginEmail';
 import ForgottenPassword from './containers/ForgottenPassword';
@@ -18,6 +18,9 @@ import Profile from './containers/Profile';
 import OnboardingStack from './stacks/Onboarding';
 import ForgottenPasswordStack from './stacks/ForgottenPassword';
 import SignupConsumerStack from './stacks/SignupConsumer';
+import SignupBrandStack from './stacks/SignupBrand';
+import SignupSalonStack from './stacks/SignupSalon';
+import SignupStylistStack from './stacks/SignupStylist';
 import AppStack from './stacks/App';
 import OAuthStack from './stacks/OAuth';
 
@@ -46,8 +49,8 @@ class Register2Route extends Route {
     ...CustomScenesConfig.FadeInOut
   };
 }
-class BasicInfoConsumerRoute extends Route {
-  SceneComponent = BasicInfoConsumer;
+class BasicInfoRoute extends Route {
+  SceneComponent = BasicInfo;
   SceneConfig = {
     ...CustomScenesConfig.FadeInOut
   };
@@ -129,6 +132,24 @@ class SignupConsumerStackRoute extends Route {
     ...CustomScenesConfig.FadeInOut
   };
 }
+class SignupBrandStackRoute extends Route {
+  SceneComponent = SignupBrandStack;
+  SceneConfig = {
+    ...CustomScenesConfig.FadeInOut
+  };
+}
+class SignupSalonStackRoute extends Route {
+  SceneComponent = SignupSalonStack;
+  SceneConfig = {
+    ...CustomScenesConfig.FadeInOut
+  };
+}
+class SignupStylistStackRoute extends Route {
+  SceneComponent = SignupStylistStack;
+  SceneConfig = {
+    ...CustomScenesConfig.FadeInOut
+  };
+}
 class AppStackRoute extends Route {
   SceneComponent = AppStack;
   SceneConfig = {
@@ -146,7 +167,6 @@ export const hello = new HelloRoute();
 export const loginOAuth = new LoginOAuthRoute();
 export const register = new RegisterRoute();
 export const register2 = new Register2Route();
-export const basicInfoConsumer = new BasicInfoConsumerRoute();
 export const login = new LoginRoute();
 export const loginEmail = new LoginEmailRoute();
 export const forgottenPassword = new ForgottenPasswordRoute();
@@ -158,15 +178,71 @@ export const profile = new ProfileRoute();
 export const loginStack = new OnboardingStackRoute();
 export const forgottenPasswordStack = new ForgottenPasswordStackRoute();
 export const signupConsumerStack = new SignupConsumerStackRoute();
+export const signupBrandStack = new SignupBrandStackRoute();
+export const signupSalonStack = new SignupSalonStackRoute();
+export const signupStylistStack = new SignupStylistStackRoute();
 export const appStack = new AppStackRoute();
 export const oauthStack = new OAuthStackRoute();
+
+export const basicInfoConsumer = new BasicInfoRoute({
+  accountType: 'consumer',
+  nextRoute: appStack,
+  detailFields: [
+    {
+      placeholder: 'First Name',
+      ppte: 'first_name'
+    },
+    {
+      placeholder: 'Last Name',
+      ppte: 'last_name'
+    }
+  ],
+  title: 'Consumer Account'
+});
+export const basicInfoStylist = new BasicInfoRoute({
+  accountType: 'stylist',
+  nextRoute: appStack,
+  detailFields: [
+    {
+      placeholder: 'First Name',
+      ppte: 'first_name'
+    },
+    {
+      placeholder: 'Last Name',
+      ppte: 'last_name'
+    }
+  ],
+  title: 'Stylist Account'
+});
+export const basicInfoBrand = new BasicInfoRoute({
+  accountType: 'brand',
+  nextRoute: appStack,
+  detailFields: [
+    {
+      placeholder: 'Brand Name',
+      ppte: 'brand_name'
+    }
+  ],
+  title: 'Brand Account'
+});
+export const basicInfoSalon = new BasicInfoRoute({
+  accountType: 'salon',
+  nextRoute: appStack,
+  detailFields: [
+    {
+      placeholder: 'Salon Name',
+      ppte: 'salon_name'
+    }
+  ],
+  title: 'Salon Account'
+});
 
 export const constructors = {
   HelloRoute,
   LoginOAuthRoute,
   RegisterRoute,
   Register2Route,
-  BasicInfoConsumerRoute,
+  BasicInfoRoute,
   LoginRoute,
   LoginEmailRoute,
   ForgottenPasswordRoute,
@@ -178,6 +254,9 @@ export const constructors = {
   OnboardingStackRoute,
   ForgottenPasswordStackRoute,
   SignupConsumerStackRoute,
+  SignupBrandStackRoute,
+  SignupSalonStackRoute,
+  SignupStylistStackRoute,
   AppStackRoute,
   OAuthStackRoute
 };

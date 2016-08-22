@@ -11,11 +11,14 @@ import NavigationSetting from '../navigation/NavigationSetting';
 
 import MultilineTextInput from '../components/Form/MultilineTextInput';
 import PickerInput from '../components/Form/PickerInput';
+import PageInput from '../components/Form/PageInput';
 import BannerErrorContainer from '../components/BannerErrorContainer';
 
 import {throwOnFail} from '../lib/reduxPromiseMiddleware';
 
 import {registrationActions} from '../actions/registration';
+
+import {stylistEducation} from '../routes';
 
 import formMixin from '../mixins/form';
 
@@ -83,6 +86,15 @@ export default class StylistInfo extends PureComponent {
           placeholder="Years of experience"
           ref={(r) => this.addFormItem(r, 'experience')}
           validation={(v) => !!v}
+        />
+
+        <View style={{height: StyleSheet.hairlineWidth}} />
+
+        <PageInput
+          page={stylistEducation}
+          placeholder="Education"
+          ref={(r) => this.addFormItem(r, 'education')}
+          validation={(v) => true}
         />
 
         <Text style={{

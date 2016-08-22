@@ -8,6 +8,7 @@ import Register from './containers/Register';
 import Register2 from './containers/Register2';
 import BasicInfo from './containers/BasicInfo';
 import StylistInfo from './containers/StylistInfo';
+import StylistEducation from './containers/StylistEducation';
 import Login from './containers/Login';
 import LoginEmail from './containers/LoginEmail';
 import ForgottenPassword from './containers/ForgottenPassword';
@@ -58,6 +59,12 @@ class BasicInfoRoute extends Route {
 }
 class StylistInfoRoute extends Route {
   SceneComponent = StylistInfo;
+  SceneConfig = {
+    ...CustomScenesConfig.FadeInOut
+  };
+}
+class StylistEducationRoute extends Route {
+  SceneComponent = StylistEducation;
   SceneConfig = {
     ...CustomScenesConfig.FadeInOut
   };
@@ -178,6 +185,7 @@ export const login = new LoginRoute();
 export const loginEmail = new LoginEmailRoute();
 export const forgottenPassword = new ForgottenPasswordRoute();
 export const stylistInfo = new StylistInfoRoute();
+export const stylistEducation = new StylistEducationRoute();
 export const feed = new FeedRoute();
 export const search = new SearchRoute();
 export const createPost = new CreatePostRoute();
@@ -254,6 +262,7 @@ export const constructors = {
   LoginEmailRoute,
   ForgottenPasswordRoute,
   StylistInfoRoute,
+  StylistEducationRoute,
   FeedRoute,
   SearchRoute,
   CreatePostRoute,

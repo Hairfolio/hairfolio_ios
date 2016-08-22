@@ -9,7 +9,7 @@ import NavigationBar from '../../components/DarkNavigationBar/Bar';
 
 import PureComponent from '../../components/PureComponent';
 
-import {basicInfoStylist, stylistInfo} from '../../routes';
+import {basicInfoStylist, stylistInfo, stylistEducation} from '../../routes';
 
 import {COLORS} from '../../style';
 
@@ -75,7 +75,8 @@ export default class SignupConsumerStack extends PureComponent {
           initialRoute={basicInfoStylist}
           initialRouteStack={[
             basicInfoStylist,
-            stylistInfo
+            stylistInfo,
+            stylistEducation
           ]}
           navigationBar={<NavigationBar />}
           ref={(navigator) => this._nav = navigator && navigator.navigator()}

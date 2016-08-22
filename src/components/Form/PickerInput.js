@@ -75,7 +75,7 @@ export default class Picker extends PureComponent {
             }}>{_.get(this.props.choices, [this.state.selected, 'label'], this.props.placeholder)}</Text>
           </View>
           <View style={{
-            width: SCALE.w(102),
+            width: SCALE.w(83),
             justifyContent: 'center',
             alignItems: 'center',
             borderLeftWidth: 1,

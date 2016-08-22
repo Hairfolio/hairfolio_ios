@@ -9,6 +9,8 @@ import Register2 from './containers/Register2';
 import BasicInfo from './containers/BasicInfo';
 import StylistInfo from './containers/StylistInfo';
 import StylistEducation from './containers/StylistEducation';
+import StylistCertificates from './containers/StylistCertificates';
+import StylistPlaceOfWork from './containers/StylistPlaceOfWork';
 import Login from './containers/Login';
 import LoginEmail from './containers/LoginEmail';
 import ForgottenPassword from './containers/ForgottenPassword';
@@ -59,6 +61,18 @@ class BasicInfoRoute extends Route {
 }
 class StylistInfoRoute extends Route {
   SceneComponent = StylistInfo;
+  SceneConfig = {
+    ...CustomScenesConfig.FadeInOut
+  };
+}
+class StylistCertificatesRoute extends Route {
+  SceneComponent = StylistCertificates;
+  SceneConfig = {
+    ...CustomScenesConfig.FadeInOut
+  };
+}
+class StylistPlaceOfWorkRoute extends Route {
+  SceneComponent = StylistPlaceOfWork;
   SceneConfig = {
     ...CustomScenesConfig.FadeInOut
   };
@@ -186,6 +200,8 @@ export const loginEmail = new LoginEmailRoute();
 export const forgottenPassword = new ForgottenPasswordRoute();
 export const stylistInfo = new StylistInfoRoute();
 export const stylistEducation = new StylistEducationRoute();
+export const stylistCertificates = new StylistCertificatesRoute();
+export const stylistPlaceOfWork = new StylistPlaceOfWorkRoute();
 export const feed = new FeedRoute();
 export const search = new SearchRoute();
 export const createPost = new CreatePostRoute();
@@ -262,7 +278,9 @@ export const constructors = {
   LoginEmailRoute,
   ForgottenPasswordRoute,
   StylistInfoRoute,
+  StylistCertificatesRoute,
   StylistEducationRoute,
+  StylistPlaceOfWorkRoute,
   FeedRoute,
   SearchRoute,
   CreatePostRoute,

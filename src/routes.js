@@ -11,6 +11,7 @@ import StylistInfo from './containers/StylistInfo';
 import StylistEducation from './containers/StylistEducation';
 import StylistCertificates from './containers/StylistCertificates';
 import StylistPlaceOfWork from './containers/StylistPlaceOfWork';
+import StylistProductExperience from './containers/StylistProductExperience';
 import Login from './containers/Login';
 import LoginEmail from './containers/LoginEmail';
 import ForgottenPassword from './containers/ForgottenPassword';
@@ -73,6 +74,12 @@ class StylistCertificatesRoute extends Route {
 }
 class StylistPlaceOfWorkRoute extends Route {
   SceneComponent = StylistPlaceOfWork;
+  SceneConfig = {
+    ...CustomScenesConfig.FadeInOut
+  };
+}
+class StylistProductExperienceRoute extends Route {
+  SceneComponent = StylistProductExperience;
   SceneConfig = {
     ...CustomScenesConfig.FadeInOut
   };
@@ -202,6 +209,7 @@ export const stylistInfo = new StylistInfoRoute();
 export const stylistEducation = new StylistEducationRoute();
 export const stylistCertificates = new StylistCertificatesRoute();
 export const stylistPlaceOfWork = new StylistPlaceOfWorkRoute();
+export const stylistProductExperience = new StylistProductExperienceRoute();
 export const feed = new FeedRoute();
 export const search = new SearchRoute();
 export const createPost = new CreatePostRoute();
@@ -281,6 +289,7 @@ export const constructors = {
   StylistCertificatesRoute,
   StylistEducationRoute,
   StylistPlaceOfWorkRoute,
+  StylistProductExperienceRoute,
   FeedRoute,
   SearchRoute,
   CreatePostRoute,

@@ -19,6 +19,7 @@ import StylistProductExperience from './containers/StylistProductExperience';
 import Login from './containers/Login';
 import LoginEmail from './containers/LoginEmail';
 import ForgottenPassword from './containers/ForgottenPassword';
+import EditCustomer from './containers/EditCustomer';
 import Feed from './containers/Feed';
 import Search from './containers/Search';
 import CreatePost from './containers/CreatePost';
@@ -26,6 +27,7 @@ import Favourites from './containers/Favourites';
 import Profile from './containers/Profile';
 import OnboardingStack from './stacks/Onboarding';
 import ForgottenPasswordStack from './stacks/ForgottenPassword';
+import EditCustomerStack from './stacks/EditCustomer';
 import SignupConsumerStack from './stacks/SignupConsumer';
 import SignupBrandStack from './stacks/SignupBrand';
 import SignupSalonStack from './stacks/SignupSalon';
@@ -137,6 +139,12 @@ class ForgottenPasswordRoute extends Route {
     ...CustomScenesConfig.FadeInOut
   };
 }
+class EditCustomerRoute extends Route {
+  SceneComponent = EditCustomer;
+  SceneConfig = {
+    ...CustomScenesConfig.FadeInOut
+  };
+}
 
 class FeedRoute extends Route {
   SceneComponent = Feed;
@@ -189,6 +197,12 @@ class ForgottenPasswordStackRoute extends Route {
     ...CustomScenesConfig.FadeInOut
   };
 }
+class EditCustomerStackRoute extends Route {
+  SceneComponent = EditCustomerStack;
+  SceneConfig = {
+    ...CustomScenesConfig.FadeInOut
+  };
+}
 class SignupConsumerStackRoute extends Route {
   SceneComponent = SignupConsumerStack;
   SceneConfig = {
@@ -233,6 +247,7 @@ export const register2 = new Register2Route();
 export const login = new LoginRoute();
 export const loginEmail = new LoginEmailRoute();
 export const forgottenPassword = new ForgottenPasswordRoute();
+export const editCustomer = new EditCustomerRoute();
 export const salonInfo = new SalonInfoRoute();
 export const brandInfo = new BrandInfoRoute();
 export const salonStylists = new SalonStylistsRoute();
@@ -249,6 +264,7 @@ export const favourites = new FavouritesRoute();
 export const profile = new ProfileRoute();
 export const loginStack = new OnboardingStackRoute();
 export const forgottenPasswordStack = new ForgottenPasswordStackRoute();
+export const editCustomerStack = new EditCustomerStackRoute();
 export const signupConsumerStack = new SignupConsumerStackRoute();
 export const signupBrandStack = new SignupBrandStackRoute();
 export const signupSalonStack = new SignupSalonStackRoute();
@@ -319,6 +335,7 @@ export const constructors = {
   LoginRoute,
   LoginEmailRoute,
   ForgottenPasswordRoute,
+  EditCustomerRoute,
   SalonInfoRoute,
   SalonStylistsRoute,
   SalonSPRoute,
@@ -335,6 +352,7 @@ export const constructors = {
   ProfileRoute,
   OnboardingStackRoute,
   ForgottenPasswordStackRoute,
+  EditCustomerStackRoute,
   SignupConsumerStackRoute,
   SignupBrandStackRoute,
   SignupSalonStackRoute,

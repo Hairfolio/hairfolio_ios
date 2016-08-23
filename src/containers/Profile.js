@@ -11,46 +11,14 @@ import {environment} from '../selectors/environment';
 import {COLORS, FONTS, SCALE} from '../style';
 import NavigationSetting from '../navigation/NavigationSetting';
 
-import appEmitter from '../appEmitter';
 import utils from '../utils';
-
-import {registrationActions} from '../actions/registration';
 
 import ProfileButton from '../components/Buttons/Profile';
 import Icon from '../components/Icon';
 
 import {BOTTOMBAR_HEIGHT, STATUSBAR_HEIGHT, Dims} from '../constants';
 
-import {loginStack, login} from '../routes';
-
-/*
- <Text style={{
-          fontFamily: FONTS.MEDIUM,
-          textAlign: 'center'
-        }}>Hello {this.props.user.get('first_name')}</Text>
-        <View style={{height: 20}} />
-        <SimpleButton
-          color={COLORS.DARK}
-          label="Log Out"
-          onPress={() => {
-            this.props.dispatch(registrationActions.logout());
-            appEmitter.emit('logout');
-            _.first(this.context.navigators).jumpTo(loginStack);
-          }}
-          ref="submit"
-        />
-        <View style={{height: 20}} />
-        <SimpleButton
-          color={COLORS.DARK}
-          label="Destroy"
-          onPress={() => {
-            this.props.dispatch(registrationActions.destroy());
-            appEmitter.emit('logout');
-            _.first(this.context.navigators).jumpTo(loginStack);
-          }}
-          ref="submit"
-        />
-        */
+import {editCustomerStack} from '../routes';
 
 @connect(app, user, environment)
 export default class Profile extends PureComponent {
@@ -99,6 +67,9 @@ export default class Profile extends PureComponent {
             position: 'relative'
           }}>
             <TouchableOpacity
+              onPress={() => {
+                _.first(this.context.navigators).jumpTo(editCustomerStack);
+              }}
               style={{
                 position: 'absolute',
                 top: STATUSBAR_HEIGHT + 5,

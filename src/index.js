@@ -18,7 +18,7 @@ import utils from './utils';
 
 import Intro from './components/Intro';
 
-import {hello, oauthStack, loginStack, forgottenPasswordStack, signupConsumerStack, signupStylistStack, signupSalonStack, signupBrandStack, appStack} from './routes';
+import {hello, oauthStack, loginStack, forgottenPasswordStack, signupConsumerStack, signupStylistStack, signupSalonStack, signupBrandStack, appStack, editCustomerStack} from './routes';
 
 import {appActions} from './actions/app';
 
@@ -132,7 +132,8 @@ export default class Root extends PureComponent {
                   signupSalonStack,
                   signupStylistStack,
                   appStack,
-                  oauthStack
+                  oauthStack,
+                  editCustomerStack
                 ]}
               />
             </Provider>

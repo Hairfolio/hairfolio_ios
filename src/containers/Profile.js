@@ -3,7 +3,7 @@ import _ from 'lodash';
 import {BlurView} from 'react-native-blur';
 import {autobind} from 'core-decorators';
 import PureComponent from '../components/PureComponent';
-import {View, Text, Image, StatusBar} from 'react-native';
+import {View, Text, Image, StatusBar, TouchableOpacity} from 'react-native';
 import connect from '../lib/connect';
 import {app} from '../selectors/app';
 import {user} from '../selectors/user';
@@ -17,6 +17,7 @@ import utils from '../utils';
 import {registrationActions} from '../actions/registration';
 
 import ProfileButton from '../components/Buttons/Profile';
+import Icon from '../components/Icon';
 
 import {BOTTOMBAR_HEIGHT, STATUSBAR_HEIGHT, Dims} from '../constants';
 
@@ -94,8 +95,22 @@ export default class Profile extends PureComponent {
           <BlurView blurType="light" style={{
             flex: 1,
             justifyContent: 'center',
-            alignItems: 'center'
+            alignItems: 'center',
+            position: 'relative'
           }}>
+            <TouchableOpacity
+              style={{
+                position: 'absolute',
+                top: STATUSBAR_HEIGHT + 5,
+                right: 10
+              }}
+            >
+              <Icon
+                color={COLORS.WHITE}
+                name="settings"
+                size={SCALE.h(48)}
+              />
+            </TouchableOpacity>
             <Image
               source={{uri: utils.getUserProfilePicURI(this.props.user, this.props.environment)}}
               style={{

@@ -1,7 +1,7 @@
 import React from 'react';
 import _ from 'lodash';
 import validator from 'validator';
-import reactMixin from 'react-mixin';
+import {mixin} from 'core-decorators';
 import PureComponent from '../components/PureComponent';
 import RN, {View, Text} from 'react-native';
 import connect from '../lib/connect';
@@ -28,7 +28,7 @@ import {registrationActions} from '../actions/registration';
 import {login, register, forgottenPasswordStack, appStack} from '../routes';
 
 @connect(app, user, environment)
-@reactMixin.decorate(formMixin)
+@mixin(formMixin)
 export default class LoginEmail extends PureComponent {
   static propTypes = {
     appVersion: React.PropTypes.string.isRequired,

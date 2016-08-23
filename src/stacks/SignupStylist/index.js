@@ -72,7 +72,7 @@ export default class SignupConsumerStack extends PureComponent {
         }}
       >
         <Navigator
-          initialRoute={stylistCertificates/*basicInfoStylist*/}
+          initialRoute={basicInfoStylist}
           initialRouteStack={[
             basicInfoStylist,
             stylistInfo,

@@ -6,11 +6,10 @@ import connect from '../lib/connect';
 import {app} from '../selectors/app';
 import {COLORS, FONTS, SCALE} from '../style';
 import NavigationSetting from '../navigation/NavigationSetting';
-import autoproxy from 'autoproxy';
 
 import {NAVBAR_HEIGHT} from '../constants';
 
-@autoproxy(connect(app))
+@connect(app)
 export default class StylistEducation extends PureComponent {
   static propTypes = {
     appVersion: React.PropTypes.string.isRequired,

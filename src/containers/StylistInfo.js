@@ -1,7 +1,7 @@
 import React from 'react';
 import _ from 'lodash';
 import validator from 'validator';
-import reactMixin from 'react-mixin';
+import {mixin} from 'core-decorators';
 import PureComponent from '../components/PureComponent';
 import {View, Text, StyleSheet} from 'react-native';
 import connect from '../lib/connect';
@@ -25,7 +25,7 @@ import formMixin from '../mixins/form';
 import {NAVBAR_HEIGHT} from '../constants';
 
 @connect(app)
-@reactMixin.decorate(formMixin)
+@mixin(formMixin)
 export default class StylistInfo extends PureComponent {
   static propTypes = {
     appVersion: React.PropTypes.string.isRequired,

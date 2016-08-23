@@ -1,7 +1,7 @@
 import React from 'react';
 import _ from 'lodash';
+import {mixin} from 'core-decorators';
 import validator from 'validator';
-import reactMixin from 'react-mixin';
 import PureComponent from '../components/PureComponent';
 import RN, {View, StyleSheet} from 'react-native';
 import connect from '../lib/connect';
@@ -32,7 +32,7 @@ import {cloudinaryActions} from '../actions/cloudinary';
 import {NAVBAR_HEIGHT} from '../constants';
 
 @connect(app, user, environment, cloudinary)
-@reactMixin.decorate(formMixin)
+@mixin(formMixin)
 export default class BasicInfo extends PureComponent {
   static propTypes = {
     accountType: React.PropTypes.string.isRequired,

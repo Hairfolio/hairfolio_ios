@@ -1,6 +1,6 @@
 import React from 'react';
 import _ from 'lodash';
-import reactMixin from 'react-mixin';
+import {mixin} from 'core-decorators';
 import PureComponent from '../components/PureComponent';
 import {View, Text} from 'react-native';
 import connect from '../lib/connect';
@@ -25,7 +25,7 @@ import oauthMixin from '../mixins/oauth';
 import {register, forgottenPasswordStack, loginEmail, loginStack, appStack} from '../routes';
 
 @connect(app, environment, user)
-@reactMixin.decorate(oauthMixin)
+@mixin(oauthMixin)
 export default class Login extends PureComponent {
   static propTypes = {
     appVersion: React.PropTypes.string.isRequired,

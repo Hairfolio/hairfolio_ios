@@ -8,13 +8,12 @@ import {Map, OrderedMap} from 'immutable';
 import {COLORS, FONTS, SCALE} from '../style';
 import SearchList from '../components/SearchList';
 import NavigationSetting from '../navigation/NavigationSetting';
-import autoproxy from 'autoproxy';
 
 import {salonInfo} from '../routes';
 
 import {NAVBAR_HEIGHT} from '../constants';
 
-@autoproxy(connect(app))
+@connect(app)
 export default class SalonStylist extends PureComponent {
   static propTypes = {
     appVersion: React.PropTypes.string.isRequired,

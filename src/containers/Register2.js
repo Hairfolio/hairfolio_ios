@@ -1,6 +1,6 @@
 import React from 'react';
 import _ from 'lodash';
-import reactMixin from 'react-mixin';
+import {mixin} from 'core-decorators';
 import PureComponent from '../components/PureComponent';
 import {View} from 'react-native';
 import connect from '../lib/connect';
@@ -25,7 +25,7 @@ import oauthMixin from '../mixins/oauth';
 import {register, signupConsumerStack, signupStylistStack, signupBrandStack, signupSalonStack, loginStack, appStack} from '../routes';
 
 @connect(app, registration, user, environment)
-@reactMixin.decorate(oauthMixin)
+@mixin(oauthMixin)
 export default class Register2 extends PureComponent {
   static propTypes = {
     appVersion: React.PropTypes.string.isRequired,

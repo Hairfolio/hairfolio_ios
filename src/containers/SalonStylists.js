@@ -4,7 +4,9 @@ import PureComponent from '../components/PureComponent';
 import {View, Text} from 'react-native';
 import connect from '../lib/connect';
 import {app} from '../selectors/app';
+import {Map, OrderedMap} from 'immutable';
 import {COLORS, FONTS, SCALE} from '../style';
+import SearchList from '../components/SearchList';
 import NavigationSetting from '../navigation/NavigationSetting';
 import autoproxy from 'autoproxy';
 
@@ -32,6 +34,10 @@ export default class SalonStylist extends PureComponent {
   clear() {
   }
 
+  stylists = new OrderedMap(_.map(_.range(0, 20), (id) =>
+    [id, new Map({id: id, label: `Stylist ${id}`})]
+  ));
+
   render() {
     return (<NavigationSetting
       leftAction={() => {
@@ -47,18 +53,12 @@ export default class SalonStylist extends PureComponent {
       }}
       title="Stylists"
     >
-      <View style={{
-        flex: 1
-      }}>
-        <Text style={{
-          marginTop: SCALE.h(35),
-          marginLeft: SCALE.w(25),
-          marginRight: SCALE.w(25),
-          fontFamily: FONTS.MEDIUM,
-          fontSize: SCALE.h(26),
-          color: COLORS.TEXT
-        }}>Salon Stylists</Text>
-      </View>
+      <SearchList
+        items={this.stylists}
+        style={{
+          flex: 1
+        }}
+      />
     </NavigationSetting>);
   }
 };

@@ -12,6 +12,7 @@ import NavigationBar from '../../components/AppBottomBar/Bar';
 import PureComponent from '../../components/PureComponent';
 
 import appEmitter from '../../appEmitter';
+import utils from '../../utils';
 
 import {COLORS} from '../../style';
 
@@ -87,14 +88,7 @@ export default class AppStack extends PureComponent {
   }
 
   render() {
-    var profilePic;
-
-    if (this.props.user.get('avatar_cloudinary_id'))
-      profilePic = `http://res.cloudinary.com/${this.props.environment.get('cloud_name')}/image/upload/${this.props.user.get('avatar_cloudinary_id')}.jpg`;
-    else if (this.props.user.get('facebook_id'))
-      profilePic = `http://res.cloudinary.com/${this.props.environment.get('cloud_name')}/image/facebook/${this.props.user.get('facebook_id')}.jpg`;
-    else if (this.props.user.get('insta_id'))
-      profilePic = `http://res.cloudinary.com/${this.props.environment.get('cloud_name')}/image/instagram_name/${this.props.user.get('email').split('@')[0]}.jpg`;
+    var profilePic = utils.getUserProfilePicURI(this.props.user, this.props.environment);
 
     return (
       <NavigationSetting
@@ -107,7 +101,7 @@ export default class AppStack extends PureComponent {
         }}
       >
         <Navigator
-          initialRoute={search}
+          initialRoute={profile/*search*/}
           initialRouteStack={[
             search, feed, createPost, favourites, profile
           ]}

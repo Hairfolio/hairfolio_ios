@@ -32,5 +32,7 @@ export const FONTS = {
   ROMAN: 'Avenir-Roman',
   BOLD: 'Avenir-Bold',
   HEAVY: 'Avenir-Heavy',
-  SEMIBOLD: 'Avenir-Semibold'
+  SEMIBOLD: 'Avenir-Semibold',
+  BOOK_OBLIQUE: 'Avenir-BookOblique',
+  HEAVY_OBLIQUE: 'Avenir-HeavyOblique'
 };

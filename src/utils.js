@@ -34,5 +34,13 @@ export default {
         return response;
       }, () => response);
     return response;
+  },
+  getUserProfilePicURI(user, environment) {
+    if (user.get('avatar_cloudinary_id'))
+      return `http://res.cloudinary.com/${environment.get('cloud_name')}/image/upload/${user.get('avatar_cloudinary_id')}.jpg`;
+    else if (user.get('facebook_id'))
+      return `http://res.cloudinary.com/${environment.get('cloud_name')}/image/facebook/${user.get('facebook_id')}.jpg`;
+    else if (user.get('insta_id'))
+      return `http://res.cloudinary.com/${environment.get('cloud_name')}/image/instagram_name/${user.get('email').split('@')[0]}.jpg`;
   }
 };

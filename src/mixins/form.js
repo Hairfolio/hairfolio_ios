@@ -26,5 +26,14 @@ export default {
 
   clearValues() {
     _.each(this.fields, ref => ref.clear());
+  },
+
+  setFormValue(value) {
+    _.each(value, (value, key) => {
+      if (!this.fields[key])
+        return;
+
+      this.fields[key].setValue(value);
+    });
   }
 };

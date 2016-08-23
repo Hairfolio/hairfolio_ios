@@ -1,7 +1,7 @@
 import React from 'react';
 import _ from 'lodash';
 import PureComponent from '../components/PureComponent';
-import {mixin} from 'core-decorators';
+import {mixin, autobind} from 'core-decorators';
 import {View, Text, StyleSheet} from 'react-native';
 import connect from '../lib/connect';
 import {app} from '../selectors/app';
@@ -19,7 +19,7 @@ import {cloudinaryActions} from '../actions/cloudinary';
 
 import {NAVBAR_HEIGHT} from '../constants';
 
-import {loginStack, login, appStack, editCustomer} from '../routes';
+import {loginStack, appStack} from '../routes';
 
 import {throwOnFail} from '../lib/reduxPromiseMiddleware';
 
@@ -55,10 +55,31 @@ export default class EditCustomer extends PureComponent {
 
   state = {};
 
+  componentWillMount() {
+    this.listeners = [
+      appEmitter.addListener('login', this.onLogin)
+    ];
+  }
+
+  componentDidMount() {
+    if (utils.isReady(this.props.userState))
+      this.onLogin();
+  }
+
+  componentWillUnmount() {
+    _.each(this.listeners, l => l.remove());
+  }
+
+  @autobind
+  onLogin() {
+    this.setFormValue(this.props.user.toJS());
+  }
+
   render() {
     return (<NavigationSetting
       forceUpdateEvents={['login']}
       leftAction={() => {
+        this.setFormValue(this.props.user.toJS());
         _.first(this.context.navigators).jumpTo(appStack);
       }}
       leftDisabled={this.state.submitting}
@@ -126,7 +147,6 @@ export default class EditCustomer extends PureComponent {
           />
           <View style={{height: StyleSheet.hairlineWidth}} />
           <PageInput
-            page={editCustomer}
             placeholder="Change Password"
           />
 
@@ -173,12 +193,10 @@ export default class EditCustomer extends PureComponent {
           <View style={{height: StyleSheet.hairlineWidth}} />
 
           <PageInput
-            page={editCustomer}
             placeholder="Feedback"
           />
           <View style={{height: StyleSheet.hairlineWidth}} />
           <PageInput
-            page={editCustomer}
             placeholder="Terms & Conditions"
           />
 

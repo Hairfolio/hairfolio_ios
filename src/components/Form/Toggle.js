@@ -31,6 +31,9 @@ export default class ToggleInput extends PureComponent {
   getValue() {
     return this.state.value;
   }
+  setValue(value) {
+    this.setState({value});
+  }
 
   isValide() {
     return this.props.validation(this.getValue());

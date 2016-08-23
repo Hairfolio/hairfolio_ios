@@ -28,7 +28,14 @@ export default class FormPageInput extends PureComponent {
   }
 
   getValue() {
+    if (!this.props.page)
+      return;
     return this.props.page.scene().getValue();
+  }
+  setValue(value) {
+    if (!this.props.page)
+      return;
+    return this.props.page.scene().setValue(value);
   }
 
   isValide() {
@@ -36,6 +43,8 @@ export default class FormPageInput extends PureComponent {
   }
 
   clear() {
+    if (!this.props.page)
+      return;
     this.props.page.scene().clear();
   }
 
@@ -43,6 +52,8 @@ export default class FormPageInput extends PureComponent {
     return (<TouchableOpacity
       disabled={this.props.disabled}
       onPress={() => {
+        if (!this.props.page)
+          return;
         _.last(this.context.navigators).jumpTo(this.props.page);
       }}
       style={{

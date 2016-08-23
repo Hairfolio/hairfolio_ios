@@ -76,14 +76,39 @@ export default class EditCustomer extends PureComponent {
   }
 
   render() {
+    var isLoading = this.state.submitting || utils.isLoading([this.props.cloudinaryStates.get('edit-user-pick')]);
+
     return (<NavigationSetting
       forceUpdateEvents={['login']}
       leftAction={() => {
         this.setFormValue(this.props.user.toJS());
         _.first(this.context.navigators).jumpTo(appStack);
       }}
-      leftDisabled={utils.isLoading([this.props.environmentState, this.props.userState, this.props.cloudinaryStates.get('edit-user-pick')])}
+      leftDisabled={isLoading}
       leftIcon="back"
+      rightAction={() => {
+        if (this.checkErrors())
+          return;
+
+        this.setState({'submitting': true});
+        this.props.dispatch(registrationActions.editUser(this.getFormValue()))
+        .then((r) => {
+          this.setState({submitting: false});
+          return r;
+        })
+        .then(throwOnFail)
+        .then(
+          () => {
+            appEmitter.emit('user-edited');
+          },
+          (e) => {
+            console.log(e);
+            this.refs.ebc.error(e);
+          }
+        );
+      }}
+      rightDisabled={isLoading}
+      rightLabel="Save"
       style={{
         flex: 1,
         backgroundColor: COLORS.LIGHT,
@@ -104,7 +129,7 @@ export default class EditCustomer extends PureComponent {
             alignSelf: 'center'
           }}>
             <PictureInput
-              disabled={utils.isLoading([this.props.environmentState, this.props.userState, this.props.cloudinaryStates.get('edit-user-pick')])}
+              disabled={isLoading}
               emptyStatePictureURI={utils.getUserProfilePicURI(this.props.user, this.props.environment)}
               getPictureURIFromValue={(value) => {
                 return utils.getCloudinaryPicFromId(value, this.props.environment);
@@ -130,14 +155,14 @@ export default class EditCustomer extends PureComponent {
             autoCorrect={false}
             placeholder="First name"
             ref={(r) => this.addFormItem(r, 'first_name')}
-            validation={(v) => !!v && validator.isEmail(v)}
+            validation={(v) => !!v}
           />
           <View style={{height: StyleSheet.hairlineWidth}} />
           <ProfileTextInput
             autoCorrect={false}
             placeholder="Last name"
             ref={(r) => this.addFormItem(r, 'last_name')}
-            validation={(v) => !!v && validator.isEmail(v)}
+            validation={(v) => !!v}
           />
           <View style={{height: StyleSheet.hairlineWidth}} />
           <ProfileTextInput

@@ -43,7 +43,7 @@ export default class Profile extends PureComponent {
 
   render() {
     return (<NavigationSetting
-      forceUpdateEvents={['login']}
+      forceUpdateEvents={['login', 'user-edited']}
       onWillFocus={this.onWillFocus}
       style={{
         flex: 1,

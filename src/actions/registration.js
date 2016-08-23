@@ -19,6 +19,10 @@ export const registrationTypes = new Enum(
   'FORGOT_PASSWORD_PENDING',
   'FORGOT_PASSWORD_SUCCESS',
   'FORGOT_PASSWORD_ERROR',
+  'EDIT_USER',
+  'EDIT_USER_PENDING',
+  'EDIT_USER_SUCCESS',
+  'EDIT_USER_ERROR',
   'LOGOUT'
 );
 
@@ -220,6 +224,24 @@ export const registrationActions = {
 
       return {
         type: registrationTypes.LOGOUT
+      };
+    };
+  },
+
+  editUser(values) {
+    return ({services: {fetch}, getState}) => {
+      return {
+        type: registrationTypes.EDIT_USER,
+        meta: {
+          immediate: true,
+          immediateAsyncResult: true
+        },
+        payload: {
+          promise: fetch.fetch(`/users/${getState().user.data.get('id')}`, {
+            method: 'PATCH',
+            body: values
+          })
+        }
       };
     };
   }

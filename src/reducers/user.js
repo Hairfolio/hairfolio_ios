@@ -39,6 +39,12 @@ export default function userReducer(state = initialState, action) {
       });
     }
 
+    case registrationTypes.EDIT_USER_SUCCESS.toString(): {
+      return state.mergeDeep({
+        'data': action.payload
+      });
+    }
+
     case registrationTypes.LOGOUT: {
       return initialState;
     }

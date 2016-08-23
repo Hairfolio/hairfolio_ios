@@ -37,8 +37,6 @@ export default {
     });
 
     _.each(this.fields, (ref, key) => {
-      console.log(key, value[key]);
-
       if (value[key])
         return;
 

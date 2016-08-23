@@ -208,7 +208,7 @@ export const registrationActions = {
 
   logout() {
     return ({services: {fetch}, getState}) => {
-      fetch.fetch(`/sessions/${getState().user.data.get('id')}`, {method: 'DELETE'})
+      fetch.fetch(`/sessions/${getState().user.data.get('auth_token')}`, {method: 'DELETE'})
         .catch(e => console.log(e));
 
       return {

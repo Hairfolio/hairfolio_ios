@@ -11,6 +11,8 @@ import {environment} from '../selectors/environment';
 import {COLORS, FONTS, SCALE} from '../style';
 import NavigationSetting from '../navigation/NavigationSetting';
 
+import ConsumerProfileStack from '../stacks/ConsumerProfile';
+
 import utils from '../utils';
 
 import ProfileButton from '../components/Buttons/Profile';
@@ -134,6 +136,7 @@ export default class Profile extends PureComponent {
             </View>
           </BlurView>
         </Image>
+        <ConsumerProfileStack />
       </View>
     </NavigationSetting>);
   }

@@ -20,6 +20,8 @@ import Login from './containers/Login';
 import LoginEmail from './containers/LoginEmail';
 import ForgottenPassword from './containers/ForgottenPassword';
 import EditCustomer from './containers/EditCustomer';
+import UserPosts from './containers/UserPosts';
+import UserHairfolio from './containers/UserHairfolio';
 import Feed from './containers/Feed';
 import Search from './containers/Search';
 import CreatePost from './containers/CreatePost';
@@ -146,6 +148,24 @@ class EditCustomerRoute extends Route {
   };
 }
 
+class UserPostsRoute extends Route {
+  SceneComponent = UserPosts;
+  SceneConfig = {
+    ...CustomScenesConfig.FadeInOut
+  };
+
+  label = 'Posts';
+}
+
+class UserHairfolioRoute extends Route {
+  SceneComponent = UserHairfolio;
+  SceneConfig = {
+    ...CustomScenesConfig.FadeInOut
+  };
+
+  label = 'Hairfolio';
+}
+
 class FeedRoute extends Route {
   SceneComponent = Feed;
   SceneConfig = {
@@ -257,6 +277,8 @@ export const stylistEducation = new StylistEducationRoute();
 export const stylistCertificates = new StylistCertificatesRoute();
 export const stylistPlaceOfWork = new StylistPlaceOfWorkRoute();
 export const stylistProductExperience = new StylistProductExperienceRoute();
+export const userHairfolio = new UserHairfolioRoute();
+export const userPosts = new UserPostsRoute();
 export const feed = new FeedRoute();
 export const search = new SearchRoute();
 export const createPost = new CreatePostRoute();
@@ -345,6 +367,8 @@ export const constructors = {
   StylistEducationRoute,
   StylistPlaceOfWorkRoute,
   StylistProductExperienceRoute,
+  UserHairfolioRoute,
+  UserPostsRoute,
   FeedRoute,
   SearchRoute,
   CreatePostRoute,

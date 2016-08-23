@@ -69,7 +69,7 @@ export default class ToggleInput extends PureComponent {
         onValueChange={(value) => {
           this.setState({value});
         }}
-        value={this.state.value}
+        value={!!this.state.value}
       />
     </View>);
   }

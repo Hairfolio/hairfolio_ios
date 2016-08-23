@@ -10,8 +10,8 @@ const initialState = new (Record({
 }));
 
 const revive = environment => initialState.merge({
-  state: environment.state === READY ? READY : EMPTY,
-  ...environment
+  ...environment,
+  state: environment.state === READY ? READY : EMPTY
 });
 
 export default function registrationReducer(state = initialState, action) {

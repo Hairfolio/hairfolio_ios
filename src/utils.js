@@ -17,7 +17,7 @@ var is = (what, state) => {
   return !!isList.length;
 };
 
-export default {
+const utils = {
   isReady(state) {
     return is(READY, state);
   },
@@ -35,12 +35,17 @@ export default {
       }, () => response);
     return response;
   },
+  getCloudinaryPicFromId(id, environment) {
+    return `http://res.cloudinary.com/${environment.get('cloud_name')}/image/upload/${id}.jpg`;
+  },
   getUserProfilePicURI(user, environment) {
     if (user.get('avatar_cloudinary_id'))
-      return `http://res.cloudinary.com/${environment.get('cloud_name')}/image/upload/${user.get('avatar_cloudinary_id')}.jpg`;
+      return utils.getCloudinaryPicFromId(user.get('avatar_cloudinary_id'), environment);
     else if (user.get('facebook_id'))
       return `http://res.cloudinary.com/${environment.get('cloud_name')}/image/facebook/${user.get('facebook_id')}.jpg`;
     else if (user.get('insta_id'))
       return `http://res.cloudinary.com/${environment.get('cloud_name')}/image/instagram_name/${user.get('email').split('@')[0]}.jpg`;
   }
 };
+
+export default utils;

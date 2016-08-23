@@ -35,5 +35,14 @@ export default {
 
       this.fields[key].setValue(value);
     });
+
+    _.each(this.fields, (ref, key) => {
+      console.log(key, value[key]);
+
+      if (value[key])
+        return;
+
+      ref.setValue(null);
+    });
   }
 };

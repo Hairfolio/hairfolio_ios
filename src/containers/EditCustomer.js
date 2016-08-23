@@ -82,7 +82,7 @@ export default class EditCustomer extends PureComponent {
         this.setFormValue(this.props.user.toJS());
         _.first(this.context.navigators).jumpTo(appStack);
       }}
-      leftDisabled={this.state.submitting}
+      leftDisabled={utils.isLoading([this.props.environmentState, this.props.userState, this.props.cloudinaryStates.get('edit-user-pick')])}
       leftIcon="back"
       style={{
         flex: 1,
@@ -104,7 +104,11 @@ export default class EditCustomer extends PureComponent {
             alignSelf: 'center'
           }}>
             <PictureInput
-              disabled={utils.isLoading([this.props.environmentState, this.props.userState, this.props.cloudinaryStates.get('register-pick')])}
+              disabled={utils.isLoading([this.props.environmentState, this.props.userState, this.props.cloudinaryStates.get('edit-user-pick')])}
+              emptyStatePictureURI={utils.getUserProfilePicURI(this.props.user, this.props.environment)}
+              getPictureURIFromValue={(value) => {
+                return utils.getCloudinaryPicFromId(value, this.props.environment);
+              }}
               onError={(error) => {
                 this.refs.ebc.error(error);
               }}
@@ -112,7 +116,7 @@ export default class EditCustomer extends PureComponent {
               transform={(uri, metas) =>
                 this.props.dispatch(registrationActions.getEnvironment())
                   .then(throwOnFail)
-                  .then(() => this.props.dispatch(cloudinaryActions.upload(uri, metas, {maxHW: 512}, 'register-pick')))
+                  .then(() => this.props.dispatch(cloudinaryActions.upload(uri, metas, {maxHW: 512}, 'edit-user-pick')))
                   .then(throwOnFail)
                   .then(({public_id}) => public_id)
               }
@@ -187,7 +191,8 @@ export default class EditCustomer extends PureComponent {
             editable={false}
             placeholder="Units"
             ref={(r) => {
-              r.setValue('Metric');
+              if (r)
+                r.setValue('Metric');
             }}
           />
           <View style={{height: StyleSheet.hairlineWidth}} />

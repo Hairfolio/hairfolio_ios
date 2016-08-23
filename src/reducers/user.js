@@ -10,8 +10,8 @@ const initialState = new (Record({
 }));
 
 const revive = user => initialState.merge({
-  state: user.state === READY ? READY : EMPTY,
-  ...user
+  ...user,
+  state: user.state === READY ? READY : EMPTY
 });
 
 export default function userReducer(state = initialState, action) {

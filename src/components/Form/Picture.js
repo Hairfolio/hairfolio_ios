@@ -16,6 +16,8 @@ export default class FormPicture extends PureComponent {
 
   static propTypes = {
     disabled: React.PropTypes.bool,
+    emptyStatePictureURI: React.PropTypes.string,
+    getPictureURIFromValue: React.PropTypes.func.isRequired,
     onError: React.PropTypes.func.isRequired,
     transform: React.PropTypes.func.isRequired,
     validation: React.PropTypes.func
@@ -36,6 +38,12 @@ export default class FormPicture extends PureComponent {
   getValue() {
     return this.state.value;
   }
+  setValue(value) {
+    this.setState({
+      value,
+      pictureURI: value ? this.props.getPictureURIFromValue(value) : null
+    });
+  }
 
   isValide() {
     return this.props.validation(this.getValue());
@@ -49,6 +57,8 @@ export default class FormPicture extends PureComponent {
   }
 
   render() {
+    var pictureURI = this.state.pictureURI || this.props.emptyStatePictureURI;
+
     return (<View>
       <CustomTouchableOpacity
         disabled={this.props.disabled}
@@ -101,7 +111,7 @@ export default class FormPicture extends PureComponent {
           position: 'relative'
         }}
       >
-        {!this.state.pictureURI ?
+        {!pictureURI ?
           <Icon
             color={COLORS.DARK}
             name="camera"
@@ -109,7 +119,7 @@ export default class FormPicture extends PureComponent {
           />
         :
           <Image
-            source={{uri: this.state.pictureURI}}
+            source={{uri: pictureURI}}
             style={{
               height: SCALE.h(150),
               width: SCALE.h(150)

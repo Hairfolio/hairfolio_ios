@@ -118,6 +118,9 @@ export default class BasicInfo extends PureComponent {
           }}>
             <PictureInput
               disabled={utils.isLoading([this.props.environmentState, this.props.userState, this.props.cloudinaryStates.get('register-pick')])}
+              // not used here
+              // because we never setValue on this input
+              getPictureURIFromValue={() => {}}
               onError={(error) => {
                 this.refs.ebc.error(error);
               }}

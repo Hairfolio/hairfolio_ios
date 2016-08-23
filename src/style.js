@@ -22,6 +22,7 @@ export const COLORS = {
   TEXT: '#A7A7A7',
 
   RED: '#FF3333',
+  RED_DELETE: '#DA5454',
 
   FB: '#3B5998',
   IG: '#F3328C'

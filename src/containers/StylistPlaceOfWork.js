@@ -1,18 +1,32 @@
 import React from 'react';
 import _ from 'lodash';
+import validator from 'validator';
+import {mixin} from 'core-decorators';
 import PureComponent from '../components/PureComponent';
-import {View, Text} from 'react-native';
+import {View, Text, StyleSheet} from 'react-native';
 import connect from '../lib/connect';
 import {app} from '../selectors/app';
 import {COLORS, FONTS, SCALE} from '../style';
 import NavigationSetting from '../navigation/NavigationSetting';
-import autoproxy from 'autoproxy';
+
+import MultilineTextInput from '../components/Form/MultilineTextInput';
+import InlineTextInput from '../components/Form/InlineTextInput';
+import PickerInput from '../components/Form/PickerInput';
+import BannerErrorContainer from '../components/BannerErrorContainer';
+import KeyboardScrollView from '../components/KeyboardScrollView';
+
+import {throwOnFail} from '../lib/reduxPromiseMiddleware';
+
+import {registrationActions} from '../actions/registration';
 
 import {stylistInfo} from '../routes';
 
+import formMixin from '../mixins/form';
+
 import {NAVBAR_HEIGHT} from '../constants';
 
-@autoproxy(connect(app))
+@connect(app)
+@mixin(formMixin)
 export default class StylistPlaceOfWork extends PureComponent {
   static propTypes = {
     appVersion: React.PropTypes.string.isRequired,
@@ -37,9 +51,18 @@ export default class StylistPlaceOfWork extends PureComponent {
       leftAction={() => {
         _.last(this.context.navigators).jumpTo(stylistInfo);
       }}
+      leftDisabled={this.state.submitting}
       leftIcon="back"
       onWillBlur={this.onWillBlur}
       onWillFocus={this.onWillFocus}
+      rightAction={() => {
+        if (this.checkErrors())
+          return;
+
+        console.log(this.getFormValue());
+      }}
+      rightDisabled={this.state.submitting}
+      rightLabel="Done"
       style={{
         flex: 1,
         backgroundColor: COLORS.LIGHT,
@@ -47,18 +70,80 @@ export default class StylistPlaceOfWork extends PureComponent {
       }}
       title="Place of Work"
     >
-      <View style={{
+      <BannerErrorContainer ref="ebc" style={{
         flex: 1
       }}>
-        <Text style={{
-          marginTop: SCALE.h(35),
-          marginLeft: SCALE.w(25),
-          marginRight: SCALE.w(25),
-          fontFamily: FONTS.MEDIUM,
-          fontSize: SCALE.h(26),
-          color: COLORS.TEXT
-        }}>Stylist Place of Work</Text>
-      </View>
+        <KeyboardScrollView
+          scrollEnabled={false}
+          scrollToTopOnBlur
+          showsVerticalScrollIndicator={false}
+          space={200}
+          style={{flex: 1}}
+        >
+          <View style={{
+            height: SCALE.h(34)
+          }} />
+
+          <InlineTextInput
+            autoCorrect={false}
+            placeholder="City"
+            ref={(r) => this.addFormItem(r, 'salon_name')}
+            validation={(v) => !!v}
+          />
+
+          <View style={{height: StyleSheet.hairlineWidth}} />
+
+          <MultilineTextInput
+            autoCapitalize="none"
+            autoCorrect={false}
+            placeholder="Address"
+            ref={(r) => this.addFormItem(r, 'address')}
+            validation={(v) => !!v}
+          />
+
+          <View style={{height: StyleSheet.hairlineWidth}} />
+
+          <InlineTextInput
+            autoCorrect={false}
+            placeholder="City"
+            ref={(r) => this.addFormItem(r, 'city')}
+            validation={(v) => !!v}
+          />
+          <View style={{height: StyleSheet.hairlineWidth}} />
+
+          <View style={{
+            flexDirection: 'row'
+          }}>
+            <View style={{flex: 1}}>
+              <PickerInput
+                choices={_.map(_.range(0, 20), i => ({label: i.toString()}))}
+                placeholder="State"
+                ref={(r) => this.addFormItem(r, 'state')}
+                validation={(v) => !!v}
+              />
+            </View>
+            <View style={{width: StyleSheet.hairlineWidth}} />
+            <View style={{flex: 1}}>
+              <InlineTextInput
+                autoCorrect={false}
+                placeholder="Zip"
+                ref={(r) => this.addFormItem(r, 'zip')}
+                validation={(v) => !!v}
+              />
+            </View>
+          </View>
+
+          <View style={{height: StyleSheet.hairlineWidth}} />
+
+          <InlineTextInput
+            autoCorrect={false}
+            placeholder="Website"
+            ref={(r) => this.addFormItem(r, 'website')}
+            validation={(v) => !!v}
+          />
+          <View style={{height: StyleSheet.hairlineWidth}} />
+        </KeyboardScrollView>
+      </BannerErrorContainer>
     </NavigationSetting>);
   }
 };

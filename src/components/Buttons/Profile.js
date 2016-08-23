@@ -37,7 +37,9 @@ export default class ProfileButton extends PureComponent {
           fontFamily: FONTS.HEAVY_OBLIQUE,
           fontSize: SCALE.h(26),
           color: COLORS.WHITE,
-          textAlign: 'center'
+          textAlign: 'center',
+          marginLeft: 5,
+          marginRight: 5
         }}>{this.props.label}</Text>
       </TouchableOpacity>
     </View>);

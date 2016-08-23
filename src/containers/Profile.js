@@ -125,11 +125,11 @@ export default class Profile extends PureComponent {
                 justifyContent: 'space-between',
                 marginTop: SCALE.h(20)
               }}>
-                <View style={{flex: 1}}>
+                <View>
                   <ProfileButton label="FOLLOW" />
                 </View>
                 <View style={{width: 15}} />
-                <View style={{flex: 1}}>
+                <View>
                   <ProfileButton label="MESSAGE" />
                 </View>
               </View>

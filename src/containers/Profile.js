@@ -1,5 +1,6 @@
 import React from 'react';
 import _ from 'lodash';
+import {BlurView} from 'react-native-blur';
 import {autobind} from 'core-decorators';
 import PureComponent from '../components/PureComponent';
 import {View, Text, Image, StatusBar} from 'react-native';
@@ -87,61 +88,65 @@ export default class Profile extends PureComponent {
           source={{uri: utils.getUserProfilePicURI(this.props.user, this.props.environment)}}
           style={{
             height: SCALE.h(470),
-            width: Dims.deviceWidth,
-            justifyContent: 'center',
-            alignItems: 'center'
+            width: Dims.deviceWidth
           }}
         >
-          <Image
-            source={{uri: utils.getUserProfilePicURI(this.props.user, this.props.environment)}}
-            style={{
-              height: SCALE.h(130),
-              width: SCALE.h(130),
-              borderRadius: SCALE.h(130) / 2
-            }}
-          />
-          <View>
-            <Text style={{
-              color: COLORS.WHITE,
-              fontFamily: FONTS.HEAVY,
-              fontSize: SCALE.h(42),
-              marginTop: SCALE.h(20),
-              textAlign: 'center',
-              backgroundColor: 'transparent'
-            }}>{this.props.user.get('first_name')} {this.props.user.get('last_name')}</Text>
-            <View style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between'
-            }}>
+          <BlurView blurType="light" style={{
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center'
+          }}>
+            <Image
+              source={{uri: utils.getUserProfilePicURI(this.props.user, this.props.environment)}}
+              style={{
+                height: SCALE.h(130),
+                width: SCALE.h(130),
+                borderRadius: SCALE.h(130) / 2
+              }}
+            />
+            <View>
               <Text style={{
                 color: COLORS.WHITE,
-                fontFamily: FONTS.BOOK_OBLIQUE,
-                fontSize: SCALE.h(28),
+                fontFamily: FONTS.HEAVY,
+                fontSize: SCALE.h(42),
+                marginTop: SCALE.h(20),
                 textAlign: 'center',
                 backgroundColor: 'transparent'
-              }}>X Stars</Text>
-              <Text style={{
-                color: COLORS.WHITE,
-                fontFamily: FONTS.BOOK_OBLIQUE,
-                fontSize: SCALE.h(28),
-                textAlign: 'center',
-                backgroundColor: 'transparent'
-              }}>Y Followers</Text>
-            </View>
-            <View style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              marginTop: SCALE.h(20)
-            }}>
-              <View style={{flex: 1}}>
-                <ProfileButton label="FOLLOW" />
+              }}>{this.props.user.get('first_name')} {this.props.user.get('last_name')}</Text>
+              <View style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between'
+              }}>
+                <Text style={{
+                  color: COLORS.WHITE,
+                  fontFamily: FONTS.BOOK_OBLIQUE,
+                  fontSize: SCALE.h(28),
+                  textAlign: 'center',
+                  backgroundColor: 'transparent'
+                }}>X Stars</Text>
+                <Text style={{
+                  color: COLORS.WHITE,
+                  fontFamily: FONTS.BOOK_OBLIQUE,
+                  fontSize: SCALE.h(28),
+                  textAlign: 'center',
+                  backgroundColor: 'transparent'
+                }}>Y Followers</Text>
               </View>
-              <View style={{width: 15}} />
-              <View style={{flex: 1}}>
-                <ProfileButton label="MESSAGE" />
+              <View style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                marginTop: SCALE.h(20)
+              }}>
+                <View style={{flex: 1}}>
+                  <ProfileButton label="FOLLOW" />
+                </View>
+                <View style={{width: 15}} />
+                <View style={{flex: 1}}>
+                  <ProfileButton label="MESSAGE" />
+                </View>
               </View>
             </View>
-          </View>
+          </BlurView>
         </Image>
       </View>
     </NavigationSetting>);

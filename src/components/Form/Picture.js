@@ -70,6 +70,7 @@ export default class FormPicture extends PureComponent {
             if (response.error)
               this.props.onError(response.error);
             if (response.uri) {
+              var oldPictureURI = this.state.pictureURI;
               this.setState({
                 transforming: true,
                 pictureURI: response.uri
@@ -88,7 +89,7 @@ export default class FormPicture extends PureComponent {
                   (e) => {
                     this.setState({
                       transforming: false,
-                      pictureURI: null
+                      pictureURI: oldPictureURI
                     });
                     this.props.onError(e);
                   }

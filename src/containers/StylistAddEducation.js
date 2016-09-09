@@ -19,6 +19,10 @@ import LoadingContainer from '../components/LoadingContainer';
 
 import {NAVBAR_HEIGHT} from '../constants';
 
+import {throwOnFail} from '../lib/reduxPromiseMiddleware';
+import appEmitter from '../appEmitter';
+import utils from '../utils';
+
 import formMixin from '../mixins/form';
 
 @connect(app, environment)
@@ -54,12 +58,33 @@ export default class StylistAddEducation extends PureComponent {
       leftAction={() => {
         _.last(this.context.navigators).jumpBack();
       }}
+      leftDisabled={this.state.submitting}
       leftIcon="back"
       onWillBlur={this.onWillBlur}
       onWillFocus={this.onWillFocus}
       rightAction={() => {
-        console.log(this.getFormValue());
+        if (this.checkErrors())
+          return;
+
+        this.setState({'submitting': true});
+        this.props.dispatch(educationActions.addEducation(this.getFormValue()))
+          .then((r) => {
+            this.setState({submitting: false});
+            return r;
+          })
+          .then(throwOnFail)
+          .then(
+            () => {
+              appEmitter.emit('user-edited');
+              _.last(this.context.navigators).jumpBack();
+            },
+            (e) => {
+              console.log(e);
+              this.refs.ebc.error(e);
+            }
+          );
       }}
+      rightDisabled={this.state.submitting}
       rightLabel="Done"
       style={{
         flex: 1,

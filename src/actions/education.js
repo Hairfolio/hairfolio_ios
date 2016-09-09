@@ -7,11 +7,14 @@ import utils from '../utils';
 import {throwOnFail} from '../lib/reduxPromiseMiddleware';
 
 export const educationTypes = new Enum(
-  'SET_METHOD',
   'GET_DEGREES',
   'GET_DEGREES_PENDING',
   'GET_DEGREES_SUCCESS',
   'GET_DEGREES_ERROR',
+  'ADD_EDUCATION',
+  'ADD_EDUCATION_PENDING',
+  'ADD_EDUCATION_SUCCESS',
+  'ADD_EDUCATION_ERROR'
 );
 
 /**
@@ -32,6 +35,26 @@ export const educationActions = {
             Promise.resolve(getState().environment.degrees.toJS())
           :
             fetch.fetch('/degrees')
+        }
+      };
+    };
+  },
+
+  addEducation(education) {
+    return ({services: {fetch}, getState}) => {
+      return {
+        type: educationTypes.ADD_EDUCATION,
+        meta: {
+          immediate: true,
+          immediateAsyncResult: true
+        },
+        payload: {
+          promise: fetch.fetch(`/users/${getState().user.data.get('id')}/educations`, {
+            method: 'POST',
+            body: {
+              education
+            }
+          })
         }
       };
     };

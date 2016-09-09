@@ -1,6 +1,7 @@
 import {Record, Map} from 'immutable';
 import {appTypes} from '../actions/app';
 import {registrationTypes} from '../actions/registration';
+import {educationTypes} from '../actions/education';
 
 import {EMPTY, LOADING, LOADING_ERROR, READY} from '../constants';
 
@@ -40,6 +41,10 @@ export default function userReducer(state = initialState, action) {
       return state.mergeDeep({
         data: Object.assign({}, action.payload, {education: []})
       });
+    }
+
+    case educationTypes.ADD_EDUCATION_SUCCESS.toString(): {
+      return state.setIn(['data', 'education'], state.get('data').get('education').push(new Map(action.payload)));
     }
 
     case registrationTypes.HYDRATE_USER_EDUCATION.toString(): {

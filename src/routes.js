@@ -13,6 +13,7 @@ import SalonStylists from './containers/SalonStylists';
 import SalonSP from './containers/SalonSP';
 import StylistInfo from './containers/StylistInfo';
 import StylistEducation from './containers/StylistEducation';
+import StylistAddEducation from './containers/StylistAddEducation';
 import StylistCertificates from './containers/StylistCertificates';
 import StylistPlaceOfWork from './containers/StylistPlaceOfWork';
 import StylistProductExperience from './containers/StylistProductExperience';
@@ -118,6 +119,12 @@ class StylistProductExperienceRoute extends Route {
 }
 class StylistEducationRoute extends Route {
   SceneComponent = StylistEducation;
+  SceneConfig = {
+    ...CustomScenesConfig.FadeInOut
+  };
+}
+class StylistAddEducationRoute extends Route {
+  SceneComponent = StylistAddEducation;
   SceneConfig = {
     ...CustomScenesConfig.FadeInOut
   };
@@ -274,6 +281,7 @@ export const salonStylists = new SalonStylistsRoute();
 export const salonSP = new SalonSPRoute();
 export const stylistInfo = new StylistInfoRoute();
 export const stylistEducation = new StylistEducationRoute();
+export const stylistAddEducation = new StylistAddEducationRoute();
 export const stylistCertificates = new StylistCertificatesRoute();
 export const stylistPlaceOfWork = new StylistPlaceOfWorkRoute();
 export const stylistProductExperience = new StylistProductExperienceRoute();
@@ -365,6 +373,7 @@ export const constructors = {
   BrandInfoRoute,
   StylistCertificatesRoute,
   StylistEducationRoute,
+  StylistAddEducationRoute,
   StylistPlaceOfWorkRoute,
   StylistProductExperienceRoute,
   UserHairfolioRoute,

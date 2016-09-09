@@ -8,6 +8,7 @@ import {COLORS, FONTS, SCALE} from '../style';
 import NavigationSetting from '../navigation/NavigationSetting';
 
 import {NAVBAR_HEIGHT} from '../constants';
+import {stylistAddEducation} from '../routes';
 
 @connect(app)
 export default class StylistEducation extends PureComponent {
@@ -37,6 +38,9 @@ export default class StylistEducation extends PureComponent {
       leftIcon="back"
       onWillBlur={this.onWillBlur}
       onWillFocus={this.onWillFocus}
+      rightAction={() => {
+        _.last(this.context.navigators).jumpTo(stylistAddEducation);
+      }}
       rightLabel="Add"
       style={{
         flex: 1,

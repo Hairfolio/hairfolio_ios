@@ -17,7 +17,12 @@ export default class Picker extends PureComponent {
     choices: PropTypes.array.isRequired,
     disabled: PropTypes.bool,
     placeholder: PropTypes.string,
-    validation: React.PropTypes.func
+    validation: React.PropTypes.func,
+    valueProperty: React.PropTypes.string.isRequired
+  };
+
+  static defaultProps = {
+    valueProperty: 'label'
   };
 
   state = {
@@ -29,7 +34,7 @@ export default class Picker extends PureComponent {
   }
 
   getValue() {
-    return _.get(this.props.choices, [this.state.selected, 'label']);
+    return _.get(this.props.choices, [this.state.selected, this.props.valueProperty]);
   }
 
   isValide() {

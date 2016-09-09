@@ -1,17 +1,21 @@
-import {Record, Map} from 'immutable';
+import {Record, Map, List} from 'immutable';
 import {appTypes} from '../actions/app';
 import {registrationTypes} from '../actions/registration';
+import {educationTypes} from '../actions/education';
 
 import {EMPTY, LOADING, LOADING_ERROR, READY} from '../constants';
 
 const initialState = new (Record({
   state: EMPTY,
-  environment: new Map({})
+  degreesState: EMPTY,
+  environment: new Map({}),
+  degrees: new List([])
 }));
 
 const revive = environment => initialState.merge({
   ...environment,
-  state: environment.state === READY ? READY : EMPTY
+  state: environment.state === READY ? READY : EMPTY,
+  degreesState: environment.degreesState === READY ? READY : EMPTY
 });
 
 export default function registrationReducer(state = initialState, action) {
@@ -36,6 +40,23 @@ export default function registrationReducer(state = initialState, action) {
     case registrationTypes.GET_ENVIRONMENT_ERROR.toString(): {
       return state.merge({
         state: LOADING_ERROR
+      });
+    }
+
+    case educationTypes.GET_DEGREES_PENDING.toString(): {
+      return state.set('degreesState', LOADING);
+    }
+
+    case educationTypes.GET_DEGREES_SUCCESS.toString(): {
+      return state.mergeDeep({
+        degreesState: READY,
+        degrees: action.payload
+      });
+    }
+
+    case educationTypes.GET_DEGREES_ERROR.toString(): {
+      return state.merge({
+        degreesState: LOADING_ERROR
       });
     }
 

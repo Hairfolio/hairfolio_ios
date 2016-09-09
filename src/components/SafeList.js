@@ -79,9 +79,7 @@ export default class SafeList extends PureComponent {
   };
 
   blankWorkaround() {
-    if (this.refs.listView && this.state.dataSource.getRowCount() < this.props.pageSize)
-      this.setState({nb: this.state.nb + 1});
-    else if (this.refs.listView) {
+    if (this.refs.listView) {
       let listViewScrollView = this.refs.listView.getScrollResponder();
 
       var offset = this.refs.listView.scrollProperties.offset;

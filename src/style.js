@@ -7,7 +7,9 @@ export const SCALE = {
 
 export const COLORS = {
   DARK: '#393939',
+  DARK2: '#494949',
   LIGHT2: '#D6D6D6',
+  LIGHT3: '#B6B6B6',
   LIGHT: '#F4F4F4',
   WHITE: 'white',
 
@@ -30,6 +32,7 @@ export const COLORS = {
 
 export const FONTS = {
   MEDIUM: 'Avenir-Medium',
+  BOOK: 'Avenir-Book',
   ROMAN: 'Avenir-Roman',
   BOLD: 'Avenir-Bold',
   HEAVY: 'Avenir-Heavy',

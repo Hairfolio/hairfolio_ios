@@ -9,7 +9,8 @@ import PureComponent from './PureComponent';
 export default class SafeList extends PureComponent {
   static propTypes = {
     contentOffset: React.PropTypes.object,
-    dataSource: React.PropTypes.array.isRequired,
+    dataSource: React.PropTypes.object.isRequired,
+    dataSourceRowIdentities: React.PropTypes.array,
     onScroll: React.PropTypes.func,
     pageSize: React.PropTypes.number.isRequired
   };
@@ -23,13 +24,18 @@ export default class SafeList extends PureComponent {
   constructor(props) {
     super(props);
 
-    var ds = new ListView.DataSource({rowHasChanged: props.rowHasChanged || ((r1, r2) => {
-      return r1 !== r2;
-    })});
+    var ds = new ListView.DataSource({
+      rowHasChanged: props.rowHasChanged || ((r1, r2) => {
+        return r1 !== r2;
+      }),
+      sectionHeaderHasChanged: () => false
+    });
+
+    var dataSource = ds.cloneWithRowsAndSections(props.dataSource, props.dataSourceSectionIdentities, props.dataSourceRowIdentities);
 
     this.state = {
-      nbRows: props.dataSource.length,
-      dataSource: ds.cloneWithRows(props.dataSource),
+      nbRows: dataSource.getRowCount(),
+      dataSource,
       nb: 0
     };
   }
@@ -51,7 +57,8 @@ export default class SafeList extends PureComponent {
   }
 
   componentWillReceiveProps(props) {
-    var nbRows = props.dataSource.length;
+    var dataSource = this.state.dataSource.cloneWithRowsAndSections(props.dataSource, props.dataSourceSectionIdentities, props.dataSourceRowIdentities);
+    var nbRows = dataSource.getRowCount();
 
     if (nbRows !== this.state.nbRows)
       this.refs.listView.getScrollResponder().scrollTo({
@@ -62,7 +69,7 @@ export default class SafeList extends PureComponent {
 
     this.setState({
       nbRows,
-      dataSource: this.state.dataSource.cloneWithRows(props.dataSource)
+      dataSource
     });
   }
 

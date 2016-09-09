@@ -82,6 +82,8 @@ export default class SearchList extends PureComponent {
   }
 
   render() {
+    var items = this.state.items.filter(item => !item.get('isFilteredOut'));
+
     return (<View
       {...this.props}
     >
@@ -146,7 +148,8 @@ export default class SearchList extends PureComponent {
         </View>
       </View>
       <SafeList
-        dataSource={this.state.items.filter(item => !item.get('isFilteredOut')).toArray()}
+        dataSource={{items: items.toObject()}}
+        dataSourceRowIdentities={[Array.from(items.keys())]}
         pageSize={10}
         renderRow={(item) => this.renderItem(item)}
         renderSeparator={(sId, rId) => <View key={`sep_${sId}_${rId}`} style={{height: StyleSheet.hairlineWidth, backgroundColor: 'transparent'}} />}

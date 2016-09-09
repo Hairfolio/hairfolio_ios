@@ -4,6 +4,7 @@
 
 import Enum from '../lib/enum';
 import utils from '../utils';
+import {throwOnFail} from '../lib/reduxPromiseMiddleware';
 
 export const registrationTypes = new Enum(
   'SET_METHOD',
@@ -11,6 +12,14 @@ export const registrationTypes = new Enum(
   'GET_ENVIRONMENT_PENDING',
   'GET_ENVIRONMENT_SUCCESS',
   'GET_ENVIRONMENT_ERROR',
+  'HYDRATE_USER_EDUCATION',
+  'HYDRATE_USER_EDUCATION_PENDING',
+  'HYDRATE_USER_EDUCATION_SUCCESS',
+  'HYDRATE_USER_EDUCATION_ERROR',
+  'LOGIN_FULL',
+  'LOGIN_FULL_PENDING',
+  'LOGIN_FULL_SUCCESS',
+  'LOGIN_FULL_ERROR',
   'LOGIN',
   'LOGIN_PENDING',
   'LOGIN_SUCCESS',
@@ -36,6 +45,20 @@ export const registrationActions = {
       type: registrationTypes.SET_METHOD,
       payload: method
     };
+  },
+
+  hydrateUserEducation() {
+    return ({services: {fetch}, getState}) =>
+      ({
+        type: registrationTypes.HYDRATE_USER_EDUCATION,
+        meta: {
+          immediate: true,
+          immediateAsyncResult: true
+        },
+        payload: {
+          promise: fetch.fetch(`/users/${getState().user.data.get('id')}/educations`)
+        }
+      });
   },
 
   getEnvironment() {
@@ -74,7 +97,7 @@ export const registrationActions = {
     };
   },
 
-  loginWithFacebook(token) {
+  loginWithFacebookBase(token) {
     return ({services: {fetch}}) => {
       return {
         type: registrationTypes.LOGIN,
@@ -89,6 +112,25 @@ export const registrationActions = {
               'facebook_token': token
             }
           })
+        }
+      };
+    };
+  },
+
+  loginWithFacebook(token) {
+    return ({services: {fetch}, dispatch, getState}) => {
+      return {
+        type: registrationTypes.LOGIN_FULL,
+        meta: {
+          immediate: true,
+          immediateAsyncResult: true
+        },
+        payload: {
+          promise: dispatch(registrationActions.loginWithFacebookBase(token))
+            .then(throwOnFail)
+            .then(() => dispatch(registrationActions.hydrateUserEducation()))
+            .then(throwOnFail)
+            .then(() => getState().user.data)
         }
       };
     };
@@ -117,7 +159,7 @@ export const registrationActions = {
     };
   },
 
-  loginWithInstagram(token) {
+  loginWithInstagramBase(token) {
     return ({services: {fetch}}) => {
       return {
         type: registrationTypes.LOGIN,
@@ -132,6 +174,25 @@ export const registrationActions = {
               'insta_token': token
             }
           })
+        }
+      };
+    };
+  },
+
+  loginWithInstagram(token) {
+    return ({services: {fetch}, dispatch, getState}) => {
+      return {
+        type: registrationTypes.LOGIN_FULL,
+        meta: {
+          immediate: true,
+          immediateAsyncResult: true
+        },
+        payload: {
+          promise: dispatch(registrationActions.loginWithInstagramBase(token))
+            .then(throwOnFail)
+            .then(() => dispatch(registrationActions.hydrateUserEducation()))
+            .then(throwOnFail)
+            .then(() => getState().user.data)
         }
       };
     };
@@ -183,7 +244,7 @@ export const registrationActions = {
     };
   },
 
-  loginWithEmail(value, type) {
+  loginWithEmailBase(value, type) {
     return ({services: {fetch}}) => {
       return {
         type: registrationTypes.LOGIN,
@@ -200,6 +261,25 @@ export const registrationActions = {
               }
             }
           })
+        }
+      };
+    };
+  },
+
+  loginWithEmail(value, type) {
+    return ({services: {fetch}, dispatch, getState}) => {
+      return {
+        type: registrationTypes.LOGIN_FULL,
+        meta: {
+          immediate: true,
+          immediateAsyncResult: true
+        },
+        payload: {
+          promise: dispatch(registrationActions.loginWithEmailBase(value, type))
+            .then(throwOnFail)
+            .then(() => dispatch(registrationActions.hydrateUserEducation()))
+            .then(throwOnFail)
+            .then(() => getState().user.data)
         }
       };
     };

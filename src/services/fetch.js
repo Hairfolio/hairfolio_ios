@@ -43,9 +43,7 @@ export default class Fetch {
       'Content-Type': 'application/json'
     });
 
-    var token = '';
-    if (utils.isReady(this.store.getState().user.state))
-      token = this.store.getState().user.data.get('auth_token');
+    var token = this.store.getState().user.data.get('auth_token');
 
     if (token)
       opts.headers.Authorization = token;

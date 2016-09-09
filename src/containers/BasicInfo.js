@@ -75,9 +75,6 @@ export default class BasicInfo extends PureComponent {
       onWillBlur={this.onWillBlur}
       onWillFocus={this.onWillFocus}
       rightAction={() => {
-        if (this.props.accountType !== 'consumer')
-          return this.jumpToNext();
-
         if (!this.checkErrors()) {
           var value = this.getFormValue();
           value['password_confirmation'] = value.password;

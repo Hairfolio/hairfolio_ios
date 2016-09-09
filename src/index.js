@@ -71,6 +71,7 @@ export default class Root extends PureComponent {
 
       if (utils.isReady(store.getState().user.state))
         this.initialRoute = appStack;
+        //this.initialRoute = signupStylistStack;
 
       // android need workaround because of https://github.com/facebook/react-native/issues/7367
       // and because of the big background image and offthread decoding

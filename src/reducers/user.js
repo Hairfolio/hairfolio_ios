@@ -9,7 +9,7 @@ const initialState = new (Record({
   data: new Map({})
 }));
 
-const revive = user => initialState.merge({
+const revive = user => initialState.mergeDeep({
   ...user,
   state: user.state === READY ? READY : EMPTY
 });
@@ -22,20 +22,29 @@ export default function userReducer(state = initialState, action) {
       return user ? revive(user) : initialState;
     }
 
-    case registrationTypes.LOGIN_PENDING.toString(): {
+    case registrationTypes.LOGIN_FULL_PENDING.toString(): {
       return state.set('state', LOADING);
     }
-
-    case registrationTypes.LOGIN_SUCCESS.toString(): {
+    case registrationTypes.LOGIN_FULL_SUCCESS.toString(): {
       return state.merge({
-        state: READY,
-        data: action.payload
+        state: READY
+      });
+    }
+    case registrationTypes.LOGIN_FULL_ERROR.toString(): {
+      return state.merge({
+        state: LOADING_ERROR
       });
     }
 
-    case registrationTypes.LOGIN_ERROR.toString(): {
-      return state.merge({
-        state: LOADING_ERROR
+    case registrationTypes.LOGIN_SUCCESS.toString(): {
+      return state.mergeDeep({
+        data: Object.assign({}, action.payload, {education: []})
+      });
+    }
+
+    case registrationTypes.HYDRATE_USER_EDUCATION.toString(): {
+      return state.mergeDeep({
+        data: {education: action.payload}
       });
     }
 

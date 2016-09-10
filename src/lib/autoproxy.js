@@ -1,5 +1,7 @@
 'use strict';
 
+import _ from 'lodash';
+
 // from ide/autoproxy but with lifeCycleMethods fix
 
 function autoproxy(decorator) {
@@ -35,6 +37,8 @@ function proxyProperties(target, source) {
       configurable: descriptor.configurable,
       enumerable: descriptor.enumerable,
       get: function() {
+        if (_.isFunction(source[name]))
+          return source[name].bind(this.getWrappedInstance());
         return source[name];
       },
       set: function(value) {

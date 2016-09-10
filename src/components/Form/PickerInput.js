@@ -37,6 +37,12 @@ export default class Picker extends PureComponent {
     return _.get(this.props.choices, [this.state.selected, this.props.valueProperty]);
   }
 
+  setValue(v) {
+    this.setState({
+      selected: _.indexOf(this.props.choices, _.find(this.props.choices, _.set({}, this.props.valueProperty, v)))
+    });
+  }
+
   isValide() {
     return this.props.validation(this.getValue());
   }

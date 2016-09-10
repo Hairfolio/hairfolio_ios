@@ -39,7 +39,9 @@ export default class StylistAddEducation extends PureComponent {
     navigators: React.PropTypes.array.isRequired
   };
 
-  state = {};
+  state = {
+    editing: false
+  };
 
   @autobind
   onWillFocus() {
@@ -51,6 +53,29 @@ export default class StylistAddEducation extends PureComponent {
   }
 
   clear() {
+  }
+
+  setEditing(education) {
+    if (this.state.editing !== education)
+      this.setFormValue({
+        ...education.toJS(),
+        'year_from': education.get('year_from').toString(),
+        'year_to': education.get('year_to').toString(),
+        'degree_id': education.get('degree').get('id')
+      });
+
+    this.setState({
+      editing: education
+    });
+  }
+
+  setNew() {
+    if (this.state.editing !== false)
+      this.clearValues();
+
+    this.setState({
+      editing: false
+    });
   }
 
   render() {
@@ -67,7 +92,12 @@ export default class StylistAddEducation extends PureComponent {
           return;
 
         this.setState({'submitting': true});
-        this.props.dispatch(educationActions.addEducation(this.getFormValue()))
+
+        var action = this.state.editing === false ?
+          educationActions.addEducation(this.getFormValue()) :
+          educationActions.editEducation(this.state.editing.get('id'), this.getFormValue());
+
+        this.props.dispatch(action)
           .then((r) => {
             this.setState({submitting: false});
             return r;

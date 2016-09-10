@@ -14,7 +14,11 @@ export const educationTypes = new Enum(
   'ADD_EDUCATION',
   'ADD_EDUCATION_PENDING',
   'ADD_EDUCATION_SUCCESS',
-  'ADD_EDUCATION_ERROR'
+  'ADD_EDUCATION_ERROR',
+  'EDIT_EDUCATION',
+  'EDIT_EDUCATION_PENDING',
+  'EDIT_EDUCATION_SUCCESS',
+  'EDIT_EDUCATION_ERROR'
 );
 
 /**
@@ -51,6 +55,26 @@ export const educationActions = {
         payload: {
           promise: fetch.fetch(`/users/${getState().user.data.get('id')}/educations`, {
             method: 'POST',
+            body: {
+              education
+            }
+          })
+        }
+      };
+    };
+  },
+
+  editEducation(id, education) {
+    return ({services: {fetch}, getState}) => {
+      return {
+        type: educationTypes.EDIT_EDUCATION,
+        meta: {
+          immediate: true,
+          immediateAsyncResult: true
+        },
+        payload: {
+          promise: fetch.fetch(`/users/${getState().user.data.get('id')}/educations/${id}`, {
+            method: 'PUT',
             body: {
               education
             }

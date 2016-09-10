@@ -47,6 +47,16 @@ export default function userReducer(state = initialState, action) {
       return state.setIn(['data', 'education'], state.get('data').get('education').push(new Map(action.payload)));
     }
 
+    case educationTypes.EDIT_EDUCATION_SUCCESS.toString(): {
+      var education = state.get('data').get('education');
+      education = education.map(step => {
+        if (step.get('id') !== action.payload.id)
+          return step;
+        return (new Map({})).mergeDeep(action.payload);
+      });
+      return state.setIn(['data', 'education'], education);
+    }
+
     case registrationTypes.HYDRATE_USER_EDUCATION.toString(): {
       return state.mergeDeep({
         data: {education: action.payload}

@@ -2,7 +2,7 @@ import React from 'react';
 import _ from 'lodash';
 import PureComponent from '../components/PureComponent';
 import {List, OrderedMap} from 'immutable';
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import connect from '../lib/connect';
 import {app} from '../selectors/app';
 import {user} from '../selectors/user';
@@ -36,10 +36,16 @@ export default class StylistEducation extends PureComponent {
   }
 
   renderEducation(education) {
-    return (<View style={{
-      backgroundColor: COLORS.WHITE,
-      padding: SCALE.w(25)
-    }}>
+    return (<TouchableOpacity
+      onPress={() => {
+        stylistAddEducation.scene().setEditing(education);
+        _.last(this.context.navigators).jumpTo(stylistAddEducation);
+      }}
+      style={{
+        backgroundColor: COLORS.WHITE,
+        padding: SCALE.w(25)
+      }}
+    >
       <Text style={{
         fontFamily: FONTS.HEAVY,
         fontSize: SCALE.h(30),
@@ -55,7 +61,7 @@ export default class StylistEducation extends PureComponent {
         fontSize: SCALE.h(30),
         color: COLORS.LIGHT3
       }}>{education.get('year_from')} - {education.get('year_to')}</Text>
-    </View>);
+    </TouchableOpacity>);
   }
 
   render() {
@@ -70,6 +76,7 @@ export default class StylistEducation extends PureComponent {
       onWillBlur={this.onWillBlur}
       onWillFocus={this.onWillFocus}
       rightAction={() => {
+        stylistAddEducation.scene().setNew();
         _.last(this.context.navigators).jumpTo(stylistAddEducation);
       }}
       rightLabel="Add"

@@ -40,7 +40,7 @@ export default class StylistProductExperience extends PureComponent {
   }
 
   getValue() {
-    return this.refs.searchList.getValue().join(',');
+    return this._searchList.getValue().join(',');
   }
 
   clear() {
@@ -62,15 +62,15 @@ export default class StylistProductExperience extends PureComponent {
       title="Product Experience"
     >
       <LoadingContainer state={[this.props.experiencesState]} style={{flex: 1}}>
-        {this.props.experiences ? <SearchList
+        {() => <SearchList
           items={new OrderedMap(this.props.experiences.map(experience =>
             [experience.get('id'), experience]
           ))}
-          ref="searchList"
+          ref={sL => this._searchList = sL}
           style={{
             flex: 1
           }}
-        /> : null}
+        />}
       </LoadingContainer>
     </NavigationSetting>);
   }

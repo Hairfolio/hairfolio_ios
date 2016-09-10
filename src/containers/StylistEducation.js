@@ -10,6 +10,7 @@ import {COLORS, FONTS, SCALE} from '../style';
 import NavigationSetting from '../navigation/NavigationSetting';
 
 import SafeList from '../components/SafeList';
+import LoadingContainer from '../components/LoadingContainer';
 
 import {NAVBAR_HEIGHT} from '../constants';
 import {stylistAddEducation} from '../routes';
@@ -19,7 +20,8 @@ export default class StylistEducation extends PureComponent {
   static propTypes = {
     appVersion: React.PropTypes.string.isRequired,
     dispatch: React.PropTypes.func.isRequired,
-    user: React.PropTypes.object.isRequired
+    user: React.PropTypes.object.isRequired,
+    userState: React.PropTypes.string.isRequired
   };
 
   static contextTypes = {
@@ -64,9 +66,38 @@ export default class StylistEducation extends PureComponent {
     </TouchableOpacity>);
   }
 
-  render() {
+  renderContent() {
     var education = new OrderedMap(this.props.user.get('education').map(education => [education.get('id'), education]));
 
+    return (<View style={{
+      flex: 1
+    }}>
+      {this.props.user.get('education').count() ?
+        <Text style={{
+          marginTop: SCALE.h(35),
+          marginLeft: SCALE.w(25),
+          marginRight: SCALE.w(25),
+          fontFamily: FONTS.MEDIUM,
+          fontSize: SCALE.h(26),
+          color: COLORS.TEXT
+        }}>No Education added</Text>
+      :
+        <SafeList
+          dataSource={{education: education.toObject()}}
+          dataSourceRowIdentities={[Array.from(education.keys())]}
+          pageSize={10}
+          renderRow={(education) => this.renderEducation(education)}
+          renderSeparator={(sId, rId) => <View key={`sep_${sId}_${rId}`} style={{height: StyleSheet.hairlineWidth, backgroundColor: 'transparent'}} />}
+          style={{
+            flex: 1,
+            backgroundColor: 'transparent'
+          }}
+        />
+      }
+    </View>);
+  }
+
+  render() {
     return (<NavigationSetting
       forceUpdateEvents={['login', 'user-edited']}
       leftAction={() => {
@@ -87,32 +118,9 @@ export default class StylistEducation extends PureComponent {
       }}
       title="Education"
     >
-      <View style={{
-        flex: 1
-      }}>
-        {!(this.props.user.get('education') || List([])).count() ?
-          <Text style={{
-            marginTop: SCALE.h(35),
-            marginLeft: SCALE.w(25),
-            marginRight: SCALE.w(25),
-            fontFamily: FONTS.MEDIUM,
-            fontSize: SCALE.h(26),
-            color: COLORS.TEXT
-          }}>No Education added</Text>
-        :
-          <SafeList
-            dataSource={{education: education.toObject()}}
-            dataSourceRowIdentities={[Array.from(education.keys())]}
-            pageSize={10}
-            renderRow={(education) => this.renderEducation(education)}
-            renderSeparator={(sId, rId) => <View key={`sep_${sId}_${rId}`} style={{height: StyleSheet.hairlineWidth, backgroundColor: 'transparent'}} />}
-            style={{
-              flex: 1,
-              backgroundColor: 'transparent'
-            }}
-          />
-        }
-      </View>
+      <LoadingContainer state={[this.props.userState]}>
+        {() => this.renderContent()}
+      </LoadingContainer>
     </NavigationSetting>);
   }
 };

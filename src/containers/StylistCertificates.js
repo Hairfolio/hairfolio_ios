@@ -41,7 +41,7 @@ export default class StylistCertificates extends PureComponent {
   }
 
   getValue() {
-    return this.refs.searchList.getValue().join(',');
+    return this._searchList.getValue().join(',');
   }
 
   clear() {
@@ -62,16 +62,16 @@ export default class StylistCertificates extends PureComponent {
       }}
       title="Certificates"
     >
-      <LoadingContainer state={[this.props.certificatesState]} style={{flex: 1}}>
-        {this.props.certificates ? <SearchList
+      <LoadingContainer state={[this.props.certificatesState]}>
+        {() => <SearchList
           items={new OrderedMap(this.props.certificates.map(certificate =>
             [certificate.get('id'), certificate]
           ))}
-          ref="searchList"
+          ref={sL => this._searchList = sL}
           style={{
             flex: 1
           }}
-        /> : null}
+        />}
       </LoadingContainer>
     </NavigationSetting>);
   }

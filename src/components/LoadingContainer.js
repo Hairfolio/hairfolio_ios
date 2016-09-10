@@ -10,9 +10,8 @@ import utils from '../utils';
 export default class LoadingContainer extends PureComponent {
 
   static propTypes = {
-    children: React.PropTypes.node.isRequired,
-    state: React.PropTypes.array.isRequired,
-    style: View.propTypes.style
+    children: React.PropTypes.func.isRequired,
+    state: React.PropTypes.array.isRequired
   };
 
   render() {
@@ -20,7 +19,7 @@ export default class LoadingContainer extends PureComponent {
       return <Text>The loading failed</Text>;
 
     if (utils.isReady(this.props.state))
-      return <View style={this.props.style}>{this.props.children}</View>;
+      return this.props.children();
 
     return <Text>Loading</Text>;
   }

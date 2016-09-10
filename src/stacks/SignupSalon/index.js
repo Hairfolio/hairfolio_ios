@@ -57,6 +57,14 @@ export default class SignupConsumerStack extends PureComponent {
     */
   }
 
+  jumpTo(route) {
+    this._nav.jumpTo(route);
+  }
+
+  jumpToMoreInfos() {
+    this.jumpTo(salonInfo);
+  }
+
   render() {
     return (
       <NavigationSetting

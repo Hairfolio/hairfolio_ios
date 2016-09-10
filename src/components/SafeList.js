@@ -127,6 +127,7 @@ export default class SafeList extends PureComponent {
     return (<ListView
       {...this.props}
       dataSource={this.state.dataSource}
+      enableEmptySections
       onScroll={(e) => {
         this.firstScrolled = true;
 

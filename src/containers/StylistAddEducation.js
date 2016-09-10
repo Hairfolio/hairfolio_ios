@@ -151,87 +151,89 @@ export default class StylistAddEducation extends PureComponent {
             height: SCALE.h(34)
           }} />
           <LoadingContainer state={[this.props.degreesState]}>
-            <InlineTextInput
-              autoCorrect={false}
-              placeholder="School Name"
-              ref={(r) => this.addFormItem(r, 'school_name')}
-              validation={(v) => !!v}
-            />
-            <View style={{height: StyleSheet.hairlineWidth}} />
-            <View style={{
-              flexDirection: 'row'
-            }}>
-              <View style={{flex: 1}}>
-                <PickerInput
-                  choices={_.map(_.range((new Date()).getFullYear() - 70, (new Date()).getFullYear() + 1), (year) =>
-                    ({label: year.toString()})
-                  ).reverse()}
-                  placeholder="From"
-                  ref={(r) => this.addFormItem(r, 'year_from')}
-                  validation={(v) => !!v}
-                />
+            {() => (<View>
+              <InlineTextInput
+                autoCorrect={false}
+                placeholder="School Name"
+                ref={(r) => this.addFormItem(r, 'school_name')}
+                validation={(v) => !!v}
+              />
+              <View style={{height: StyleSheet.hairlineWidth}} />
+              <View style={{
+                flexDirection: 'row'
+              }}>
+                <View style={{flex: 1}}>
+                  <PickerInput
+                    choices={_.map(_.range((new Date()).getFullYear() - 70, (new Date()).getFullYear() + 1), (year) =>
+                      ({label: year.toString()})
+                    ).reverse()}
+                    placeholder="From"
+                    ref={(r) => this.addFormItem(r, 'year_from')}
+                    validation={(v) => !!v}
+                  />
+                </View>
+                <View style={{width: StyleSheet.hairlineWidth}} />
+                <View style={{flex: 1}}>
+                  <PickerInput
+                    choices={_.map(_.range((new Date()).getFullYear() - 70, (new Date()).getFullYear() + 1), (year) =>
+                      ({label: year.toString()})
+                    ).reverse()}
+                    placeholder="To"
+                    ref={(r) => this.addFormItem(r, 'year_to')}
+                    validation={(v) => !!v}
+                  />
+                </View>
               </View>
-              <View style={{width: StyleSheet.hairlineWidth}} />
-              <View style={{flex: 1}}>
-                <PickerInput
-                  choices={_.map(_.range((new Date()).getFullYear() - 70, (new Date()).getFullYear() + 1), (year) =>
-                    ({label: year.toString()})
-                  ).reverse()}
-                  placeholder="To"
-                  ref={(r) => this.addFormItem(r, 'year_to')}
-                  validation={(v) => !!v}
-                />
-              </View>
-            </View>
-            <View style={{height: StyleSheet.hairlineWidth}} />
+              <View style={{height: StyleSheet.hairlineWidth}} />
 
-            <PickerInput
-              choices={this.props.degrees.map(degree => ({
-                id: degree.get('id'),
-                label: degree.get('name')}
-              )).toJS()}
-              placeholder="Degree"
-              ref={(r) => this.addFormItem(r, 'degree_id')}
-              validation={(v) => !!v}
-              valueProperty="id"
-            />
+              <PickerInput
+                choices={this.props.degrees.map(degree => ({
+                  id: degree.get('id'),
+                  label: degree.get('name')}
+                )).toJS()}
+                placeholder="Degree"
+                ref={(r) => this.addFormItem(r, 'degree_id')}
+                validation={(v) => !!v}
+                valueProperty="id"
+              />
 
-            <View style={{height: StyleSheet.hairlineWidth}} />
+              <View style={{height: StyleSheet.hairlineWidth}} />
 
-            <InlineTextInput
-              autoCapitalize="none"
-              autoCorrect={false}
-              placeholder="Website"
-              ref={(r) => this.addFormItem(r, 'website')}
-              validation={(v) => !!v}
-            />
+              <InlineTextInput
+                autoCapitalize="none"
+                autoCorrect={false}
+                placeholder="Website"
+                ref={(r) => this.addFormItem(r, 'website')}
+                validation={(v) => !!v}
+              />
 
-            <View style={{height: 30}} />
-            <DeleteButton
-              disabled={this.state.submitting}
-              label="DELETE"
-              onPress={() => {
-                this.setState({submitting: true});
+              <View style={{height: 30}} />
+              <DeleteButton
+                disabled={this.state.submitting}
+                label="DELETE"
+                onPress={() => {
+                  this.setState({submitting: true});
 
-                this.props.dispatch(educationActions.deleteEducation(this.state.editing.get('id')))
-                  .then((r) => {
-                    this.setState({submitting: false});
-                    return r;
-                  })
-                  .then(throwOnFail)
-                  .then(
-                    () => {
-                      appEmitter.emit('user-edited');
-                      _.last(this.context.navigators).jumpBack();
-                    },
-                    (e) => {
-                      console.log(e);
-                      this.refs.ebc.error(e);
-                    }
-                  );
-              }}
-              ref="deleteButton"
-            />
+                  this.props.dispatch(educationActions.deleteEducation(this.state.editing.get('id')))
+                    .then((r) => {
+                      this.setState({submitting: false});
+                      return r;
+                    })
+                    .then(throwOnFail)
+                    .then(
+                      () => {
+                        appEmitter.emit('user-edited');
+                        _.last(this.context.navigators).jumpBack();
+                      },
+                      (e) => {
+                        console.log(e);
+                        this.refs.ebc.error(e);
+                      }
+                    );
+                }}
+                ref="deleteButton"
+              />
+            </View>)}
           </LoadingContainer>
         </KeyboardScrollView>
       </BannerErrorContainer>

@@ -80,13 +80,15 @@ export default class Register2 extends PureComponent {
             if (!item)
               return;
 
+            var stacks = {
+              Consumer: signupConsumerStack,
+              Stylist: signupStylistStack,
+              Salon: signupSalonStack,
+              Brand: signupBrandStack
+            };
+
             if (this.props.registrationMethod === 'email')
-              return _.first(this.context.navigators).jumpTo(({
-                Consumer: signupConsumerStack,
-                Stylist: signupStylistStack,
-                Salon: signupSalonStack,
-                Brand: signupBrandStack
-              })[item.label]);
+              return _.first(this.context.navigators).jumpTo(stacks[item.label]);
 
             var type = ({
               Consumer: 'consumer',
@@ -94,9 +96,6 @@ export default class Register2 extends PureComponent {
               Salon: 'salon',
               Brand: 'brand'
             })[item.label];
-
-            if (type !== 'consumer')
-              return this.context.setBannerError(`${item.label} not ready`);
 
             var login;
 
@@ -131,7 +130,13 @@ export default class Register2 extends PureComponent {
               .then(
                 () => {
                   appEmitter.emit('login');
-                  _.first(this.context.navigators).jumpTo(appStack);
+                  if (type[item.label] === 'consumer')
+                    return _.first(this.context.navigators).jumpTo(appStack);
+
+                  var stack = stacks[item.label];
+                  stack.scene().jumpToMoreInfos();
+
+                  _.first(this.context.navigators).jumpTo(stack);
                 },
                 (e) => {
                   console.log(e);

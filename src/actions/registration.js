@@ -179,7 +179,7 @@ export const registrationActions = {
     };
   },
 
-  signupWithFacebook(token, type) {
+  signupWithFacebookBase(token, type) {
     return ({services: {fetch}}) => {
       return {
         type: registrationTypes.LOGIN,
@@ -197,6 +197,25 @@ export const registrationActions = {
               }
             }
           })
+        }
+      };
+    };
+  },
+
+  signupWithFacebook(token, type) {
+    return ({services: {fetch}, dispatch, getState}) => {
+      return {
+        type: registrationTypes.LOGIN_FULL,
+        meta: {
+          immediate: true,
+          immediateAsyncResult: true
+        },
+        payload: {
+          promise: dispatch(registrationActions.signupWithFacebookBase(token, type))
+            //.then(throwOnFail)
+            //.then(() => dispatch(registrationActions.hydrateUserEducation()))
+            .then(throwOnFail)
+            .then(() => getState().user.data)
         }
       };
     };
@@ -241,7 +260,7 @@ export const registrationActions = {
     };
   },
 
-  signupWithInstagram(token, type) {
+  signupWithInstagramBase(token, type) {
     return ({services: {fetch}}) => {
       return {
         type: registrationTypes.LOGIN,
@@ -264,7 +283,26 @@ export const registrationActions = {
     };
   },
 
-  signupWithEmail(value, type) {
+  signupWithInstagram(token, type) {
+    return ({services: {fetch}, dispatch, getState}) => {
+      return {
+        type: registrationTypes.LOGIN_FULL,
+        meta: {
+          immediate: true,
+          immediateAsyncResult: true
+        },
+        payload: {
+          promise: dispatch(registrationActions.signupWithInstagramBase(token, type))
+            //.then(throwOnFail)
+            //.then(() => dispatch(registrationActions.hydrateUserEducation()))
+            .then(throwOnFail)
+            .then(() => getState().user.data)
+        }
+      };
+    };
+  },
+
+  signupWithEmailBase(value, type) {
     return ({services: {fetch}}) => {
       return {
         type: registrationTypes.LOGIN,
@@ -282,6 +320,25 @@ export const registrationActions = {
               }
             }
           })
+        }
+      };
+    };
+  },
+
+  signupWithEmail(value, type) {
+    return ({services: {fetch}, dispatch, getState}) => {
+      return {
+        type: registrationTypes.LOGIN_FULL,
+        meta: {
+          immediate: true,
+          immediateAsyncResult: true
+        },
+        payload: {
+          promise: dispatch(registrationActions.signupWithEmailBase(value, type))
+            //.then(throwOnFail)
+            //.then(() => dispatch(registrationActions.hydrateUserEducation()))
+            .then(throwOnFail)
+            .then(() => getState().user.data)
         }
       };
     };

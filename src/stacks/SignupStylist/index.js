@@ -61,6 +61,10 @@ export default class SignupConsumerStack extends PureComponent {
     this._nav.jumpTo(route);
   }
 
+  jumpToMoreInfos() {
+    this.jumpTo(stylistInfo);
+  }
+
   render() {
     return (
       <NavigationSetting
@@ -72,7 +76,7 @@ export default class SignupConsumerStack extends PureComponent {
         }}
       >
         <Navigator
-          initialRoute={stylistInfo/*basicInfoStylist*/}
+          initialRoute={basicInfoStylist/*basicInfoStylist*/}
           initialRouteStack={[
             basicInfoStylist,
             stylistInfo,

@@ -94,6 +94,10 @@ export default class KeyboardScrollView extends PureComponent {
     });
   }
 
+  scrollToTop() {
+    this.refs.scrollview.scrollTo({x: 0, y: 0, animated: false});
+  }
+
   render() {
     return (
       <ScrollView

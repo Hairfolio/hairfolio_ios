@@ -71,6 +71,11 @@ export default class EditCustomer extends PureComponent {
   }
 
   @autobind
+  onWillFocus() {
+    this.refs.scrollView.scrollToTop();
+  }
+
+  @autobind
   onLogin() {
     this.setFormValue(this.props.user.toJS());
   }
@@ -86,6 +91,7 @@ export default class EditCustomer extends PureComponent {
       }}
       leftDisabled={isLoading}
       leftIcon="back"
+      onWillFocus={this.onWillFocus}
       rightAction={() => {
         if (this.checkErrors())
           return;
@@ -118,6 +124,7 @@ export default class EditCustomer extends PureComponent {
     >
       <BannerErrorContainer ref="ebc" style={{flex: 1}}>
         <KeyboardScrollView
+          ref="scrollView"
           scrollToTopOnBlur
           showsVerticalScrollIndicator={false}
           space={90}

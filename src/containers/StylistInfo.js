@@ -18,11 +18,12 @@ import {throwOnFail} from '../lib/reduxPromiseMiddleware';
 
 import {registrationActions} from '../actions/registration';
 
-import {stylistEducation, stylistCertificates, stylistPlaceOfWork, stylistProductExperience} from '../routes';
+import {stylistEducation, stylistCertificates, stylistPlaceOfWork, stylistProductExperience, appStack} from '../routes';
 
 import formMixin from '../mixins/form';
 
 import {NAVBAR_HEIGHT} from '../constants';
+import appEmitter from '../appEmitter';
 
 @connect(app)
 @mixin(formMixin)
@@ -51,7 +52,23 @@ export default class StylistInfo extends PureComponent {
         if (this.checkErrors())
           return;
 
-        console.log(this.getFormValue());
+        this.setState({'submitting': true});
+        this.props.dispatch(registrationActions.editUser(this.getFormValue()))
+        .then((r) => {
+          this.setState({submitting: false});
+          return r;
+        })
+        .then(throwOnFail)
+        .then(
+          () => {
+            appEmitter.emit('user-edited');
+            _.first(this.context.navigators).jumpTo(appStack);
+          },
+          (e) => {
+            console.log(e);
+            this.refs.ebc.error(e);
+          }
+        );
       }}
       rightDisabled={this.state.submitting}
       rightLabel="Next"
@@ -70,13 +87,10 @@ export default class StylistInfo extends PureComponent {
         }} />
 
         <MultilineTextInput
-          autoCapitalize="none"
-          autoCorrect={false}
-          keyboardType="email-address"
           max={300}
           placeholder="Short professional description…"
-          ref={(r) => this.addFormItem(r, 'email')}
-          validation={(v) => !!v && validator.isLength(v, {max: 300})}
+          ref={(r) => this.addFormItem(r, 'business_info')}
+          validation={(v) => !v || validator.isLength(v, {max: 300})}
         />
 
         <View style={{height: StyleSheet.hairlineWidth}} />
@@ -85,7 +99,7 @@ export default class StylistInfo extends PureComponent {
           choices={_.map(_.range(0, 20), i => ({label: i.toString()}))}
           placeholder="Years of experience"
           ref={(r) => this.addFormItem(r, 'experience')}
-          validation={(v) => !!v}
+          validation={(v) => true}
         />
 
         <View style={{height: StyleSheet.hairlineWidth}} />
@@ -93,8 +107,6 @@ export default class StylistInfo extends PureComponent {
         <PageInput
           page={stylistEducation}
           placeholder="Education"
-          ref={(r) => this.addFormItem(r, 'education')}
-          validation={(v) => true}
         />
 
         <View style={{height: StyleSheet.hairlineWidth}} />

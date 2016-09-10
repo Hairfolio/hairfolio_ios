@@ -362,7 +362,9 @@ export const registrationActions = {
         payload: {
           promise: fetch.fetch(`/users/${getState().user.data.get('id')}`, {
             method: 'PATCH',
-            body: values
+            body: {
+              user: values
+            }
           })
         }
       };

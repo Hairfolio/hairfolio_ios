@@ -126,14 +126,18 @@ https://itunes.apple.com/us/app/hairfolio/id672…
       title="Stylists"
     >
       <LoadingContainer state={[this.state.contactsStates]}>
-        {() => <SearchList
-          items={this.state.contacts}
-          placeholder="Search for Stylists"
-          ref={sL => this._searchList = sL}
-          style={{
-            flex: 1
-          }}
-        />}
+        {() => this.state.contacts.count() ?
+          <SearchList
+            items={this.state.contacts}
+            placeholder="Search for Stylists"
+            ref={sL => this._searchList = sL}
+            style={{
+              flex: 1
+            }}
+          />
+        :
+          <Text>No email contact on this phone</Text>
+        }
       </LoadingContainer>
     </NavigationSetting>);
   }

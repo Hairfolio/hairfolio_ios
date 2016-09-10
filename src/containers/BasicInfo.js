@@ -13,6 +13,7 @@ import InlineTextInput from '../components/Form/InlineTextInput';
 import PictureInput from '../components/Form/Picture';
 import KeyboardScrollView from '../components/KeyboardScrollView';
 import BannerErrorContainer from '../components/BannerErrorContainer';
+import Icon from '../components/Icon';
 
 import {loginStack} from '../routes';
 
@@ -65,6 +66,36 @@ export default class BasicInfo extends PureComponent {
     navigator.jumpTo(this.props.nextRoute);
   }
 
+  renderAccountIcon() {
+    var icon, iconColor, iconSize;
+    switch (this.props.accountType) {
+      case 'stylist':
+        icon = 'stylist';
+        iconColor = COLORS.STYLIST;
+        iconSize = SCALE.h(32);
+        break;
+      case 'salon':
+        icon = 'salon';
+        iconColor = COLORS.SALON;
+        iconSize = SCALE.h(18);
+        break;
+      case 'brand':
+        icon = 'brand';
+        iconColor = COLORS.BRAND;
+        iconSize = SCALE.h(25);
+        break;
+    }
+
+    if (!icon)
+      return null;
+
+    return (<Icon
+      color={iconColor}
+      name={icon}
+      size={iconSize}
+    />);
+  }
+
   render() {
     return (<NavigationSetting
       leftAction={() => {
@@ -111,7 +142,8 @@ export default class BasicInfo extends PureComponent {
           <View style={{
             marginTop: SCALE.h(34),
             marginBottom: SCALE.h(34),
-            alignSelf: 'center'
+            alignSelf: 'center',
+            position: 'relative'
           }}>
             <PictureInput
               disabled={utils.isLoading([this.props.environmentState, this.props.userState, this.props.cloudinaryStates.get('register-pick')])}
@@ -131,6 +163,21 @@ export default class BasicInfo extends PureComponent {
               }
               validation={(v) => !!v}
             />
+            <View style={{
+              height: SCALE.h(46),
+              width: SCALE.h(46),
+              borderRadius: SCALE.h(23),
+              backgroundColor: COLORS.WHITE,
+              borderWidth: 2,
+              borderColor: COLORS.LIGHT,
+              position: 'absolute',
+              right: 0,
+              bottom: 0,
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}>
+              {this.renderAccountIcon()}
+            </View>
           </View>
 
           {_.map(this.props.detailFields, ({placeholder, ppte}, i) =>

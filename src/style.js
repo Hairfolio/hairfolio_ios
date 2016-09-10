@@ -27,7 +27,11 @@ export const COLORS = {
   RED_DELETE: '#DA5454',
 
   FB: '#3B5998',
-  IG: '#F3328C'
+  IG: '#F3328C',
+
+  STYLIST: '#26C77E',
+  BRAND: '#6FC5C6',
+  SALON: '#D284FF'
 };
 
 export const FONTS = {

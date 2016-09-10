@@ -11,7 +11,8 @@ export default class LoadingContainer extends PureComponent {
 
   static propTypes = {
     children: React.PropTypes.node.isRequired,
-    state: React.PropTypes.array.isRequired
+    state: React.PropTypes.array.isRequired,
+    style: View.propTypes.style
   };
 
   render() {
@@ -19,7 +20,7 @@ export default class LoadingContainer extends PureComponent {
       return <Text>The loading failed</Text>;
 
     if (utils.isReady(this.props.state))
-      return <View>{this.props.children}</View>;
+      return <View style={this.props.style}>{this.props.children}</View>;
 
     return <Text>Loading</Text>;
   }

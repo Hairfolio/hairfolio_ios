@@ -2,11 +2,17 @@ import React from 'react';
 import _ from 'lodash';
 import {Map, OrderedMap} from 'immutable';
 import PureComponent from '../components/PureComponent';
+import {autobind} from 'core-decorators';
 import {View, Text} from 'react-native';
 import connect from '../lib/connect';
 import {app} from '../selectors/app';
+import {environment} from '../selectors/environment';
 import {COLORS, FONTS, SCALE} from '../style';
 import NavigationSetting from '../navigation/NavigationSetting';
+
+import LoadingContainer from '../components/LoadingContainer';
+
+import {registrationActions} from '../actions/registration';
 
 import SearchList from '../components/SearchList';
 
@@ -14,10 +20,12 @@ import {stylistInfo} from '../routes';
 
 import {NAVBAR_HEIGHT} from '../constants';
 
-@connect(app)
+@connect(app, environment)
 export default class StylistCertificates extends PureComponent {
   static propTypes = {
     appVersion: React.PropTypes.string.isRequired,
+    certificates: React.PropTypes.object.isRequired,
+    certificatesState: React.PropTypes.string.isRequired,
     dispatch: React.PropTypes.func.isRequired
   };
 
@@ -27,16 +35,17 @@ export default class StylistCertificates extends PureComponent {
 
   state = {};
 
+  @autobind
+  onWillFocus() {
+    this.props.dispatch(registrationActions.getCertificates());
+  }
+
   getValue() {
-    return null;
+    return this.refs.searchList.getValue().join(',');
   }
 
   clear() {
   }
-
-  certificates = new OrderedMap(_.map(_.range(0, 20), (id) =>
-    [id, new Map({id: id, label: `Certificate ${id}`})]
-  ));
 
   render() {
     return (<NavigationSetting
@@ -53,12 +62,17 @@ export default class StylistCertificates extends PureComponent {
       }}
       title="Certificates"
     >
-      <SearchList
-        items={this.certificates}
-        style={{
-          flex: 1
-        }}
-      />
+      <LoadingContainer state={[this.props.certificatesState]} style={{flex: 1}}>
+        {this.props.certificates ? <SearchList
+          items={new OrderedMap(this.props.certificates.map(certificate =>
+            [certificate.get('id'), certificate]
+          ))}
+          ref="searchList"
+          style={{
+            flex: 1
+          }}
+        /> : null}
+      </LoadingContainer>
     </NavigationSetting>);
   }
 };

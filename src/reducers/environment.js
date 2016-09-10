@@ -8,14 +8,17 @@ import {EMPTY, LOADING, LOADING_ERROR, READY} from '../constants';
 const initialState = new (Record({
   state: EMPTY,
   degreesState: EMPTY,
+  certificatesState: EMPTY,
   environment: new Map({}),
-  degrees: new List([])
+  degrees: new List([]),
+  certificates: new List([])
 }));
 
 const revive = environment => initialState.merge({
   ...environment,
   state: environment.state === READY ? READY : EMPTY,
-  degreesState: environment.degreesState === READY ? READY : EMPTY
+  degreesState: environment.degreesState === READY ? READY : EMPTY,
+  certificatesState: environment.certificatesState === READY ? READY : EMPTY
 });
 
 export default function registrationReducer(state = initialState, action) {
@@ -57,6 +60,23 @@ export default function registrationReducer(state = initialState, action) {
     case educationTypes.GET_DEGREES_ERROR.toString(): {
       return state.merge({
         degreesState: LOADING_ERROR
+      });
+    }
+
+    case registrationTypes.GET_CERTIFICATES_PENDING.toString(): {
+      return state.set('certificatesState', LOADING);
+    }
+
+    case registrationTypes.GET_CERTIFICATES_SUCCESS.toString(): {
+      return state.mergeDeep({
+        certificatesState: READY,
+        certificates: action.payload
+      });
+    }
+
+    case registrationTypes.GET_CERTIFICATES_ERROR.toString(): {
+      return state.merge({
+        certificatesState: LOADING_ERROR
       });
     }
 

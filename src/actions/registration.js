@@ -12,6 +12,10 @@ export const registrationTypes = new Enum(
   'GET_ENVIRONMENT_PENDING',
   'GET_ENVIRONMENT_SUCCESS',
   'GET_ENVIRONMENT_ERROR',
+  'GET_CERTIFICATES',
+  'GET_CERTIFICATES_PENDING',
+  'GET_CERTIFICATES_SUCCESS',
+  'GET_CERTIFICATES_ERROR',
   'HYDRATE_USER_EDUCATION',
   'HYDRATE_USER_EDUCATION_PENDING',
   'HYDRATE_USER_EDUCATION_SUCCESS',
@@ -74,6 +78,24 @@ export const registrationActions = {
             Promise.resolve(getState().environment.environment.toJS())
           :
             fetch.fetch('/sessions/environment')
+        }
+      };
+    };
+  },
+
+  getCertificates() {
+    return ({getState, services: {fetch}}) => {
+      return {
+        type: registrationTypes.GET_CERTIFICATES,
+        meta: {
+          immediate: true,
+          immediateAsyncResult: true
+        },
+        payload: {
+          promise: utils.isReady(getState().environment.certificatesState) ?
+            Promise.resolve(getState().environment.certificates.toJS())
+          :
+            fetch.fetch('/certificates')
         }
       };
     };

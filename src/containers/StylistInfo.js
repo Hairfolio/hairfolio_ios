@@ -102,7 +102,7 @@ export default class StylistInfo extends PureComponent {
         <PageInput
           page={stylistCertificates}
           placeholder="Certificates"
-          ref={(r) => this.addFormItem(r, 'certificates')}
+          ref={(r) => this.addFormItem(r, 'certificate_ids')}
           validation={(v) => true}
         />
 

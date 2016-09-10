@@ -22,9 +22,8 @@ export default class SearchList extends PureComponent {
     this.setItems(this.props.items);
   }
 
-  componentWillReceiveProps(props) {
-    if (props.items !== this.props.items)
-      this.setItems(props.items);
+  getValue() {
+    return this.state.items.filter(item => item.get('selected')).map(item => item.get('id')).toArray();
   }
 
   setItems(items) {
@@ -36,14 +35,10 @@ export default class SearchList extends PureComponent {
       this.props.onChange(this.state.items);
   }
 
-  getSelected() {
-    return this.state.items.filter(item => !item.get('selected'));
-  }
-
   @debounce
   filter() {
     this.setItems(this.state.items.map(item => {
-      var isFilteredOut = item.get('label').toLowerCase().indexOf(this.state.search.toLowerCase()) === -1;
+      var isFilteredOut = item.get('name').toLowerCase().indexOf(this.state.search.toLowerCase()) === -1;
 
       if (item.get('isFilteredOut') !== isFilteredOut)
         return item.set('isFilteredOut', isFilteredOut);
@@ -54,7 +49,7 @@ export default class SearchList extends PureComponent {
 
   renderItem(item) {
     return (<TouchableOpacity
-      key={item.get('label')}
+      key={item.get('name')}
       onPress={() => {
         this.setItems(this.state.items.setIn([item.get('id'), 'selected'], !item.get('selected')));
       }}
@@ -72,7 +67,7 @@ export default class SearchList extends PureComponent {
         fontFamily: FONTS.ROMAN,
         fontSize: SCALE.h(28),
         color: COLORS.SEARCH_LIST_ITEM_COLOR
-      }}>{item.get('label')}</Text>
+      }}>{item.get('name')}</Text>
       {item.get('selected') && <Icon
         color={COLORS.SEARCH_LIST_ITEM_COLOR}
         name="check"

@@ -1,23 +1,31 @@
 import React from 'react';
 import _ from 'lodash';
-import {Map, OrderedMap} from 'immutable';
+import {OrderedMap} from 'immutable';
 import PureComponent from '../components/PureComponent';
+import {autobind} from 'core-decorators';
 import {View, Text} from 'react-native';
 import connect from '../lib/connect';
 import {app} from '../selectors/app';
-import {COLORS, FONTS, SCALE} from '../style';
+import {environment} from '../selectors/environment';
+import {COLORS} from '../style';
 import NavigationSetting from '../navigation/NavigationSetting';
 import SearchList from '../components/SearchList';
+
+import LoadingContainer from '../components/LoadingContainer';
+
+import {registrationActions} from '../actions/registration';
 
 import {stylistInfo} from '../routes';
 
 import {NAVBAR_HEIGHT} from '../constants';
 
-@connect(app)
+@connect(app, environment)
 export default class StylistProductExperience extends PureComponent {
   static propTypes = {
     appVersion: React.PropTypes.string.isRequired,
-    dispatch: React.PropTypes.func.isRequired
+    dispatch: React.PropTypes.func.isRequired,
+    experiences: React.PropTypes.object.isRequired,
+    experiencesState: React.PropTypes.string.isRequired
   };
 
   static contextTypes = {
@@ -26,16 +34,17 @@ export default class StylistProductExperience extends PureComponent {
 
   state = {};
 
+  @autobind
+  onWillFocus() {
+    this.props.dispatch(registrationActions.getExperiences());
+  }
+
   getValue() {
-    return null;
+    return this.refs.searchList.getValue().join(',');
   }
 
   clear() {
   }
-
-  products = new OrderedMap(_.map(_.range(0, 20), (id) =>
-    [id, new Map({id: id, label: `Product ${id}`})]
-  ));
 
   render() {
     return (<NavigationSetting
@@ -52,12 +61,17 @@ export default class StylistProductExperience extends PureComponent {
       }}
       title="Product Experience"
     >
-      <SearchList
-        items={this.products}
-        style={{
-          flex: 1
-        }}
-      />
+      <LoadingContainer state={[this.props.experiencesState]} style={{flex: 1}}>
+        {this.props.experiences ? <SearchList
+          items={new OrderedMap(this.props.experiences.map(experience =>
+            [experience.get('id'), experience]
+          ))}
+          ref="searchList"
+          style={{
+            flex: 1
+          }}
+        /> : null}
+      </LoadingContainer>
     </NavigationSetting>);
   }
 };

@@ -9,16 +9,19 @@ const initialState = new (Record({
   state: EMPTY,
   degreesState: EMPTY,
   certificatesState: EMPTY,
+  experiencesState: EMPTY,
   environment: new Map({}),
   degrees: new List([]),
-  certificates: new List([])
+  certificates: new List([]),
+  experiences: new List([])
 }));
 
 const revive = environment => initialState.merge({
   ...environment,
   state: environment.state === READY ? READY : EMPTY,
   degreesState: environment.degreesState === READY ? READY : EMPTY,
-  certificatesState: environment.certificatesState === READY ? READY : EMPTY
+  certificatesState: environment.certificatesState === READY ? READY : EMPTY,
+  experiencesState: environment.experiencesState === READY ? READY : EMPTY
 });
 
 export default function registrationReducer(state = initialState, action) {
@@ -77,6 +80,23 @@ export default function registrationReducer(state = initialState, action) {
     case registrationTypes.GET_CERTIFICATES_ERROR.toString(): {
       return state.merge({
         certificatesState: LOADING_ERROR
+      });
+    }
+
+    case registrationTypes.GET_EXPERIENCES_PENDING.toString(): {
+      return state.set('experiencesState', LOADING);
+    }
+
+    case registrationTypes.GET_EXPERIENCES_SUCCESS.toString(): {
+      return state.mergeDeep({
+        experiencesState: READY,
+        experiences: action.payload
+      });
+    }
+
+    case registrationTypes.GET_EXPERIENCES_ERROR.toString(): {
+      return state.merge({
+        experiencesState: LOADING_ERROR
       });
     }
 

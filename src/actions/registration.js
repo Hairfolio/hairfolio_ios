@@ -16,6 +16,10 @@ export const registrationTypes = new Enum(
   'GET_CERTIFICATES_PENDING',
   'GET_CERTIFICATES_SUCCESS',
   'GET_CERTIFICATES_ERROR',
+  'GET_EXPERIENCES',
+  'GET_EXPERIENCES_PENDING',
+  'GET_EXPERIENCES_SUCCESS',
+  'GET_EXPERIENCES_ERROR',
   'HYDRATE_USER_EDUCATION',
   'HYDRATE_USER_EDUCATION_PENDING',
   'HYDRATE_USER_EDUCATION_SUCCESS',
@@ -96,6 +100,23 @@ export const registrationActions = {
             Promise.resolve(getState().environment.certificates.toJS())
           :
             fetch.fetch('/certificates')
+        }
+      };
+    };
+  },
+  getExperiences() {
+    return ({getState, services: {fetch}}) => {
+      return {
+        type: registrationTypes.GET_EXPERIENCES,
+        meta: {
+          immediate: true,
+          immediateAsyncResult: true
+        },
+        payload: {
+          promise: utils.isReady(getState().environment.experiencesState) ?
+            Promise.resolve(getState().environment.experiences.toJS())
+          :
+            fetch.fetch('/experiences')
         }
       };
     };

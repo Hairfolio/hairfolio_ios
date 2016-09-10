@@ -120,7 +120,7 @@ export default class StylistInfo extends PureComponent {
         <PageInput
           page={stylistProductExperience}
           placeholder="Product experience"
-          ref={(r) => this.addFormItem(r, 'product_experience')}
+          ref={(r) => this.addFormItem(r, 'experience_ids')}
           validation={(v) => true}
         />
 

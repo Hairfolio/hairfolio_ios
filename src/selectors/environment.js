@@ -4,5 +4,7 @@ export const environment = ({environment}) => ({
   degreesState: environment.degreesState,
   degrees: environment.degrees,
   certificatesState: environment.certificatesState,
-  certificates: environment.certificates
+  certificates: environment.certificates,
+  experiencesState: environment.experiencesState,
+  experiences: environment.experiences
 });

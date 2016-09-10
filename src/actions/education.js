@@ -18,7 +18,11 @@ export const educationTypes = new Enum(
   'EDIT_EDUCATION',
   'EDIT_EDUCATION_PENDING',
   'EDIT_EDUCATION_SUCCESS',
-  'EDIT_EDUCATION_ERROR'
+  'EDIT_EDUCATION_ERROR',
+  'DELETE_EDUCATION',
+  'DELETE_EDUCATION_PENDING',
+  'DELETE_EDUCATION_SUCCESS',
+  'DELETE_EDUCATION_ERROR'
 );
 
 /**
@@ -79,6 +83,23 @@ export const educationActions = {
               education
             }
           })
+        }
+      };
+    };
+  },
+
+  deleteEducation(id) {
+    return ({services: {fetch}, getState}) => {
+      return {
+        type: educationTypes.DELETE_EDUCATION,
+        meta: {
+          immediate: true,
+          immediateAsyncResult: true
+        },
+        payload: {
+          promise: fetch.fetch(`/users/${getState().user.data.get('id')}/educations/${id}`, {
+            method: 'DELETE'
+          }).then(r => ({id}))
         }
       };
     };

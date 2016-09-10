@@ -16,8 +16,12 @@ export default class DeleteButton extends PureComponent {
     onPress: PropTypes.func
   };
 
+  setNativeProps(opts) {
+    return this.refs.wrapper.setNativeProps(opts);
+  }
+
   render() {
-    return (<View style={{
+    return (<View ref="wrapper" style={{
       opacity: this.props.disabled ? 0.7 : 1
     }}>
       <TouchableOpacity

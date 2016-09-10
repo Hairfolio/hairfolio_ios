@@ -16,12 +16,12 @@ import PickerInput from '../components/Form/PickerInput';
 import BannerErrorContainer from '../components/BannerErrorContainer';
 import KeyboardScrollView from '../components/KeyboardScrollView';
 import LoadingContainer from '../components/LoadingContainer';
+import DeleteButton from '../components/Buttons/Delete';
 
 import {NAVBAR_HEIGHT} from '../constants';
 
 import {throwOnFail} from '../lib/reduxPromiseMiddleware';
 import appEmitter from '../appEmitter';
-import utils from '../utils';
 
 import formMixin from '../mixins/form';
 
@@ -57,21 +57,35 @@ export default class StylistAddEducation extends PureComponent {
 
   setEditing(education) {
     if (this.state.editing !== education)
-      this.setFormValue({
-        ...education.toJS(),
-        'year_from': education.get('year_from').toString(),
-        'year_to': education.get('year_to').toString(),
-        'degree_id': education.get('degree').get('id')
-      });
+      this.props.dispatch(educationActions.getDegrees()).then(() => {
+        this.setFormValue({
+          ...education.toJS(),
+          'year_from': education.get('year_from').toString(),
+          'year_to': education.get('year_to').toString(),
+          'degree_id': education.get('degree').get('id')
+        });
 
-    this.setState({
-      editing: education
-    });
+        this.refs.deleteButton.setNativeProps({
+          style: {
+            opacity: 1
+          }
+        });
+
+        this.setState({
+          editing: education
+        });
+      });
   }
 
   setNew() {
     if (this.state.editing !== false)
       this.clearValues();
+
+    this.refs.deleteButton.setNativeProps({
+      style: {
+        opacity: 0
+      }
+    });
 
     this.setState({
       editing: false
@@ -121,7 +135,7 @@ export default class StylistAddEducation extends PureComponent {
         backgroundColor: COLORS.LIGHT,
         paddingTop: NAVBAR_HEIGHT
       }}
-      title="Add Education"
+      title={(this.state.editing ? 'Edit' : 'Add') + ' Education'}
     >
       <BannerErrorContainer ref="ebc" style={{
         flex: 1
@@ -190,6 +204,33 @@ export default class StylistAddEducation extends PureComponent {
               placeholder="Website"
               ref={(r) => this.addFormItem(r, 'website')}
               validation={(v) => !!v}
+            />
+
+            <View style={{height: 30}} />
+            <DeleteButton
+              disabled={this.state.submitting}
+              label="DELETE"
+              onPress={() => {
+                this.setState({submitting: true});
+
+                this.props.dispatch(educationActions.deleteEducation(this.state.editing.get('id')))
+                  .then((r) => {
+                    this.setState({submitting: false});
+                    return r;
+                  })
+                  .then(throwOnFail)
+                  .then(
+                    () => {
+                      appEmitter.emit('user-edited');
+                      _.last(this.context.navigators).jumpBack();
+                    },
+                    (e) => {
+                      console.log(e);
+                      this.refs.ebc.error(e);
+                    }
+                  );
+              }}
+              ref="deleteButton"
             />
           </LoadingContainer>
         </KeyboardScrollView>

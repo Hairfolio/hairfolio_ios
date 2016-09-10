@@ -16,6 +16,7 @@ const revive = user => initialState.mergeDeep({
 });
 
 export default function userReducer(state = initialState, action) {
+  var education;
 
   switch (action.type) {
     case appTypes.REVIVE_STATE: {
@@ -44,15 +45,23 @@ export default function userReducer(state = initialState, action) {
     }
 
     case educationTypes.ADD_EDUCATION_SUCCESS.toString(): {
-      return state.setIn(['data', 'education'], state.get('data').get('education').push(new Map(action.payload)));
+      return state.setIn(['data', 'education'], state.get('data').get('education').push((new Map({})).mergeDeep(action.payload)));
     }
 
     case educationTypes.EDIT_EDUCATION_SUCCESS.toString(): {
-      var education = state.get('data').get('education');
+      education = state.get('data').get('education');
       education = education.map(step => {
         if (step.get('id') !== action.payload.id)
           return step;
         return (new Map({})).mergeDeep(action.payload);
+      });
+      return state.setIn(['data', 'education'], education);
+    }
+
+    case educationTypes.DELETE_EDUCATION_SUCCESS.toString(): {
+      education = state.get('data').get('education');
+      education = education.filter(step => {
+        return step.get('id') !== action.payload.id;
       });
       return state.setIn(['data', 'education'], education);
     }

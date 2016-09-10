@@ -67,6 +67,7 @@ export default class StylistCertificates extends PureComponent {
           items={new OrderedMap(this.props.certificates.map(certificate =>
             [certificate.get('id'), certificate]
           ))}
+          placeholder="Search for certificates"
           ref={sL => this._searchList = sL}
           style={{
             flex: 1

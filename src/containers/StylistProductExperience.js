@@ -66,6 +66,7 @@ export default class StylistProductExperience extends PureComponent {
           items={new OrderedMap(this.props.experiences.map(experience =>
             [experience.get('id'), experience]
           ))}
+          placeholder="Search for products"
           ref={sL => this._searchList = sL}
           style={{
             flex: 1

@@ -150,8 +150,6 @@ export default class SalonInfo extends PureComponent {
           <PageInput
             page={salonStylists}
             placeholder="Stylists"
-            ref={(r) => this.addFormItem(r, 'stylist')}
-            validation={(v) => true}
           />
 
           <View style={{height: StyleSheet.hairlineWidth}} />

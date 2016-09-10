@@ -10,7 +10,8 @@ import {COLORS, FONTS, SCALE} from '../style';
 export default class SearchList extends PureComponent {
   static propTypes = {
     items: React.PropTypes.object.isRequired,
-    onChange: React.PropTypes.func
+    onChange: React.PropTypes.func,
+    placeholder: React.PropTypes.string.isRequired
   };
 
   state = {
@@ -138,7 +139,7 @@ export default class SearchList extends PureComponent {
               fontSize: SCALE.h(30),
               marginLeft: 6,
               fontFamily: FONTS.ROMAN
-            }}>Search for products</Text>
+            }}>{this.props.placeholder}</Text>
           </View>}
         </View>
       </View>

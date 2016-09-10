@@ -130,7 +130,7 @@ export default class Register2 extends PureComponent {
               .then(
                 () => {
                   appEmitter.emit('login');
-                  if (type[item.label] === 'consumer')
+                  if (type === 'consumer')
                     return _.first(this.context.navigators).jumpTo(appStack);
 
                   var stack = stacks[item.label];

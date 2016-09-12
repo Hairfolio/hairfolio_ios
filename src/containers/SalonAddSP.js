@@ -6,7 +6,7 @@ import validator from 'validator';
 import connect from '../lib/connect';
 import {app} from '../selectors/app';
 import {environment} from '../selectors/environment';
-import {educationActions} from '../actions/education';
+import {offeringsActions} from '../actions/offerings';
 import {COLORS, FONTS, SCALE} from '../style';
 import NavigationSetting from '../navigation/NavigationSetting';
 
@@ -27,12 +27,14 @@ import formMixin from '../mixins/form';
 
 @connect(app, environment)
 @mixin(formMixin)
-export default class StylistAddEducation extends PureComponent {
+export default class SalonAddSP extends PureComponent {
   static propTypes = {
     appVersion: React.PropTypes.string.isRequired,
-    degrees: React.PropTypes.object.isRequired,
-    degreesState: React.PropTypes.string.isRequired,
-    dispatch: React.PropTypes.func.isRequired
+    categories: React.PropTypes.object.isRequired,
+    categoriesState: React.PropTypes.string.isRequired,
+    dispatch: React.PropTypes.func.isRequired,
+    services: React.PropTypes.object.isRequired,
+    servicesState: React.PropTypes.string.isRequired
   };
 
   static contextTypes = {
@@ -43,9 +45,16 @@ export default class StylistAddEducation extends PureComponent {
     editing: false
   };
 
+  loadData() {
+    return Promise.all([
+      this.props.dispatch(offeringsActions.getServices()).then(throwOnFail),
+      this.props.dispatch(offeringsActions.getCategories()).then(throwOnFail)
+    ]);
+  }
+
   @autobind
   onWillFocus() {
-    this.props.dispatch(educationActions.getDegrees());
+    this.loadData();
   }
 
   getValue() {
@@ -55,25 +64,24 @@ export default class StylistAddEducation extends PureComponent {
   clear() {
   }
 
-  setEditing(education) {
-    if (this.state.editing !== education)
-      this.props.dispatch(educationActions.getDegrees()).then(throwOnFail).then(() => {
+  setEditing(sp) {
+    if (this.state.editing !== sp)
+      this.loadData().then(() => {
         this.setFormValue({
-          ...education.toJS(),
-          'year_from': education.get('year_from').toString(),
-          'year_to': education.get('year_to').toString(),
-          'degree_id': education.get('degree').get('id')
+          ...sp.toJS(),
+          'category_id': sp.get('category').get('id'),
+          'service_id': sp.get('service').get('id')
         });
 
-        if (this.refs.deleteButton)
-          this.refs.deleteButton.setNativeProps({
+        if (this._deleteButton)
+          this._deleteButton.setNativeProps({
             style: {
               opacity: 1
             }
           });
 
         this.setState({
-          editing: education
+          editing: sp
         });
       });
   }
@@ -82,8 +90,8 @@ export default class StylistAddEducation extends PureComponent {
     if (this.state.editing !== false)
       this.clearValues();
 
-    if (this.refs.deleteButton)
-      this.refs.deleteButton.setNativeProps({
+    if (this._deleteButton)
+      this._deleteButton.setNativeProps({
         style: {
           opacity: 0
         }
@@ -110,8 +118,8 @@ export default class StylistAddEducation extends PureComponent {
         this.setState({'submitting': true});
 
         var action = this.state.editing === false ?
-          educationActions.addEducation(this.getFormValue()) :
-          educationActions.editEducation(this.state.editing.get('id'), this.getFormValue());
+          offeringsActions.addOffer(this.getFormValue()) :
+          offeringsActions.editOffer(this.state.editing.get('id'), this.getFormValue());
 
         this.props.dispatch(action)
           .then((r) => {
@@ -152,49 +160,26 @@ export default class StylistAddEducation extends PureComponent {
           <View style={{
             height: SCALE.h(34)
           }} />
-          <LoadingContainer state={[this.props.degreesState]}>
+          <LoadingContainer state={[this.props.servicesState, this.props.categoriesState]}>
             {() => (<View>
-              <InlineTextInput
-                autoCorrect={false}
-                placeholder="School Name"
-                ref={(r) => this.addFormItem(r, 'school_name')}
+              <PickerInput
+                choices={this.props.categories.map(category => ({
+                  id: category.get('id'),
+                  label: category.get('name')}
+                )).toJS()}
+                placeholder="Category"
+                ref={(r) => this.addFormItem(r, 'category_id')}
                 validation={(v) => !!v}
+                valueProperty="id"
               />
               <View style={{height: StyleSheet.hairlineWidth}} />
-              <View style={{
-                flexDirection: 'row'
-              }}>
-                <View style={{flex: 1}}>
-                  <PickerInput
-                    choices={_.map(_.range((new Date()).getFullYear() - 70, (new Date()).getFullYear() + 1), (year) =>
-                      ({label: year.toString()})
-                    ).reverse()}
-                    placeholder="From"
-                    ref={(r) => this.addFormItem(r, 'year_from')}
-                    validation={(v) => !!v}
-                  />
-                </View>
-                <View style={{width: StyleSheet.hairlineWidth}} />
-                <View style={{flex: 1}}>
-                  <PickerInput
-                    choices={_.map(_.range((new Date()).getFullYear() - 70, (new Date()).getFullYear() + 1), (year) =>
-                      ({label: year.toString()})
-                    ).reverse()}
-                    placeholder="To"
-                    ref={(r) => this.addFormItem(r, 'year_to')}
-                    validation={(v) => !!v}
-                  />
-                </View>
-              </View>
-              <View style={{height: StyleSheet.hairlineWidth}} />
-
               <PickerInput
-                choices={this.props.degrees.map(degree => ({
-                  id: degree.get('id'),
-                  label: degree.get('name')}
+                choices={this.props.services.map(service => ({
+                  id: service.get('id'),
+                  label: service.get('name')}
                 )).toJS()}
-                placeholder="Degree"
-                ref={(r) => this.addFormItem(r, 'degree_id')}
+                placeholder="Service"
+                ref={(r) => this.addFormItem(r, 'service_id')}
                 validation={(v) => !!v}
                 valueProperty="id"
               />
@@ -202,22 +187,21 @@ export default class StylistAddEducation extends PureComponent {
               <View style={{height: StyleSheet.hairlineWidth}} />
 
               <InlineTextInput
-                autoCapitalize="none"
-                autoCorrect={false}
-                placeholder="Website"
-                ref={(r) => this.addFormItem(r, 'website')}
+                keyboardType="numeric"
+                placeholder="Price"
+                ref={(r) => this.addFormItem(r, 'price')}
                 validation={(v) => !!v}
               />
 
               <View style={{height: 30}} />
-              <View ref="deleteButton" style={{opacity: this.state.editing ? 1 : 0}}>
+              <View ref={r => this._deleteButton = r} style={{opacity: this.state.editing ? 1 : 0}}>
                 <DeleteButton
                   disabled={this.state.submitting || !this.state.editing}
                   label="DELETE"
                   onPress={() => {
                     this.setState({submitting: true});
 
-                    this.props.dispatch(educationActions.deleteEducation(this.state.editing.get('id')))
+                    this.props.dispatch(offeringsActions.deleteOffer(this.state.editing.get('id')))
                       .then((r) => {
                         this.setState({submitting: false});
                         return r;
@@ -234,8 +218,6 @@ export default class StylistAddEducation extends PureComponent {
                         }
                       );
                   }}
-                  ref="deleteButton"
-                  style={{opacity: this.state.editing ? 1 : 0}}
                 />
               </View>
             </View>)}

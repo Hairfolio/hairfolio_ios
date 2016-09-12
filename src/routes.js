@@ -11,6 +11,7 @@ import BrandInfo from './containers/BrandInfo';
 import SalonInfo from './containers/SalonInfo';
 import SalonStylists from './containers/SalonStylists';
 import SalonSP from './containers/SalonSP';
+import SalonAddSP from './containers/SalonAddSP';
 import StylistInfo from './containers/StylistInfo';
 import StylistEducation from './containers/StylistEducation';
 import StylistAddEducation from './containers/StylistAddEducation';
@@ -89,6 +90,12 @@ class SalonStylistsRoute extends Route {
 }
 class SalonSPRoute extends Route {
   SceneComponent = SalonSP;
+  SceneConfig = {
+    ...CustomScenesConfig.FadeInOut
+  };
+}
+class SalonAddSPRoute extends Route {
+  SceneComponent = SalonAddSP;
   SceneConfig = {
     ...CustomScenesConfig.FadeInOut
   };
@@ -279,6 +286,7 @@ export const salonInfo = new SalonInfoRoute();
 export const brandInfo = new BrandInfoRoute();
 export const salonStylists = new SalonStylistsRoute();
 export const salonSP = new SalonSPRoute();
+export const salonAddSP = new SalonAddSPRoute();
 export const stylistInfo = new StylistInfoRoute();
 export const stylistEducation = new StylistEducationRoute();
 export const stylistAddEducation = new StylistAddEducationRoute();
@@ -369,6 +377,7 @@ export const constructors = {
   SalonInfoRoute,
   SalonStylistsRoute,
   SalonSPRoute,
+  SalonAddSPRoute,
   StylistInfoRoute,
   BrandInfoRoute,
   StylistCertificatesRoute,

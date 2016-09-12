@@ -72,7 +72,7 @@ export default class StylistEducation extends PureComponent {
     return (<View style={{
       flex: 1
     }}>
-      {this.props.user.get('education').count() ?
+      {!this.props.user.get('education').count() ?
         <Text style={{
           marginTop: SCALE.h(35),
           marginLeft: SCALE.w(25),

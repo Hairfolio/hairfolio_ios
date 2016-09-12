@@ -25,6 +25,10 @@ export const registrationTypes = new Enum(
   'HYDRATE_USER_EDUCATION_PENDING',
   'HYDRATE_USER_EDUCATION_SUCCESS',
   'HYDRATE_USER_EDUCATION_ERROR',
+  'HYDRATE_USER_OFFERINGS',
+  'HYDRATE_USER_OFFERINGS_PENDING',
+  'HYDRATE_USER_OFFERINGS_SUCCESS',
+  'HYDRATE_USER_OFFERINGS_ERROR',
   'LOGIN_FULL',
   'LOGIN_FULL_PENDING',
   'LOGIN_FULL_SUCCESS',
@@ -66,6 +70,20 @@ export const registrationActions = {
         },
         payload: {
           promise: fetch.fetch(`/users/${getState().user.data.get('id')}/educations`)
+        }
+      });
+  },
+
+  hydrateUserOfferings() {
+    return ({services: {fetch}, getState}) =>
+      ({
+        type: registrationTypes.HYDRATE_USER_OFFERINGS,
+        meta: {
+          immediate: true,
+          immediateAsyncResult: true
+        },
+        payload: {
+          promise: fetch.fetch(`/users/${getState().user.data.get('id')}/offerings`)
         }
       });
   },
@@ -172,8 +190,10 @@ export const registrationActions = {
         payload: {
           promise: dispatch(registrationActions.loginWithFacebookBase(token))
             .then(throwOnFail)
-            .then(() => dispatch(registrationActions.hydrateUserEducation()))
-            .then(throwOnFail)
+            .then(() => Promise.all([
+              dispatch(registrationActions.hydrateUserEducation()).then(throwOnFail),
+              dispatch(registrationActions.hydrateUserOfferings()).then(throwOnFail)
+            ]))
             .then(() => getState().user.data)
         }
       };
@@ -213,8 +233,6 @@ export const registrationActions = {
         },
         payload: {
           promise: dispatch(registrationActions.signupWithFacebookBase(token, type))
-            //.then(throwOnFail)
-            //.then(() => dispatch(registrationActions.hydrateUserEducation()))
             .then(throwOnFail)
             .then(() => getState().user.data)
         }
@@ -253,8 +271,10 @@ export const registrationActions = {
         payload: {
           promise: dispatch(registrationActions.loginWithInstagramBase(token))
             .then(throwOnFail)
-            .then(() => dispatch(registrationActions.hydrateUserEducation()))
-            .then(throwOnFail)
+            .then(() => Promise.all([
+              dispatch(registrationActions.hydrateUserEducation()).then(throwOnFail),
+              dispatch(registrationActions.hydrateUserOfferings()).then(throwOnFail)
+            ]))
             .then(() => getState().user.data)
         }
       };
@@ -294,8 +314,6 @@ export const registrationActions = {
         },
         payload: {
           promise: dispatch(registrationActions.signupWithInstagramBase(token, type))
-            //.then(throwOnFail)
-            //.then(() => dispatch(registrationActions.hydrateUserEducation()))
             .then(throwOnFail)
             .then(() => getState().user.data)
         }
@@ -341,8 +359,6 @@ export const registrationActions = {
         },
         payload: {
           promise: dispatch(registrationActions.signupWithEmailBase(value, type))
-            //.then(throwOnFail)
-            //.then(() => dispatch(registrationActions.hydrateUserEducation()))
             .then(throwOnFail)
             .then(() => getState().user.data)
         }
@@ -383,8 +399,10 @@ export const registrationActions = {
         payload: {
           promise: dispatch(registrationActions.loginWithEmailBase(value, type))
             .then(throwOnFail)
-            .then(() => dispatch(registrationActions.hydrateUserEducation()))
-            .then(throwOnFail)
+            .then(() => Promise.all([
+              dispatch(registrationActions.hydrateUserEducation()).then(throwOnFail),
+              dispatch(registrationActions.hydrateUserOfferings()).then(throwOnFail)
+            ]))
             .then(() => getState().user.data)
         }
       };

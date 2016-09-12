@@ -65,8 +65,8 @@ export default class StylistAddEducation extends PureComponent {
           'degree_id': education.get('degree').get('id')
         });
 
-        if (this.refs.deleteButton)
-          this.refs.deleteButton.setNativeProps({
+        if (this._deleteButton)
+          this._deleteButton.setNativeProps({
             style: {
               opacity: 1
             }
@@ -82,8 +82,8 @@ export default class StylistAddEducation extends PureComponent {
     if (this.state.editing !== false)
       this.clearValues();
 
-    if (this.refs.deleteButton)
-      this.refs.deleteButton.setNativeProps({
+    if (this._deleteButton)
+      this._deleteButton.setNativeProps({
         style: {
           opacity: 0
         }
@@ -210,7 +210,7 @@ export default class StylistAddEducation extends PureComponent {
               />
 
               <View style={{height: 30}} />
-              <View ref="deleteButton" style={{opacity: this.state.editing ? 1 : 0}}>
+              <View ref={r => this._deleteButton = r} style={{opacity: this.state.editing ? 1 : 0}}>
                 <DeleteButton
                   disabled={this.state.submitting || !this.state.editing}
                   label="DELETE"
@@ -234,8 +234,6 @@ export default class StylistAddEducation extends PureComponent {
                         }
                       );
                   }}
-                  ref="deleteButton"
-                  style={{opacity: this.state.editing ? 1 : 0}}
                 />
               </View>
             </View>)}

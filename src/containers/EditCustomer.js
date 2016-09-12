@@ -152,7 +152,7 @@ export default class EditCustomer extends PureComponent {
                   .then(throwOnFail)
                   .then(({public_id}) => public_id)
               }
-              validation={(v) => !!v}
+              validation={(v) => !!v || this.props.user.get('insta_id') || this.props.user.get('facebook_id')}
             />
           </View>
 

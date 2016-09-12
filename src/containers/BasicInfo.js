@@ -162,7 +162,7 @@ export default class BasicInfo extends PureComponent {
               }
               validation={(v) => !!v}
             />
-            <View style={{
+            {this.props.accountType !== 'consumer' ? <View style={{
               height: SCALE.h(46),
               width: SCALE.h(46),
               borderRadius: SCALE.h(23),
@@ -176,7 +176,7 @@ export default class BasicInfo extends PureComponent {
               justifyContent: 'center'
             }}>
               {this.renderAccountIcon()}
-            </View>
+            </View> : null}
           </View>
 
           {_.map(this.props.detailFields, ({placeholder, ppte}, i) =>

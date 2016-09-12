@@ -24,6 +24,8 @@ import {registrationActions} from '../actions/registration';
 import formMixin from '../mixins/form';
 
 import {NAVBAR_HEIGHT} from '../constants';
+import appEmitter from '../appEmitter';
+import {appStack} from '../routes';
 
 @connect(app)
 @mixin(formMixin)
@@ -41,18 +43,29 @@ export default class BrandInfo extends PureComponent {
 
   render() {
     return (<NavigationSetting
-      leftAction={() => {
-        _.last(this.context.navigators).jumpBack();
-      }}
-      leftDisabled={this.state.submitting}
-      leftIcon="back"
       onWillBlur={this.onWillBlur}
       onWillFocus={this.onWillFocus}
       rightAction={() => {
         if (this.checkErrors())
           return;
 
-        console.log(this.getFormValue());
+        this.setState({'submitting': true});
+        this.props.dispatch(registrationActions.editUser(this.getFormValue()))
+        .then((r) => {
+          this.setState({submitting: false});
+          return r;
+        })
+        .then(throwOnFail)
+        .then(
+          () => {
+            appEmitter.emit('user-edited');
+            _.first(this.context.navigators).jumpTo(appStack, () => this.clearValues());
+          },
+          (e) => {
+            console.log(e);
+            this.refs.ebc.error(e);
+          }
+        );
       }}
       rightDisabled={this.state.submitting}
       rightLabel="Next"
@@ -133,6 +146,7 @@ export default class BrandInfo extends PureComponent {
 
           <InlineTextInput
             autoCorrect={false}
+            keyboardType="url"
             placeholder="Website"
             ref={(r) => this.addFormItem(r, 'business.website')}
             validation={(v) => !!v}
@@ -141,6 +155,7 @@ export default class BrandInfo extends PureComponent {
 
           <InlineTextInput
             autoCorrect={false}
+            keyboardType="numeric"
             placeholder="Phone Number"
             ref={(r) => this.addFormItem(r, 'business.phone')}
             validation={(v) => !!v}

@@ -339,7 +339,7 @@ export const basicInfoBrand = new BasicInfoRoute({
   detailFields: [
     {
       placeholder: 'Brand Name',
-      ppte: 'brand_name'
+      ppte: 'business.name'
     }
   ],
   title: 'Brand Account'
@@ -350,7 +350,7 @@ export const basicInfoSalon = new BasicInfoRoute({
   detailFields: [
     {
       placeholder: 'Salon Name',
-      ppte: 'salon_name'
+      ppte: 'business.name'
     }
   ],
   title: 'Salon Account'

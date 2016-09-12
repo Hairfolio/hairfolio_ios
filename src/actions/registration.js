@@ -303,8 +303,13 @@ export const registrationActions = {
     };
   },
 
-  signupWithEmailBase(value, type) {
+  signupWithEmailBase(value = {}, type) {
     return ({services: {fetch}}) => {
+      if (value.business) {
+        _.each(value.business, (v, key) => value[`business_${key}`] = v);
+        delete value.business;
+      }
+
       return {
         type: registrationTypes.LOGIN,
         meta: {

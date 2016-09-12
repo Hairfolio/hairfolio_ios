@@ -54,16 +54,16 @@ export default class BasicInfo extends PureComponent {
 
   state = {};
 
-  jumpToNext() {
+  jumpToNext(callback) {
     if (!this.props.nextRoute)
-      return;
+      return callback();
 
     var firstNavigator = _.first(this.context.navigators);
     var lastNavigator = _.last(this.context.navigators);
 
     var navigator = (firstNavigator.getCurrentRoutes().indexOf(this.props.nextRoute) !== -1) ? firstNavigator : lastNavigator;
 
-    navigator.jumpTo(this.props.nextRoute);
+    navigator.jumpTo(this.props.nextRoute, callback);
   }
 
   renderAccountIcon() {
@@ -113,9 +113,8 @@ export default class BasicInfo extends PureComponent {
           this.props.dispatch(registrationActions.getEnvironment()).then(throwOnFail)
             .then(() => this.props.dispatch(registrationActions.signupWithEmail(value, this.props.accountType)).then(throwOnFail))
             .then(() => {
-              this.clearValues();
               appEmitter.emit('login');
-              this.jumpToNext();
+              this.jumpToNext(() => this.clearValues());
             }, (e) => {
               console.log(e);
               this.refs.ebc.error(e);

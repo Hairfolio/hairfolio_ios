@@ -14,6 +14,7 @@ import InlineTextInput from '../components/Form/InlineTextInput';
 import PickerInput from '../components/Form/PickerInput';
 import BannerErrorContainer from '../components/BannerErrorContainer';
 import KeyboardScrollView from '../components/KeyboardScrollView';
+import states from '../states.json';
 
 import {throwOnFail} from '../lib/reduxPromiseMiddleware';
 
@@ -109,10 +110,11 @@ export default class StylistPlaceOfWork extends PureComponent {
           }}>
             <View style={{flex: 1}}>
               <PickerInput
-                choices={_.map(_.range(0, 20), i => ({label: i.toString()}))}
+                choices={states}
                 placeholder="State"
                 ref={(r) => this.addFormItem(r, 'state')}
                 validation={(v) => !!v}
+                valueProperty="abbreviation"
               />
             </View>
             <View style={{width: StyleSheet.hairlineWidth}} />

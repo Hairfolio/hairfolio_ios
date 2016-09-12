@@ -125,7 +125,6 @@ export default class EditCustomer extends PureComponent {
       <BannerErrorContainer ref="ebc" style={{flex: 1}}>
         <KeyboardScrollView
           ref="scrollView"
-          scrollToTopOnBlur
           showsVerticalScrollIndicator={false}
           space={90}
           style={{flex: 1}}

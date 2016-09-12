@@ -21,7 +21,19 @@ export default {
   },
 
   getFormValue() {
-    return _.mapValues(this.fields, ref => ref.getValue());
+    var value = {};
+
+    _.each(this.fields, (ref, key) => {
+      var newValue = ref.getValue();
+      var oldValue = _.get(value, key);
+      if (_.isPlainObject(newValue) && _.isPlainObject(oldValue))
+        newValue = _.merge({}, oldValue, newValue);
+      if (!newValue)
+        return;
+      value = _.set(value, key, newValue);
+    });
+
+    return value;
   },
 
   clearValues() {

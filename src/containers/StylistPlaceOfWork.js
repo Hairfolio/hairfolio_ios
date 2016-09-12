@@ -40,10 +40,11 @@ export default class StylistPlaceOfWork extends PureComponent {
   state = {};
 
   getValue() {
-    return null;
+    return this.getFormValue();
   }
 
   clear() {
+    this.clearValues();
   }
 
   render() {
@@ -55,14 +56,6 @@ export default class StylistPlaceOfWork extends PureComponent {
       leftIcon="back"
       onWillBlur={this.onWillBlur}
       onWillFocus={this.onWillFocus}
-      rightAction={() => {
-        if (this.checkErrors())
-          return;
-
-        console.log(this.getFormValue());
-      }}
-      rightDisabled={this.state.submitting}
-      rightLabel="Done"
       style={{
         flex: 1,
         backgroundColor: COLORS.LIGHT,
@@ -86,8 +79,8 @@ export default class StylistPlaceOfWork extends PureComponent {
 
           <InlineTextInput
             autoCorrect={false}
-            placeholder="City"
-            ref={(r) => this.addFormItem(r, 'salon_name')}
+            placeholder="Salon name"
+            ref={(r) => this.addFormItem(r, 'name')}
             validation={(v) => !!v}
           />
 

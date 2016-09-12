@@ -409,8 +409,25 @@ export const registrationActions = {
     };
   },
 
-  editUser(values) {
+  editUser(values = {}) {
     return ({services: {fetch}, getState}) => {
+      if (values.business) {
+        _.each(values.business, (v, key) => values[`business_${key}`] = v);
+        delete values.business;
+      }
+
+      var promise;
+      if (_.isEmpty(values))
+        promise = Promise.resolve(getState(getState().user.data.toJS()));
+      else
+        promise = fetch.fetch(`/users/${getState().user.data.get('id')}`, {
+          method: 'PATCH',
+          body: {
+            user: _.omit(values, ['experience_ids', 'certificate_ids']),
+            ..._.pick(values, ['experience_ids', 'certificate_ids'])
+          }
+        });
+
       return {
         type: registrationTypes.EDIT_USER,
         meta: {
@@ -418,13 +435,7 @@ export const registrationActions = {
           immediateAsyncResult: true
         },
         payload: {
-          promise: fetch.fetch(`/users/${getState().user.data.get('id')}`, {
-            method: 'PATCH',
-            body: {
-              user: _.omit(values, ['experience_ids', 'certificate_ids']),
-              ..._.pick(values, ['experience_ids', 'certificate_ids'])
-            }
-          })
+          promise
         }
       };
     };

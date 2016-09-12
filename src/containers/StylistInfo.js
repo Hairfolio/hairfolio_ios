@@ -89,7 +89,7 @@ export default class StylistInfo extends PureComponent {
         <MultilineTextInput
           max={300}
           placeholder="Short professional description…"
-          ref={(r) => this.addFormItem(r, 'business_info')}
+          ref={(r) => this.addFormItem(r, 'business.info')}
           validation={(v) => !v || validator.isLength(v, {max: 300})}
         />
 
@@ -123,7 +123,7 @@ export default class StylistInfo extends PureComponent {
         <PageInput
           page={stylistPlaceOfWork}
           placeholder="Place of work"
-          ref={(r) => this.addFormItem(r, 'place_of_work')}
+          ref={(r) => this.addFormItem(r, 'business')}
           validation={(v) => true}
         />
 

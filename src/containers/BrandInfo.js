@@ -9,6 +9,8 @@ import {app} from '../selectors/app';
 import {COLORS, FONTS, SCALE} from '../style';
 import NavigationSetting from '../navigation/NavigationSetting';
 
+import states from '../states.json';
+
 import MultilineTextInput from '../components/Form/MultilineTextInput';
 import InlineTextInput from '../components/Form/InlineTextInput';
 import PickerInput from '../components/Form/PickerInput';
@@ -80,7 +82,7 @@ export default class BrandInfo extends PureComponent {
             autoCorrect={false}
             max={300}
             placeholder="Short professional description…"
-            ref={(r) => this.addFormItem(r, 'email')}
+            ref={(r) => this.addFormItem(r, 'business.info')}
             validation={(v) => !!v && validator.isLength(v, {max: 300})}
           />
 
@@ -90,7 +92,7 @@ export default class BrandInfo extends PureComponent {
             autoCapitalize="none"
             autoCorrect={false}
             placeholder="Address"
-            ref={(r) => this.addFormItem(r, 'address')}
+            ref={(r) => this.addFormItem(r, 'business.address')}
             validation={(v) => !!v}
           />
 
@@ -99,7 +101,7 @@ export default class BrandInfo extends PureComponent {
           <InlineTextInput
             autoCorrect={false}
             placeholder="City"
-            ref={(r) => this.addFormItem(r, 'city')}
+            ref={(r) => this.addFormItem(r, 'business.city')}
             validation={(v) => !!v}
           />
           <View style={{height: StyleSheet.hairlineWidth}} />
@@ -109,10 +111,11 @@ export default class BrandInfo extends PureComponent {
           }}>
             <View style={{flex: 1}}>
               <PickerInput
-                choices={_.map(_.range(0, 20), i => ({label: i.toString()}))}
+                choices={states}
                 placeholder="State"
-                ref={(r) => this.addFormItem(r, 'state')}
+                ref={(r) => this.addFormItem(r, 'business.state')}
                 validation={(v) => !!v}
+                valueProperty="abbreviation"
               />
             </View>
             <View style={{width: StyleSheet.hairlineWidth}} />
@@ -120,7 +123,7 @@ export default class BrandInfo extends PureComponent {
               <InlineTextInput
                 autoCorrect={false}
                 placeholder="Zip"
-                ref={(r) => this.addFormItem(r, 'zip')}
+                ref={(r) => this.addFormItem(r, 'business.zip')}
                 validation={(v) => !!v}
               />
             </View>
@@ -131,7 +134,7 @@ export default class BrandInfo extends PureComponent {
           <InlineTextInput
             autoCorrect={false}
             placeholder="Website"
-            ref={(r) => this.addFormItem(r, 'website')}
+            ref={(r) => this.addFormItem(r, 'business.website')}
             validation={(v) => !!v}
           />
           <View style={{height: StyleSheet.hairlineWidth}} />
@@ -139,7 +142,7 @@ export default class BrandInfo extends PureComponent {
           <InlineTextInput
             autoCorrect={false}
             placeholder="Phone Number"
-            ref={(r) => this.addFormItem(r, 'phone')}
+            ref={(r) => this.addFormItem(r, 'business.phone')}
             validation={(v) => !!v}
           />
           <View style={{height: StyleSheet.hairlineWidth}} />

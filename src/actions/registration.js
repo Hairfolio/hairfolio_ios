@@ -4,6 +4,7 @@
 
 import Enum from '../lib/enum';
 import utils from '../utils';
+import _ from 'lodash';
 import {throwOnFail} from '../lib/reduxPromiseMiddleware';
 
 export const registrationTypes = new Enum(
@@ -420,7 +421,8 @@ export const registrationActions = {
           promise: fetch.fetch(`/users/${getState().user.data.get('id')}`, {
             method: 'PATCH',
             body: {
-              user: values
+              user: _.omit(values, ['experience_ids', 'certificate_ids']),
+              ..._.pick(values, ['experience_ids', 'certificate_ids'])
             }
           })
         }

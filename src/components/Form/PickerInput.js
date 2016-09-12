@@ -11,6 +11,7 @@ import {
 import {COLORS, FONTS, SCALE} from '../../style';
 import PureComponent from '../PureComponent';
 import Icon from '../Icon';
+import dismissKeyboard from 'react-native/Libraries/Utilities/dismissKeyboard';
 
 export default class Picker extends PureComponent {
   static propTypes = {
@@ -56,6 +57,7 @@ export default class Picker extends PureComponent {
       <TouchableOpacity
         disabled={this.props.disabled}
         onPress={() => {
+          dismissKeyboard();
           this.setState({
             active: true,
             selected: _.isFinite(this.state.selected) ? this.state.selected : 0

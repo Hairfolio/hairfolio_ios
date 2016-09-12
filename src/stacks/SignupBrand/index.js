@@ -76,7 +76,7 @@ export default class SignupConsumerStack extends PureComponent {
         }}
       >
         <Navigator
-          initialRoute={brandInfo/*basicInfoBrand*/}
+          initialRoute={basicInfoBrand}
           initialRouteStack={[
             basicInfoBrand,
             brandInfo

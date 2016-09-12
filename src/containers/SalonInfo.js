@@ -16,6 +16,8 @@ import PageInput from '../components/Form/PageInput';
 import BannerErrorContainer from '../components/BannerErrorContainer';
 import KeyboardScrollView from '../components/KeyboardScrollView';
 
+import states from '../states.json';
+
 import {throwOnFail} from '../lib/reduxPromiseMiddleware';
 
 import {registrationActions} from '../actions/registration';
@@ -25,6 +27,8 @@ import {salonStylists, salonSP} from '../routes';
 import formMixin from '../mixins/form';
 
 import {NAVBAR_HEIGHT} from '../constants';
+import appEmitter from '../appEmitter';
+import {appStack} from '../routes';
 
 @connect(app)
 @mixin(formMixin)
@@ -42,18 +46,29 @@ export default class SalonInfo extends PureComponent {
 
   render() {
     return (<NavigationSetting
-      leftAction={() => {
-        _.last(this.context.navigators).jumpBack();
-      }}
-      leftDisabled={this.state.submitting}
-      leftIcon="back"
       onWillBlur={this.onWillBlur}
       onWillFocus={this.onWillFocus}
       rightAction={() => {
         if (this.checkErrors())
           return;
 
-        console.log(this.getFormValue());
+        this.setState({'submitting': true});
+        this.props.dispatch(registrationActions.editUser(this.getFormValue()))
+        .then((r) => {
+          this.setState({submitting: false});
+          return r;
+        })
+        .then(throwOnFail)
+        .then(
+          () => {
+            appEmitter.emit('user-edited');
+            _.first(this.context.navigators).jumpTo(appStack, () => this.clearValues());
+          },
+          (e) => {
+            console.log(e);
+            this.refs.ebc.error(e);
+          }
+        );
       }}
       rightDisabled={this.state.submitting}
       rightLabel="Next"
@@ -83,7 +98,7 @@ export default class SalonInfo extends PureComponent {
             autoCorrect={false}
             max={300}
             placeholder="Short professional description…"
-            ref={(r) => this.addFormItem(r, 'email')}
+            ref={(r) => this.addFormItem(r, 'business.info')}
             validation={(v) => !!v && validator.isLength(v, {max: 300})}
           />
 
@@ -93,7 +108,7 @@ export default class SalonInfo extends PureComponent {
             autoCapitalize="none"
             autoCorrect={false}
             placeholder="Address"
-            ref={(r) => this.addFormItem(r, 'address')}
+            ref={(r) => this.addFormItem(r, 'business.address')}
             validation={(v) => !!v}
           />
 
@@ -102,7 +117,7 @@ export default class SalonInfo extends PureComponent {
           <InlineTextInput
             autoCorrect={false}
             placeholder="City"
-            ref={(r) => this.addFormItem(r, 'city')}
+            ref={(r) => this.addFormItem(r, 'business.city')}
             validation={(v) => !!v}
           />
           <View style={{height: StyleSheet.hairlineWidth}} />
@@ -112,10 +127,11 @@ export default class SalonInfo extends PureComponent {
           }}>
             <View style={{flex: 1}}>
               <PickerInput
-                choices={_.map(_.range(0, 20), i => ({label: i.toString()}))}
+                choices={states}
                 placeholder="State"
-                ref={(r) => this.addFormItem(r, 'state')}
+                ref={(r) => this.addFormItem(r, 'business.state')}
                 validation={(v) => !!v}
+                valueProperty="abbreviation"
               />
             </View>
             <View style={{width: StyleSheet.hairlineWidth}} />
@@ -123,7 +139,7 @@ export default class SalonInfo extends PureComponent {
               <InlineTextInput
                 autoCorrect={false}
                 placeholder="Zip"
-                ref={(r) => this.addFormItem(r, 'zip')}
+                ref={(r) => this.addFormItem(r, 'business.zip')}
                 validation={(v) => !!v}
               />
             </View>
@@ -133,16 +149,18 @@ export default class SalonInfo extends PureComponent {
 
           <InlineTextInput
             autoCorrect={false}
+            keyboardType="url"
             placeholder="Website"
-            ref={(r) => this.addFormItem(r, 'website')}
+            ref={(r) => this.addFormItem(r, 'business.website')}
             validation={(v) => !!v}
           />
           <View style={{height: StyleSheet.hairlineWidth}} />
 
           <InlineTextInput
             autoCorrect={false}
+            keyboardType="numeric"
             placeholder="Phone Number"
-            ref={(r) => this.addFormItem(r, 'phone')}
+            ref={(r) => this.addFormItem(r, 'business.phone')}
             validation={(v) => !!v}
           />
           <View style={{height: StyleSheet.hairlineWidth}} />

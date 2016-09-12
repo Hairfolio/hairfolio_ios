@@ -41,11 +41,6 @@ export default class StylistInfo extends PureComponent {
 
   render() {
     return (<NavigationSetting
-      leftAction={() => {
-        _.last(this.context.navigators).jumpBack();
-      }}
-      leftDisabled={this.state.submitting}
-      leftIcon="back"
       onWillBlur={this.onWillBlur}
       onWillFocus={this.onWillFocus}
       rightAction={() => {
@@ -62,7 +57,7 @@ export default class StylistInfo extends PureComponent {
         .then(
           () => {
             appEmitter.emit('user-edited');
-            _.first(this.context.navigators).jumpTo(appStack);
+            _.first(this.context.navigators).jumpTo(appStack, () => this.clearValues());
           },
           (e) => {
             console.log(e);

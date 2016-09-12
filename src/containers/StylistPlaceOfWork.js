@@ -132,6 +132,7 @@ export default class StylistPlaceOfWork extends PureComponent {
 
           <InlineTextInput
             autoCorrect={false}
+            keyboardType="url"
             placeholder="Website"
             ref={(r) => this.addFormItem(r, 'website')}
             validation={(v) => !!v}

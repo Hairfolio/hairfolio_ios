@@ -41,7 +41,8 @@ export default class StylistPlaceOfWork extends PureComponent {
   state = {};
 
   getValue() {
-    return this.getFormValue();
+    var value = this.getFormValue();
+    return !_.isEmpty(value) ? value : null;
   }
 
   clear() {

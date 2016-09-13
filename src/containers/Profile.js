@@ -19,6 +19,7 @@ import utils from '../utils';
 
 import ProfileButton from '../components/Buttons/Profile';
 import Icon from '../components/Icon';
+import BannerErrorContainer from '../components/BannerErrorContainer';
 
 import appEmitter from '../appEmitter';
 
@@ -49,101 +50,11 @@ export default class Profile extends PureComponent {
     }
   }
 
-  renderProfile() {
-    return (<View style={{
-      flex: 1
-    }}>
-      <Image
-        resizeMode="cover"
-        source={{uri: utils.getUserProfilePicURI(this.props.user, this.props.environment)}}
-        style={{
-          height: SCALE.h(470),
-          width: Dims.deviceWidth
-        }}
-      >
-        <BlurView blurType="light" style={{
-          flex: 1,
-          justifyContent: 'center',
-          alignItems: 'center',
-          position: 'relative'
-        }}>
-          <TouchableOpacity
-            onPress={() => {
-              _.first(this.context.navigators).jumpTo(editCustomerStack);
-            }}
-            style={{
-              position: 'absolute',
-              top: STATUSBAR_HEIGHT + 5,
-              right: 10
-            }}
-          >
-            <Icon
-              color={COLORS.WHITE}
-              name="settings"
-              size={SCALE.h(48)}
-            />
-          </TouchableOpacity>
-          <Image
-            source={{uri: utils.getUserProfilePicURI(this.props.user, this.props.environment)}}
-            style={{
-              height: SCALE.h(130),
-              width: SCALE.h(130),
-              borderRadius: SCALE.h(130) / 2
-            }}
-          />
-          <View>
-            <Text style={{
-              color: COLORS.WHITE,
-              fontFamily: FONTS.HEAVY,
-              fontSize: SCALE.h(42),
-              marginTop: SCALE.h(20),
-              textAlign: 'center',
-              backgroundColor: 'transparent'
-            }}>{this.props.user.get('first_name')} {this.props.user.get('last_name')}</Text>
-            <View style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between'
-            }}>
-              <Text style={{
-                color: COLORS.WHITE,
-                fontFamily: FONTS.BOOK_OBLIQUE,
-                fontSize: SCALE.h(28),
-                textAlign: 'center',
-                backgroundColor: 'transparent'
-              }}>X Stars</Text>
-              <Text style={{
-                color: COLORS.WHITE,
-                fontFamily: FONTS.BOOK_OBLIQUE,
-                fontSize: SCALE.h(28),
-                textAlign: 'center',
-                backgroundColor: 'transparent'
-              }}>Y Followers</Text>
-            </View>
-            <View style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              marginTop: SCALE.h(20)
-            }}>
-              <View>
-                <ProfileButton label="FOLLOW" />
-              </View>
-              <View style={{width: 15}} />
-              <View>
-                <ProfileButton label="MESSAGE" />
-              </View>
-            </View>
-          </View>
-        </BlurView>
-      </Image>
-      <ConsumerProfileStack />
-    </View>);
-  }
-
   renderNextMilestone() {
     return (<View style={{justifyContent: 'center', flex: 1}}>
       <Text style={{
         textAlign: 'center'
-      }}>{this.props.user.get('account_type')} profile in next milestone</Text>
+      }}>full {this.props.user.get('account_type')} profile in next milestone</Text>
 
       <View style={{height: 30}} />
         <DeleteButton
@@ -176,7 +87,100 @@ export default class Profile extends PureComponent {
         paddingBottom: BOTTOMBAR_HEIGHT
       }}
     >
-      {this.props.user.get('account_type') === 'consumer' ? this.renderProfile() : this.renderNextMilestone()}
+      <BannerErrorContainer ref="ebc" style={{
+        flex: 1
+      }}>
+        <Image
+          resizeMode="cover"
+          source={{uri: utils.getUserProfilePicURI(this.props.user, this.props.environment)}}
+          style={{
+            height: SCALE.h(470),
+            width: Dims.deviceWidth
+          }}
+        >
+          <BlurView blurType="light" style={{
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
+            position: 'relative'
+          }}>
+            <TouchableOpacity
+              onPress={() => {
+                if (this.props.user.get('account_type') === 'consumer')
+                  return _.first(this.context.navigators).jumpTo(editCustomerStack);
+
+                this.refs.ebc.error(`${this.props.user.get('account_type')} edit profile in next milestone`);
+              }}
+              style={{
+                position: 'absolute',
+                top: STATUSBAR_HEIGHT + 5,
+                right: 10
+              }}
+            >
+              <Icon
+                color={COLORS.WHITE}
+                name="settings"
+                size={SCALE.h(48)}
+              />
+            </TouchableOpacity>
+            <Image
+              source={{uri: utils.getUserProfilePicURI(this.props.user, this.props.environment)}}
+              style={{
+                height: SCALE.h(130),
+                width: SCALE.h(130),
+                borderRadius: SCALE.h(130) / 2
+              }}
+            />
+            <View>
+              <Text style={{
+                color: COLORS.WHITE,
+                fontFamily: FONTS.HEAVY,
+                fontSize: SCALE.h(42),
+                marginTop: SCALE.h(20),
+                textAlign: 'center',
+                backgroundColor: 'transparent'
+              }}>{this.props.user.get('first_name')} {this.props.user.get('last_name')}</Text>
+              <View style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between'
+              }}>
+                <Text style={{
+                  color: COLORS.WHITE,
+                  fontFamily: FONTS.BOOK_OBLIQUE,
+                  fontSize: SCALE.h(28),
+                  textAlign: 'center',
+                  backgroundColor: 'transparent'
+                }}>X Stars</Text>
+                <Text style={{
+                  color: COLORS.WHITE,
+                  fontFamily: FONTS.BOOK_OBLIQUE,
+                  fontSize: SCALE.h(28),
+                  textAlign: 'center',
+                  backgroundColor: 'transparent'
+                }}>Y Followers</Text>
+              </View>
+              <View style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                marginTop: SCALE.h(20)
+              }}>
+                <View>
+                  <ProfileButton label="FOLLOW" />
+                </View>
+                <View style={{width: 15}} />
+                <View>
+                  <ProfileButton label="MESSAGE" />
+                </View>
+              </View>
+            </View>
+          </BlurView>
+        </Image>
+        {this.props.user.get('account_type') === 'consumer' ?
+          <ConsumerProfileStack />
+        :
+          this.renderNextMilestone()
+        }
+      </BannerErrorContainer>
     </NavigationSetting>);
   }
 };

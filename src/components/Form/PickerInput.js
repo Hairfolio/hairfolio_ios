@@ -92,7 +92,8 @@ export default class Picker extends PureComponent {
             justifyContent: 'center',
             alignItems: 'center',
             borderLeftWidth: 1,
-            borderLeftColor: COLORS.LIGHT
+            borderLeftColor: COLORS.LIGHT,
+            backgroundColor: COLORS.WHITE
           }}>
             <Icon
               color={this.state.error ? COLORS.RED : COLORS.DARK}

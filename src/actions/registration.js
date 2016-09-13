@@ -442,14 +442,19 @@ export const registrationActions = {
       var promise;
       if (_.isEmpty(values))
         promise = Promise.resolve(getState(getState().user.data.toJS()));
-      else
+      else {
+        var user = _.omit(values, ['experience_ids', 'certificate_ids']);
+
+        var body = _.pick(values, ['experience_ids', 'certificate_ids']);
+
+        if (!_.isEmpty(user))
+          body.user = user;
+
         promise = fetch.fetch(`/users/${getState().user.data.get('id')}`, {
           method: 'PATCH',
-          body: {
-            user: _.omit(values, ['experience_ids', 'certificate_ids']),
-            ..._.pick(values, ['experience_ids', 'certificate_ids'])
-          }
+          body
         });
+      }
 
       return {
         type: registrationTypes.EDIT_USER,

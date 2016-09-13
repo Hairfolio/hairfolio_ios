@@ -250,7 +250,7 @@ export default class EditCustomer extends PureComponent {
             label="DESTROY"
             onPress={() => {
               this.props.dispatch(registrationActions.destroy());
-              appEmitter.emit('logout');
+              appEmitter.emit('logout', {destroy: true});
               _.first(this.context.navigators).jumpTo(loginStack);
             }}
           />

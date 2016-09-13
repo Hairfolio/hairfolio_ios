@@ -45,6 +45,7 @@ export default class StylistCertificates extends PureComponent {
   }
 
   clear() {
+    this._searchList.clear();
   }
 
   render() {

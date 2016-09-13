@@ -31,6 +31,17 @@ export default class SearchList extends PureComponent {
     this.setState({items});
   }
 
+  clear() {
+    this.setItems(this.state.items.map(item => {
+      if (!item.get('selected'))
+        return item;
+
+      return item.set('selected', false);
+    }));
+
+    this.setState({search: ''}, () => this.filter());
+  }
+
   onChange() {
     if (this.props.onChange)
       this.props.onChange(this.state.items);

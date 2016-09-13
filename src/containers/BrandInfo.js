@@ -96,7 +96,7 @@ export default class BrandInfo extends PureComponent {
             max={300}
             placeholder="Short professional description…"
             ref={(r) => this.addFormItem(r, 'business.info')}
-            validation={(v) => !!v && validator.isLength(v, {max: 300})}
+            validation={(v) => !v || validator.isLength(v, {max: 300})}
           />
 
           <View style={{height: StyleSheet.hairlineWidth}} />
@@ -106,7 +106,7 @@ export default class BrandInfo extends PureComponent {
             autoCorrect={false}
             placeholder="Address"
             ref={(r) => this.addFormItem(r, 'business.address')}
-            validation={(v) => !!v}
+            validation={(v) => true}
           />
 
           <View style={{height: StyleSheet.hairlineWidth}} />
@@ -115,7 +115,7 @@ export default class BrandInfo extends PureComponent {
             autoCorrect={false}
             placeholder="City"
             ref={(r) => this.addFormItem(r, 'business.city')}
-            validation={(v) => !!v}
+            validation={(v) => true}
           />
           <View style={{height: StyleSheet.hairlineWidth}} />
 
@@ -127,7 +127,7 @@ export default class BrandInfo extends PureComponent {
                 choices={states}
                 placeholder="State"
                 ref={(r) => this.addFormItem(r, 'business.state')}
-                validation={(v) => !!v}
+                validation={(v) => true}
                 valueProperty="abbreviation"
               />
             </View>
@@ -137,7 +137,7 @@ export default class BrandInfo extends PureComponent {
                 autoCorrect={false}
                 placeholder="Zip"
                 ref={(r) => this.addFormItem(r, 'business.zip')}
-                validation={(v) => !!v}
+                validation={(v) => true}
               />
             </View>
           </View>
@@ -149,7 +149,7 @@ export default class BrandInfo extends PureComponent {
             keyboardType="url"
             placeholder="Website"
             ref={(r) => this.addFormItem(r, 'business.website')}
-            validation={(v) => !!v}
+            validation={(v) => true}
           />
           <View style={{height: StyleSheet.hairlineWidth}} />
 
@@ -158,7 +158,7 @@ export default class BrandInfo extends PureComponent {
             keyboardType="numeric"
             placeholder="Phone Number"
             ref={(r) => this.addFormItem(r, 'business.phone')}
-            validation={(v) => !!v}
+            validation={(v) => true}
           />
           <View style={{height: StyleSheet.hairlineWidth}} />
 

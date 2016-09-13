@@ -70,11 +70,18 @@ export default class Profile extends PureComponent {
           label="DESTROY"
           onPress={() => {
             this.props.dispatch(registrationActions.destroy());
-            appEmitter.emit('logout');
+            appEmitter.emit('logout', {destroy: true});
             _.first(this.context.navigators).jumpTo(loginStack);
           }}
         />
     </View>);
+  }
+
+  getName() {
+    if (this.props.user.get('account_type') === 'brand' || this.props.user.get('account_type') === 'salon')
+      return this.props.user.get('business_name') || 'Business Name';
+
+    return `${this.props.user.get('first_name')} ${this.props.user.get('last_name')}`;
   }
 
   render() {
@@ -139,7 +146,7 @@ export default class Profile extends PureComponent {
                 marginTop: SCALE.h(20),
                 textAlign: 'center',
                 backgroundColor: 'transparent'
-              }}>{this.props.user.get('first_name')} {this.props.user.get('last_name')}</Text>
+              }}>{this.getName()}</Text>
               <View style={{
                 flexDirection: 'row',
                 justifyContent: 'space-between'

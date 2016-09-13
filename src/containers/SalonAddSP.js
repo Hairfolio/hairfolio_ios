@@ -145,7 +145,7 @@ export default class SalonAddSP extends PureComponent {
         backgroundColor: COLORS.LIGHT,
         paddingTop: NAVBAR_HEIGHT
       }}
-      title={(this.state.editing ? 'Edit' : 'Add') + ' Education'}
+      title={(this.state.editing ? 'Edit' : 'Add') + ' Service'}
     >
       <BannerErrorContainer ref="ebc" style={{
         flex: 1

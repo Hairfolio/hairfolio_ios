@@ -107,7 +107,7 @@ export default class Picker extends PureComponent {
             </TouchableOpacity>
           </View>
           <View style={{
-            height: SCALE.h(323),
+            height: SCALE.h(353),
             backgroundColor: COLORS.WHITE,
             justifyContent: 'center',
             overflow: 'hidden'

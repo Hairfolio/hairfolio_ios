@@ -28,7 +28,7 @@ import Feed from './containers/Feed';
 import Search from './containers/Search';
 import CreatePost from './containers/CreatePost';
 import Favourites from './containers/Favourites';
-import Profile from './containers/Profile';
+import Profile from './containers/ProfileWrapper';
 import OnboardingStack from './stacks/Onboarding';
 import ForgottenPasswordStack from './stacks/ForgottenPassword';
 import EditCustomerStack from './stacks/EditCustomer';
@@ -162,7 +162,7 @@ class EditCustomerRoute extends Route {
   };
 }
 
-class UserPostsRoute extends Route {
+export class UserPostsRoute extends Route {
   SceneComponent = UserPosts;
   SceneConfig = {
     ...CustomScenesConfig.FadeInOut
@@ -171,7 +171,7 @@ class UserPostsRoute extends Route {
   label = 'Posts';
 }
 
-class UserHairfolioRoute extends Route {
+export class UserHairfolioRoute extends Route {
   SceneComponent = UserHairfolio;
   SceneConfig = {
     ...CustomScenesConfig.FadeInOut
@@ -293,13 +293,12 @@ export const stylistAddEducation = new StylistAddEducationRoute();
 export const stylistCertificates = new StylistCertificatesRoute();
 export const stylistPlaceOfWork = new StylistPlaceOfWorkRoute();
 export const stylistProductExperience = new StylistProductExperienceRoute();
-export const userHairfolio = new UserHairfolioRoute();
-export const userPosts = new UserPostsRoute();
 export const feed = new FeedRoute();
 export const search = new SearchRoute();
 export const createPost = new CreatePostRoute();
 export const favourites = new FavouritesRoute();
 export const profile = new ProfileRoute();
+export const profileExternal = new ProfileRoute();
 export const loginStack = new OnboardingStackRoute();
 export const forgottenPasswordStack = new ForgottenPasswordStackRoute();
 export const editCustomerStack = new EditCustomerStackRoute();

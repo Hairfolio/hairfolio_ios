@@ -1,7 +1,6 @@
 import React from 'React';
 import _ from 'lodash';
-import {InteractionManager, View} from 'react-native';
-import connect from '../../lib/connect';
+import {View} from 'react-native';
 
 import Navigator from '../../navigation/Navigator';
 
@@ -9,21 +8,14 @@ import NavigationBar from '../../components/UserProfile/Bar';
 
 import PureComponent from '../../components/PureComponent';
 
-import appEmitter from '../../appEmitter';
-
 import {COLORS} from '../../style';
 import {USERPROFILEBAR_HEIGHT} from '../../constants';
 
-import {userPosts, userHairfolio} from '../../routes';
+import {UserPostsRoute, UserHairfolioRoute} from '../../routes';
 
-import {user} from '../../selectors/user';
-import {environment} from '../../selectors/environment';
-
-@connect(user, environment)
 export default class ConsumerProfileStack extends PureComponent {
   static propTypes = {
-    environment: React.PropTypes.object.isRequired,
-    user: React.PropTypes.object.isRequired
+    profile: React.PropTypes.object.isRequired
   };
 
   static contextTypes = {
@@ -31,17 +23,7 @@ export default class ConsumerProfileStack extends PureComponent {
   };
 
   componentWillMount() {
-    this.listeners = [
-      appEmitter.addListener('logout', () => this.onLogout())
-    ];
-  }
-
-  componentWillUnmount() {
-    _.each(this.listeners, l => l.remove());
-  }
-
-  onLogout() {
-    InteractionManager.runAfterInteractions(() => this._nav.jumpTo(userPosts));
+    this.routes = [new UserPostsRoute({profile: this.props.profile}), new UserHairfolioRoute({profile: this.props.profile})];
   }
 
   render() {
@@ -54,10 +36,8 @@ export default class ConsumerProfileStack extends PureComponent {
           backgroundStyle={{
             paddingTop: USERPROFILEBAR_HEIGHT
           }}
-          initialRoute={userPosts}
-          initialRouteStack={[
-            userPosts, userHairfolio
-          ]}
+          initialRoute={_.first(this.routes)}
+          initialRouteStack={this.routes}
           navigationBar={<NavigationBar color={COLORS.SEARCH_LIST_ITEM_COLOR} />}
           ref={(navigator) => this._nav = navigator && navigator.navigator()}
         />

@@ -16,7 +16,7 @@ import utils from '../../utils';
 
 import {COLORS} from '../../style';
 
-import {search, feed, createPost, favourites, profile} from '../../routes';
+import {search, feed, createPost, favourites, profile, profileExternal} from '../../routes';
 
 import {user} from '../../selectors/user';
 import {environment} from '../../selectors/environment';
@@ -103,7 +103,7 @@ export default class AppStack extends PureComponent {
         <Navigator
           initialRoute={search}
           initialRouteStack={[
-            search, feed, createPost, favourites, profile
+            search, feed, createPost, favourites, profile, profileExternal
           ]}
           navigationBar={<NavigationBar profilePic={profilePic} />}
           ref={(navigator) => this._nav = navigator && navigator.navigator()}

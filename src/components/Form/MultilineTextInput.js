@@ -27,7 +27,7 @@ export default class FormMultilineTextInput extends PureComponent {
   }
 
   getValue() {
-    return this.state.value || null;
+    return this.state.value || '';
   }
 
   isValide() {

@@ -38,7 +38,7 @@ export default {
       var oldValue = _.get(value, key);
       if (_.isPlainObject(newValue) && _.isPlainObject(oldValue))
         newValue = _.merge({}, oldValue, newValue);
-      if (!newValue)
+      if (newValue === null || newValue === undefined)
         return;
       value = _.set(value, key, newValue);
     });

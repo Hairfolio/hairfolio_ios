@@ -25,7 +25,7 @@ export default class FormInlineTextInput extends PureComponent {
   }
 
   getValue() {
-    return this.state.value || null;
+    return this.state.value || '';
   }
 
   isValide() {

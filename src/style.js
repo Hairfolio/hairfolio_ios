@@ -29,8 +29,8 @@ export const COLORS = {
   FB: '#3B5998',
   IG: '#F3328C',
 
-  STYLIST: '#26C77E',
-  BRAND: '#6FC5C6',
+  STYLIST: '#56E6A5',
+  BRAND: '#8ADDDE',
   SALON: '#D284FF',
 
   GREEN: '#56E6A5',
@@ -39,7 +39,9 @@ export const COLORS = {
   FOLLOWING: '#26C77E',
 
   COLLAPSABLE_COLOR: '#F3F3F3',
-  COLLAPSABLE_TEXT_COLOR: '#BFBFBF'
+  COLLAPSABLE_TEXT_COLOR: '#BFBFBF',
+
+  ABOUT_SEPARATOR: '#CCCCCC'
 };
 
 export const FONTS = {
@@ -48,6 +50,7 @@ export const FONTS = {
   ROMAN: 'Avenir-Roman',
   BOLD: 'Avenir-Bold',
   HEAVY: 'Avenir-Heavy',
+  OBLIQUE: 'Avenir-Oblique',
   SEMIBOLD: 'Avenir-Semibold',
   BOOK_OBLIQUE: 'Avenir-BookOblique',
   HEAVY_OBLIQUE: 'Avenir-HeavyOblique'

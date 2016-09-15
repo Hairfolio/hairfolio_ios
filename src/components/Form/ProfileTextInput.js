@@ -25,7 +25,7 @@ export default class ProfileTextInput extends PureComponent {
   }
 
   getValue() {
-    return this.state.value;
+    return this.state.value || '';
   }
   setValue(value) {
     this.setState({value});

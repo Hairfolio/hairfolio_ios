@@ -11,6 +11,7 @@ import {COLORS, FONTS, SCALE} from '../style';
 
 import ConsumerProfileStack from '../stacks/ConsumerProfile';
 import StylistProfileStack from '../stacks/StylistProfile';
+import BrandProfileStack from '../stacks/BrandProfile';
 
 import utils from '../utils';
 
@@ -136,6 +137,9 @@ export default class Profile extends PureComponent {
       : null}
       {this.props.profile.get('account_type') === 'stylist' ?
         <StylistProfileStack key={this.props.profile} profile={this.props.profile} />
+      : null}
+      {this.props.profile.get('account_type') === 'brand' ?
+        <BrandProfileStack key={this.props.profile} profile={this.props.profile} />
       : null}
     </BannerErrorContainer>);
   }

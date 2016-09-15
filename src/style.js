@@ -33,7 +33,8 @@ export const COLORS = {
   BRAND: '#6FC5C6',
   SALON: '#D284FF',
 
-  GREEN: '#56E6A5'
+  GREEN: '#56E6A5',
+  BLUE: '#8ADDDE'
 };
 
 export const FONTS = {

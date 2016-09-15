@@ -2,7 +2,7 @@ import React from 'react';
 import _ from 'lodash';
 import {autobind} from 'core-decorators';
 import PureComponent from '../components/PureComponent';
-import {View, Text, ScrollView, TouchableOpacity, Linking, Image, StyleSheet} from 'react-native';
+import {View, Text, ScrollView, TouchableOpacity, Linking, Image} from 'react-native';
 import connect from '../lib/connect';
 import {app} from '../selectors/app';
 import {user} from '../selectors/user';
@@ -260,6 +260,18 @@ export default class UserAbout extends PureComponent {
     </View>);
   }
 
+  renderBrand() {
+    return (<View>
+      <CollapsableContainer
+        label="ABOUT"
+        renderFooter={() => this.renderAddressFooter()}
+      >
+        {this.renderAddress()}
+      </CollapsableContainer>
+      {this.renderProfessionalDescription()}
+    </View>);
+  }
+
   render() {
     return (<NavigationSetting
       style={{
@@ -274,6 +286,7 @@ export default class UserAbout extends PureComponent {
         }}
       >
         {this.props.profile.get('account_type') === 'stylist' && this.renderStylist()}
+        {this.props.profile.get('account_type') === 'brand' && this.renderBrand()}
       </ScrollView>
     </NavigationSetting>);
   }

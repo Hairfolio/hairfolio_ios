@@ -2,7 +2,7 @@ import React from 'react';
 import _ from 'lodash';
 import {autobind} from 'core-decorators';
 import PureComponent from '../components/PureComponent';
-import {View, Text, ScrollView, TouchableOpacity, Linking, Image} from 'react-native';
+import {View, Text, ScrollView, TouchableOpacity, Linking, Image, StyleSheet} from 'react-native';
 import connect from '../lib/connect';
 import {app} from '../selectors/app';
 import {user} from '../selectors/user';
@@ -218,6 +218,30 @@ export default class UserAbout extends PureComponent {
     </View>);
   }
 
+  renderCartouches(list) {
+    if (!list.count())
+      return this.renderEmpty();
+
+    return list.map(item =>
+      <View key={item.get('id')} style={{alignItems: 'flex-start', marginBottom: 5, marginTop: 5}}>
+        <View style={{
+          borderWidth: 1,
+          borderColor: COLORS[this.props.profile.get('account_type').toUpperCase()],
+          padding: 2,
+          paddingLeft: 10,
+          paddingRight: 10,
+          alignItems: 'center'
+        }}>
+          <Text style={{
+            fontFamily: FONTS.ROMAN,
+            fontSize: SCALE.h(28),
+            color: COLORS.SEARCH_LIST_ITEM_COLOR
+          }}>{item.get('name')}</Text>
+        </View>
+      </View>
+    );
+  }
+
   renderStylist() {
     return (<View>
       <CollapsableContainer
@@ -227,18 +251,10 @@ export default class UserAbout extends PureComponent {
         {this.renderAddress()}
       </CollapsableContainer>
       <CollapsableContainer label="CERTIFICATES">
-        <Text style={{
-          fontFamily: FONTS.MEDIUM,
-          fontSize: SCALE.h(26),
-          color: COLORS.TEXT
-        }}>User About</Text>
+        {this.renderCartouches(this.props.profile.get('certificates'))}
       </CollapsableContainer>
       <CollapsableContainer label="PRODUCT EXPERIENCE">
-        <Text style={{
-          fontFamily: FONTS.MEDIUM,
-          fontSize: SCALE.h(26),
-          color: COLORS.TEXT
-        }}>User About</Text>
+        {this.renderCartouches(this.props.profile.get('experiences'))}
       </CollapsableContainer>
       {this.renderProfessionalDescription()}
     </View>);

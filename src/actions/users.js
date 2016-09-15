@@ -28,9 +28,16 @@ export const usersActions = {
           promise: Promise
             .all([
               fetch.fetch(`/users/${userId}`),
-              fetch.fetch(`/users/${userId}/offerings`)
+              fetch.fetch(`/users/${userId}/offerings`),
+              fetch.fetch(`/users/${userId}/experiences`),
+              fetch.fetch(`/users/${userId}/certificates`)
             ])
-            .then(([user, offerings]) => ({...user, offerings}), () => {
+            .then(([user, offerings, experiences, certificates]) => ({
+              ...user,
+              offerings,
+              certificates,
+              experiences
+            }), () => {
               var data = {id: userId};
               throw data;
             }),

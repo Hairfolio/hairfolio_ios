@@ -2,7 +2,7 @@ import React from 'react';
 import _ from 'lodash';
 import PureComponent from '../components/PureComponent';
 import {mixin, autobind} from 'core-decorators';
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet, InteractionManager} from 'react-native';
 import connect from '../lib/connect';
 import {app} from '../selectors/app';
 import {user} from '../selectors/user';
@@ -93,11 +93,11 @@ export default class EditCustomer extends PureComponent {
 
   @autobind
   onLogin() {
-    this.onFormReady(() => {
+    this.onFormReady(() => InteractionManager.runAfterInteractions(() => {
       console.log(this.props.user.toJS());
       this.refs.scrollView.scrollToTop();
       this.initValues();
-    });
+    }));
   }
 
   renderSalonSpecifics() {

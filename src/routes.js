@@ -24,6 +24,7 @@ import ForgottenPassword from './containers/ForgottenPassword';
 import EditCustomer from './containers/EditCustomer';
 import EditCustomerAddress from './containers/EditCustomerAddress';
 import ChangePassword from './containers/ChangePassword';
+import UserStylists from './containers/UserStylists';
 import UserAbout from './containers/UserAbout';
 import UserPosts from './containers/UserPosts';
 import UserHairfolio from './containers/UserHairfolio';
@@ -175,6 +176,15 @@ class ChangePasswordRoute extends Route {
   SceneConfig = {
     ...CustomScenesConfig.FadeInOut
   };
+}
+
+export class UserStylistsRoute extends Route {
+  SceneComponent = UserStylists;
+  SceneConfig = {
+    ...CustomScenesConfig.FadeInOut
+  };
+
+  label = 'Stylists';
 }
 
 export class UserAboutRoute extends Route {

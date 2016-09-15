@@ -69,7 +69,6 @@ export default class UserProfileBar extends PureComponent {
     return (<View
       style={{
         position: 'absolute',
-        height: SCALE.h(120),
         left: 0,
         right: 0,
         top: 0,

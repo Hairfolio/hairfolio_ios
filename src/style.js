@@ -36,7 +36,10 @@ export const COLORS = {
   GREEN: '#56E6A5',
   BLUE: '#8ADDDE',
 
-  FOLLOWING: '#26C77E'
+  FOLLOWING: '#26C77E',
+
+  COLLAPSABLE_COLOR: '#F3F3F3',
+  COLLAPSABLE_TEXT_COLOR: '#BFBFBF'
 };
 
 export const FONTS = {

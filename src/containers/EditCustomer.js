@@ -19,7 +19,7 @@ import {cloudinaryActions} from '../actions/cloudinary';
 
 import {NAVBAR_HEIGHT} from '../constants';
 
-import {loginStack, appStack, changePassword, salonStylistsEU, salonSPEU, editCustomerAddress} from '../routes';
+import {loginStack, appStack, changePassword, salonStylistsEU, salonSPEU, editCustomerAddress, stylistCertificatesEU, stylistPlaceOfWorkEU, stylistProductExperienceEU, stylistEducationEU} from '../routes';
 
 import {throwOnFail} from '../lib/reduxPromiseMiddleware';
 
@@ -29,6 +29,7 @@ import utils from '../utils';
 import DeleteButton from '../components/Buttons/Delete';
 
 import MultilineTextInput from '../components/Form/MultilineTextInput';
+import PickerInput from '../components/Form/PickerInput';
 import InlineTextInput from '../components/Form/InlineTextInput';
 import PageInput from '../components/Form/PageInput';
 import ToggleInput from '../components/Form/Toggle';
@@ -65,7 +66,7 @@ export default class EditCustomer extends PureComponent {
 
   componentDidMount() {
     if (utils.isReady(this.props.userState))
-      requestAnimationFrame(() => this.onLogin());
+      this.onLogin();
   }
 
   componentWillUnmount() {
@@ -76,22 +77,27 @@ export default class EditCustomer extends PureComponent {
     var rawValues = {...this.props.user.toJS()};
 
     rawValues.business = {
+      name: rawValues.business_name,
       address: rawValues.business_address,
       city: rawValues.business_city,
       state: rawValues.business_state,
-      zip: rawValues.business_zip
+      zip: rawValues.business_zip,
+      website: rawValues.business_website
     };
 
-    // inititaliser correctement certificates ids and products ids aussi
+    rawValues['certificate_ids'] = _.map(rawValues.certificates, 'id');
+    rawValues['experience_ids'] = _.map(rawValues.experiences, 'id');
 
     this.setFormValue(rawValues);
   }
 
   @autobind
   onLogin() {
-    console.log(this.props.user.toJS());
-    this.refs.scrollView.scrollToTop();
-    this.initValues();
+    requestAnimationFrame(() => {
+      console.log(this.props.user.toJS());
+      this.refs.scrollView.scrollToTop();
+      this.initValues();
+    });
   }
 
   renderSalonSpecifics() {
@@ -193,7 +199,69 @@ export default class EditCustomer extends PureComponent {
     </View>);
   }
 
-  renderConsumerBasics() {
+  renderStylistSpecifics() {
+    return (<View>
+      <Categorie name="BRAND INFORMATION" />
+
+      <MultilineTextInput
+        autoCapitalize="none"
+        autoCorrect={false}
+        max={300}
+        placeholder="Short professional description…"
+        ref={(r) => this.addFormItem(r, 'business_info')}
+        validation={(v) => !v || validator.isLength(v, {max: 300})}
+      />
+
+      <View style={{height: StyleSheet.hairlineWidth}} />
+
+      <PickerInput
+        choices={_.map(_.range(0, 20), i => ({
+          label: i.toString(),
+          value: i
+        }))}
+        placeholder="Years of experience"
+        ref={(r) => this.addFormItem(r, 'years_exp')}
+        validation={(v) => true}
+        valueProperty="value"
+      />
+
+      <View style={{height: StyleSheet.hairlineWidth}} />
+
+      <PageInput
+        page={stylistEducationEU}
+        placeholder="Education"
+      />
+
+      <View style={{height: StyleSheet.hairlineWidth}} />
+
+      <PageInput
+        page={stylistCertificatesEU}
+        placeholder="Certificates"
+        ref={(r) => this.addFormItem(r, 'certificate_ids')}
+        validation={(v) => true}
+      />
+
+      <View style={{height: StyleSheet.hairlineWidth}} />
+
+      <PageInput
+        page={stylistPlaceOfWorkEU}
+        placeholder="Place of work"
+        ref={(r) => this.addFormItem(r, 'business')}
+        validation={(v) => true}
+      />
+
+      <View style={{height: StyleSheet.hairlineWidth}} />
+
+      <PageInput
+        page={stylistProductExperienceEU}
+        placeholder="Product experience"
+        ref={(r) => this.addFormItem(r, 'experience_ids')}
+        validation={(v) => true}
+      />
+    </View>);
+  }
+
+  renderIndividualBasics() {
     return (<View>
       <ProfileTextInput
         autoCorrect={false}
@@ -299,8 +367,8 @@ export default class EditCustomer extends PureComponent {
 
           <Categorie name="BASIC" />
 
-          {this.props.user.get('account_type') === 'consumer' ?
-            this.renderConsumerBasics() : null
+          {(this.props.user.get('account_type') === 'consumer' || this.props.user.get('account_type') === 'stylist') ?
+            this.renderIndividualBasics() : null
           }
           {(this.props.user.get('account_type') === 'salon' || this.props.user.get('account_type') === 'brand') ?
             this.renderBusinessBasics() : null
@@ -330,6 +398,9 @@ export default class EditCustomer extends PureComponent {
             this.renderBrandSpecifics() : null
           }
 
+          {this.props.user.get('account_type') === 'stylist' ?
+            this.renderStylistSpecifics() : null
+          }
 
           <Categorie name="SOCIAL SHARING" />
 

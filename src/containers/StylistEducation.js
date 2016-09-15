@@ -13,12 +13,13 @@ import SafeList from '../components/SafeList';
 import LoadingContainer from '../components/LoadingContainer';
 
 import {NAVBAR_HEIGHT} from '../constants';
-import {stylistAddEducation} from '../routes';
 
 @connect(app, user)
 export default class StylistEducation extends PureComponent {
   static propTypes = {
+    addEducation: React.PropTypes.object.isRequired,
     appVersion: React.PropTypes.string.isRequired,
+    backTo: React.PropTypes.object.isRequired,
     dispatch: React.PropTypes.func.isRequired,
     user: React.PropTypes.object.isRequired,
     userState: React.PropTypes.string.isRequired
@@ -40,8 +41,8 @@ export default class StylistEducation extends PureComponent {
   renderEducation(education) {
     return (<TouchableOpacity
       onPress={() => {
-        stylistAddEducation.scene().setEditing(education);
-        _.last(this.context.navigators).jumpTo(stylistAddEducation);
+        this.props.addEducation.scene().setEditing(education);
+        _.last(this.context.navigators).jumpTo(this.props.addEducation);
       }}
       style={{
         backgroundColor: COLORS.WHITE,
@@ -101,14 +102,14 @@ export default class StylistEducation extends PureComponent {
     return (<NavigationSetting
       forceUpdateEvents={['login', 'user-edited']}
       leftAction={() => {
-        _.last(this.context.navigators).jumpBack();
+        _.last(this.context.navigators).jumpTo(this.props.backTo);
       }}
       leftIcon="back"
       onWillBlur={this.onWillBlur}
       onWillFocus={this.onWillFocus}
       rightAction={() => {
-        stylistAddEducation.scene().setNew();
-        _.last(this.context.navigators).jumpTo(stylistAddEducation);
+        this.props.addEducation.scene().setNew();
+        _.last(this.context.navigators).jumpTo(this.props.addEducation);
       }}
       rightLabel="Add"
       style={{

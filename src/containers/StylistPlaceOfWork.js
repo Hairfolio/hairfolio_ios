@@ -20,8 +20,6 @@ import {throwOnFail} from '../lib/reduxPromiseMiddleware';
 
 import {registrationActions} from '../actions/registration';
 
-import {stylistInfo} from '../routes';
-
 import formMixin from '../mixins/form';
 
 import {NAVBAR_HEIGHT} from '../constants';
@@ -31,6 +29,7 @@ import {NAVBAR_HEIGHT} from '../constants';
 export default class StylistPlaceOfWork extends PureComponent {
   static propTypes = {
     appVersion: React.PropTypes.string.isRequired,
+    backTo: React.PropTypes.object.isRequired,
     dispatch: React.PropTypes.func.isRequired
   };
 
@@ -45,6 +44,10 @@ export default class StylistPlaceOfWork extends PureComponent {
     return !_.isEmpty(value) ? value : null;
   }
 
+  setValue(value) {
+    this.setFormValue(value);
+  }
+
   clear() {
     this.clearValues();
   }
@@ -52,7 +55,7 @@ export default class StylistPlaceOfWork extends PureComponent {
   render() {
     return (<NavigationSetting
       leftAction={() => {
-        _.last(this.context.navigators).jumpTo(stylistInfo);
+        _.last(this.context.navigators).jumpTo(this.props.backTo);
       }}
       leftDisabled={this.state.submitting}
       leftIcon="back"

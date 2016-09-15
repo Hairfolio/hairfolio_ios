@@ -1,4 +1,5 @@
 import React from 'react';
+import _ from 'lodash';
 import {debounce} from 'core-decorators';
 import {View, Text, TextInput, StyleSheet, TouchableOpacity} from 'react-native';
 import PureComponent from './PureComponent';
@@ -45,6 +46,14 @@ export default class SearchList extends PureComponent {
   onChange() {
     if (this.props.onChange)
       this.props.onChange(this.state.items);
+  }
+
+  setSelected(selectedIds) {
+    var items = this.state.items;
+    _.each(selectedIds, (id) => {
+      items = items.setIn([id, 'selected'], true);
+    });
+    this.setItems(items);
   }
 
   @debounce

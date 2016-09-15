@@ -321,11 +321,38 @@ export const salonSPEU = new SalonSPRoute({
 
 
 export const stylistInfo = new StylistInfoRoute();
-export const stylistEducation = new StylistEducationRoute();
 export const stylistAddEducation = new StylistAddEducationRoute();
-export const stylistCertificates = new StylistCertificatesRoute();
-export const stylistPlaceOfWork = new StylistPlaceOfWorkRoute();
-export const stylistProductExperience = new StylistProductExperienceRoute();
+export const stylistAddEducationEU = new StylistAddEducationRoute();
+
+export const stylistEducation = new StylistEducationRoute({
+  backTo: stylistInfo,
+  addEducation: stylistAddEducation
+});
+
+export const stylistEducationEU = new StylistEducationRoute({
+  backTo: editCustomer,
+  addEducation: stylistAddEducationEU
+});
+
+export const stylistCertificates = new StylistCertificatesRoute({
+  backTo: stylistInfo
+});
+export const stylistProductExperience = new StylistProductExperienceRoute({
+  backTo: stylistInfo
+});
+export const stylistCertificatesEU = new StylistCertificatesRoute({
+  backTo: editCustomer
+});
+export const stylistProductExperienceEU = new StylistProductExperienceRoute({
+  backTo: editCustomer
+});
+
+export const stylistPlaceOfWork = new StylistPlaceOfWorkRoute({
+  backTo: stylistInfo
+});
+export const stylistPlaceOfWorkEU = new StylistPlaceOfWorkRoute({
+  backTo: editCustomer
+});
 export const feed = new FeedRoute();
 export const search = new SearchRoute();
 export const createPost = new CreatePostRoute();

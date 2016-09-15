@@ -12,11 +12,11 @@ import NavigationSetting from '../navigation/NavigationSetting';
 
 import LoadingContainer from '../components/LoadingContainer';
 
+import {throwOnFail} from '../lib/reduxPromiseMiddleware';
+
 import {registrationActions} from '../actions/registration';
 
 import SearchList from '../components/SearchList';
-
-import {stylistInfo} from '../routes';
 
 import {NAVBAR_HEIGHT} from '../constants';
 
@@ -24,6 +24,7 @@ import {NAVBAR_HEIGHT} from '../constants';
 export default class StylistCertificates extends PureComponent {
   static propTypes = {
     appVersion: React.PropTypes.string.isRequired,
+    backTo: React.PropTypes.object.isRequired,
     certificates: React.PropTypes.object.isRequired,
     certificatesState: React.PropTypes.string.isRequired,
     dispatch: React.PropTypes.func.isRequired
@@ -44,6 +45,13 @@ export default class StylistCertificates extends PureComponent {
     return this._searchList.getValue().join(',');
   }
 
+  setValue(selectedIds) {
+    if (this._searchList)
+      return this._searchList.setSelected(selectedIds);
+
+    this.selectedIds = selectedIds;
+  }
+
   clear() {
     this._searchList.clear();
   }
@@ -51,7 +59,7 @@ export default class StylistCertificates extends PureComponent {
   render() {
     return (<NavigationSetting
       leftAction={() => {
-        _.last(this.context.navigators).jumpTo(stylistInfo);
+        _.last(this.context.navigators).jumpTo(this.props.backTo);
       }}
       leftIcon="back"
       onWillBlur={this.onWillBlur}
@@ -69,7 +77,15 @@ export default class StylistCertificates extends PureComponent {
             [certificate.get('id'), certificate]
           ))}
           placeholder="Search for certificates"
-          ref={sL => this._searchList = sL}
+          ref={sL => {
+            this._searchList = sL;
+
+            if (!this.selectedIds)
+              return;
+
+            this._searchList.setSelected(this.selectedIds);
+            delete this.selectedIds;
+          }}
           style={{
             flex: 1
           }}

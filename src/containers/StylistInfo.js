@@ -91,10 +91,14 @@ export default class StylistInfo extends PureComponent {
         <View style={{height: StyleSheet.hairlineWidth}} />
 
         <PickerInput
-          choices={_.map(_.range(0, 20), i => ({label: i.toString()}))}
+          choices={_.map(_.range(0, 20), i => ({
+            label: i.toString(),
+            value: i
+          }))}
           placeholder="Years of experience"
-          ref={(r) => this.addFormItem(r, 'experience')}
+          ref={(r) => this.addFormItem(r, 'years_exp')}
           validation={(v) => true}
+          valueProperty="value"
         />
 
         <View style={{height: StyleSheet.hairlineWidth}} />

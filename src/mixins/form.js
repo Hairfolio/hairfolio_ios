@@ -6,6 +6,14 @@ export default {
     this.fields[name] = ref;
   },
 
+  onFormReady(callback) {
+    return Promise.all(
+      _.map(
+        _.filter(this.fields, field => !!field.onReady)
+      , field => field.onReady())
+    ).then(callback);
+  },
+
   checkErrors() {
     var errs = 0;
 

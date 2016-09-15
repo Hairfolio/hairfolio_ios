@@ -1,8 +1,9 @@
 import React from 'react';
-
+import _ from 'lodash';
 import Navigator from './Navigator';
 import Channel from '../components/Channel/Channel';
 import SceneWrapper from './SceneWrapper';
+import EventEmitter from 'EventEmitter';
 
 // this is the Route class
 // every route passed to the Navigator should extends this.
@@ -17,6 +18,8 @@ import SceneWrapper from './SceneWrapper';
 var ID = 0;
 
 export default class Route {
+  ee = new EventEmitter();
+
   constructor(props) {
     this.navigationChannel = new Channel();
     this.props = props;
@@ -38,9 +41,19 @@ export default class Route {
     return this._scene;
   }
 
+  onReady(callback) {
+    if (this._scene)
+      return callback();
+
+    this.ee.addListener('ready', _.once(callback));
+  }
+
   renderScene(opts) {
     return (<SceneWrapper {...opts} key={this.id}>
-      <this.SceneComponent {...this.props} ref={(scene) => this._scene = scene} />
+      <this.SceneComponent {...this.props} ref={(scene) => {
+        this._scene = scene;
+        this.ee.emit('ready');
+      }} />
     </SceneWrapper>);
   }
 }

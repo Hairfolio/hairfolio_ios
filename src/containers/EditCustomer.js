@@ -93,7 +93,7 @@ export default class EditCustomer extends PureComponent {
 
   @autobind
   onLogin() {
-    requestAnimationFrame(() => {
+    this.onFormReady(() => {
       console.log(this.props.user.toJS());
       this.refs.scrollView.scrollToTop();
       this.initValues();

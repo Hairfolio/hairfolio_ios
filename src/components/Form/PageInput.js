@@ -48,6 +48,10 @@ export default class FormPageInput extends PureComponent {
     this.props.page.scene().clear();
   }
 
+  onReady() {
+    return new Promise((resolve) => this.props.page.onReady(resolve));
+  }
+
   render() {
     return (<TouchableOpacity
       disabled={this.props.disabled}

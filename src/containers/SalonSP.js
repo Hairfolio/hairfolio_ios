@@ -13,12 +13,13 @@ import SafeList from '../components/SafeList';
 import LoadingContainer from '../components/LoadingContainer';
 
 import {NAVBAR_HEIGHT} from '../constants';
-import {salonAddSP, salonInfo} from '../routes';
 
 @connect(app, user)
 export default class SalonSP extends PureComponent {
   static propTypes = {
+    addSP: React.PropTypes.object.isRequired,
     appVersion: React.PropTypes.string.isRequired,
+    backTo: React.PropTypes.object.isRequired,
     dispatch: React.PropTypes.func.isRequired,
     user: React.PropTypes.object.isRequired,
     userState: React.PropTypes.string.isRequired
@@ -40,8 +41,8 @@ export default class SalonSP extends PureComponent {
   renderSP(sp) {
     return (<TouchableOpacity
       onPress={() => {
-        salonAddSP.scene().setEditing(sp);
-        _.last(this.context.navigators).jumpTo(salonAddSP);
+        this.props.addSP.scene().setEditing(sp);
+        _.last(this.context.navigators).jumpTo(this.props.addSP);
       }}
       style={{
         backgroundColor: COLORS.WHITE,
@@ -100,14 +101,14 @@ export default class SalonSP extends PureComponent {
     return (<NavigationSetting
       forceUpdateEvents={['login', 'user-edited']}
       leftAction={() => {
-        _.last(this.context.navigators).jumpTo(salonInfo);
+        _.last(this.context.navigators).jumpTo(this.props.backTo);
       }}
       leftIcon="back"
       onWillBlur={this.onWillBlur}
       onWillFocus={this.onWillFocus}
       rightAction={() => {
-        salonAddSP.scene().setNew();
-        _.last(this.context.navigators).jumpTo(salonAddSP);
+        this.props.addSP.scene().setNew();
+        _.last(this.context.navigators).jumpTo(this.props.addSP);
       }}
       rightLabel="Add"
       style={{

@@ -8,7 +8,7 @@ import focusEmitter from './focusEmitter';
 
 // no animation here !
 
-export default class FormInlineTextInput extends PureComponent {
+export default class ProfileTextInput extends PureComponent {
 
   static propTypes = {
     getRefNode: React.PropTypes.func,
@@ -47,7 +47,7 @@ export default class FormInlineTextInput extends PureComponent {
       backgroundColor: COLORS.WHITE
     }}>
       <Text style={{
-        color: COLORS.DARK,
+        color: this.state.error ? COLORS.RED : COLORS.DARK,
         fontFamily: FONTS.ROMAN,
         fontSize: SCALE.h(30),
         marginLeft: SCALE.w(26)

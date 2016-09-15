@@ -15,14 +15,13 @@ import Contacts from 'react-native-contacts';
 
 import utils from '../utils';
 
-import {salonInfo} from '../routes';
-
 import {NAVBAR_HEIGHT, READY, LOADING, LOADING_ERROR} from '../constants';
 
 @connect(app)
 export default class SalonStylist extends PureComponent {
   static propTypes = {
     appVersion: React.PropTypes.string.isRequired,
+    backTo: React.PropTypes.object.isRequired,
     dispatch: React.PropTypes.func.isRequired
   };
 
@@ -87,7 +86,7 @@ export default class SalonStylist extends PureComponent {
   render() {
     return (<NavigationSetting
       leftAction={() => {
-        _.last(this.context.navigators).jumpTo(salonInfo);
+        _.last(this.context.navigators).jumpTo(this.props.backTo);
       }}
       leftIcon="back"
       onWillBlur={this.onWillBlur}

@@ -19,7 +19,7 @@ import {cloudinaryActions} from '../actions/cloudinary';
 
 import {NAVBAR_HEIGHT} from '../constants';
 
-import {loginStack, appStack, changePassword} from '../routes';
+import {loginStack, appStack, changePassword, salonStylistsEU, salonSPEU, editCustomerAddress} from '../routes';
 
 import {throwOnFail} from '../lib/reduxPromiseMiddleware';
 
@@ -28,6 +28,8 @@ import utils from '../utils';
 
 import DeleteButton from '../components/Buttons/Delete';
 
+import MultilineTextInput from '../components/Form/MultilineTextInput';
+import InlineTextInput from '../components/Form/InlineTextInput';
 import PageInput from '../components/Form/PageInput';
 import ToggleInput from '../components/Form/Toggle';
 import PictureInput from '../components/Form/Picture';
@@ -63,21 +65,118 @@ export default class EditCustomer extends PureComponent {
 
   componentDidMount() {
     if (utils.isReady(this.props.userState))
-      this.onLogin();
+      requestAnimationFrame(() => this.onLogin());
   }
 
   componentWillUnmount() {
     _.each(this.listeners, l => l.remove());
   }
 
-  @autobind
-  onWillFocus() {
-    this.refs.scrollView.scrollToTop();
+  initValues() {
+    var rawValues = {...this.props.user.toJS()};
+
+    rawValues.business = {
+      address: rawValues.business_address,
+      city: rawValues.business_city,
+      state: rawValues.business_state,
+      zip: rawValues.business_zip
+    };
+
+    // inititaliser correctement certificates ids and products ids aussi
+
+    this.setFormValue(rawValues);
   }
 
   @autobind
   onLogin() {
-    this.setFormValue(this.props.user.toJS());
+    console.log(this.props.user.toJS());
+    this.refs.scrollView.scrollToTop();
+    this.initValues();
+  }
+
+  renderSalonSpecifics() {
+    return (<View>
+      <Categorie name="SALON INFORMATION" />
+
+      <MultilineTextInput
+        autoCapitalize="none"
+        autoCorrect={false}
+        max={300}
+        placeholder="Short professional description…"
+        ref={(r) => this.addFormItem(r, 'business_info')}
+        validation={(v) => !v || validator.isLength(v, {max: 300})}
+      />
+
+      <View style={{height: StyleSheet.hairlineWidth}} />
+
+      <PageInput
+        page={editCustomerAddress}
+        placeholder="Address"
+        ref={(r) => this.addFormItem(r, 'business')}
+        validation={(v) => true}
+      />
+
+      <View style={{height: StyleSheet.hairlineWidth}} />
+
+      <InlineTextInput
+        autoCorrect={false}
+        keyboardType="url"
+        placeholder="Website"
+        ref={(r) => this.addFormItem(r, 'business_website')}
+        validation={(v) => true}
+      />
+      <View style={{height: StyleSheet.hairlineWidth}} />
+
+      <InlineTextInput
+        autoCorrect={false}
+        keyboardType="numeric"
+        placeholder="Phone Number"
+        ref={(r) => this.addFormItem(r, 'business_phone')}
+        validation={(v) => true}
+      />
+      <View style={{height: StyleSheet.hairlineWidth}} />
+
+      <PageInput
+        page={salonStylistsEU}
+        placeholder="Stylists"
+      />
+
+      <View style={{height: StyleSheet.hairlineWidth}} />
+
+      <PageInput
+        page={salonSPEU}
+        placeholder="Services &  Prices"
+      />
+    </View>);
+  }
+
+  renderConsumerBasics() {
+    return (<View>
+      <ProfileTextInput
+        autoCorrect={false}
+        placeholder="First name"
+        ref={(r) => this.addFormItem(r, 'first_name')}
+        validation={(v) => !!v}
+      />
+      <View style={{height: StyleSheet.hairlineWidth}} />
+      <ProfileTextInput
+        autoCorrect={false}
+        placeholder="Last name"
+        ref={(r) => this.addFormItem(r, 'last_name')}
+        validation={(v) => !!v}
+      />
+    </View>);
+  }
+
+  renderSalonBasics() {
+    return (<View>
+      <ProfileTextInput
+        autoCorrect={false}
+        placeholder="Salon name"
+        ref={(r) => this.addFormItem(r, 'business_name')}
+        validation={(v) => !!v}
+      />
+    </View>);
   }
 
   render() {
@@ -86,7 +185,7 @@ export default class EditCustomer extends PureComponent {
     return (<NavigationSetting
       forceUpdateEvents={['login']}
       leftAction={() => {
-        this.setFormValue(this.props.user.toJS());
+        this.initValues();
         _.first(this.context.navigators).jumpTo(appStack);
       }}
       leftDisabled={isLoading}
@@ -157,19 +256,13 @@ export default class EditCustomer extends PureComponent {
 
           <Categorie name="BASIC" />
 
-          <ProfileTextInput
-            autoCorrect={false}
-            placeholder="First name"
-            ref={(r) => this.addFormItem(r, 'first_name')}
-            validation={(v) => !!v}
-          />
-          <View style={{height: StyleSheet.hairlineWidth}} />
-          <ProfileTextInput
-            autoCorrect={false}
-            placeholder="Last name"
-            ref={(r) => this.addFormItem(r, 'last_name')}
-            validation={(v) => !!v}
-          />
+          {this.props.user.get('account_type') === 'consumer' ?
+            this.renderConsumerBasics() : null
+          }
+          {this.props.user.get('account_type') === 'salon' ?
+            this.renderSalonBasics() : null
+          }
+
           <View style={{height: StyleSheet.hairlineWidth}} />
           <ProfileTextInput
             autoCapitalize="none"
@@ -185,6 +278,11 @@ export default class EditCustomer extends PureComponent {
             page={changePassword}
             placeholder="Change Password"
           />
+
+          {this.props.user.get('account_type') === 'salon' ?
+            this.renderSalonSpecifics() : null
+          }
+
 
           <Categorie name="SOCIAL SHARING" />
 

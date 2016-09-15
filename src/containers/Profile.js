@@ -97,10 +97,7 @@ export default class Profile extends PureComponent {
         }}>
           {this.props.profile === this.props.user ? <TouchableOpacity
             onPress={() => {
-              if (this.props.user.get('account_type') === 'consumer')
-                return _.first(this.context.navigators).jumpTo(editCustomerStack);
-
-              this.refs.ebc.error(`${this.props.user.get('account_type')} edit profile in next milestone`);
+              _.first(this.context.navigators).jumpTo(editCustomerStack);
             }}
             style={{
               position: 'absolute',

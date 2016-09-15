@@ -22,6 +22,7 @@ import Login from './containers/Login';
 import LoginEmail from './containers/LoginEmail';
 import ForgottenPassword from './containers/ForgottenPassword';
 import EditCustomer from './containers/EditCustomer';
+import EditCustomerAddress from './containers/EditCustomerAddress';
 import ChangePassword from './containers/ChangePassword';
 import UserPosts from './containers/UserPosts';
 import UserHairfolio from './containers/UserHairfolio';
@@ -162,6 +163,12 @@ class EditCustomerRoute extends Route {
     ...CustomScenesConfig.FadeInOut
   };
 }
+class EditCustomerAddressRoute extends Route {
+  SceneComponent = EditCustomerAddress;
+  SceneConfig = {
+    ...CustomScenesConfig.FadeInOut
+  };
+}
 class ChangePasswordRoute extends Route {
   SceneComponent = ChangePassword;
   SceneConfig = {
@@ -289,11 +296,30 @@ export const login = new LoginRoute();
 export const loginEmail = new LoginEmailRoute();
 export const forgottenPassword = new ForgottenPasswordRoute();
 export const editCustomer = new EditCustomerRoute();
+export const editCustomerAddress = new EditCustomerAddressRoute();
 export const salonInfo = new SalonInfoRoute();
 export const brandInfo = new BrandInfoRoute();
-export const salonStylists = new SalonStylistsRoute();
-export const salonSP = new SalonSPRoute();
+
+
+export const salonStylists = new SalonStylistsRoute({
+  backTo: salonInfo
+});
 export const salonAddSP = new SalonAddSPRoute();
+export const salonSP = new SalonSPRoute({
+  backTo: salonInfo,
+  addSP: salonAddSP
+});
+
+export const salonStylistsEU = new SalonStylistsRoute({
+  backTo: editCustomer
+});
+export const salonAddSPEU = new SalonAddSPRoute();
+export const salonSPEU = new SalonSPRoute({
+  backTo: editCustomer,
+  addSP: salonAddSPEU
+});
+
+
 export const stylistInfo = new StylistInfoRoute();
 export const stylistEducation = new StylistEducationRoute();
 export const stylistAddEducation = new StylistAddEducationRoute();
@@ -381,6 +407,7 @@ export const constructors = {
   LoginEmailRoute,
   ForgottenPasswordRoute,
   EditCustomerRoute,
+  EditCustomerAddressRoute,
   SalonInfoRoute,
   SalonStylistsRoute,
   SalonSPRoute,

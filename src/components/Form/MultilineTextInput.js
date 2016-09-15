@@ -34,6 +34,10 @@ export default class FormMultilineTextInput extends PureComponent {
     return this.props.validation(this.getValue());
   }
 
+  setValue(value) {
+    this.setState({value: value || ''});
+  }
+
   clear() {
     this.setState({value: ''});
   }

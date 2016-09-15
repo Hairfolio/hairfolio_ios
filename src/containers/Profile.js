@@ -47,6 +47,36 @@ export default class Profile extends PureComponent {
     return `${this.props.profile.get('first_name')} ${this.props.profile.get('last_name')}`;
   }
 
+  renderAccountIcon() {
+    var icon, iconColor, iconSize;
+    switch (this.props.profile.get('account_type')) {
+      case 'stylist':
+        icon = 'stylist';
+        iconColor = COLORS.STYLIST;
+        iconSize = SCALE.h(32);
+        break;
+      case 'salon':
+        icon = 'salon';
+        iconColor = COLORS.SALON;
+        iconSize = SCALE.h(18);
+        break;
+      case 'brand':
+        icon = 'brand';
+        iconColor = COLORS.BRAND;
+        iconSize = SCALE.h(25);
+        break;
+    }
+
+    if (!icon)
+      return null;
+
+    return (<Icon
+      color={iconColor}
+      name={icon}
+      size={iconSize}
+    />);
+  }
+
   render() {
     return (<BannerErrorContainer ref="ebc" style={{
       flex: 1
@@ -81,14 +111,31 @@ export default class Profile extends PureComponent {
               size={SCALE.h(48)}
             />
           </TouchableOpacity> : null}
-          <Image
-            source={{uri: utils.getUserProfilePicURI(this.props.profile, this.props.environment)}}
-            style={{
-              height: SCALE.h(130),
-              width: SCALE.h(130),
-              borderRadius: SCALE.h(130) / 2
-            }}
-          />
+          <View style={{
+            position: 'relative'
+          }}>
+            <Image
+              source={{uri: utils.getUserProfilePicURI(this.props.profile, this.props.environment)}}
+              style={{
+                height: SCALE.h(130),
+                width: SCALE.h(130),
+                borderRadius: SCALE.h(130) / 2
+              }}
+            />
+            {this.props.profile.get('account_type') !== 'consumer' ? <View style={{
+              height: SCALE.h(46),
+              width: SCALE.h(46),
+              borderRadius: SCALE.h(23),
+              backgroundColor: COLORS.WHITE,
+              position: 'absolute',
+              right: 0,
+              bottom: 0,
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}>
+              {this.renderAccountIcon()}
+            </View> : null}
+          </View>
           <View>
             <Text style={{
               color: COLORS.WHITE,

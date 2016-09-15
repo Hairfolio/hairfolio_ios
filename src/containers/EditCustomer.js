@@ -150,6 +150,49 @@ export default class EditCustomer extends PureComponent {
     </View>);
   }
 
+  renderBrandSpecifics() {
+    return (<View>
+      <Categorie name="BRAND INFORMATION" />
+
+      <MultilineTextInput
+        autoCapitalize="none"
+        autoCorrect={false}
+        max={300}
+        placeholder="Short professional description…"
+        ref={(r) => this.addFormItem(r, 'business_info')}
+        validation={(v) => !v || validator.isLength(v, {max: 300})}
+      />
+
+      <View style={{height: StyleSheet.hairlineWidth}} />
+
+      <PageInput
+        page={editCustomerAddress}
+        placeholder="Address"
+        ref={(r) => this.addFormItem(r, 'business')}
+        validation={(v) => true}
+      />
+
+      <View style={{height: StyleSheet.hairlineWidth}} />
+
+      <InlineTextInput
+        autoCorrect={false}
+        keyboardType="url"
+        placeholder="Website"
+        ref={(r) => this.addFormItem(r, 'business_website')}
+        validation={(v) => true}
+      />
+      <View style={{height: StyleSheet.hairlineWidth}} />
+
+      <InlineTextInput
+        autoCorrect={false}
+        keyboardType="numeric"
+        placeholder="Phone Number"
+        ref={(r) => this.addFormItem(r, 'business_phone')}
+        validation={(v) => true}
+      />
+    </View>);
+  }
+
   renderConsumerBasics() {
     return (<View>
       <ProfileTextInput
@@ -168,11 +211,11 @@ export default class EditCustomer extends PureComponent {
     </View>);
   }
 
-  renderSalonBasics() {
+  renderBusinessBasics() {
     return (<View>
       <ProfileTextInput
         autoCorrect={false}
-        placeholder="Salon name"
+        placeholder={(this.props.user.get('account_type' === 'brand') ? 'Brand' : 'Salon') + ' name'}
         ref={(r) => this.addFormItem(r, 'business_name')}
         validation={(v) => !!v}
       />
@@ -259,8 +302,8 @@ export default class EditCustomer extends PureComponent {
           {this.props.user.get('account_type') === 'consumer' ?
             this.renderConsumerBasics() : null
           }
-          {this.props.user.get('account_type') === 'salon' ?
-            this.renderSalonBasics() : null
+          {(this.props.user.get('account_type') === 'salon' || this.props.user.get('account_type') === 'brand') ?
+            this.renderBusinessBasics() : null
           }
 
           <View style={{height: StyleSheet.hairlineWidth}} />
@@ -281,6 +324,10 @@ export default class EditCustomer extends PureComponent {
 
           {this.props.user.get('account_type') === 'salon' ?
             this.renderSalonSpecifics() : null
+          }
+
+          {this.props.user.get('account_type') === 'brand' ?
+            this.renderBrandSpecifics() : null
           }
 
 

@@ -119,13 +119,13 @@ export default class ForgottenPassword extends PureComponent {
                 this.setState({'submitting': true});
                 this.props.dispatch(registrationActions.changePassword(this.getFormValue()))
                   .then((r) => {
-                    this.clearValues();
                     this.setState({submitting: false});
                     return r;
                   })
                   .then(throwOnFail)
                   .then(
                     () => {
+                      this.clearValues();
                       _.last(this.context.navigators).jumpTo(editCustomer);
                     },
                     (e) => {

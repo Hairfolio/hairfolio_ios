@@ -2,7 +2,7 @@ import React from 'react';
 import _ from 'lodash';
 import {autobind} from 'core-decorators';
 import PureComponent from '../components/PureComponent';
-import {View, Text, ScrollView, TouchableOpacity, Linking} from 'react-native';
+import {View, Text, ScrollView, TouchableOpacity, Linking, Image} from 'react-native';
 import connect from '../lib/connect';
 import {app} from '../selectors/app';
 import {user} from '../selectors/user';
@@ -140,9 +140,7 @@ export default class UserAbout extends PureComponent {
 
       <TouchableOpacity
         onPress={() => {
-          var address = _.map(['business_address', 'business_city', 'business_state', 'business_zip'], (ppte) =>
-            this.props.profile.get(ppte)
-          ).join(' - ');
+          var address = this.getSinglelineAddress();
           var url = 'http://maps.apple.com/?address=' + address;
 
           Linking.openURL(url);
@@ -170,15 +168,54 @@ export default class UserAbout extends PureComponent {
     </View>);
   }
 
+  getSinglelineAddress() {
+    return _.map(['business_address', 'business_city', 'business_state', 'business_zip'], (ppte) =>
+      this.props.profile.get(ppte)
+    ).join(' - ');
+  }
+
   renderAddress() {
     if (!this.hasAddress())
       return this.renderEmpty();
 
-    return (<Text style={{
-      fontFamily: FONTS.MEDIUM,
-      fontSize: SCALE.h(26),
-      color: COLORS.TEXT
-    }}>User About</Text>);
+    return (<View style={{
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center'
+    }}>
+      <View style={{justifyContent: 'center'}}>
+        <Text style={{
+          fontFamily: FONTS.HEAVY,
+          fontSize: SCALE.h(30),
+          color: COLORS.BOTTOMBAR_SELECTED
+        }}>{this.props.profile.get('business_name')}</Text>
+        <Text style={{
+          color: COLORS.ADDRESS,
+          fontFamily: FONTS.BOOK,
+          fontSize: SCALE.h(30)
+        }}>{this.props.profile.get('business_address')}</Text>
+        <Text style={{
+          color: COLORS.ADDRESS,
+          fontFamily: FONTS.BOOK,
+          fontSize: SCALE.h(30)
+        }}>{this.props.profile.get('business_city')}, {this.props.profile.get('business_state')} {this.props.profile.get('business_zip')}</Text>
+        <Text style={{
+          color: COLORS.ADDRESS,
+          fontFamily: FONTS.BOOK,
+          fontSize: SCALE.h(30)
+        }}>{this.props.profile.get('business_phone')}</Text>
+      </View>
+
+      <Image
+        key={this.getSinglelineAddress()}
+        source={{uri: `https://maps.googleapis.com/maps/api/staticmap?zoom=16&size=${SCALE.h(182) * 3}x${SCALE.h(182) * 3}&markers=color:red|${this.getSinglelineAddress()}`}}
+        style={{
+          marginLeft: 10,
+          height: SCALE.h(182),
+          width: SCALE.h(182)
+        }}
+      />
+    </View>);
   }
 
   renderStylist() {

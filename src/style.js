@@ -34,7 +34,9 @@ export const COLORS = {
   SALON: '#D284FF',
 
   GREEN: '#56E6A5',
-  BLUE: '#8ADDDE'
+  BLUE: '#8ADDDE',
+
+  FOLLOWING: '#26C77E'
 };
 
 export const FONTS = {

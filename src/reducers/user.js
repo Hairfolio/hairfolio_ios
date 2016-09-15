@@ -11,12 +11,14 @@ const initialState = new (Record({
   data: new Map({
     education: new List([]),
     offerings: new List([])
-  })
+  }),
+  followingStates: new Map({})
 }));
 
 const revive = user => initialState.mergeDeep({
   ...user,
-  state: user.state === READY ? READY : EMPTY
+  state: user.state === READY ? READY : EMPTY,
+  followingStates: new Map({})
 });
 
 export default function userReducer(state = initialState, action) {
@@ -42,9 +44,35 @@ export default function userReducer(state = initialState, action) {
       });
     }
 
+    case registrationTypes.FOLLOW_USER_PENDING.toString(): {
+      return state.setIn(['followingStates', action.payload.id], LOADING);
+    }
+    case registrationTypes.FOLLOW_USER_SUCCESS.toString(): {
+      return state
+        .setIn(['followingStates', action.payload.id], READY)
+        .setIn(['data', 'follow_count'], action.payload.follow_count)
+        .setIn(['data', 'following'], state.data.get('following').push(new Map({id: action.payload.id})));
+    }
+    case registrationTypes.FOLLOW_USER_ERROR.toString(): {
+      return state.setIn(['followingStates', action.payload.id], LOADING_ERROR);
+    }
+
+    case registrationTypes.UNFOLLOW_USER_PENDING.toString(): {
+      return state.setIn(['followingStates', action.payload.id], LOADING);
+    }
+    case registrationTypes.UNFOLLOW_USER_SUCCESS.toString(): {
+      return state
+        .setIn(['followingStates', action.payload.id], READY)
+        .setIn(['data', 'follow_count'], action.payload.follow_count)
+        .setIn(['data', 'following'], state.data.get('following').filter(f => f.get('id') !== action.payload.id));
+    }
+    case registrationTypes.UNFOLLOW_USER_ERROR.toString(): {
+      return state.setIn(['followingStates', action.payload.id], LOADING_ERROR);
+    }
+
     case registrationTypes.LOGIN_SUCCESS.toString(): {
       return state.mergeDeep({
-        data: Object.assign({}, {education: [], offerings: []}, action.payload)
+        data: Object.assign({}, {education: [], offerings: [], following: []}, action.payload)
       });
     }
 
@@ -101,6 +129,12 @@ export default function userReducer(state = initialState, action) {
     case registrationTypes.HYDRATE_USER_OFFERINGS_SUCCESS.toString(): {
       return state.mergeDeep({
         data: {offerings: action.payload}
+      });
+    }
+
+    case registrationTypes.HYDRATE_USER_FOLLOWING_SUCCESS.toString(): {
+      return state.mergeDeep({
+        data: {following: action.payload}
       });
     }
 

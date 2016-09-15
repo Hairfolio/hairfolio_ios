@@ -1,4 +1,5 @@
 export const user = ({user}) => ({
+  followingStates: user.followingStates,
   userState: user.state,
   user: user.data
 });

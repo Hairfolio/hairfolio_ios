@@ -32,6 +32,7 @@ export default class Profile extends PureComponent {
     appVersion: React.PropTypes.string.isRequired,
     dispatch: React.PropTypes.func.isRequired,
     environment: React.PropTypes.object.isRequired,
+    followingStates: React.PropTypes.object.isRequired,
     profile: React.PropTypes.object.isRequired,
     user: React.PropTypes.object.isRequired
   };
@@ -162,7 +163,7 @@ export default class Profile extends PureComponent {
                 fontSize: SCALE.h(28),
                 textAlign: 'center',
                 backgroundColor: 'transparent'
-              }}>Y Followers</Text>
+              }}>{this.props.profile.get('followers_count')} Followers</Text>
             </View>
             {this.props.profile !== this.props.user ? <View style={{
               flexDirection: 'row',
@@ -170,7 +171,25 @@ export default class Profile extends PureComponent {
               marginTop: SCALE.h(20)
             }}>
               <View>
-                <ProfileButton label="FOLLOW" />
+                {!utils.isFollowing(this.props.user, this.props.profile) ?
+                  <ProfileButton
+                    disabled={utils.isLoading(this.props.followingStates.get(this.props.profile.get('id')))}
+                    label="FOLLOW"
+                    onPress={() => {
+                      this.props.dispatch(registrationActions.followUser(this.props.profile.get('id')));
+                    }}
+                  />
+                :
+                  <ProfileButton
+                    color={COLORS.FOLLOWING}
+                    disabled={utils.isLoading(this.props.followingStates.get(this.props.profile.get('id')))}
+                    icon="check"
+                    label="FOLLOWED"
+                    onPress={() => {
+                      this.props.dispatch(registrationActions.unfollowUser(this.props.profile.get('id')));
+                    }}
+                  />
+                }
               </View>
               <View style={{width: 15}} />
               <View>

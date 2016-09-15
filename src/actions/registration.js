@@ -29,6 +29,10 @@ export const registrationTypes = new Enum(
   'HYDRATE_USER_OFFERINGS_PENDING',
   'HYDRATE_USER_OFFERINGS_SUCCESS',
   'HYDRATE_USER_OFFERINGS_ERROR',
+  'HYDRATE_USER_FOLLOWING',
+  'HYDRATE_USER_FOLLOWING_PENDING',
+  'HYDRATE_USER_FOLLOWING_SUCCESS',
+  'HYDRATE_USER_FOLLOWING_ERROR',
   'LOGIN_FULL',
   'LOGIN_FULL_PENDING',
   'LOGIN_FULL_SUCCESS',
@@ -49,6 +53,17 @@ export const registrationTypes = new Enum(
   'EDIT_USER_PENDING',
   'EDIT_USER_SUCCESS',
   'EDIT_USER_ERROR',
+
+  'FOLLOW_USER',
+  'FOLLOW_USER_PENDING',
+  'FOLLOW_USER_SUCCESS',
+  'FOLLOW_USER_ERROR',
+
+  'UNFOLLOW_USER',
+  'UNFOLLOW_USER_PENDING',
+  'UNFOLLOW_USER_SUCCESS',
+  'UNFOLLOW_USER_ERROR',
+
   'LOGOUT'
 );
 
@@ -88,6 +103,20 @@ export const registrationActions = {
         },
         payload: {
           promise: fetch.fetch(`/users/${getState().user.data.get('id')}/offerings`)
+        }
+      });
+  },
+
+  hydrateUserFollowing() {
+    return ({services: {fetch}, getState}) =>
+      ({
+        type: registrationTypes.HYDRATE_USER_FOLLOWING,
+        meta: {
+          immediate: true,
+          immediateAsyncResult: true
+        },
+        payload: {
+          promise: fetch.fetch(`/users/${getState().user.data.get('id')}/following`)
         }
       });
   },
@@ -216,7 +245,8 @@ export const registrationActions = {
             .then(throwOnFail)
             .then(() => Promise.all([
               dispatch(registrationActions.hydrateUserEducation()).then(throwOnFail),
-              dispatch(registrationActions.hydrateUserOfferings()).then(throwOnFail)
+              dispatch(registrationActions.hydrateUserOfferings()).then(throwOnFail),
+              dispatch(registrationActions.hydrateUserFollowing()).then(throwOnFail)
             ]))
             .then(() => getState().user.data)
         }
@@ -297,7 +327,8 @@ export const registrationActions = {
             .then(throwOnFail)
             .then(() => Promise.all([
               dispatch(registrationActions.hydrateUserEducation()).then(throwOnFail),
-              dispatch(registrationActions.hydrateUserOfferings()).then(throwOnFail)
+              dispatch(registrationActions.hydrateUserOfferings()).then(throwOnFail),
+              dispatch(registrationActions.hydrateUserFollowing()).then(throwOnFail)
             ]))
             .then(() => getState().user.data)
         }
@@ -425,7 +456,8 @@ export const registrationActions = {
             .then(throwOnFail)
             .then(() => Promise.all([
               dispatch(registrationActions.hydrateUserEducation()).then(throwOnFail),
-              dispatch(registrationActions.hydrateUserOfferings()).then(throwOnFail)
+              dispatch(registrationActions.hydrateUserOfferings()).then(throwOnFail),
+              dispatch(registrationActions.hydrateUserFollowing()).then(throwOnFail)
             ]))
             .then(() => getState().user.data)
         }
@@ -488,6 +520,54 @@ export const registrationActions = {
         },
         payload: {
           promise
+        }
+      };
+    };
+  },
+
+  followUser(id) {
+    return ({services: {fetch}, getState}) => {
+      return {
+        type: registrationTypes.FOLLOW_USER,
+        meta: {
+          immediate: true,
+          immediateAsyncResult: true
+        },
+        payload: {
+          promise: fetch.fetch(`/users/${getState().user.data.get('id')}/follow`, {
+            method: 'POST',
+            body: {
+              user: {id}
+            }
+          }).then(({follow_count}) => ({id, follow_count}), (e) => {
+            e.id = id;
+            throw e;
+          }),
+          data: {id}
+        }
+      };
+    };
+  },
+
+  unfollowUser(id) {
+    return ({services: {fetch}, getState}) => {
+      return {
+        type: registrationTypes.UNFOLLOW_USER,
+        meta: {
+          immediate: true,
+          immediateAsyncResult: true
+        },
+        payload: {
+          promise: fetch.fetch(`/users/${getState().user.data.get('id')}/unfollow`, {
+            method: 'POST',
+            body: {
+              user: {id}
+            }
+          }).then(({follow_count}) => ({id, follow_count}), (e) => {
+            e.id = id;
+            throw e;
+          }),
+          data: {id}
         }
       };
     };

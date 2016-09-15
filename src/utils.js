@@ -44,7 +44,7 @@ const utils = {
     else if (user.get('facebook_id'))
       return `http://res.cloudinary.com/${environment.get('cloud_name')}/image/facebook/${user.get('facebook_id')}.jpg`;
     else if (user.get('insta_id'))
-      return `http://res.cloudinary.com/${environment.get('cloud_name')}/image/instagram_name/${user.get('email').split('@')[0]}.jpg`;
+      return `http://res.cloudinary.com/${environment.get('cloud_name')}/image/instagram_name/${user.get('insta_username')}.jpg`;
   },
   isFollowing(me, profile) {
     return me.get('following') && !!me.get('following').find((user) => user.get('id') === profile.get('id'));

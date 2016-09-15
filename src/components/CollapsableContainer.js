@@ -9,6 +9,7 @@ export default class CollapsableContainer extends PureComponent {
   static propTypes = {
     children: React.PropTypes.node.isRequired,
     label: React.PropTypes.string.isRequired,
+    noPadding: React.PropTypes.bool,
     renderFooter: React.PropTypes.func
   };
 
@@ -44,7 +45,7 @@ export default class CollapsableContainer extends PureComponent {
         />
       </TouchableOpacity>
       <View style={!this.state.open ? {height: 0, overflow: 'hidden'} : null}>
-        <View style={{padding: 10}}>
+        <View style={{padding: this.props.noPadding ? 0 : 10}}>
           {this.props.children}
         </View>
         {this.props.renderFooter && <View style={{

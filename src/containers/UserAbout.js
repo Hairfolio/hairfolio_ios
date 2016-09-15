@@ -2,7 +2,7 @@ import React from 'react';
 import _ from 'lodash';
 import {autobind} from 'core-decorators';
 import PureComponent from '../components/PureComponent';
-import {View, Text, ScrollView, TouchableOpacity, Linking, Image} from 'react-native';
+import {View, Text, ScrollView, TouchableOpacity, Linking, Image, StyleSheet} from 'react-native';
 import connect from '../lib/connect';
 import {app} from '../selectors/app';
 import {user} from '../selectors/user';
@@ -74,7 +74,7 @@ export default class UserAbout extends PureComponent {
   }
 
   renderProfessionalDescription() {
-    return (<CollapsableContainer label="PROFESSIONAL_DESCRIPTION">
+    return (<CollapsableContainer label="PROFESSIONAL DESCRIPTION">
       {!this.props.profile.get('business_info') ?
         this.renderEmpty()
       :
@@ -272,6 +272,54 @@ export default class UserAbout extends PureComponent {
     </View>);
   }
 
+  renderServices() {
+    if (!this.props.profile.get('offerings').count())
+      return this.renderEmpty();
+
+    return this.props.profile.get('offerings').map((offer, i) =>
+      <View
+        key={offer.get('id')}
+        style={{
+          backgroundColor: COLORS.WHITE,
+          padding: SCALE.w(25),
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          borderTopWidth: i > 0 ? StyleSheet.hairlineWidth : 0,
+          borderTopColor: COLORS.ABOUT_SEPARATOR
+        }}
+      >
+        <Text style={{
+          fontFamily: FONTS.HEAVY,
+          fontSize: SCALE.h(30),
+          color: COLORS.DARK
+        }}>{offer.get('service').get('name')}<Text style={{fontFamily: FONTS.ROMAN}}> - {offer.get('category').get('name')}</Text></Text>
+        <Text style={{
+          fontFamily: FONTS.ROMAN,
+          fontSize: SCALE.h(30),
+          color: COLORS.DARK2
+        }}>{offer.get('price')}$</Text>
+      </View>
+    );
+  }
+
+  renderSalon() {
+    return (<View>
+      <CollapsableContainer
+        label="CONTACT"
+        renderFooter={() => this.renderAddressFooter()}
+      >
+        {this.renderAddress()}
+      </CollapsableContainer>
+      {this.renderProfessionalDescription()}
+      <CollapsableContainer
+        label="SERVICES"
+        noPadding
+      >
+        {this.renderServices()}
+      </CollapsableContainer>
+    </View>);
+  }
+
   render() {
     return (<NavigationSetting
       style={{
@@ -287,6 +335,7 @@ export default class UserAbout extends PureComponent {
       >
         {this.props.profile.get('account_type') === 'stylist' && this.renderStylist()}
         {this.props.profile.get('account_type') === 'brand' && this.renderBrand()}
+        {this.props.profile.get('account_type') === 'salon' && this.renderSalon()}
       </ScrollView>
     </NavigationSetting>);
   }

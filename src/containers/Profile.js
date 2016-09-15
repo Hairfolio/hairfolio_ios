@@ -10,8 +10,7 @@ import {environment} from '../selectors/environment';
 import {COLORS, FONTS, SCALE} from '../style';
 
 import ConsumerProfileStack from '../stacks/ConsumerProfile';
-
-import DeleteButton from '../components/Buttons/Delete';
+import StylistProfileStack from '../stacks/StylistProfile';
 
 import utils from '../utils';
 
@@ -19,13 +18,11 @@ import ProfileButton from '../components/Buttons/Profile';
 import Icon from '../components/Icon';
 import BannerErrorContainer from '../components/BannerErrorContainer';
 
-import appEmitter from '../appEmitter';
-
 import {registrationActions} from '../actions/registration';
 
 import {STATUSBAR_HEIGHT, Dims} from '../constants';
 
-import {editCustomerStack, loginStack} from '../routes';
+import {editCustomerStack} from '../routes';
 
 @connect(app, user, environment)
 export default class Profile extends PureComponent {
@@ -40,35 +37,6 @@ export default class Profile extends PureComponent {
   static contextTypes = {
     navigators: React.PropTypes.array.isRequired
   };
-
-  renderNextMilestone() {
-    return (<View style={{justifyContent: 'center', flex: 1}}>
-      <Text style={{
-        textAlign: 'center'
-      }}>full {this.props.profile.get('account_type')} profile in next milestone</Text>
-
-      <View style={{height: 30}} />
-      {this.props.profile === this.props.user ? <View>
-        <DeleteButton
-          label="LOG OUT"
-          onPress={() => {
-            this.props.dispatch(registrationActions.logout());
-            appEmitter.emit('logout');
-            _.first(this.context.navigators).jumpTo(loginStack);
-          }}
-        />
-        <View style={{height: 10}} />
-        <DeleteButton
-          label="DESTROY"
-          onPress={() => {
-            this.props.dispatch(registrationActions.destroy());
-            appEmitter.emit('logout', {destroy: true});
-            _.first(this.context.navigators).jumpTo(loginStack);
-          }}
-        />
-      </View> : null}
-    </View>);
-  }
 
   getName() {
     if (this.props.profile.get('account_type') === 'brand' || this.props.profile.get('account_type') === 'salon')
@@ -165,9 +133,10 @@ export default class Profile extends PureComponent {
       </Image>
       {this.props.profile.get('account_type') === 'consumer' ?
         <ConsumerProfileStack key={this.props.profile} profile={this.props.profile} />
-      :
-        this.renderNextMilestone()
-      }
+      : null}
+      {this.props.profile.get('account_type') === 'stylist' ?
+        <StylistProfileStack key={this.props.profile} profile={this.props.profile} />
+      : null}
     </BannerErrorContainer>);
   }
 };

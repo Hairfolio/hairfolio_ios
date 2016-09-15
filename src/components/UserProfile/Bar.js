@@ -73,7 +73,7 @@ export default class UserProfileBar extends PureComponent {
         left: 0,
         right: 0,
         top: 0,
-        backgroundColor: 'transparent',
+        backgroundColor: COLORS.WHITE,
         flexDirection: 'row'
       }}
     >

@@ -41,6 +41,10 @@ export const registrationTypes = new Enum(
   'FORGOT_PASSWORD_PENDING',
   'FORGOT_PASSWORD_SUCCESS',
   'FORGOT_PASSWORD_ERROR',
+  'CHANGE_PASSWORD',
+  'CHANGE_PASSWORD_PENDING',
+  'CHANGE_PASSWORD_SUCCESS',
+  'CHANGE_PASSWORD_ERROR',
   'EDIT_USER',
   'EDIT_USER_PENDING',
   'EDIT_USER_SUCCESS',
@@ -153,6 +157,26 @@ export const registrationActions = {
           promise: fetch.fetch('/sessions/forgot_pwd', {
             method: 'POST',
             body: {email}
+          })
+        }
+      };
+    };
+  },
+
+  changePassword(value) {
+    return ({services: {fetch}, getState}) => {
+      return {
+        type: registrationTypes.CHANGE_PASSWORD,
+        meta: {
+          immediate: true,
+          immediateAsyncResult: true
+        },
+        payload: {
+          promise: fetch.fetch(`/users/${getState().user.data.get('id')}/change_password`, {
+            method: 'POST',
+            body: {
+              user: value
+            }
           })
         }
       };

@@ -22,6 +22,7 @@ import Login from './containers/Login';
 import LoginEmail from './containers/LoginEmail';
 import ForgottenPassword from './containers/ForgottenPassword';
 import EditCustomer from './containers/EditCustomer';
+import ChangePassword from './containers/ChangePassword';
 import UserPosts from './containers/UserPosts';
 import UserHairfolio from './containers/UserHairfolio';
 import Feed from './containers/Feed';
@@ -157,6 +158,12 @@ class ForgottenPasswordRoute extends Route {
 }
 class EditCustomerRoute extends Route {
   SceneComponent = EditCustomer;
+  SceneConfig = {
+    ...CustomScenesConfig.FadeInOut
+  };
+}
+class ChangePasswordRoute extends Route {
+  SceneComponent = ChangePassword;
   SceneConfig = {
     ...CustomScenesConfig.FadeInOut
   };
@@ -302,6 +309,7 @@ export const profileExternal = new ProfileRoute();
 export const loginStack = new OnboardingStackRoute();
 export const forgottenPasswordStack = new ForgottenPasswordStackRoute();
 export const editCustomerStack = new EditCustomerStackRoute();
+export const changePassword = new ChangePasswordRoute();
 export const signupConsumerStack = new SignupConsumerStackRoute();
 export const signupBrandStack = new SignupBrandStackRoute();
 export const signupSalonStack = new SignupSalonStackRoute();
@@ -394,6 +402,7 @@ export const constructors = {
   OnboardingStackRoute,
   ForgottenPasswordStackRoute,
   EditCustomerStackRoute,
+  ChangePasswordRoute,
   SignupConsumerStackRoute,
   SignupBrandStackRoute,
   SignupSalonStackRoute,

@@ -16,7 +16,8 @@ export default class SimpleButton extends PureComponent {
     disabled: PropTypes.bool,
     icon: PropTypes.string,
     label: PropTypes.string.isRequired,
-    onPress: PropTypes.func
+    onPress: PropTypes.func,
+    rounded: PropTypes.bool
   };
 
   render() {
@@ -32,7 +33,7 @@ export default class SimpleButton extends PureComponent {
           justifyContent: 'center',
           alignItems: 'center',
           flexDirection: 'row',
-          borderRadius: 1
+          borderRadius: this.props.rounded ? (SCALE.h(17 * 2 + 48) / 2) : 1
         }}
       >
         {this.props.icon && <Icon

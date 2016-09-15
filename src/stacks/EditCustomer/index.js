@@ -10,7 +10,7 @@ import NavigationBar from '../../components/DarkNavigationBar/Bar';
 import PureComponent from '../../components/PureComponent';
 
 import {COLORS} from '../../style';
-import {editCustomer} from '../../routes';
+import {editCustomer, changePassword} from '../../routes';
 
 export default class EditCustomerStack extends PureComponent {
   static propTypes = {};
@@ -69,7 +69,7 @@ export default class EditCustomerStack extends PureComponent {
         <Navigator
           initialRoute={editCustomer}
           initialRouteStack={[
-            editCustomer
+            editCustomer, changePassword
           ]}
           navigationBar={<NavigationBar />}
           ref={(navigator) => this._nav = navigator && navigator.navigator()}

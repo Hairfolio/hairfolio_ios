@@ -19,7 +19,7 @@ import {cloudinaryActions} from '../actions/cloudinary';
 
 import {NAVBAR_HEIGHT} from '../constants';
 
-import {loginStack, appStack} from '../routes';
+import {loginStack, appStack, changePassword} from '../routes';
 
 import {throwOnFail} from '../lib/reduxPromiseMiddleware';
 
@@ -182,6 +182,7 @@ export default class EditCustomer extends PureComponent {
           />
           <View style={{height: StyleSheet.hairlineWidth}} />
           <PageInput
+            page={changePassword}
             placeholder="Change Password"
           />
 

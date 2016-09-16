@@ -2,17 +2,14 @@ import React from 'react';
 import _ from 'lodash';
 import {BlurView} from 'react-native-blur';
 import PureComponent from '../components/PureComponent';
-import {View, Text, Image, TouchableOpacity} from 'react-native';
+import {View, Text, Image, TouchableOpacity, ScrollView} from 'react-native';
 import connect from '../lib/connect';
 import {app} from '../selectors/app';
 import {user} from '../selectors/user';
 import {environment} from '../selectors/environment';
 import {COLORS, FONTS, SCALE} from '../style';
 
-import ConsumerProfileStack from '../stacks/ConsumerProfile';
-import StylistProfileStack from '../stacks/StylistProfile';
-import BrandProfileStack from '../stacks/BrandProfile';
-import SalonProfileStack from '../stacks/SalonProfile';
+import ProfileStack from '../stacks/Profile';
 
 import utils from '../utils';
 
@@ -24,7 +21,7 @@ import {registrationActions} from '../actions/registration';
 
 import {STATUSBAR_HEIGHT, Dims} from '../constants';
 
-import {editCustomerStack} from '../routes';
+import {editCustomerStack, UserPostsRoute, UserHairfolioRoute, UserAboutRoute, UserStylistsRoute} from '../routes';
 
 @connect(app, user, environment)
 export default class Profile extends PureComponent {
@@ -200,18 +197,52 @@ export default class Profile extends PureComponent {
           </View>
         </BlurView>
       </Image>
-      {this.props.profile.get('account_type') === 'consumer' ?
-        <ConsumerProfileStack key={this.props.profile} profile={this.props.profile} />
-      : null}
-      {this.props.profile.get('account_type') === 'stylist' ?
-        <StylistProfileStack key={this.props.profile} profile={this.props.profile} />
-      : null}
-      {this.props.profile.get('account_type') === 'brand' ?
-        <BrandProfileStack key={this.props.profile} profile={this.props.profile} />
-      : null}
-      {this.props.profile.get('account_type') === 'salon' ?
-        <SalonProfileStack key={this.props.profile} profile={this.props.profile} />
-      : null}
+      <View style={{flex: 1}}>
+        {this.props.profile.get('account_type') === 'consumer' ?
+          <ProfileStack
+            color={COLORS.SEARCH_LIST_ITEM_COLOR}
+            key={this.props.profile}
+            routes={[
+              new UserPostsRoute({profile: this.props.profile}),
+              new UserHairfolioRoute({profile: this.props.profile})
+            ]}
+          />
+        : null}
+        {this.props.profile.get('account_type') === 'stylist' ?
+          <ProfileStack
+            color={COLORS.STYLIST}
+            key={this.props.profile}
+            routes={[
+              new UserAboutRoute({profile: this.props.profile}),
+              new UserPostsRoute({profile: this.props.profile}),
+              new UserHairfolioRoute({profile: this.props.profile})
+            ]}
+          />
+        : null}
+        {this.props.profile.get('account_type') === 'brand' ?
+          <ProfileStack
+            color={COLORS.BRAND}
+            key={this.props.profile}
+            routes={[
+              new UserAboutRoute({profile: this.props.profile}),
+              new UserPostsRoute({profile: this.props.profile}),
+              new UserHairfolioRoute({profile: this.props.profile})
+            ]}
+          />
+        : null}
+        {this.props.profile.get('account_type') === 'salon' ?
+          <ProfileStack
+            color={COLORS.SALON}
+            key={this.props.profile}
+            routes={[
+              new UserAboutRoute({profile: this.props.profile}),
+              new UserPostsRoute({profile: this.props.profile}),
+              new UserHairfolioRoute({profile: this.props.profile}),
+              new UserStylistsRoute({profile: this.props.profile})
+            ]}
+          />
+        : null}
+      </View>
     </BannerErrorContainer>);
   }
 };

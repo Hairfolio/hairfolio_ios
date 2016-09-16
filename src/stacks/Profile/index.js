@@ -11,11 +11,10 @@ import PureComponent from '../../components/PureComponent';
 import {COLORS} from '../../style';
 import {USERPROFILEBAR_HEIGHT} from '../../constants';
 
-import {UserPostsRoute, UserHairfolioRoute, UserAboutRoute} from '../../routes';
-
-export default class StylistProfileStack extends PureComponent {
+export default class BrandProfileStack extends PureComponent {
   static propTypes = {
-    profile: React.PropTypes.object.isRequired
+    color: React.PropTypes.string.isRequired,
+    routes: React.PropTypes.array.isRequired
   };
 
   static contextTypes = {
@@ -23,11 +22,7 @@ export default class StylistProfileStack extends PureComponent {
   };
 
   componentWillMount() {
-    this.routes = [
-      new UserAboutRoute({profile: this.props.profile}),
-      new UserPostsRoute({profile: this.props.profile}),
-      new UserHairfolioRoute({profile: this.props.profile})
-    ];
+    //
   }
 
   render() {
@@ -40,9 +35,9 @@ export default class StylistProfileStack extends PureComponent {
           backgroundStyle={{
             paddingTop: USERPROFILEBAR_HEIGHT
           }}
-          initialRoute={_.first(this.routes)}
-          initialRouteStack={this.routes}
-          navigationBar={<NavigationBar color={COLORS.GREEN} />}
+          initialRoute={_.first(this.props.routes)}
+          initialRouteStack={this.props.routes}
+          navigationBar={<NavigationBar color={this.props.color} />}
           ref={(navigator) => this._nav = navigator && navigator.navigator()}
         />
       </View>

@@ -328,7 +328,11 @@ export default class UserAbout extends PureComponent {
       }}
     >
       <ScrollView
+        onScroll={(e) => {
+          console.log(e.nativeEvent.contentOffset.y);
+        }}
         ref="scrollView"
+        scrollEventThrottle={32}
         style={{
           flex: 1
         }}

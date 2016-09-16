@@ -9,7 +9,7 @@ import _ from 'lodash';
 export default class ChannelResponder extends PureComponent {
   static propTypes = {
     channel: React.PropTypes.object.isRequired,
-    children: React.PropTypes.node.isRequired,
+    children: React.PropTypes.node,
     commands: React.PropTypes.array,
     properties: React.PropTypes.object.isRequired
   };

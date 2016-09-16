@@ -41,6 +41,8 @@ export default class StylistProductExperience extends PureComponent {
   }
 
   getValue() {
+    if (!this._searchList)
+      return '';
     return this._searchList.getValue().join(',');
   }
 

@@ -72,6 +72,9 @@ export default class BrandProfileStack extends PureComponent {
   }
 
   setUpHeight() {
+    if (!this._nav)
+      return;
+
     this.refs.wrapper.setNativeProps({
       style: {
         height: Math.max(this.heights[this._nav.nextRoute.label], Dims.deviceHeight - USERPROFILEBAR_HEIGHT - BOTTOMBAR_HEIGHT - 10)
@@ -94,14 +97,14 @@ export default class BrandProfileStack extends PureComponent {
           backgroundColor: COLORS.WHITE
         }}
       >
-        <Navigator
+        {this.routes.length ? <Navigator
           initialRoute={_.first(this.routes)}
           initialRouteStack={this.routes}
           navigationBar={<ChannelEmitter channel={this.props.channel} commands={[
             'updateProgress'
           ]} />}
           ref={(navigator) => this._nav = navigator && navigator.navigator()}
-        />
+        /> : null}
       </View>
     );
   }

@@ -157,6 +157,7 @@ export default class Profile extends PureComponent {
                 textAlign: 'center',
                 backgroundColor: 'transparent'
               }}>X Stars</Text>
+              <View style={{width: 10}} />
               <Text style={{
                 color: COLORS.WHITE,
                 fontFamily: FONTS.BOOK_OBLIQUE,

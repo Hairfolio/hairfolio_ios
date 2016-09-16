@@ -93,11 +93,8 @@ export default class EditCustomer extends PureComponent {
 
   @autobind
   onLogin() {
-    this.onFormReady(() => InteractionManager.runAfterInteractions(() => {
-      console.log(this.props.user.toJS());
-      this.refs.scrollView.scrollToTop();
-      this.initValues();
-    }));
+    this.refs.scrollView.scrollToTop();
+    this.onFormReady(() => this.initValues());
   }
 
   renderSalonSpecifics() {
@@ -294,7 +291,7 @@ export default class EditCustomer extends PureComponent {
     var isLoading = this.state.submitting || utils.isLoading([this.props.cloudinaryStates.get('edit-user-pick')]);
 
     return (<NavigationSetting
-      forceUpdateEvents={['login']}
+      forceUpdateEvents={['login', 'user-edited']}
       leftAction={() => {
         this.initValues();
         _.first(this.context.navigators).jumpTo(appStack);

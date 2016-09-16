@@ -3,7 +3,10 @@ import _ from 'lodash';
 export default {
   addFormItem(ref, name) {
     this.fields = this.fields || {};
-    this.fields[name] = ref;
+    if (ref)
+      this.fields[name] = ref;
+    else
+      delete this.fields[name];
   },
 
   onFormReady(callback) {

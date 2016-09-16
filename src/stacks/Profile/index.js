@@ -16,7 +16,8 @@ import {UserAboutRoute, UserPostsRoute, UserHairfolioRoute, UserStylistsRoute} f
 export default class BrandProfileStack extends PureComponent {
   static propTypes = {
     channel: React.PropTypes.object.isRequired,
-    profile: React.PropTypes.object.isRequired
+    profile: React.PropTypes.object.isRequired,
+    scrollToFakeTop: React.PropTypes.func.isRequired
   };
 
   static contextTypes = {
@@ -50,16 +51,38 @@ export default class BrandProfileStack extends PureComponent {
     });
   }
 
+  componentDidMount() {
+    this.listener = this.props.channel.onCommand('updateProgress', ([progress, fromIndex, toIndex]) => {
+      // the idea is to do the scroll/height adjustement exactly
+      // during the blank of the animation that is happening from 0.4 to 0.6
+      if (progress >= 0.4)
+        this.onNavWillFocus();
+    });
+  }
+
+  componentWillUnmount() {
+    this.listener.remove();
+  }
+
   heights = {};
 
   onLayout(key, {nativeEvent: { layout: {x, y, width, height}}}) {
     this.heights[key] = height;
+    this.setUpHeight();
+  }
 
+  setUpHeight() {
     this.refs.wrapper.setNativeProps({
       style: {
-        height: _.max(_.values(this.heights).concat([Dims.deviceHeight - USERPROFILEBAR_HEIGHT - BOTTOMBAR_HEIGHT]))
+        height: Math.max(this.heights[this._nav.nextRoute.label], Dims.deviceHeight - USERPROFILEBAR_HEIGHT - BOTTOMBAR_HEIGHT - 10)
       }
     });
+  }
+
+  onNavWillFocus() {
+    this.setUpHeight();
+
+    this.props.scrollToFakeTop();
   }
 
   render() {
@@ -68,7 +91,6 @@ export default class BrandProfileStack extends PureComponent {
         onLayout={(e) => this.onLayout('base', e)}
         ref="wrapper"
         style={{
-          flex: 1,
           backgroundColor: COLORS.LIGHT
         }}
       >

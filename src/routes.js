@@ -181,7 +181,7 @@ class ChangePasswordRoute extends Route {
 export class UserStylistsRoute extends Route {
   SceneComponent = UserStylists;
   SceneConfig = {
-    ...CustomScenesConfig.FadeInOut
+    ...CustomScenesConfig.FadeInOutTAB
   };
 
   label = 'Stylists';
@@ -190,7 +190,7 @@ export class UserStylistsRoute extends Route {
 export class UserAboutRoute extends Route {
   SceneComponent = UserAbout;
   SceneConfig = {
-    ...CustomScenesConfig.FadeInOut
+    ...CustomScenesConfig.FadeInOutTAB
   };
 
   label = 'About';
@@ -199,7 +199,7 @@ export class UserAboutRoute extends Route {
 export class UserPostsRoute extends Route {
   SceneComponent = UserPosts;
   SceneConfig = {
-    ...CustomScenesConfig.FadeInOut
+    ...CustomScenesConfig.FadeInOutTAB
   };
 
   label = 'Posts';
@@ -208,7 +208,7 @@ export class UserPostsRoute extends Route {
 export class UserHairfolioRoute extends Route {
   SceneComponent = UserHairfolio;
   SceneConfig = {
-    ...CustomScenesConfig.FadeInOut
+    ...CustomScenesConfig.FadeInOutTAB
   };
 
   label = 'Hairfolio';

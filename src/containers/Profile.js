@@ -82,7 +82,15 @@ export default class Profile extends PureComponent {
   }
 
   getStyle() {
-    return this.y >= (this.height - 40) ? 'default' : 'light-content';
+    return this.y >= (this.height - 50) ? 'default' : 'light-content';
+  }
+
+  scrollToFakeTop() {
+    if (this.y >= (this.height - 50))
+      this.refs.scrollView.scrollTo({
+        animated: false,
+        y: this.height - 50
+      });
   }
 
   render() {
@@ -148,11 +156,11 @@ export default class Profile extends PureComponent {
 
               this.refs.statusBarCache.setNativeProps({
                 style: {
-                  opacity: e.nativeEvent.contentOffset.y >= (this.height - 40) ? 1 : 0
+                  opacity: e.nativeEvent.contentOffset.y >= (this.height - 50) ? 1 : 0
                 }
               });
 
-              if (e.nativeEvent.contentOffset.y < this.height - 40)
+              if (e.nativeEvent.contentOffset.y < this.height - 50)
                 StatusBar.setBarStyle('light-content', true);
               else
                 StatusBar.setBarStyle('default', true);
@@ -304,6 +312,7 @@ export default class Profile extends PureComponent {
               channel={this.channel}
               key={this.props.profile}
               profile={this.props.profile}
+              scrollToFakeTop={() => this.scrollToFakeTop()}
             />
           </ScrollView>
 

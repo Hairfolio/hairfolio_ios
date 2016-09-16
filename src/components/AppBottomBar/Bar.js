@@ -76,6 +76,7 @@ export default class LoginNavigationbar extends PureComponent {
             resizeMode="cover"
             source={{uri: opts.picture}}
             style={{
+              backgroundColor: 'black',
               height: opts.itemSize,
               width: opts.itemSize,
               borderRadius: opts.itemSize / 2,

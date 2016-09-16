@@ -109,7 +109,8 @@ export default class Profile extends PureComponent {
             left: 0,
             right: 0,
             top: 0,
-            height: this.height
+            height: this.height,
+            backgroundColor: 'rgba(0, 0, 0, 0.25)'
           }}
         />
 
@@ -209,7 +210,8 @@ export default class Profile extends PureComponent {
                     style={{
                       height: SCALE.h(130),
                       width: SCALE.h(130),
-                      borderRadius: SCALE.h(130) / 2
+                      borderRadius: SCALE.h(130) / 2,
+                      backgroundColor: 'rgba(0, 0, 0, 0.3)'
                     }}
                   />
                   {this.props.profile.get('account_type') !== 'consumer' ? <View style={{

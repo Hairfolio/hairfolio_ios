@@ -62,7 +62,8 @@ export default class LoginNavigationbar extends PureComponent {
         borderColor: COLORS.BOTTOMBAR_BORDER,
         height: opts.height,
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        backgroundColor: COLORS.WHITE
       }}>
         {!opts.picture ?
           <Icon

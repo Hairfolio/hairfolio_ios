@@ -29,6 +29,7 @@ export const COLORS = {
   FB: '#3B5998',
   IG: '#F3328C',
 
+  CONSUMER: '#404040',
   STYLIST: '#56E6A5',
   BRAND: '#8ADDDE',
   SALON: '#D284FF',

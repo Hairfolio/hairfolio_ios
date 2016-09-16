@@ -48,6 +48,10 @@ export default class Route {
     this.ee.addListener('ready', _.once(callback));
   }
 
+  onLayout() {
+    
+  }
+
   renderScene(opts) {
     return (<SceneWrapper {...opts} key={this.id}>
       <this.SceneComponent {...this.props} ref={(scene) => {

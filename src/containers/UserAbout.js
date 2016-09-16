@@ -2,7 +2,7 @@ import React from 'react';
 import _ from 'lodash';
 import {autobind} from 'core-decorators';
 import PureComponent from '../components/PureComponent';
-import {View, Text, ScrollView, TouchableOpacity, Linking, Image, StyleSheet} from 'react-native';
+import {View, Text, TouchableOpacity, Linking, Image, StyleSheet} from 'react-native';
 import connect from '../lib/connect';
 import {app} from '../selectors/app';
 import {user} from '../selectors/user';
@@ -20,6 +20,7 @@ import {editCustomerStack} from '../routes';
 export default class UserAbout extends PureComponent {
   static propTypes = {
     appVersion: React.PropTypes.string.isRequired,
+    onLayout: React.PropTypes.func.isRequired,
     profile: React.PropTypes.object.isRequired,
     user: React.PropTypes.object.isRequired
   };
@@ -323,24 +324,17 @@ export default class UserAbout extends PureComponent {
   render() {
     return (<NavigationSetting
       style={{
-        flex: 1,
-        backgroundColor: COLORS.WHITE
+        backgroundColor: COLORS.WHITE,
+        flex: 1
       }}
     >
-      <ScrollView
-        onScroll={(e) => {
-          console.log(e.nativeEvent.contentOffset.y);
-        }}
-        ref="scrollView"
-        scrollEventThrottle={32}
-        style={{
-          flex: 1
-        }}
+      <View
+        onLayout={this.props.onLayout}
       >
         {this.props.profile.get('account_type') === 'stylist' && this.renderStylist()}
         {this.props.profile.get('account_type') === 'brand' && this.renderBrand()}
         {this.props.profile.get('account_type') === 'salon' && this.renderSalon()}
-      </ScrollView>
+      </View>
     </NavigationSetting>);
   }
 };

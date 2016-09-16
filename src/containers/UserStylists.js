@@ -11,6 +11,7 @@ import NavigationSetting from '../navigation/NavigationSetting';
 export default class UserStylist extends PureComponent {
   static propTypes = {
     appVersion: React.PropTypes.string.isRequired,
+    onLayout: React.PropTypes.func.isRequired,
     profile: React.PropTypes.object.isRequired,
     user: React.PropTypes.object.isRequired
   };
@@ -27,9 +28,9 @@ export default class UserStylist extends PureComponent {
         padding: 10
       }}
     >
-      <View style={{
-        flex: 1
-      }}>
+      <View 
+        onLayout={this.props.onLayout}
+      >
         <Text style={{
           fontFamily: FONTS.MEDIUM,
           fontSize: SCALE.h(26),

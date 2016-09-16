@@ -10,6 +10,7 @@ export default class ChannelResponder extends PureComponent {
   static propTypes = {
     channel: React.PropTypes.object.isRequired,
     children: React.PropTypes.node.isRequired,
+    commands: React.PropTypes.array,
     properties: React.PropTypes.object.isRequired
   };
 
@@ -31,6 +32,13 @@ export default class ChannelResponder extends PureComponent {
         set(property, value);
       });
     });
+
+    this.listeners.concat(_.map(this.props.commands, (command) => {
+      return this.channel.onCommand(command, (args) => {
+        if (this._ref)
+          this._ref[command].apply(this._ref, args);
+      });
+    }));
   }
 
   componentWillUnmount() {
@@ -42,6 +50,9 @@ export default class ChannelResponder extends PureComponent {
     if (!this.props.children)
       return null;
 
-    return React.cloneElement(this.props.children, {...this.state, ref: (r) => this.props.channel.set('ref', r)});
+    return React.cloneElement(this.props.children, {...this.state, ref: (r) => {
+      this._ref = r;
+      this.props.channel.set('ref', r);
+    }});
   }
 }

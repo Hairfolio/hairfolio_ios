@@ -19,9 +19,18 @@ export default class UserProfileBar extends PureComponent {
   state = {};
 
   componentWillMount() {
+    this.setup(this.props.navState);
+  }
+
+  componentWillReceiveProps(props) {
+    if (props.navState !== this.props.navState)
+      this.setup(props.navState);
+  }
+
+  setup(navState = {}) {
     this.setState({
-      selected: _.map(this.props.navState.routeStack, (route, i) =>
-        i === this.props.navState.presentedIndex
+      selected: _.map(navState.routeStack, (route, i) =>
+        i === navState.presentedIndex
       )
     });
   }
@@ -35,6 +44,10 @@ export default class UserProfileBar extends PureComponent {
   }
 
   handleWillFocus(route) {}
+
+  renderItems(navState = {}) {
+    return _.map(navState.routeStack, route => this.renderItem(route));
+  }
 
   renderItem(route) {
     return (<TouchableWithoutFeedback
@@ -68,15 +81,11 @@ export default class UserProfileBar extends PureComponent {
   render() {
     return (<View
       style={{
-        position: 'absolute',
-        left: 0,
-        right: 0,
-        top: 0,
         backgroundColor: COLORS.WHITE,
         flexDirection: 'row'
       }}
     >
-      {_.map(this.props.navigator.getCurrentRoutes(), route => this.renderItem(route))}
+      {this.renderItems(this.props.navState)}
     </View>);
   }
 }

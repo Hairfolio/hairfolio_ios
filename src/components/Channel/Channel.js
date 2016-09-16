@@ -5,6 +5,7 @@ import EventEmitter from 'EventEmitter';
 export default class NavigationChannel {
   constructor() {
     this.eventEmitter = new EventEmitter();
+    this.commandEmitter = new EventEmitter();
 
     this.data = {};
   }
@@ -24,5 +25,13 @@ export default class NavigationChannel {
 
   addListener(event, handler) {
     return this.eventEmitter.addListener(event, handler);
+  }
+
+  sendCommand(command, args) {
+    this.commandEmitter.emit(command, args);
+  }
+
+  onCommand(command, handler) {
+    return this.commandEmitter.addListener(command, handler);
   }
 }

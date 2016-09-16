@@ -6,11 +6,16 @@ import PureComponent from '../PureComponent';
 
 export default class ChannelEmitter extends PureComponent {
   static propTypes = {
-    channel: React.PropTypes.object
+    channel: React.PropTypes.object,
+    commands: React.PropTypes.array
   };
 
   componentWillMount() {
     this.updateNavigationChannel(this.props);
+
+    _.each(this.props.commands, command => {
+      this[command] = (...args) => this.props.channel.sendCommand(command, args);
+    });
   }
 
   componentWillReceiveProps(nextProps) {

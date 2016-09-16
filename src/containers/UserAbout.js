@@ -30,7 +30,7 @@ export default class UserAbout extends PureComponent {
   };
 
   renderEmpty() {
-    if (this.props.profile.get('id') !== this.props.user.get('id'))
+    if (this.profile.get('id') !== this.props.user.get('id'))
       return (<Text style={{
         fontFamily: FONTS.OBLIQUE,
         fontSize: SCALE.h(26),
@@ -61,26 +61,26 @@ export default class UserAbout extends PureComponent {
 
   renderProfessionalDescription() {
     return (<CollapsableContainer label="PROFESSIONAL DESCRIPTION">
-      {!this.props.profile.get('business_info') ?
+      {!this.profile.get('business_info') ?
         this.renderEmpty()
       :
         <Text style={{
           fontFamily: FONTS.ROMAN,
           fontSize: SCALE.h(28),
           color: COLORS.BOTTOMBAR_SELECTED
-        }}>{this.props.profile.get('business_info')}</Text>
+        }}>{this.profile.get('business_info')}</Text>
       }
     </CollapsableContainer>);
   }
 
   hasAddress() {
     return _.every(['business_address', 'business_city', 'business_state', 'business_zip'], (ppte) =>
-      !!this.props.profile.get(ppte)
+      !!this.profile.get(ppte)
     );
   }
 
   renderAddressFooter() {
-    if (!this.props.profile.get('business_website') && !this.hasAddress())
+    if (!this.profile.get('business_website') && !this.hasAddress())
       return this.renderEmpty();
 
     return (<View style={{
@@ -88,8 +88,8 @@ export default class UserAbout extends PureComponent {
     }}>
       <TouchableOpacity
         onPress={() => {
-          var url = this.props.profile.get('business_website');
-          if (this.props.profile.get('business_website').indexOf('http://') !== 0)
+          var url = this.profile.get('business_website');
+          if (this.profile.get('business_website').indexOf('http://') !== 0)
             url = 'http://' + url;
 
           Linking.openURL(url);
@@ -102,7 +102,7 @@ export default class UserAbout extends PureComponent {
         }}
       >
         <Icon
-          color={COLORS[this.props.profile.get('account_type').toUpperCase()]}
+          color={COLORS[this.profile.get('account_type').toUpperCase()]}
           name="back"
           size={SCALE.h(20)}
           style={{
@@ -120,7 +120,7 @@ export default class UserAbout extends PureComponent {
         }}>Go to website</Text>
       </TouchableOpacity>
 
-      {this.props.profile.get('business_website') && this.hasAddress() &&
+      {this.profile.get('business_website') && this.hasAddress() &&
         <View style={{width: 1, backgroundColor: COLORS.ABOUT_SEPARATOR}} />
       }
 
@@ -139,7 +139,7 @@ export default class UserAbout extends PureComponent {
         }}
       >
         <Icon
-          color={COLORS[this.props.profile.get('account_type').toUpperCase()]}
+          color={COLORS[this.profile.get('account_type').toUpperCase()]}
           name="navigation"
           size={SCALE.h(24)}
         />
@@ -156,7 +156,7 @@ export default class UserAbout extends PureComponent {
 
   getSinglelineAddress() {
     return _.map(['business_address', 'business_city', 'business_state', 'business_zip'], (ppte) =>
-      this.props.profile.get(ppte)
+      this.profile.get(ppte)
     ).join(' - ');
   }
 
@@ -174,22 +174,22 @@ export default class UserAbout extends PureComponent {
           fontFamily: FONTS.HEAVY,
           fontSize: SCALE.h(30),
           color: COLORS.BOTTOMBAR_SELECTED
-        }}>{this.props.profile.get('business_name')}</Text>
+        }}>{this.profile.get('business_name')}</Text>
         <Text style={{
           color: COLORS.ADDRESS,
           fontFamily: FONTS.BOOK,
           fontSize: SCALE.h(30)
-        }}>{this.props.profile.get('business_address')}</Text>
+        }}>{this.profile.get('business_address')}</Text>
         <Text style={{
           color: COLORS.ADDRESS,
           fontFamily: FONTS.BOOK,
           fontSize: SCALE.h(30)
-        }}>{this.props.profile.get('business_city')}, {this.props.profile.get('business_state')} {this.props.profile.get('business_zip')}</Text>
+        }}>{this.profile.get('business_city')}, {this.profile.get('business_state')} {this.profile.get('business_zip')}</Text>
         <Text style={{
           color: COLORS.ADDRESS,
           fontFamily: FONTS.BOOK,
           fontSize: SCALE.h(30)
-        }}>{this.props.profile.get('business_phone')}</Text>
+        }}>{this.profile.get('business_phone')}</Text>
       </View>
 
       <Image
@@ -212,7 +212,7 @@ export default class UserAbout extends PureComponent {
       <View key={item.get('id')} style={{alignItems: 'flex-start', marginBottom: 5, marginTop: 5}}>
         <View style={{
           borderWidth: 1,
-          borderColor: COLORS[this.props.profile.get('account_type').toUpperCase()],
+          borderColor: COLORS[this.profile.get('account_type').toUpperCase()],
           padding: 2,
           paddingLeft: 10,
           paddingRight: 10,
@@ -237,10 +237,10 @@ export default class UserAbout extends PureComponent {
         {this.renderAddress()}
       </CollapsableContainer>
       <CollapsableContainer label="CERTIFICATES">
-        {this.renderCartouches(this.props.profile.get('certificates'))}
+        {this.renderCartouches(this.profile.get('certificates'))}
       </CollapsableContainer>
       <CollapsableContainer label="PRODUCT EXPERIENCE">
-        {this.renderCartouches(this.props.profile.get('experiences'))}
+        {this.renderCartouches(this.profile.get('experiences'))}
       </CollapsableContainer>
       {this.renderProfessionalDescription()}
     </View>);
@@ -259,10 +259,10 @@ export default class UserAbout extends PureComponent {
   }
 
   renderServices() {
-    if (!this.props.profile.get('offerings').count())
+    if (!this.profile.get('offerings').count())
       return this.renderEmpty();
 
-    return this.props.profile.get('offerings').map((offer, i) =>
+    return this.profile.get('offerings').map((offer, i) =>
       <View
         key={offer.get('id')}
         style={{
@@ -307,7 +307,13 @@ export default class UserAbout extends PureComponent {
   }
 
   render() {
+    // comme profile n'est pas updaté lorsqu'il y a une modification interne
+    // alors qu'on est deja sur la page,
+    // on switche sur user qui de toute façon est le seul qui risque d'etre updaté
+    this.profile = this.props.profile.get('id') === this.props.user.get('id') ? this.props.user : this.props.profile;
+
     return (<NavigationSetting
+      forceUpdateEvents={this.profile === this.props.user ? ['user-edited'] : null}
       style={{
         backgroundColor: COLORS.WHITE,
         flex: 1
@@ -316,9 +322,9 @@ export default class UserAbout extends PureComponent {
       <View
         onLayout={this.props.onLayout}
       >
-        {this.props.profile.get('account_type') === 'stylist' && this.renderStylist()}
-        {this.props.profile.get('account_type') === 'brand' && this.renderBrand()}
-        {this.props.profile.get('account_type') === 'salon' && this.renderSalon()}
+        {this.profile.get('account_type') === 'stylist' && this.renderStylist()}
+        {this.profile.get('account_type') === 'brand' && this.renderBrand()}
+        {this.profile.get('account_type') === 'salon' && this.renderSalon()}
       </View>
     </NavigationSetting>);
   }

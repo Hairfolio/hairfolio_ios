@@ -139,9 +139,13 @@ export default function userReducer(state = initialState, action) {
     }
 
     case registrationTypes.EDIT_USER_SUCCESS.toString(): {
-      return state.mergeDeep({
-        'data': action.payload
-      });
+
+      return state
+        .setIn(['data', 'certificates'], new List([]))
+        .setIn(['data', 'experiences'], new List([]))
+        .mergeDeep({
+          'data': action.payload
+        });
     }
 
     case registrationTypes.LOGOUT: {

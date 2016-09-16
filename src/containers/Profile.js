@@ -112,6 +112,19 @@ export default class Profile extends PureComponent {
                   height: e.nativeEvent.contentOffset.y < 0 ? height - e.nativeEvent.contentOffset.y : height
                 }
               });
+
+              var opacityQuote = Math.min(Math.max(0, -e.nativeEvent.contentOffset.y / 30), 1);
+
+              this.refs.quote.setNativeProps({
+                style: {
+                  opacity: opacityQuote
+                }
+              });
+              this.refs.headerContent.setNativeProps({
+                style: {
+                  opacity: 1 - opacityQuote
+                }
+              });
             }}
             ref="scrollView"
             scrollEventThrottle={48}
@@ -127,91 +140,113 @@ export default class Profile extends PureComponent {
               justifyContent: 'flex-end',
               alignItems: 'center'
             }}>
-              <View style={{
-                position: 'relative'
-              }}>
-                <Image
-                  source={{uri: utils.getUserProfilePicURI(this.props.profile, this.props.environment)}}
-                  style={{
-                    height: SCALE.h(130),
-                    width: SCALE.h(130),
-                    borderRadius: SCALE.h(130) / 2
-                  }}
-                />
-                {this.props.profile.get('account_type') !== 'consumer' ? <View style={{
-                  height: SCALE.h(46),
-                  width: SCALE.h(46),
-                  borderRadius: SCALE.h(23),
-                  backgroundColor: COLORS.WHITE,
+              <View
+                ref="quote"
+                style={{
                   position: 'absolute',
+                  left: 0,
+                  top: 0,
                   right: 0,
                   bottom: 0,
                   alignItems: 'center',
-                  justifyContent: 'center'
-                }}>
-                  {this.renderAccountIcon()}
-                </View> : null}
-              </View>
-              <View>
+                  justifyContent: 'center',
+                  opacity: 0
+                }}
+              >
                 <Text style={{
+                  fontFamily: FONTS.MEDIUM,
+                  fontSize: SCALE.h(32),
                   color: COLORS.WHITE,
-                  fontFamily: FONTS.HEAVY,
-                  fontSize: SCALE.h(42),
-                  marginTop: SCALE.h(20),
-                  textAlign: 'center',
-                  backgroundColor: 'transparent'
-                }}>{this.getName()}</Text>
+                  textAlign: 'center'
+                }}>"Vestibulum id ligula porta felis euismod semper. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Sed posuere consectetur est at lobortis."</Text>
+              </View>
+              <View ref="headerContent" style={{position: 'relative', alignItems: 'center'}}>
                 <View style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-between'
+                  position: 'relative'
                 }}>
-                  <Text style={{
-                    color: COLORS.WHITE,
-                    fontFamily: FONTS.BOOK_OBLIQUE,
-                    fontSize: SCALE.h(28),
-                    textAlign: 'center',
-                    backgroundColor: 'transparent'
-                  }}>X Stars</Text>
-                  <View style={{width: 10}} />
-                  <Text style={{
-                    color: COLORS.WHITE,
-                    fontFamily: FONTS.BOOK_OBLIQUE,
-                    fontSize: SCALE.h(28),
-                    textAlign: 'center',
-                    backgroundColor: 'transparent'
-                  }}>{this.props.profile.get('followers_count')} Followers</Text>
+                  <Image
+                    source={{uri: utils.getUserProfilePicURI(this.props.profile, this.props.environment)}}
+                    style={{
+                      height: SCALE.h(130),
+                      width: SCALE.h(130),
+                      borderRadius: SCALE.h(130) / 2
+                    }}
+                  />
+                  {this.props.profile.get('account_type') !== 'consumer' ? <View style={{
+                    height: SCALE.h(46),
+                    width: SCALE.h(46),
+                    borderRadius: SCALE.h(23),
+                    backgroundColor: COLORS.WHITE,
+                    position: 'absolute',
+                    right: 0,
+                    bottom: 0,
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                  }}>
+                    {this.renderAccountIcon()}
+                  </View> : null}
                 </View>
-                {this.props.profile !== this.props.user ? <View style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  marginTop: SCALE.h(20)
-                }}>
-                  <View>
-                    {!utils.isFollowing(this.props.user, this.props.profile) ?
-                      <ProfileButton
-                        disabled={utils.isLoading(this.props.followingStates.get(this.props.profile.get('id')))}
-                        label="FOLLOW"
-                        onPress={() => {
-                          this.props.dispatch(registrationActions.followUser(this.props.profile.get('id')));
-                        }}
-                      />
-                    :
-                      <ProfileButton
-                        color={COLORS.FOLLOWING}
-                        disabled={utils.isLoading(this.props.followingStates.get(this.props.profile.get('id')))}
-                        icon="check"
-                        label="FOLLOWED"
-                        onPress={() => {
-                          this.props.dispatch(registrationActions.unfollowUser(this.props.profile.get('id')));
-                        }}
-                      />
-                    }
+                <View>
+                  <Text style={{
+                    color: COLORS.WHITE,
+                    fontFamily: FONTS.HEAVY,
+                    fontSize: SCALE.h(42),
+                    marginTop: SCALE.h(20),
+                    textAlign: 'center',
+                    backgroundColor: 'transparent'
+                  }}>{this.getName()}</Text>
+                  <View style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between'
+                  }}>
+                    <Text style={{
+                      color: COLORS.WHITE,
+                      fontFamily: FONTS.BOOK_OBLIQUE,
+                      fontSize: SCALE.h(28),
+                      textAlign: 'center',
+                      backgroundColor: 'transparent'
+                    }}>X Stars</Text>
+                    <View style={{width: 10}} />
+                    <Text style={{
+                      color: COLORS.WHITE,
+                      fontFamily: FONTS.BOOK_OBLIQUE,
+                      fontSize: SCALE.h(28),
+                      textAlign: 'center',
+                      backgroundColor: 'transparent'
+                    }}>{this.props.profile.get('followers_count')} Followers</Text>
                   </View>
-                  <View style={{width: 15}} />
-                  <View>
-                    <ProfileButton label="MESSAGE" />
-                  </View>
-                </View> : null}
+                  {this.props.profile !== this.props.user ? <View style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    marginTop: SCALE.h(20)
+                  }}>
+                    <View>
+                      {!utils.isFollowing(this.props.user, this.props.profile) ?
+                        <ProfileButton
+                          disabled={utils.isLoading(this.props.followingStates.get(this.props.profile.get('id')))}
+                          label="FOLLOW"
+                          onPress={() => {
+                            this.props.dispatch(registrationActions.followUser(this.props.profile.get('id')));
+                          }}
+                        />
+                      :
+                        <ProfileButton
+                          color={COLORS.FOLLOWING}
+                          disabled={utils.isLoading(this.props.followingStates.get(this.props.profile.get('id')))}
+                          icon="check"
+                          label="FOLLOWED"
+                          onPress={() => {
+                            this.props.dispatch(registrationActions.unfollowUser(this.props.profile.get('id')));
+                          }}
+                        />
+                      }
+                    </View>
+                    <View style={{width: 15}} />
+                    <View>
+                      <ProfileButton label="MESSAGE" />
+                    </View>
+                  </View> : null}
+                </View>
               </View>
             </View>
             <ChannelResponder

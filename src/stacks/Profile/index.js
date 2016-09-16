@@ -91,7 +91,7 @@ export default class BrandProfileStack extends PureComponent {
         onLayout={(e) => this.onLayout('base', e)}
         ref="wrapper"
         style={{
-          backgroundColor: COLORS.LIGHT
+          backgroundColor: COLORS.WHITE
         }}
       >
         <Navigator

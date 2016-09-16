@@ -29,23 +29,8 @@ export default class UserAbout extends PureComponent {
     navigators: React.PropTypes.array.isRequired
   };
 
-  componentWillMount() {
-    this.listeners = [
-      appEmitter.addListener('login', this.onLogin)
-    ];
-  }
-
-  componentWillUnmount() {
-    _.each(this.listeners, l => l.remove());
-  }
-
-  @autobind
-  onLogin() {
-    this.refs.scrollView.scrollToTop();
-  }
-
   renderEmpty() {
-    if (this.props.profile !== this.props.user)
+    if (this.props.profile.get('id') !== this.props.user.get('id'))
       return (<Text style={{
         fontFamily: FONTS.OBLIQUE,
         fontSize: SCALE.h(26),

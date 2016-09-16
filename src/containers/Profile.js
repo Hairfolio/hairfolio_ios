@@ -255,7 +255,7 @@ export default class Profile extends PureComponent {
                       backgroundColor: 'transparent'
                     }}>{this.props.profile.get('followers_count')} Followers</Text>
                   </View>
-                  {this.props.profile !== this.props.user ? <View style={{
+                  {this.props.profile.get('id') !== this.props.user.get('id') ? <View style={{
                     flexDirection: 'row',
                     justifyContent: 'space-between',
                     marginTop: SCALE.h(20)
@@ -310,7 +310,7 @@ export default class Profile extends PureComponent {
             </View>
             <ProfileStack
               channel={this.channel}
-              key={this.props.profile}
+              key={this.props.profile.get('id')}
               profile={this.props.profile}
               scrollToFakeTop={() => this.scrollToFakeTop()}
             />

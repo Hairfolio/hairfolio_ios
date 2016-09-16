@@ -2,7 +2,7 @@ import React from 'react';
 import _ from 'lodash';
 import {BlurView} from 'react-native-blur';
 import PureComponent from '../components/PureComponent';
-import {View, Text, Image, TouchableOpacity, ScrollView} from 'react-native';
+import {View, Text, Image, TouchableOpacity, ScrollView, StatusBar} from 'react-native';
 import connect from '../lib/connect';
 import {app} from '../selectors/app';
 import {user} from '../selectors/user';
@@ -23,9 +23,9 @@ import Channel from '../components/Channel/Channel';
 
 import {registrationActions} from '../actions/registration';
 
-import {STATUSBAR_HEIGHT, Dims} from '../constants';
+import {STATUSBAR_HEIGHT} from '../constants';
 
-import {editCustomerStack, UserPostsRoute, UserHairfolioRoute, UserAboutRoute, UserStylistsRoute} from '../routes';
+import {editCustomerStack} from '../routes';
 
 @connect(app, user, environment)
 export default class Profile extends PureComponent {
@@ -81,8 +81,12 @@ export default class Profile extends PureComponent {
     />);
   }
 
+  getStyle() {
+    return this.y >= (this.height - 40) ? 'default' : 'light-content';
+  }
+
   render() {
-    var height = (this.props.profile === this.props.user ? 183.5 : 223.5) + 40;
+    this.height = (this.props.profile === this.props.user ? 183.5 : 223.5) + 40;
 
     return (<BannerErrorContainer ref="ebc" style={{
       flex: 1
@@ -97,7 +101,7 @@ export default class Profile extends PureComponent {
             left: 0,
             right: 0,
             top: 0,
-            height
+            height: this.height
           }}
         />
 
@@ -107,9 +111,12 @@ export default class Profile extends PureComponent {
         }}>
           <ScrollView
             onScroll={(e) => {
+
+              this.y = e.nativeEvent.contentOffset.y;
+
               this.refs.headerImageWrapper.setNativeProps({
                 style: {
-                  height: e.nativeEvent.contentOffset.y < 0 ? height - e.nativeEvent.contentOffset.y : height
+                  height: e.nativeEvent.contentOffset.y < 0 ? this.height - e.nativeEvent.contentOffset.y : this.height
                 }
               });
 
@@ -120,11 +127,35 @@ export default class Profile extends PureComponent {
                   opacity: opacityQuote
                 }
               });
+
+              var opacityContent = 1 - opacityQuote;
+              if (e.nativeEvent.contentOffset.y > 60)
+                opacityContent = 1 - Math.min((e.nativeEvent.contentOffset.y - 60) / 30, 1);
+
               this.refs.headerContent.setNativeProps({
                 style: {
-                  opacity: 1 - opacityQuote
+                  opacity: opacityContent
                 }
               });
+
+              if (this.refs.settings)
+                this.refs.settings.setNativeProps({
+                  style: {
+                    opacity: opacityContent
+                  },
+                  pointerEvents: opacityContent === 1 ? 'auto' : 'none'
+                });
+
+              this.refs.statusBarCache.setNativeProps({
+                style: {
+                  opacity: e.nativeEvent.contentOffset.y >= (this.height - 40) ? 1 : 0
+                }
+              });
+
+              if (e.nativeEvent.contentOffset.y < this.height - 40)
+                StatusBar.setBarStyle('light-content', true);
+              else
+                StatusBar.setBarStyle('default', true);
             }}
             ref="scrollView"
             scrollEventThrottle={48}
@@ -136,6 +167,7 @@ export default class Profile extends PureComponent {
           >
             <View style={{
               padding: SCALE.h(60),
+              paddingBottom: SCALE.h(60) - 10,
               position: 'relative',
               justifyContent: 'flex-end',
               alignItems: 'center'
@@ -249,18 +281,25 @@ export default class Profile extends PureComponent {
                 </View>
               </View>
             </View>
-            <ChannelResponder
-              channel={this.channel}
-              commands={[
-                'updateProgress'
-              ]}
-              properties={{
-                navState: 'navState',
-                navigator: 'navigator'
-              }}
-            >
-              {this.props.profile.get('account_type') && <UserProfileNavigationBar color={COLORS[this.props.profile.get('account_type').toUpperCase()]} />}
-            </ChannelResponder>
+            <View>
+              <View ref="statusBarCache" style={{
+                height: 10,
+                backgroundColor: 'white',
+                opacity: 0
+              }} />
+              <ChannelResponder
+                channel={this.channel}
+                commands={[
+                  'updateProgress'
+                ]}
+                properties={{
+                  navState: 'navState',
+                  navigator: 'navigator'
+                }}
+              >
+                {this.props.profile.get('account_type') && <UserProfileNavigationBar color={COLORS[this.props.profile.get('account_type').toUpperCase()]} />}
+              </ChannelResponder>
+            </View>
             <ProfileStack
               channel={this.channel}
               key={this.props.profile}
@@ -268,22 +307,23 @@ export default class Profile extends PureComponent {
             />
           </ScrollView>
 
-          {this.props.profile === this.props.user ? <TouchableOpacity
-            onPress={() => {
-              _.first(this.context.navigators).jumpTo(editCustomerStack);
-            }}
-            style={{
-              position: 'absolute',
-              top: STATUSBAR_HEIGHT + 5,
-              right: 10
-            }}
-          >
-            <Icon
-              color={COLORS.WHITE}
-              name="settings"
-              size={SCALE.h(48)}
-            />
-          </TouchableOpacity> : null}
+          {this.props.profile === this.props.user ? <View ref="settings" style={{
+            position: 'absolute',
+            top: STATUSBAR_HEIGHT + 5,
+            right: 10
+          }}>
+            <TouchableOpacity
+              onPress={() => {
+                _.first(this.context.navigators).jumpTo(editCustomerStack);
+              }}
+            >
+              <Icon
+                color={COLORS.WHITE}
+                name="settings"
+                size={SCALE.h(48)}
+              />
+            </TouchableOpacity>
+          </View> : null}
         </BlurView>
       </View>
 

@@ -36,8 +36,12 @@ export default class ProfileWrapper extends PureComponent {
 
   @autobind
   onWillFocus() {
+    var style = 'light-content';
+    if (this.refs.profile)
+      style = this.refs.profile.getStyle();
+
     StatusBar.setHidden(false, 'fade');
-    StatusBar.setBarStyle('light-content', true);
+    StatusBar.setBarStyle(style, true);
   }
 
   setUserId(userId) {
@@ -60,10 +64,10 @@ export default class ProfileWrapper extends PureComponent {
       }}
     >
       {!this.state.userId ?
-        <Profile profile={this.props.user} />
+        <Profile profile={this.props.user} ref="profile" />
       :
         <LoadingContainer state={[this.props.usersStates.get(this.state.userId)]}>
-          {() => <Profile profile={this.props.users.get(this.state.userId)} />}
+          {() => <Profile profile={this.props.users.get(this.state.userId)} ref="profile" />}
         </LoadingContainer>
       }
     </NavigationSetting>);

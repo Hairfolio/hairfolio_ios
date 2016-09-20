@@ -103,7 +103,7 @@ export default class NavigationSetting extends PureComponent {
     ];
 
     this.listeners.concat(_.map(this.props.forceUpdateEvents, event =>
-      appEmitter.addListener(event, () => this.refs.sc.forceUpdate())
+      appEmitter.addListener(event, () => this.refs.sc && this.refs.sc.forceUpdate())
     ));
   }
 

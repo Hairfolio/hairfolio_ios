@@ -12,7 +12,7 @@ import {BOTTOMBAR_HEIGHT, STATUSBAR_HEIGHT} from '../constants';
 
 import SimpleButton from '../components/Buttons/Simple';
 
-import {profile, profileExternal} from '../routes';
+import {profile, profileExternal, appStack} from '../routes';
 
 @connect(app, user)
 export default class Feed extends PureComponent {
@@ -49,12 +49,8 @@ export default class Feed extends PureComponent {
           color={COLORS.DARK}
           label="Go to a consumer profile"
           onPress={() => {
+            appStack.scene().goToProfile(118);
             //118 / consumerext@hairfolio.com / 123456
-            if (this.props.user.get('id') === 118)
-              return _.last(this.context.navigators).jumpTo(profile);
-
-            profileExternal.scene().setUserId(118);
-            _.last(this.context.navigators).jumpTo(profileExternal);
           }}
         />
 
@@ -65,11 +61,7 @@ export default class Feed extends PureComponent {
           label="Go to a stylist profile"
           onPress={() => {
             //120 / stylistext@hairfolio.com / 123456
-            if (this.props.user.get('id') === 120)
-              return _.last(this.context.navigators).jumpTo(profile);
-
-            profileExternal.scene().setUserId(120);
-            _.last(this.context.navigators).jumpTo(profileExternal);
+            appStack.scene().goToProfile(120);
           }}
         />
 
@@ -80,11 +72,7 @@ export default class Feed extends PureComponent {
           label="Go to a salon profile"
           onPress={() => {
             //121 / salonext@hairfolio.com / 123456
-            if (this.props.user.get('id') === 121)
-              return _.last(this.context.navigators).jumpTo(profile);
-
-            profileExternal.scene().setUserId(121);
-            _.last(this.context.navigators).jumpTo(profileExternal);
+            appStack.scene().goToProfile(121);
           }}
         />
 
@@ -95,11 +83,7 @@ export default class Feed extends PureComponent {
           label="Go to a brand profile"
           onPress={() => {
             //122 / brandext@hairfolio.com / 123456
-            if (this.props.user.get('id') === 122)
-              return _.last(this.context.navigators).jumpTo(profile);
-
-            profileExternal.scene().setUserId(122);
-            _.last(this.context.navigators).jumpTo(profileExternal);
+            appStack.scene().goToProfile(122);
           }}
         />
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import {autobind} from 'core-decorators';
 import PureComponent from '../components/PureComponent';
-import {StatusBar, Text} from 'react-native';
+import {StatusBar, Text, View} from 'react-native';
 import connect from '../lib/connect';
 import {app} from '../selectors/app';
 import {user, users} from '../selectors/user';
@@ -48,7 +48,7 @@ export default class ProfileWrapper extends PureComponent {
     this.setState({userId}, () => {
       this.refs.ns.forceUpdateContent();
     });
-    if (!utils.isReady(this.props.usersStates.get(userId)))
+    if (!utils.isLoading(this.props.usersStates.get(userId)))
       this.props.dispatch(usersActions.getUser(userId));
   }
 
@@ -66,9 +66,16 @@ export default class ProfileWrapper extends PureComponent {
       {!this.state.userId ?
         <Profile profile={this.props.user} ref="profile" />
       :
-        <LoadingContainer state={[this.props.usersStates.get(this.state.userId)]}>
-          {() => <Profile profile={this.props.users.get(this.state.userId)} ref="profile" />}
-        </LoadingContainer>
+        <View style={{
+          flex: 1,
+          justifyContent: 'center'
+        }}>
+          <LoadingContainer loadingStyle={{
+            textAlign: 'center'
+          }} ref="loadingC" state={[this.props.usersStates.get(this.state.userId)]}>
+            {() => <Profile profile={this.props.users.get(this.state.userId)} ref="profile" />}
+          </LoadingContainer>
+        </View>
       }
     </NavigationSetting>);
   }

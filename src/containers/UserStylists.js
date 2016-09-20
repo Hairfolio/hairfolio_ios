@@ -1,6 +1,6 @@
 import React from 'react';
 import PureComponent from '../components/PureComponent';
-import {View, Text, StyleSheet, Image} from 'react-native';
+import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import connect from '../lib/connect';
 import {app} from '../selectors/app';
 import {user} from '../selectors/user';
@@ -12,6 +12,8 @@ import {registrationActions} from '../actions/registration';
 import FollowButton from '../components/Buttons/Follow';
 
 import utils from '../utils';
+
+import {appStack} from '../routes';
 
 @connect(app, user, environment)
 export default class UserStylist extends PureComponent {
@@ -60,9 +62,15 @@ export default class UserStylist extends PureComponent {
         onLayout={this.props.onLayout}
       >
         {this.props.profile.get('stylists') && this.props.profile.get('stylists').count() ?
-          this.props.profile.get('stylists').map(stylist => <View key={stylist.get('id')} style={{
-            flexDirection: 'row'
-          }}>
+          this.props.profile.get('stylists').map(stylist => <TouchableOpacity
+            key={stylist.get('id')}
+            onPress={() => {
+              appStack.scene().goToProfile(stylist.get('id'));
+            }}
+            style={{
+              flexDirection: 'row'
+            }}
+          >
             <View style={{
               alignItems: 'center',
               justifyContent: 'center',
@@ -97,7 +105,7 @@ export default class UserStylist extends PureComponent {
 
               {this.renderFollowButton(stylist)}
             </View>
-          </View>)
+          </TouchableOpacity>)
         :
           <Text style={{
             fontFamily: FONTS.MEDIUM,

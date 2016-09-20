@@ -87,7 +87,7 @@ export default class ForgottenPassword extends PureComponent {
             }}
             help="At least 6 characters"
             placeholder="Enter New Password"
-            ref={(r) => this.addFormItem(r, 'password')}
+            ref={(r) => this.addFormItem(r, 'new_password')}
             secureTextEntry
             validation={(v) => !!v && validator.isLength(v, {min: 6})}
           />
@@ -99,7 +99,7 @@ export default class ForgottenPassword extends PureComponent {
             }}
             /*help="At least 6 characters"*/
             placeholder="Confirm New Password"
-            ref={(r) => this.addFormItem(r, 'password_confirmation')}
+            ref={(r) => this.addFormItem(r, 'new_password_confirmation')}
             secureTextEntry
             validation={(v) => !!v && validator.isLength(v, {min: 6})}
           />

@@ -42,6 +42,8 @@ export default class StylistCertificates extends PureComponent {
   }
 
   getValue() {
+    if (!this._searchList)
+      return '';
     return this._searchList.getValue().join(',');
   }
 
@@ -53,7 +55,8 @@ export default class StylistCertificates extends PureComponent {
   }
 
   clear() {
-    this._searchList.clear();
+    if (this._searchList)
+      this._searchList.clear();
   }
 
   render() {

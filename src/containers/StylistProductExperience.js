@@ -54,7 +54,8 @@ export default class StylistProductExperience extends PureComponent {
   }
 
   clear() {
-    this._searchList.clear();
+    if (this._searchList)
+      this._searchList.clear();
   }
 
   render() {

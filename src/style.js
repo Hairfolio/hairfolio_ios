@@ -10,6 +10,7 @@ export const COLORS = {
   DARK2: '#494949',
   LIGHT2: '#D6D6D6',
   LIGHT3: '#B6B6B6',
+  LIGHT4: '#D8D8D8',
   LIGHT: '#F4F4F4',
   WHITE: 'white',
 

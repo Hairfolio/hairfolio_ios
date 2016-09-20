@@ -11,6 +11,7 @@ import focusEmitter from './focusEmitter';
 export default class FormInlineTextInput extends PureComponent {
 
   static propTypes = {
+    blocked: React.PropTypes.bool,
     getRefNode: React.PropTypes.func,
     help: React.PropTypes.string,
     onChangeText: React.PropTypes.func,
@@ -43,6 +44,7 @@ export default class FormInlineTextInput extends PureComponent {
   render() {
     return (<View style={{position: 'relative'}}>
       <TextInput
+        editable={!this.props.blocked}
         {...this.props}
         onChangeText={(value) => {
           this.setState({value}, () => {
@@ -64,7 +66,7 @@ export default class FormInlineTextInput extends PureComponent {
         ref="ti"
         selectionColor={COLORS.LIGHT2}
         style={{
-          backgroundColor: 'white',
+          backgroundColor: this.props.blocked ? 'rgba(0, 0, 0, 0.1)' : 'white',
           paddingLeft: SCALE.w(26),
           paddingRight: SCALE.w(26),
           height: SCALE.h(80),

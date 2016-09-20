@@ -15,6 +15,7 @@ import dismissKeyboard from 'react-native/Libraries/Utilities/dismissKeyboard';
 
 export default class Picker extends PureComponent {
   static propTypes = {
+    blocked: PropTypes.bool,
     choices: PropTypes.array.isRequired,
     disabled: PropTypes.bool,
     placeholder: PropTypes.string,
@@ -55,7 +56,7 @@ export default class Picker extends PureComponent {
   render() {
     return (<View>
       <TouchableOpacity
-        disabled={this.props.disabled}
+        disabled={this.props.disabled || this.props.blocked}
         onPress={() => {
           dismissKeyboard();
           this.setState({
@@ -70,7 +71,7 @@ export default class Picker extends PureComponent {
         }}
       >
         <View style={{
-          backgroundColor: COLORS.WHITE,
+          backgroundColor: this.props.blocked ? 'rgba(0, 0, 0, 0.1)' : 'white',
           height: SCALE.h(80),
           flexDirection: 'row',
           borderRadius: 1
@@ -93,7 +94,7 @@ export default class Picker extends PureComponent {
             alignItems: 'center',
             borderLeftWidth: 1,
             borderLeftColor: COLORS.LIGHT,
-            backgroundColor: COLORS.WHITE
+            backgroundColor: this.props.blocked ? 'rgba(0, 0, 0, 0)' : 'white'
           }}>
             <Icon
               color={this.state.error ? COLORS.RED : COLORS.DARK}

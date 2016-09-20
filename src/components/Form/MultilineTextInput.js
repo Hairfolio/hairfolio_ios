@@ -11,6 +11,7 @@ import focusEmitter from './focusEmitter';
 export default class FormMultilineTextInput extends PureComponent {
 
   static propTypes = {
+    blocked: React.PropTypes.bool,
     getRefNode: React.PropTypes.func,
     max: React.PropTypes.number,
     onChangeText: React.PropTypes.func,
@@ -45,6 +46,7 @@ export default class FormMultilineTextInput extends PureComponent {
   render() {
     return (<View style={{position: 'relative'}}>
       <TextInput
+        editable={!this.props.blocked}
         {...this.props}
         multiline
         onChangeText={(value) => {
@@ -67,7 +69,7 @@ export default class FormMultilineTextInput extends PureComponent {
         ref="ti"
         selectionColor={COLORS.LIGHT2}
         style={{
-          backgroundColor: 'white',
+          backgroundColor: this.props.blocked ? 'rgba(0, 0, 0, 0.1)' : 'white',
           paddingLeft: SCALE.w(26),
           paddingRight: SCALE.w(26),
           paddingTop: 5,

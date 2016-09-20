@@ -1,9 +1,9 @@
 import React from 'react';
 import _ from 'lodash';
 import validator from 'validator';
-import {mixin} from 'core-decorators';
+import {mixin, debounce} from 'core-decorators';
 import PureComponent from '../components/PureComponent';
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import connect from '../lib/connect';
 import {app} from '../selectors/app';
 import {COLORS, FONTS, SCALE} from '../style';
@@ -12,8 +12,10 @@ import NavigationSetting from '../navigation/NavigationSetting';
 import MultilineTextInput from '../components/Form/MultilineTextInput';
 import InlineTextInput from '../components/Form/InlineTextInput';
 import PickerInput from '../components/Form/PickerInput';
+import HiddenInput from '../components/Form/HiddenInput';
 import BannerErrorContainer from '../components/BannerErrorContainer';
 import KeyboardScrollView from '../components/KeyboardScrollView';
+import LoadingContainer from '../components/LoadingContainer';
 import states from '../states.json';
 
 import {throwOnFail} from '../lib/reduxPromiseMiddleware';
@@ -22,7 +24,7 @@ import {registrationActions} from '../actions/registration';
 
 import formMixin from '../mixins/form';
 
-import {NAVBAR_HEIGHT} from '../constants';
+import {NAVBAR_HEIGHT, LOADING, READY, LOADING_ERROR} from '../constants';
 
 @connect(app)
 @mixin(formMixin)
@@ -34,22 +36,49 @@ export default class StylistPlaceOfWork extends PureComponent {
   };
 
   static contextTypes = {
-    navigators: React.PropTypes.array.isRequired
+    navigators: React.PropTypes.array.isRequired,
+    services: React.PropTypes.object.isRequired
   };
 
-  state = {};
+  state = {
+    blocked: false,
+    autocompleteState: READY
+  };
 
   getValue() {
     var value = this.getFormValue();
     return !_.isEmpty(value) ? value : null;
   }
 
-  setValue(value) {
-    this.setFormValue(value);
+  setValue(value = {}) {
+    this.setFormValue({
+      ...value,
+      'salon_user_id': value.salon_user_id || -1
+    });
+    this.setState({
+      selected: value.salon_user_id
+    });
   }
 
   clear() {
     this.clearValues();
+  }
+
+  @debounce
+  fetchAutocompleteList(value) {
+    this.lastValue = value;
+    if (!value)
+      return this.setState({autocompleteList: []});
+    this.setState({autocompleteState: LOADING});
+    this.context.services.fetch.fetch(`/users?account_type=salon&keyword=${value/*.toLowerCase()*/}`)
+      .then((autocompleteList) => {
+        this.setState({
+          autocompleteState: READY,
+          autocompleteList: this.lastValue ? autocompleteList : []
+        });
+      }, () => {
+        this.setState({autocompleteState: LOADING_ERROR});
+      });
   }
 
   render() {
@@ -82,18 +111,85 @@ export default class StylistPlaceOfWork extends PureComponent {
             height: SCALE.h(34)
           }} />
 
+          <HiddenInput
+            ref={(r) => this.addFormItem(r, 'salon_user_id')}
+          />
+
           <InlineTextInput
             autoCorrect={false}
+            onChangeText={(value) => {
+              this.fetchAutocompleteList(value);
+              if (this.state.selected)
+                this.setFormValue({
+                  name: value,
+                  'salon_user_id': -1,
+                  address: '',
+                  city: '',
+                  state: '',
+                  zip: null,
+                  website: ''
+                });
+              this.setState({blocked: false, selected: null});
+            }}
             placeholder="Salon name"
             ref={(r) => this.addFormItem(r, 'name')}
             validation={(v) => !!v}
           />
-
           <View style={{height: StyleSheet.hairlineWidth}} />
+          <View style={{
+            backgroundColor: COLORS.WHITE
+          }}>
+            <LoadingContainer
+              loadingStyle={{
+                padding: 10,
+                textAlign: 'center'
+              }}
+              state={[this.state.autocompleteState]}
+            >
+              {() => <View>
+                {!this.state.selected ? _.map(this.state.autocompleteList, salon =>
+                  <TouchableOpacity
+                    key={salon.id}
+                    onPress={() => {
+                      this.setFormValue({
+                        name: salon.business_name,
+                        address: salon.business_address,
+                        city: salon.business_city,
+                        state: salon.business_state,
+                        zip: salon.business_zip,
+                        website: salon.business_website,
+                        'salon_user_id': salon.id
+                      });
+                      this.setState({
+                        selected: salon.id,
+                        autocompleteList: []
+                      });
+                    }}
+                    style={{
+                      backgroundColor: COLORS.WHITE,
+                      padding: SCALE.w(25),
+                      flexDirection: 'row',
+                      justifyContent: 'space-between'
+                    }}
+                  >
+                    <Text style={{
+                      fontFamily: FONTS.HEAVY,
+                      fontSize: SCALE.h(30),
+                      color: COLORS.DARK
+                    }}>{salon.business_name}</Text>
+                  </TouchableOpacity>
+                ) : null}
+              </View>
+            }
+            </LoadingContainer>
+          </View>
+
+          <View style={{height: 20}} />
 
           <MultilineTextInput
             autoCapitalize="none"
             autoCorrect={false}
+            blocked={!!this.state.selected}
             placeholder="Address"
             ref={(r) => this.addFormItem(r, 'address')}
             validation={(v) => !!v}
@@ -103,6 +199,7 @@ export default class StylistPlaceOfWork extends PureComponent {
 
           <InlineTextInput
             autoCorrect={false}
+            blocked={!!this.state.selected}
             placeholder="City"
             ref={(r) => this.addFormItem(r, 'city')}
             validation={(v) => !!v}
@@ -115,6 +212,7 @@ export default class StylistPlaceOfWork extends PureComponent {
             <View style={{flex: 1}}>
               <PickerInput
                 choices={states}
+                blocked={!!this.state.selected}
                 placeholder="State"
                 ref={(r) => this.addFormItem(r, 'state')}
                 validation={(v) => !!v}
@@ -125,6 +223,7 @@ export default class StylistPlaceOfWork extends PureComponent {
             <View style={{flex: 1}}>
               <InlineTextInput
                 autoCorrect={false}
+                blocked={!!this.state.selected}
                 placeholder="Zip"
                 ref={(r) => this.addFormItem(r, 'zip')}
                 validation={(v) => !!v}
@@ -136,6 +235,7 @@ export default class StylistPlaceOfWork extends PureComponent {
 
           <InlineTextInput
             autoCorrect={false}
+            blocked={!!this.state.selected}
             keyboardType="url"
             placeholder="Website"
             ref={(r) => this.addFormItem(r, 'website')}

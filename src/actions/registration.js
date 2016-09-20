@@ -495,6 +495,12 @@ export const registrationActions = {
         delete values.business;
       }
 
+      values['salon_user_id'] = values['business_salon_user_id'];
+      delete values['business_salon_user_id'];
+
+      if (values['salon_user_id'] === -1)
+        values['salon_user_id'] = null;
+
       var promise;
       if (_.isEmpty(values))
         promise = Promise.resolve(getState(getState().user.data.toJS()));

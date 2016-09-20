@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text, View} from 'react-native';
+import {Text} from 'react-native';
 import PureComponent from './PureComponent';
 import Spinner from 'react-native-spinkit';
 
@@ -11,6 +11,7 @@ export default class LoadingContainer extends PureComponent {
 
   static propTypes = {
     children: React.PropTypes.func.isRequired,
+    loadingStyle: Text.propTypes.style,
     state: React.PropTypes.array.isRequired
   };
 
@@ -21,6 +22,6 @@ export default class LoadingContainer extends PureComponent {
     if (utils.isReady(this.props.state))
       return this.props.children();
 
-    return <Text>Loading</Text>;
+    return <Text style={this.props.loadingStyle}>Loading</Text>;
   }
 };

@@ -60,7 +60,11 @@ export default class EditCustomer extends PureComponent {
 
   componentWillMount() {
     this.listeners = [
-      appEmitter.addListener('login', this.onLogin)
+      appEmitter.addListener('login', this.onLogin),
+      appEmitter.addListener('user-edited', (page) => {
+        if (page !== 'edit-page')
+          this.onLogin();
+      })
     ];
   }
 
@@ -82,7 +86,8 @@ export default class EditCustomer extends PureComponent {
       city: rawValues.business_city,
       state: rawValues.business_state,
       zip: rawValues.business_zip,
-      website: rawValues.business_website
+      website: rawValues.business_website,
+      'salon_user_id': rawValues.salon_user_id
     };
 
     rawValues['certificate_ids'] = _.map(rawValues.certificates, 'id');
@@ -312,7 +317,7 @@ export default class EditCustomer extends PureComponent {
         .then(throwOnFail)
         .then(
           () => {
-            appEmitter.emit('user-edited');
+            appEmitter.emit('user-edited', 'edit-page');
           },
           (e) => {
             console.log(e);

@@ -18,7 +18,7 @@ import {throwOnFail} from '../lib/reduxPromiseMiddleware';
 
 import {registrationActions} from '../actions/registration';
 
-import {stylistEducation, stylistCertificates, stylistPlaceOfWork, stylistProductExperience, appStack} from '../routes';
+import {stylistEducation, stylistCertificates, stylistPlaceOfWork, stylistProductExperience, appStack, stylistSP} from '../routes';
 
 import formMixin from '../mixins/form';
 
@@ -132,6 +132,15 @@ export default class StylistInfo extends PureComponent {
           page={stylistProductExperience}
           placeholder="Product experience"
           ref={(r) => this.addFormItem(r, 'experience_ids')}
+          validation={(v) => true}
+        />
+
+        <View style={{height: StyleSheet.hairlineWidth}} />
+
+        <PageInput
+          page={stylistSP}
+          placeholder="Services &  Prices"
+          ref={(r) => this.addFormItem(r, 'services')}
           validation={(v) => true}
         />
 

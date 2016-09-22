@@ -260,6 +260,13 @@ export default class EditCustomer extends PureComponent {
         ref={(r) => this.addFormItem(r, 'experience_ids')}
         validation={(v) => true}
       />
+
+      <View style={{height: StyleSheet.hairlineWidth}} />
+
+      <PageInput
+        page={salonSPEU}
+        placeholder="Services &  Prices"
+      />
     </View>);
   }
 

@@ -341,6 +341,13 @@ export const salonSPEU = new SalonSPRoute({
 
 
 export const stylistInfo = new StylistInfoRoute();
+
+export const stylistAddSP = new SalonAddSPRoute();
+export const stylistSP = new SalonSPRoute({
+  backTo: stylistInfo,
+  addSP: stylistAddSP
+});
+
 export const stylistAddEducation = new StylistAddEducationRoute();
 export const stylistAddEducationEU = new StylistAddEducationRoute();
 

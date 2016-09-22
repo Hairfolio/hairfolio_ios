@@ -8,6 +8,7 @@ import {app} from '../selectors/app';
 import {user} from '../selectors/user';
 import {COLORS, FONTS, SCALE} from '../style';
 import NavigationSetting from '../navigation/NavigationSetting';
+import Communications from 'react-native-communications';
 
 import appEmitter from '../appEmitter';
 
@@ -185,11 +186,23 @@ export default class UserAbout extends PureComponent {
           fontFamily: FONTS.BOOK,
           fontSize: SCALE.h(30)
         }}>{this.profile.get('business_city')}, {this.profile.get('business_state')} {this.profile.get('business_zip')}</Text>
-        <Text style={{
-          color: COLORS.ADDRESS,
-          fontFamily: FONTS.BOOK,
-          fontSize: SCALE.h(30)
-        }}>{this.profile.get('business_phone')}</Text>
+
+        <TouchableOpacity
+          onPress={() => {
+            Communications.phonecall(this.profile.get('business_phone'), true);
+          }}
+          style={{
+            alignSelf: 'flex-start',
+            borderBottomWidth: StyleSheet.hairlineWidth,
+            borderBottomColor: COLORS.ADDRESS
+          }}
+        >
+          <Text style={{
+            color: COLORS.ADDRESS,
+            fontFamily: FONTS.BOOK,
+            fontSize: SCALE.h(30)
+          }}>{this.profile.get('business_phone')}</Text>
+        </TouchableOpacity>
       </View>
 
       <Image

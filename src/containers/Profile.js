@@ -239,7 +239,7 @@ export default class Profile extends PureComponent {
                   }}>{this.getName()}</Text>
                   <View style={{
                     flexDirection: 'row',
-                    justifyContent: 'space-between'
+                    justifyContent: 'center'
                   }}>
                     <Text style={{
                       color: COLORS.WHITE,
@@ -259,7 +259,7 @@ export default class Profile extends PureComponent {
                   </View>
                   {this.props.profile.get('id') !== this.props.user.get('id') ? <View style={{
                     flexDirection: 'row',
-                    justifyContent: 'space-between',
+                    justifyContent: 'center',
                     marginTop: SCALE.h(20)
                   }}>
                     <View>
@@ -283,7 +283,7 @@ export default class Profile extends PureComponent {
                         />
                       }
                     </View>
-                    <View style={{width: 15}} />
+                    <View style={{width: SCALE.w(25)}} />
                     <View>
                       <ProfileButton label="MESSAGE" />
                     </View>

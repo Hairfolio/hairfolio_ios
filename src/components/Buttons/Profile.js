@@ -33,9 +33,7 @@ export default class ProfileButton extends PureComponent {
           alignItems: 'center',
           flexDirection: 'row',
           borderWidth: 1,
-          borderColor: this.props.color ? this.props.color : COLORS.WHITE,
-          paddingLeft: 5,
-          paddingRight: 5
+          borderColor: this.props.color ? this.props.color : COLORS.WHITE
         }}
       >
         {this.props.icon && <Icon
@@ -43,14 +41,17 @@ export default class ProfileButton extends PureComponent {
           name={this.props.icon}
           size={SCALE.h(18)}
           style={{
-            marginRight: SCALE.w(10)
+            marginRight: SCALE.w(10),
+            marginLeft: SCALE.w(21)
           }}
         />}
         <Text style={{
           fontFamily: FONTS.HEAVY_OBLIQUE,
           fontSize: SCALE.h(26),
           color: COLORS.WHITE,
-          textAlign: 'center'
+          textAlign: 'center',
+          marginLeft: SCALE.w(this.props.icon ? 11 : 29),
+          marginRight: SCALE.w(29)
         }}>{this.props.label}</Text>
       </TouchableOpacity>
     </View>);

@@ -127,7 +127,8 @@ export default class StylistPlaceOfWork extends PureComponent {
                   city: '',
                   state: '',
                   zip: null,
-                  website: ''
+                  website: '',
+                  phone: ''
                 });
               this.setState({blocked: false, selected: null});
             }}
@@ -158,6 +159,7 @@ export default class StylistPlaceOfWork extends PureComponent {
                         state: salon.business_state,
                         zip: salon.business_zip,
                         website: salon.business_website,
+                        phone: salon.business_phone,
                         'salon_user_id': salon.id
                       });
                       this.setState({
@@ -230,6 +232,17 @@ export default class StylistPlaceOfWork extends PureComponent {
               />
             </View>
           </View>
+
+          <View style={{height: StyleSheet.hairlineWidth}} />
+
+          <InlineTextInput
+            autoCorrect={false}
+            blocked={!!this.state.selected}
+            keyboardType="numeric"
+            placeholder="Phone Number"
+            ref={(r) => this.addFormItem(r, 'phone')}
+            validation={(v) => true}
+          />
 
           <View style={{height: StyleSheet.hairlineWidth}} />
 

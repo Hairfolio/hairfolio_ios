@@ -208,11 +208,11 @@ export default class UserAbout extends PureComponent {
           style={{
             alignSelf: 'flex-start',
             borderBottomWidth: StyleSheet.hairlineWidth,
-            borderBottomColor: COLORS.ADDRESS
+            borderBottomColor: 'blue'
           }}
         >
           <Text style={{
-            color: COLORS.ADDRESS,
+            color: 'blue',
             fontFamily: FONTS.BOOK,
             fontSize: SCALE.h(30)
           }}>{this.profile.get('business_phone')}</Text>

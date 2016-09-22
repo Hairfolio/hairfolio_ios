@@ -87,6 +87,7 @@ export default class EditCustomer extends PureComponent {
       state: rawValues.business_state,
       zip: rawValues.business_zip,
       website: rawValues.business_website,
+      phone: rawValues.business_phone,
       'salon_user_id': rawValues.salon_user_id
     };
 

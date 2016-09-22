@@ -19,7 +19,7 @@ import {cloudinaryActions} from '../actions/cloudinary';
 
 import {NAVBAR_HEIGHT} from '../constants';
 
-import {loginStack, appStack, changePassword, salonStylistsEU, salonSPEU, editCustomerAddress, stylistCertificatesEU, stylistPlaceOfWorkEU, stylistProductExperienceEU, stylistEducationEU} from '../routes';
+import {loginStack, appStack, changePassword, salonStylistsEU, salonSPEU, editCustomerAddress, stylistCertificatesEU, stylistPlaceOfWorkEU, stylistProductExperienceEU, stylistEducationEU, salonProductExperienceEU} from '../routes';
 
 import {throwOnFail} from '../lib/reduxPromiseMiddleware';
 
@@ -147,6 +147,15 @@ export default class EditCustomer extends PureComponent {
       <PageInput
         page={salonStylistsEU}
         placeholder="Stylists"
+      />
+
+      <View style={{height: StyleSheet.hairlineWidth}} />
+
+      <PageInput
+        page={salonProductExperienceEU}
+        placeholder="Products"
+        ref={(r) => this.addFormItem(r, 'experience_ids')}
+        validation={(v) => true}
       />
 
       <View style={{height: StyleSheet.hairlineWidth}} />

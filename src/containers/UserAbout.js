@@ -316,6 +316,9 @@ export default class UserAbout extends PureComponent {
         {this.renderAddress()}
       </CollapsableContainer>
       {this.renderProfessionalDescription()}
+      <CollapsableContainer label="PRODUCTS">
+        {this.renderCartouches(this.profile.get('experiences'))}
+      </CollapsableContainer>
       <CollapsableContainer
         label="SERVICES"
         noPadding

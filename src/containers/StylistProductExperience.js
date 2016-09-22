@@ -26,11 +26,16 @@ export default class StylistProductExperience extends PureComponent {
     backTo: React.PropTypes.object.isRequired,
     dispatch: React.PropTypes.func.isRequired,
     experiences: React.PropTypes.object.isRequired,
-    experiencesState: React.PropTypes.string.isRequired
+    experiencesState: React.PropTypes.string.isRequired,
+    title: React.PropTypes.string.isRequired
   };
 
   static contextTypes = {
     navigators: React.PropTypes.array.isRequired
+  };
+
+  static defaultProps = {
+    title: 'Product Experience'
   };
 
   state = {};
@@ -71,7 +76,7 @@ export default class StylistProductExperience extends PureComponent {
         backgroundColor: COLORS.LIGHT,
         paddingTop: NAVBAR_HEIGHT
       }}
-      title="Product Experience"
+      title={this.props.title}
     >
       <LoadingContainer state={[this.props.experiencesState]} style={{flex: 1}}>
         {() => <SearchList

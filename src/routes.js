@@ -339,6 +339,16 @@ export const salonSPEU = new SalonSPRoute({
   addSP: salonAddSPEU
 });
 
+export const salonProductExperience = new StylistProductExperienceRoute({
+  backTo: salonInfo,
+  title: 'Products'
+});
+
+export const salonProductExperienceEU = new StylistProductExperienceRoute({
+  backTo: editCustomer,
+  title: 'Products'
+});
+
 
 export const stylistInfo = new StylistInfoRoute();
 

@@ -22,7 +22,7 @@ import {throwOnFail} from '../lib/reduxPromiseMiddleware';
 
 import {registrationActions} from '../actions/registration';
 
-import {salonStylists, salonSP} from '../routes';
+import {salonStylists, salonSP, salonProductExperience} from '../routes';
 
 import formMixin from '../mixins/form';
 
@@ -168,6 +168,15 @@ export default class SalonInfo extends PureComponent {
           <PageInput
             page={salonStylists}
             placeholder="Stylists"
+          />
+
+          <View style={{height: StyleSheet.hairlineWidth}} />
+
+          <PageInput
+            page={salonProductExperience}
+            placeholder="Products"
+            ref={(r) => this.addFormItem(r, 'experience_ids')}
+            validation={(v) => true}
           />
 
           <View style={{height: StyleSheet.hairlineWidth}} />

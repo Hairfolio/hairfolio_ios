@@ -83,7 +83,6 @@ export default class SalonInfo extends PureComponent {
         flex: 1
       }}>
         <KeyboardScrollView
-          scrollEnabled={false}
           scrollToTopOnBlur
           showsVerticalScrollIndicator={false}
           space={200}
@@ -189,6 +188,15 @@ export default class SalonInfo extends PureComponent {
           />
 
           <View style={{height: StyleSheet.hairlineWidth}} />
+
+          <MultilineTextInput
+            autoCapitalize="none"
+            autoCorrect={false}
+            max={300}
+            placeholder="Career opportunities"
+            ref={(r) => this.addFormItem(r, 'career_opportunity')}
+            validation={(v) => !v || validator.isLength(v, {max: 300})}
+          />
 
           <Text style={{
             marginTop: SCALE.h(35),

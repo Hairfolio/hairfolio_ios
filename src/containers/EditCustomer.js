@@ -164,6 +164,16 @@ export default class EditCustomer extends PureComponent {
         page={salonSPEU}
         placeholder="Services &  Prices"
       />
+
+      <View style={{height: StyleSheet.hairlineWidth}} />
+      <MultilineTextInput
+        autoCapitalize="none"
+        autoCorrect={false}
+        max={300}
+        placeholder="Career opportunities"
+        ref={(r) => this.addFormItem(r, 'career_opportunity')}
+        validation={(v) => !v || validator.isLength(v, {max: 300})}
+      />
     </View>);
   }
 

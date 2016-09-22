@@ -74,6 +74,20 @@ export default class UserAbout extends PureComponent {
     </CollapsableContainer>);
   }
 
+  renderCareerOpportunity() {
+    return (<CollapsableContainer label="CAREER OPPORTUNITIES">
+      {!this.profile.get('career_opportunity') ?
+        this.renderEmpty()
+      :
+        <Text style={{
+          fontFamily: FONTS.ROMAN,
+          fontSize: SCALE.h(28),
+          color: COLORS.BOTTOMBAR_SELECTED
+        }}>{this.profile.get('career_opportunity')}</Text>
+      }
+    </CollapsableContainer>);
+  }
+
   hasAddress() {
     return _.every(['business_address', 'business_city', 'business_state', 'business_zip'], (ppte) =>
       !!this.profile.get(ppte)
@@ -325,6 +339,7 @@ export default class UserAbout extends PureComponent {
       >
         {this.renderServices()}
       </CollapsableContainer>
+      {this.renderCareerOpportunity()}
     </View>);
   }
 

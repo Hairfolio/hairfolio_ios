@@ -95,8 +95,16 @@ export default class UserAbout extends PureComponent {
   }
 
   renderAddressFooter() {
-    if (!this.profile.get('business_website') && !this.hasAddress())
+    if (!this.profile.get('business_website') && !this.hasAddress()) {
       return this.renderEmpty();
+    }
+
+    let seperator;
+
+    if ( this.profile.get('business_website') && this.hasAddress()) {
+      seperator = <View
+      style={{width: 1, backgroundColor: COLORS.ABOUT_SEPARATOR}} />;
+    }
 
     return (<View style={{
       flexDirection: 'row'
@@ -135,9 +143,7 @@ export default class UserAbout extends PureComponent {
         }}>Go to website</Text>
       </TouchableOpacity>
 
-      {this.profile.get('business_website') && this.hasAddress() &&
-        <View style={{width: 1, backgroundColor: COLORS.ABOUT_SEPARATOR}} />
-      }
+      {seperator }
 
       <TouchableOpacity
         onPress={() => {
@@ -177,7 +183,7 @@ export default class UserAbout extends PureComponent {
 
   renderAddress() {
     if (!this.hasAddress())
-      return this.renderEmpty();
+        return this.renderEmpty();
 
     return (<View style={{
       flexDirection: 'row',
@@ -323,6 +329,7 @@ export default class UserAbout extends PureComponent {
 
   renderSalon() {
     return (<View>
+
       <CollapsableContainer
         label="CONTACT"
         renderFooter={() => this.renderAddressFooter()}
@@ -333,6 +340,7 @@ export default class UserAbout extends PureComponent {
       <CollapsableContainer label="PRODUCTS">
         {this.renderCartouches(this.profile.get('experiences'))}
       </CollapsableContainer>
+
       <CollapsableContainer
         label="SERVICES"
         noPadding

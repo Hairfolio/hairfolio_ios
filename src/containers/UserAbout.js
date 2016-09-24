@@ -101,7 +101,7 @@ export default class UserAbout extends PureComponent {
 
     let seperator;
 
-    if ( this.profile.get('business_website') && this.hasAddress()) {
+    if (this.profile.get('business_website') && this.hasAddress()) {
       seperator = <View
       style={{width: 1, backgroundColor: COLORS.ABOUT_SEPARATOR}} />;
     }
@@ -183,7 +183,7 @@ export default class UserAbout extends PureComponent {
 
   renderAddress() {
     if (!this.hasAddress())
-        return this.renderEmpty();
+      return this.renderEmpty();
 
     return (<View style={{
       flexDirection: 'row',

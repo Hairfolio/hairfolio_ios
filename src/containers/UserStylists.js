@@ -49,6 +49,12 @@ export default class UserStylist extends PureComponent {
   }
 
   render() {
+    // if the map is not good for the performance.
+    // even if the scroll component is the wrapping profile scrollview which has multiple tabs
+    // it is still possible to use the ListView component by leveraging the renderScrollComponent
+    // the idea would be to pass a sort of proxy that relay/pass to/from the wrapping scrollview
+    // methods to implements can be seen in the react-native/ListView implementation
+
     return (<NavigationSetting
       style={{
         flex: 1,

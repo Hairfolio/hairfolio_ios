@@ -1,6 +1,6 @@
 import {LOADING, LOADING_ERROR, READY} from './constants';
 
-var is = (what, state) => {
+var is = (what, state, full = false) => {
   if (!state)
     return false;
 
@@ -14,12 +14,12 @@ var is = (what, state) => {
       isList.push(v);
   });
 
-  return !!isList.length;
+  return full ? isList.length === state.length : !!isList.length;
 };
 
 const utils = {
   isReady(state) {
-    return is(READY, state);
+    return is(READY, state, true);
   },
   isLoading(state) {
     return is(LOADING, state);

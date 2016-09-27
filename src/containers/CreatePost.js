@@ -54,10 +54,12 @@ const Header = (__, context) => {
 Header.contextTypes = {navigators: React.PropTypes.array.isRequired};
 
 const CameraView = () => {
+
   return (
     <View>
       <Camera
         ref={(cam) => {
+          window.camera = cam;
           this.camera = cam;
         }}
         style={{
@@ -65,18 +67,19 @@ const CameraView = () => {
           height: Dimensions.get('window').width
         }}
         aspect={Camera.constants.Aspect.fill}>
+
+        <TouchableOpacity onPress={() => alert('light')} style={{ position: 'absolute', right: 0, bottom: 0, padding: SCALE.h(40)}}>
+          <Image
+            source={require('../../resources/img/post_light.png')} />
+        </TouchableOpacity>
       </Camera>
-      <TouchableOpacity onPress={() => alert('press')} style={{ position: 'absolute', right: 0, bottom: 0, padding: SCALE.h(40)}}>
-        <Image
-          source={require('../../resources/img/post_light.png')} />
-      </TouchableOpacity>
     </View>
   );
 };
 
 const Footer = ({selectedMode, onSelect}) => {
   return (
-    <View style={{flexDirection: 'row',  alignItems: 'center', marginVertical: SCALE.h(46), paddingHorizontal: SCALE.h(25)}}>
+    <View style={{flexDirection: 'row',  alignItems: 'center', marginBottom: SCALE.h(46), paddingHorizontal: SCALE.h(25)}}>
       <TouchableWithoutFeedback
         onPress={() => onSelect('Library')}
       >

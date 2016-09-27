@@ -25,7 +25,7 @@ import {registrationActions} from '../actions/registration';
 
 import {STATUSBAR_HEIGHT} from '../constants';
 
-import {editCustomerStack} from '../routes';
+import {editCustomerStack, createPostStack} from '../routes';
 
 @connect(app, user, environment)
 export default class Profile extends PureComponent {
@@ -325,7 +325,9 @@ export default class Profile extends PureComponent {
           }}>
             <TouchableOpacity
               onPress={() => {
-                _.first(this.context.navigators).jumpTo(editCustomerStack);
+                _.first(this.context.navigators).jumpTo(
+                  editCustomerStack
+                );
               }}
             >
               <Icon

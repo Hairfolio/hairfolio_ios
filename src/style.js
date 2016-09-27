@@ -57,5 +57,7 @@ export const FONTS = {
   OBLIQUE: 'Avenir-Oblique',
   SEMIBOLD: 'Avenir-Semibold',
   BOOK_OBLIQUE: 'Avenir-BookOblique',
-  HEAVY_OBLIQUE: 'Avenir-HeavyOblique'
+  HEAVY_OBLIQUE: 'Avenir-HeavyOblique',
+  SF_BOLD: '.SFUIDisplay-Bold',
+  SF_REGULAR: '.SFUIDisplay-Regular',
 };

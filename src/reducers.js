@@ -5,6 +5,7 @@ import app from './reducers/app';
 import registration from './reducers/registration';
 import environment from './reducers/environment';
 import user from './reducers/user';
+import post from './reducers/post';
 import users from './reducers/users';
 import cloudinary from './reducers/cloudinary';
 
@@ -14,7 +15,8 @@ const rootReducer = combineReducers({
   environment,
   user,
   cloudinary,
-  users
+  users,
+  post
 });
 
 export default rootReducer;

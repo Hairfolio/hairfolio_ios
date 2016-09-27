@@ -35,6 +35,7 @@ import Favourites from './containers/Favourites';
 import Profile from './containers/ProfileWrapper';
 import OnboardingStack from './stacks/Onboarding';
 import ForgottenPasswordStack from './stacks/ForgottenPassword';
+import CreatePostStack from './stacks/CreatePost';
 import EditCustomerStack from './stacks/EditCustomer';
 import SignupConsumerStack from './stacks/SignupConsumer';
 import SignupBrandStack from './stacks/SignupBrand';
@@ -265,6 +266,14 @@ class ForgottenPasswordStackRoute extends Route {
     ...CustomScenesConfig.FadeInOut
   };
 }
+
+class CreatePostStackRoute extends Route {
+  SceneComponent = CreatePostStack;
+  SceneConfig = {
+    ... CustomScenesConfig.FadeInOut
+  };
+}
+
 class EditCustomerStackRoute extends Route {
   SceneComponent = EditCustomerStack;
   SceneConfig = {
@@ -399,6 +408,7 @@ export const profileExternal = new ProfileRoute();
 export const loginStack = new OnboardingStackRoute();
 export const forgottenPasswordStack = new ForgottenPasswordStackRoute();
 export const editCustomerStack = new EditCustomerStackRoute();
+export const createPostStack = new CreatePostStackRoute();
 export const changePassword = new ChangePasswordRoute();
 export const signupConsumerStack = new SignupConsumerStackRoute();
 export const signupBrandStack = new SignupBrandStackRoute();
@@ -493,6 +503,7 @@ export const constructors = {
   OnboardingStackRoute,
   ForgottenPasswordStackRoute,
   EditCustomerStackRoute,
+  CreatePostStackRoute,
   ChangePasswordRoute,
   SignupConsumerStackRoute,
   SignupBrandStackRoute,

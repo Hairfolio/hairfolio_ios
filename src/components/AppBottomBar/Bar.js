@@ -7,7 +7,7 @@ import {COLORS, FONTS, SCALE} from '../../style';
 
 import Icon from '../Icon';
 
-import {search, feed, createPost, favourites, profile} from '../../routes';
+import {search, feed, createPost, createPostStack, editCustomerStack, favourites, profile} from '../../routes';
 
 export default class LoginNavigationbar extends PureComponent {
 
@@ -22,6 +22,10 @@ export default class LoginNavigationbar extends PureComponent {
 
   static defaultProps = {
     profilePic: 'http://www.disneyclips.com/imagesnewb/images/clipdonhead.gif'
+  };
+
+  static contextTypes = {
+    navigators: React.PropTypes.array.isRequired
   };
 
   state = {};
@@ -44,14 +48,18 @@ export default class LoginNavigationbar extends PureComponent {
 
   handleWillFocus(route) {}
 
-  renderItem(route, opts = {}) {
+  renderItem(route, opts = {}, onPress) {
     opts.borders = opts.borders || {};
     opts.height = opts.height || BOTTOMBAR_HEIGHT;
     opts.itemSize = opts.itemSize || SCALE.h(54);
 
     return (<TouchableWithoutFeedback
       onPress={() => {
-        this.props.navigator.jumpTo(route);
+        if (onPress) {
+          onPress();
+        } else {
+          this.props.navigator.jumpTo(route);
+        }
       }}
     >
       <View style={{
@@ -108,7 +116,17 @@ export default class LoginNavigationbar extends PureComponent {
         borders: {left: true, right: true},
         height: SCALE.h(120),
         itemSize: SCALE.h(65)
-      })}
+      },
+        () => {
+          _.first(this.context.navigators).jumpTo(
+            //editCustomerStack
+            createPostStack
+          );
+        }
+
+
+
+      )}
       {this.renderItem(favourites, {borders: {right: true}})}
       {this.renderItem(profile, {picture: this.props.profilePic})}
     </View>);

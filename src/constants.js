@@ -15,13 +15,20 @@ export const BOTTOMBAR_HEIGHT = SCALE.h(105);
 export const STATUSBAR_HEIGHT = 20;
 export const USERPROFILEBAR_HEIGHT = SCALE.h(102);
 
+
+export const POST_INPUT_MODE = {
+  LIBRARY: 'Library',
+  PHOTO: 'Photo',
+  VIDEO: 'Video'
+};
+
 var {
     width: deviceWidth,
     height: deviceHeight
 } = Dimensions.get('window');
 
-deviceHeight = Platform.OS === 'ios' ? deviceHeight : (NativeModules.ExtraDimensions['REAL_WINDOW_HEIGHT'] - (NativeModules.ExtraDimensions['STATUS_BAR_HEIGHT'] || 0) - (NativeModules.ExtraDimensions['SOFT_MENU_BAR_HEIGHT'] || 0) - (NativeModules.ExtraDimensions['SMART_BAR_HEIGHT'] || 0));
+deviceHeight = Platform.OS === 'ios' ? deviceHeight : (NativeModules.ExtraDimensions['REAL_WINDOW_HEIGHT'] - (NativeModules.ExtraDimensions['STATUS_BAR_HEIGHT'] || 0) - (NativeModules.ExtraDimensions['SOFT_MENU_BAR_HEIGHT'] || 0) - (NativeModules.ExtraDimensions['SMART_BAR_HEIGHT'] || 0));
 
 export const Dims = {
-  deviceWidth, deviceHeight, softBarHeight: ((NativeModules.ExtraDimensions && NativeModules.ExtraDimensions['SOFT_MENU_BAR_HEIGHT']) || 0)
+  deviceWidth, deviceHeight, softBarHeight: ((NativeModules.ExtraDimensions && NativeModules.ExtraDimensions['SOFT_MENU_BAR_HEIGHT']) || 0)
 };

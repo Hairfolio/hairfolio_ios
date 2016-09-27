@@ -111,7 +111,7 @@ export default class AppStack extends PureComponent {
         <Navigator
           initialRoute={search}
           initialRouteStack={[
-            search, feed, createPost, favourites, profile, profileExternal
+            search, feed, createPost, favourites, profile, profileExternal,
           ]}
           navigationBar={<NavigationBar profilePic={profilePic} />}
           ref={(navigator) => this._nav = navigator && navigator.navigator()}

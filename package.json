@@ -12,6 +12,7 @@
     "react": "15.2.1",
     "react-native": "^0.31.0",
     "react-native-blur": "^1.0.1",
+    "react-native-camera": "git+https://github.com/lwansbrough/react-native-camera.git",
     "react-native-communications": "^2.1.0",
     "react-native-contacts": "^0.4.1",
     "react-native-image-picker": "^0.21.5",

@@ -16,7 +16,8 @@ export default class TopLoginNavigationButton extends PureComponent {
       <Text style={{
         color: COLORS.WHITE,
         fontSize: SCALE.h(34),
-        fontFamily: FONTS.MEDIUM
+        fontFamily: FONTS.MEDIUM,
+        ...this.props.titleStyle
       }}>{this.props.title}</Text>
     </View>);
   }

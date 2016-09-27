@@ -9,8 +9,10 @@ import NavigationBar from '../../components/DarkNavigationBar/Bar';
 
 import PureComponent from '../../components/PureComponent';
 
-import {COLORS} from '../../style';
-import {editCustomer, changePassword, salonStylistsEU, salonSPEU, salonAddSPEU, editCustomerAddress, stylistCertificatesEU, stylistPlaceOfWorkEU, stylistProductExperienceEU, stylistEducationEU, stylistAddEducationEU, salonProductExperienceEU} from '../../routes';
+import {COLORS, SCALE} from '../../style';
+import {
+  createPost
+} from '../../routes';
 
 export default class EditCustomerStack extends PureComponent {
   static propTypes = {};
@@ -21,8 +23,9 @@ export default class EditCustomerStack extends PureComponent {
 
   @autobind
   onWillFocus() {
-    StatusBar.setHidden(false, 'fade');
-    StatusBar.setBarStyle('light-content', true);
+    // hide the status bar for this element
+    StatusBar.setHidden(true);
+    // StatusBar.setBarStyle('light-content', true);
   }
 
   @autobind
@@ -44,11 +47,10 @@ export default class EditCustomerStack extends PureComponent {
         }}
       >
         <Navigator
-          initialRoute={editCustomer}
+          initialRoute={createPost}
           initialRouteStack={[
-            editCustomer, changePassword, salonStylistsEU, salonSPEU, salonAddSPEU, editCustomerAddress, stylistCertificatesEU, stylistPlaceOfWorkEU, stylistProductExperienceEU, stylistEducationEU, stylistAddEducationEU, salonProductExperienceEU
+            createPost
           ]}
-          navigationBar={<NavigationBar />}
           ref={(navigator) => this._nav = navigator && navigator.navigator()}
         />
       </NavigationSetting>

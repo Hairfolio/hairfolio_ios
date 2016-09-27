@@ -23,7 +23,8 @@ export default class LoginNavigationbar extends PureComponent {
         Title: (route, navigator) => (<ChannelResponder
             channel={route.navigationChannel}
             properties={{
-              title: 'title'
+              title: 'title',
+              titleStyle: 'titleStyle'
             }}
           >
             <TopNavigationTitle navigator={navigator} />

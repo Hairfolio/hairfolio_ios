@@ -11,7 +11,8 @@ import PureComponent from '../../components/PureComponent';
 
 import {COLORS, SCALE} from '../../style';
 import {
-  createPost
+  createPost,
+  postFilter
 } from '../../routes';
 
 export default class EditCustomerStack extends PureComponent {
@@ -20,7 +21,6 @@ export default class EditCustomerStack extends PureComponent {
   static contextTypes = {
     navigators: React.PropTypes.array.isRequired
   };
-
   @autobind
   onWillFocus() {
     // hide the status bar for this element
@@ -49,7 +49,8 @@ export default class EditCustomerStack extends PureComponent {
         <Navigator
           initialRoute={createPost}
           initialRouteStack={[
-            createPost
+            createPost,
+            postFilter
           ]}
           ref={(navigator) => this._nav = navigator && navigator.navigator()}
         />

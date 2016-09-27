@@ -13,10 +13,31 @@
 #import "RCTRootView.h"
 #import "RCTUtils.h"
 
+#import <Fabric/Fabric.h>
+#import <Crashlytics/Crashlytics.h>
+
+
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+  
+  /*
+  for (NSString* family in [UIFont familyNames])
+  {
+    NSLog(@"%@", family);
+    for (NSString* name in [UIFont fontNamesForFamilyName: family])
+    {
+      NSLog(@" %@", name);
+    }
+  }
+   */
+
+  [Fabric with:@[[Crashlytics class]]];
+
+  
+  
+  
   NSURL *jsCodeLocation;
 
   [[RCTBundleURLProvider sharedSettings] setDefaults];

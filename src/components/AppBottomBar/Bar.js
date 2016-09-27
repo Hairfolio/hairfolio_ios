@@ -9,6 +9,12 @@ import Icon from '../Icon';
 
 import {search, feed, createPost, createPostStack, editCustomerStack, favourites, profile} from '../../routes';
 
+import CreatePostStore from '../../mobx/stores/CreatePostStore.js'
+
+
+
+
+
 export default class LoginNavigationbar extends PureComponent {
 
   static propTypes = {
@@ -118,8 +124,9 @@ export default class LoginNavigationbar extends PureComponent {
         itemSize: SCALE.h(65)
       },
         () => {
+
+          CreatePostStore.isOpen = true;
           _.first(this.context.navigators).jumpTo(
-            //editCustomerStack
             createPostStack
           );
         }

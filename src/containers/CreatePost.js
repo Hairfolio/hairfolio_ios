@@ -1,71 +1,62 @@
 import React from 'react';
 import PureComponent from '../components/PureComponent';
-import {View, Text, Dimensions, TouchableOpacity, TouchableWithoutFeedback, Image} from 'react-native';
+import {
+  CameraRoll,
+  View, Text, Dimensions, TouchableOpacity, TouchableWithoutFeedback, Image} from 'react-native';
 import connect from '../lib/connect';
 import {app} from '../selectors/app';
 import {post} from '../selectors/post';
 import {postActions} from '../actions/post';
 import {COLORS, FONTS, SCALE} from '../style';
 import NavigationSetting from '../navigation/NavigationSetting';
+import {observer} from 'mobx-react/native';
+import autobind from 'autobind-decorator'
 
 import _ from 'lodash';
-import {appStack} from '../routes';
+import {appStack, postFilter} from '../routes';
 
-import {STATUSBAR_HEIGHT} from '../constants';
+import {STATUSBAR_HEIGHT, POST_INPUT_MODE} from '../constants';
 
+import CreatePostStore from '../mobx/stores/CreatePostStore.js';
 
 import Camera from 'react-native-camera';
 
-const Header = (__, context) => {
-  return (
-    <View style={{
-      height: SCALE.h(88),
-      paddingHorizontal: SCALE.h(25),
-      flexDirection: 'row',
-      alignItems: 'center',
-      borderBottomWidth: 2,
-      borderColor: 'black'}}>
-      <TouchableOpacity
-        onPress={() => {
-          _.first(context.navigators).jumpTo(appStack);
-        }}
-        style={{flex: 1}}>
-        <Text style={{
-          fontSize: SCALE.h(34),
-          fontFamily: FONTS.SF_REGULAR}} >
-          Cancel
-        </Text>
-      </TouchableOpacity>
-      <View style={{flex: 1}}>
-        <Text
-          style={{
-            textAlign: 'center',
-            fontSize: SCALE.h(34),
-            fontFamily: FONTS.SF_BOLD }}>
-          Photo
-        </Text>
-      </View>
-      <View style={{flex: 1}} />
-    </View>
-  );
-};
+import SlimHeader from '../components/SlimHeader.js'
 
 
-Header.contextTypes = {navigators: React.PropTypes.array.isRequired};
 
-const CameraView = () => {
+
+const CameraView = observer(({isOpen, inputMethod}) => {
+
+  if (!isOpen) {
+    return (
+      <View
+        style={{backgroundColor: 'black', height: Dimensions.get('window').width, width: Dimensions.get('window').width, }}
+      />
+    );
+  }
+
+
+  if (inputMethod === 'Library') {
+    alert(Library);
+    return (
+      <View
+        style={{backgroundColor: 'orange', height: Dimensions.get('window').width, width: Dimensions.get('window').width, }}
+      />
+    );
+  }
 
   return (
     <View>
       <Camera
         ref={(cam) => {
           window.camera = cam;
-          this.camera = cam;
         }}
         style={{
           width: Dimensions.get('window').width,
           height: Dimensions.get('window').width
         }}
+        captureMode={inputMethod === 'Video' ? Camera.constants.CaptureMode.video : Camera.constants.CaptureMode.photos}
         aspect={Camera.constants.Aspect.fill}>
 
         <TouchableOpacity onPress={() => alert('light')} style={{ position: 'absolute', right: 0, bottom: 0, padding: SCALE.h(40)}}>
@@ -75,11 +66,11 @@ const CameraView = () => {
       </Camera>
     </View>
   );
-};
+});
 
 const Footer = ({selectedMode, onSelect}) => {
   return (
-    <View style={{flexDirection: 'row',  alignItems: 'center', marginBottom: SCALE.h(46), paddingHorizontal: SCALE.h(25)}}>
+    <View style={{flexDirection: 'row', alignItems: 'center', marginBottom: SCALE.h(46), paddingHorizontal: SCALE.h(25)}}>
       <TouchableWithoutFeedback
         onPress={() => onSelect('Library')}
       >
@@ -118,6 +109,8 @@ const Footer = ({selectedMode, onSelect}) => {
 };
 
 @connect(app, post)
+@observer
+@autobind
 export default class CreatePost extends PureComponent {
   static propTypes = {
     appVersion: React.PropTypes.string.isRequired
@@ -127,13 +120,23 @@ export default class CreatePost extends PureComponent {
     navigators: React.PropTypes.array.isRequired
   };
 
-  takePicture() {
-    this.camera.capture()
-      .then((data) => console.log(data))
-      .catch(err => console.error(err));
+  constructor(props) {
+    super(props);
+  }
+
+  capture() {
+    window.camera.capture()
+      .then((data) => {
+        console.log(data);
+        CreatePostStore.lastPicture = data;
+      })
+      .catch(err => { alert('error'); console.error(err) });
+    _.last(this.context.navigators).jumpTo(postFilter);
   }
 
   render() {
+
+    console.log('post store', CreatePostStore);
 
     console.log('render CreateProps', this.props);
 
@@ -152,24 +155,32 @@ export default class CreatePost extends PureComponent {
       <View style={{
         flex: 1
       }}>
-      <Header />
-      <CameraView />
+      <SlimHeader
+        onLeft={() => {
+          CreatePostStore.isOpen = false;
+          _.first(this.context.navigators).jumpTo(appStack);
+        }}
+        leftText='Cancel'
+        title={CreatePostStore.inputMethod}/>
+      <CameraView isOpen={CreatePostStore.isOpen} inputMethod={CreatePostStore.inputMethod} />
 
-      <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-        <TouchableOpacity onPress={() => alert('capture')}>
-          <Image
-            source={require('../../resources/img/post_capture.png')}
-          />
-        </TouchableOpacity>
-      </View>
-      <Footer
-        onSelect={
-          (value) => {
-            this.props.dispatch(postActions.changeInputMode(value));
-          }
-        }
 
-        selectedMode={this.props.inputMethod} />
+        <View
+          style={{
+            flex: 1,
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}
+        >
+          <TouchableOpacity onPress={() => this.capture()}>
+            <Image
+              source={require('../../resources/img/post_capture.png')}
+            />
+          </TouchableOpacity>
+        </View>
+        <Footer
+          onSelect={ (value) => { CreatePostStore.inputMethod = value } }
+        selectedMode={CreatePostStore.inputMethod} />
 
           </View>
         </NavigationSetting>);

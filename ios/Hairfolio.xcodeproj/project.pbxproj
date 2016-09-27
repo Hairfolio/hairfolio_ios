@@ -14,25 +14,8 @@
 		00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302E41ABCB9EE00DB3ED1 /* libRCTVibration.a */; };
 		00E356F31AD99517003FC87E /* hairfolioTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* hairfolioTests.m */; };
 		041A30031D5D0807008B1593 /* libRNSpinkit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 041A30021D5D07F9008B1593 /* libRNSpinkit.a */; };
-		041A30281D5D1725008B1593 /* Avenir-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 041A301C1D5D1725008B1593 /* Avenir-Black.ttf */; };
-		041A30291D5D1725008B1593 /* Avenir-BlackOblique.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 041A301D1D5D1725008B1593 /* Avenir-BlackOblique.ttf */; };
-		041A302A1D5D1725008B1593 /* Avenir-Book.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 041A301E1D5D1725008B1593 /* Avenir-Book.ttf */; };
-		041A302B1D5D1725008B1593 /* Avenir-BookOblique.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 041A301F1D5D1725008B1593 /* Avenir-BookOblique.ttf */; };
-		041A302C1D5D1725008B1593 /* Avenir-Heavy.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 041A30201D5D1725008B1593 /* Avenir-Heavy.ttf */; };
-		041A302D1D5D1725008B1593 /* Avenir-HeavyOblique.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 041A30211D5D1725008B1593 /* Avenir-HeavyOblique.ttf */; };
-		041A302E1D5D1725008B1593 /* Avenir-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 041A30221D5D1725008B1593 /* Avenir-Light.ttf */; };
-		041A302F1D5D1725008B1593 /* Avenir-LightOblique.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 041A30231D5D1725008B1593 /* Avenir-LightOblique.ttf */; };
-		041A30301D5D1725008B1593 /* Avenir-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 041A30241D5D1725008B1593 /* Avenir-Medium.ttf */; };
-		041A30311D5D1725008B1593 /* Avenir-MediumOblique.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 041A30251D5D1725008B1593 /* Avenir-MediumOblique.ttf */; };
-		041A30321D5D1725008B1593 /* Avenir-Oblique.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 041A30261D5D1725008B1593 /* Avenir-Oblique.ttf */; };
-		041A30331D5D1725008B1593 /* Avenir-Roman.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 041A30271D5D1725008B1593 /* Avenir-Roman.ttf */; };
 		041A30591D5E244D008B1593 /* libRNImagePicker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 041A30561D5E2449008B1593 /* libRNImagePicker.a */; };
 		042A06B21D6C9F2800EF5532 /* libRNBlur.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 042A06AE1D6C9F2300EF5532 /* libRNBlur.a */; };
-		0453CAA71D40F9730033DF87 /* hairfolio.eot in Resources */ = {isa = PBXBuildFile; fileRef = 0453CA9F1D40F9730033DF87 /* hairfolio.eot */; };
-		0453CAA81D40F9730033DF87 /* hairfolio.svg in Resources */ = {isa = PBXBuildFile; fileRef = 0453CAA01D40F9730033DF87 /* hairfolio.svg */; };
-		0453CAA91D40F9730033DF87 /* hairfolio.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0453CAA11D40F9730033DF87 /* hairfolio.ttf */; };
-		0453CAAA1D40F9730033DF87 /* hairfolio.woff in Resources */ = {isa = PBXBuildFile; fileRef = 0453CAA21D40F9730033DF87 /* hairfolio.woff */; };
-		0453CAAB1D40F9730033DF87 /* hairfolio.woff2 in Resources */ = {isa = PBXBuildFile; fileRef = 0453CAA31D40F9730033DF87 /* hairfolio.woff2 */; };
 		04A8EA0A1D882E0100413E89 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 04A8EA051D882E0100413E89 /* Default.png */; };
 		04A8EA0B1D882E0100413E89 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 04A8EA061D882E0100413E89 /* Default@2x.png */; };
 		04A8EA0C1D882E0100413E89 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 04A8EA071D882E0100413E89 /* Default-568h@2x.png */; };
@@ -60,6 +43,34 @@
 		DF38CA524BFC41D297EF2939 /* libRCTCamera.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2130E4AFBE5546F1A7E3696D /* libRCTCamera.a */; };
 		FAEDA34C281A48E7BC8D7385 /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A4B5392F7F84425E9E427465 /* Ionicons.ttf */; };
 		FF8CF22F1D99DEB100D2AD14 /* libRCTCameraRoll.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FF8CF2201D99DE8C00D2AD14 /* libRCTCameraRoll.a */; };
+		FFDE37631D9A709400F2F4C2 /* SF-UI-Display-Black.otf in Resources */ = {isa = PBXBuildFile; fileRef = FFDE373C1D9A707600F2F4C2 /* SF-UI-Display-Black.otf */; };
+		FFDE37641D9A709400F2F4C2 /* SF-UI-Display-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = FFDE373D1D9A707600F2F4C2 /* SF-UI-Display-Bold.otf */; };
+		FFDE37651D9A709400F2F4C2 /* SF-UI-Display-Heavy.otf in Resources */ = {isa = PBXBuildFile; fileRef = FFDE373E1D9A707600F2F4C2 /* SF-UI-Display-Heavy.otf */; };
+		FFDE37661D9A709400F2F4C2 /* SF-UI-Display-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = FFDE373F1D9A707600F2F4C2 /* SF-UI-Display-Light.otf */; };
+		FFDE37671D9A709400F2F4C2 /* SF-UI-Display-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = FFDE37401D9A707600F2F4C2 /* SF-UI-Display-Medium.otf */; };
+		FFDE37681D9A709400F2F4C2 /* SF-UI-Display-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = FFDE37411D9A707600F2F4C2 /* SF-UI-Display-Regular.otf */; };
+		FFDE37691D9A709400F2F4C2 /* SF-UI-Display-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = FFDE37421D9A707600F2F4C2 /* SF-UI-Display-Semibold.otf */; };
+		FFDE376A1D9A709400F2F4C2 /* SF-UI-Display-Thin.otf in Resources */ = {isa = PBXBuildFile; fileRef = FFDE37431D9A707600F2F4C2 /* SF-UI-Display-Thin.otf */; };
+		FFDE376B1D9A709400F2F4C2 /* SF-UI-Display-Ultralight.otf in Resources */ = {isa = PBXBuildFile; fileRef = FFDE37441D9A707600F2F4C2 /* SF-UI-Display-Ultralight.otf */; };
+		FFDE376C1D9A709400F2F4C2 /* Avenir-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 041A301C1D5D1725008B1593 /* Avenir-Black.ttf */; };
+		FFDE376D1D9A709400F2F4C2 /* Avenir-BlackOblique.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 041A301D1D5D1725008B1593 /* Avenir-BlackOblique.ttf */; };
+		FFDE376E1D9A709400F2F4C2 /* Avenir-Book.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 041A301E1D5D1725008B1593 /* Avenir-Book.ttf */; };
+		FFDE376F1D9A709400F2F4C2 /* Avenir-BookOblique.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 041A301F1D5D1725008B1593 /* Avenir-BookOblique.ttf */; };
+		FFDE37701D9A709400F2F4C2 /* Avenir-Heavy.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 041A30201D5D1725008B1593 /* Avenir-Heavy.ttf */; };
+		FFDE37711D9A709400F2F4C2 /* Avenir-HeavyOblique.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 041A30211D5D1725008B1593 /* Avenir-HeavyOblique.ttf */; };
+		FFDE37721D9A709400F2F4C2 /* Avenir-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 041A30221D5D1725008B1593 /* Avenir-Light.ttf */; };
+		FFDE37731D9A709400F2F4C2 /* Avenir-LightOblique.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 041A30231D5D1725008B1593 /* Avenir-LightOblique.ttf */; };
+		FFDE37741D9A709400F2F4C2 /* Avenir-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 041A30241D5D1725008B1593 /* Avenir-Medium.ttf */; };
+		FFDE37751D9A709400F2F4C2 /* Avenir-MediumOblique.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 041A30251D5D1725008B1593 /* Avenir-MediumOblique.ttf */; };
+		FFDE37761D9A709400F2F4C2 /* Avenir-Oblique.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 041A30261D5D1725008B1593 /* Avenir-Oblique.ttf */; };
+		FFDE37771D9A709400F2F4C2 /* Avenir-Roman.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 041A30271D5D1725008B1593 /* Avenir-Roman.ttf */; };
+		FFDE37781D9A709400F2F4C2 /* hairfolio.eot in Resources */ = {isa = PBXBuildFile; fileRef = 0453CA9F1D40F9730033DF87 /* hairfolio.eot */; };
+		FFDE37791D9A709400F2F4C2 /* hairfolio.svg in Resources */ = {isa = PBXBuildFile; fileRef = 0453CAA01D40F9730033DF87 /* hairfolio.svg */; };
+		FFDE377A1D9A709400F2F4C2 /* hairfolio.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0453CAA11D40F9730033DF87 /* hairfolio.ttf */; };
+		FFDE377B1D9A709400F2F4C2 /* hairfolio.woff in Resources */ = {isa = PBXBuildFile; fileRef = 0453CAA21D40F9730033DF87 /* hairfolio.woff */; };
+		FFDE377C1D9A709400F2F4C2 /* hairfolio.woff2 in Resources */ = {isa = PBXBuildFile; fileRef = 0453CAA31D40F9730033DF87 /* hairfolio.woff2 */; };
+		FFDE37801D9B1DA000F2F4C2 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FFDE377E1D9B1DA000F2F4C2 /* Fabric.framework */; };
+		FFDE37811D9B1DA000F2F4C2 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FFDE377F1D9B1DA000F2F4C2 /* Crashlytics.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -253,6 +264,17 @@
 		A4B5392F7F84425E9E427465 /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 0; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
 		D832DCB264524ADFAB69455A /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 0; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
 		FF8CF2191D99DE8C00D2AD14 /* RCTCameraRoll.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTCameraRoll.xcodeproj; path = "../node_modules/react-native/Libraries/CameraRoll/RCTCameraRoll.xcodeproj"; sourceTree = "<group>"; };
+		FFDE373C1D9A707600F2F4C2 /* SF-UI-Display-Black.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-UI-Display-Black.otf"; sourceTree = "<group>"; };
+		FFDE373D1D9A707600F2F4C2 /* SF-UI-Display-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-UI-Display-Bold.otf"; sourceTree = "<group>"; };
+		FFDE373E1D9A707600F2F4C2 /* SF-UI-Display-Heavy.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-UI-Display-Heavy.otf"; sourceTree = "<group>"; };
+		FFDE373F1D9A707600F2F4C2 /* SF-UI-Display-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-UI-Display-Light.otf"; sourceTree = "<group>"; };
+		FFDE37401D9A707600F2F4C2 /* SF-UI-Display-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-UI-Display-Medium.otf"; sourceTree = "<group>"; };
+		FFDE37411D9A707600F2F4C2 /* SF-UI-Display-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-UI-Display-Regular.otf"; sourceTree = "<group>"; };
+		FFDE37421D9A707600F2F4C2 /* SF-UI-Display-Semibold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-UI-Display-Semibold.otf"; sourceTree = "<group>"; };
+		FFDE37431D9A707600F2F4C2 /* SF-UI-Display-Thin.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-UI-Display-Thin.otf"; sourceTree = "<group>"; };
+		FFDE37441D9A707600F2F4C2 /* SF-UI-Display-Ultralight.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-UI-Display-Ultralight.otf"; sourceTree = "<group>"; };
+		FFDE377E1D9B1DA000F2F4C2 /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
+		FFDE377F1D9B1DA000F2F4C2 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -270,9 +292,11 @@
 			files = (
 				FF8CF22F1D99DEB100D2AD14 /* libRCTCameraRoll.a in Frameworks */,
 				146834051AC3E58100842450 /* libReact.a in Frameworks */,
+				FFDE37811D9B1DA000F2F4C2 /* Crashlytics.framework in Frameworks */,
 				041A30591D5E244D008B1593 /* libRNImagePicker.a in Frameworks */,
 				04B329081D8459C700A20FC6 /* libRCTContacts.a in Frameworks */,
 				00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */,
+				FFDE37801D9B1DA000F2F4C2 /* Fabric.framework in Frameworks */,
 				042A06B21D6C9F2800EF5532 /* libRNBlur.a in Frameworks */,
 				00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */,
 				00C302E81ABCBA2D00DB3ED1 /* libRCTImage.a in Frameworks */,
@@ -375,6 +399,15 @@
 		0453CA9E1D40F9730033DF87 /* fonts */ = {
 			isa = PBXGroup;
 			children = (
+				FFDE373C1D9A707600F2F4C2 /* SF-UI-Display-Black.otf */,
+				FFDE373D1D9A707600F2F4C2 /* SF-UI-Display-Bold.otf */,
+				FFDE373E1D9A707600F2F4C2 /* SF-UI-Display-Heavy.otf */,
+				FFDE373F1D9A707600F2F4C2 /* SF-UI-Display-Light.otf */,
+				FFDE37401D9A707600F2F4C2 /* SF-UI-Display-Medium.otf */,
+				FFDE37411D9A707600F2F4C2 /* SF-UI-Display-Regular.otf */,
+				FFDE37421D9A707600F2F4C2 /* SF-UI-Display-Semibold.otf */,
+				FFDE37431D9A707600F2F4C2 /* SF-UI-Display-Thin.otf */,
+				FFDE37441D9A707600F2F4C2 /* SF-UI-Display-Ultralight.otf */,
 				041A301C1D5D1725008B1593 /* Avenir-Black.ttf */,
 				041A301D1D5D1725008B1593 /* Avenir-BlackOblique.ttf */,
 				041A301E1D5D1725008B1593 /* Avenir-Book.ttf */,
@@ -496,6 +529,8 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				FFDE377E1D9B1DA000F2F4C2 /* Fabric.framework */,
+				FFDE377F1D9B1DA000F2F4C2 /* Crashlytics.framework */,
 				04A8EA051D882E0100413E89 /* Default.png */,
 				04A8EA061D882E0100413E89 /* Default@2x.png */,
 				04A8EA071D882E0100413E89 /* Default-568h@2x.png */,
@@ -572,6 +607,7 @@
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
+				FFDE377D1D9B1D1600F2F4C2 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -588,7 +624,7 @@
 		83CBB9F71A601CBA00E9B192 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 610;
+				LastUpgradeCheck = 0800;
 				ORGANIZATIONNAME = Facebook;
 				TargetAttributes = {
 					00E356ED1AD99517003FC87E = {
@@ -828,36 +864,45 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FFDE37741D9A709400F2F4C2 /* Avenir-Medium.ttf in Resources */,
+				FFDE376D1D9A709400F2F4C2 /* Avenir-BlackOblique.ttf in Resources */,
+				FFDE37631D9A709400F2F4C2 /* SF-UI-Display-Black.otf in Resources */,
+				FFDE37751D9A709400F2F4C2 /* Avenir-MediumOblique.ttf in Resources */,
 				04A8EA0A1D882E0100413E89 /* Default.png in Resources */,
+				FFDE37731D9A709400F2F4C2 /* Avenir-LightOblique.ttf in Resources */,
+				FFDE37701D9A709400F2F4C2 /* Avenir-Heavy.ttf in Resources */,
+				FFDE37681D9A709400F2F4C2 /* SF-UI-Display-Regular.otf in Resources */,
+				FFDE37641D9A709400F2F4C2 /* SF-UI-Display-Bold.otf in Resources */,
+				FFDE37651D9A709400F2F4C2 /* SF-UI-Display-Heavy.otf in Resources */,
+				FFDE376E1D9A709400F2F4C2 /* Avenir-Book.ttf in Resources */,
+				FFDE37761D9A709400F2F4C2 /* Avenir-Oblique.ttf in Resources */,
+				FFDE37781D9A709400F2F4C2 /* hairfolio.eot in Resources */,
+				FFDE37721D9A709400F2F4C2 /* Avenir-Light.ttf in Resources */,
+				FFDE377C1D9A709400F2F4C2 /* hairfolio.woff2 in Resources */,
 				04A8EA0B1D882E0100413E89 /* Default@2x.png in Resources */,
 				04A8EA0C1D882E0100413E89 /* Default-568h@2x.png in Resources */,
 				04A8EA0D1D882E0100413E89 /* Default-667h@2x.png in Resources */,
+				FFDE376F1D9A709400F2F4C2 /* Avenir-BookOblique.ttf in Resources */,
+				FFDE377B1D9A709400F2F4C2 /* hairfolio.woff in Resources */,
 				04A8EA0E1D882E0100413E89 /* Default-736h@3x.png in Resources */,
-				0453CAAA1D40F9730033DF87 /* hairfolio.woff in Resources */,
-				041A302F1D5D1725008B1593 /* Avenir-LightOblique.ttf in Resources */,
-				041A302A1D5D1725008B1593 /* Avenir-Book.ttf in Resources */,
-				041A30291D5D1725008B1593 /* Avenir-BlackOblique.ttf in Resources */,
-				0453CAA71D40F9730033DF87 /* hairfolio.eot in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
-				0453CAAB1D40F9730033DF87 /* hairfolio.woff2 in Resources */,
-				041A30281D5D1725008B1593 /* Avenir-Black.ttf in Resources */,
-				0453CAA91D40F9730033DF87 /* hairfolio.ttf in Resources */,
-				041A302C1D5D1725008B1593 /* Avenir-Heavy.ttf in Resources */,
-				0453CAA81D40F9730033DF87 /* hairfolio.svg in Resources */,
-				041A302E1D5D1725008B1593 /* Avenir-Light.ttf in Resources */,
-				041A30301D5D1725008B1593 /* Avenir-Medium.ttf in Resources */,
-				041A302B1D5D1725008B1593 /* Avenir-BookOblique.ttf in Resources */,
 				2BFA05CE204C41C0A87890E2 /* Entypo.ttf in Resources */,
 				26D10631361D4C7C9949ABC2 /* EvilIcons.ttf in Resources */,
 				6469DD9D41D14F0989667CDB /* FontAwesome.ttf in Resources */,
-				041A30331D5D1725008B1593 /* Avenir-Roman.ttf in Resources */,
-				041A302D1D5D1725008B1593 /* Avenir-HeavyOblique.ttf in Resources */,
-				041A30311D5D1725008B1593 /* Avenir-MediumOblique.ttf in Resources */,
 				B9A2B91B43E240DF9185AD6C /* Foundation.ttf in Resources */,
+				FFDE37691D9A709400F2F4C2 /* SF-UI-Display-Semibold.otf in Resources */,
 				FAEDA34C281A48E7BC8D7385 /* Ionicons.ttf in Resources */,
+				FFDE37661D9A709400F2F4C2 /* SF-UI-Display-Light.otf in Resources */,
+				FFDE37791D9A709400F2F4C2 /* hairfolio.svg in Resources */,
+				FFDE377A1D9A709400F2F4C2 /* hairfolio.ttf in Resources */,
+				FFDE37711D9A709400F2F4C2 /* Avenir-HeavyOblique.ttf in Resources */,
 				9C20236082CB4C839A070908 /* MaterialIcons.ttf in Resources */,
-				041A30321D5D1725008B1593 /* Avenir-Oblique.ttf in Resources */,
 				6D5930CAB34D4CE6898343E8 /* Octicons.ttf in Resources */,
+				FFDE376C1D9A709400F2F4C2 /* Avenir-Black.ttf in Resources */,
+				FFDE376B1D9A709400F2F4C2 /* SF-UI-Display-Ultralight.otf in Resources */,
+				FFDE37771D9A709400F2F4C2 /* Avenir-Roman.ttf in Resources */,
+				FFDE37671D9A709400F2F4C2 /* SF-UI-Display-Medium.otf in Resources */,
+				FFDE376A1D9A709400F2F4C2 /* SF-UI-Display-Thin.otf in Resources */,
 				D03042B06F4E41CFBA6BAAEA /* Zocial.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -878,6 +923,19 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/packager/react-native-xcode.sh";
+		};
+		FFDE377D1D9B1D1600F2F4C2 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "./Fabric.framework/run 155ec2281204750a42d11dbc5d628dfb9e52cd95 8971b719d9b4b58e5c512065d5fe2bc8aed6a5031da7875b5dff18eea0b68ed4";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -927,6 +985,7 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/HairfolioTests\"",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.Hairfolio.app;
 				PRODUCT_NAME = HairfolioTests;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Hairfolio.app/Hairfolio";
 			};
@@ -945,6 +1004,7 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/HairfolioTests\"",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.Hairfolio.app;
 				PRODUCT_NAME = HairfolioTests;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Hairfolio.app/Hairfolio";
 			};
@@ -958,6 +1018,10 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEAD_CODE_STRIPPING = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
@@ -986,6 +1050,10 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
@@ -1027,6 +1095,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -1049,7 +1118,7 @@
 					"$(SRCROOT)/../node_modules/react-native-camera/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-camera/ios/**",
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -1092,7 +1161,7 @@
 					"$(SRCROOT)/../node_modules/react-native-camera/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-camera/ios/**",
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;

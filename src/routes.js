@@ -44,6 +44,10 @@ import SignupStylistStack from './stacks/SignupStylist';
 import AppStack from './stacks/App';
 import OAuthStack from './stacks/OAuth';
 
+// post
+import PostFilter from './containers/PostFilter';
+
+
 class HelloRoute extends Route {
   SceneComponent = Hello;
   SceneConfig = {
@@ -231,6 +235,15 @@ class SearchRoute extends Route {
 
   icon = 'loupe';
 }
+
+class PostFilterRoute extends Route {
+  SceneComponent = PostFilter;
+  SceneConfig = {
+    ...CustomScenesConfig.FadeInOut
+  };
+}
+
+
 class CreatePostRoute extends Route {
   SceneComponent = CreatePost;
   SceneConfig = {
@@ -401,7 +414,6 @@ export const stylistPlaceOfWorkEU = new StylistPlaceOfWorkRoute({
 });
 export const feed = new FeedRoute();
 export const search = new SearchRoute();
-export const createPost = new CreatePostRoute();
 export const favourites = new FavouritesRoute();
 export const profile = new ProfileRoute();
 export const profileExternal = new ProfileRoute();
@@ -416,6 +428,11 @@ export const signupSalonStack = new SignupSalonStackRoute();
 export const signupStylistStack = new SignupStylistStackRoute();
 export const appStack = new AppStackRoute();
 export const oauthStack = new OAuthStackRoute();
+
+// create Post
+export const createPost = new CreatePostRoute();
+export const postFilter = new PostFilterRoute();
+
 
 export const basicInfoConsumer = new BasicInfoRoute({
   accountType: 'consumer',
@@ -498,6 +515,7 @@ export const constructors = {
   FeedRoute,
   SearchRoute,
   CreatePostRoute,
+  PostFilterRoute,
   FavouritesRoute,
   ProfileRoute,
   OnboardingStackRoute,

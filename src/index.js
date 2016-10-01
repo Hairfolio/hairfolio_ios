@@ -26,6 +26,7 @@ import {appActions} from './actions/app';
 NativeModules.UIManager.setLayoutAnimationEnabledExperimental &&
   NativeModules.UIManager.setLayoutAnimationEnabledExperimental(true);
 
+let PhotoAlbum = NativeModules.PhotoAlbum;
 
 global.ENABLE_RENDER_DEBUG = false;
 
@@ -84,6 +85,7 @@ export default class Root extends PureComponent {
   }
 
   render() {
+
     return (
       <View
         onStartShouldSetResponderCapture={(e, gestureState) => {

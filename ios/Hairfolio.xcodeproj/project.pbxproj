@@ -42,6 +42,7 @@
 		D03042B06F4E41CFBA6BAAEA /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6610EEF426034C338DC5DBE5 /* Zocial.ttf */; };
 		DF38CA524BFC41D297EF2939 /* libRCTCamera.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2130E4AFBE5546F1A7E3696D /* libRCTCamera.a */; };
 		FAEDA34C281A48E7BC8D7385 /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A4B5392F7F84425E9E427465 /* Ionicons.ttf */; };
+		FF4E259D1D9FE518003CF7EE /* PhotoAlbum.m in Sources */ = {isa = PBXBuildFile; fileRef = FF4E259B1D9FE518003CF7EE /* PhotoAlbum.m */; };
 		FF8CF22F1D99DEB100D2AD14 /* libRCTCameraRoll.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FF8CF2201D99DE8C00D2AD14 /* libRCTCameraRoll.a */; };
 		FFDE37631D9A709400F2F4C2 /* SF-UI-Display-Black.otf in Resources */ = {isa = PBXBuildFile; fileRef = FFDE373C1D9A707600F2F4C2 /* SF-UI-Display-Black.otf */; };
 		FFDE37641D9A709400F2F4C2 /* SF-UI-Display-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = FFDE373D1D9A707600F2F4C2 /* SF-UI-Display-Bold.otf */; };
@@ -263,6 +264,8 @@
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 		A4B5392F7F84425E9E427465 /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 0; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
 		D832DCB264524ADFAB69455A /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 0; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
+		FF4E259B1D9FE518003CF7EE /* PhotoAlbum.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PhotoAlbum.m; path = hairfolio/PhotoAlbum.m; sourceTree = "<group>"; };
+		FF4E259C1D9FE518003CF7EE /* PhotoAlbum.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PhotoAlbum.h; path = hairfolio/PhotoAlbum.h; sourceTree = "<group>"; };
 		FF8CF2191D99DE8C00D2AD14 /* RCTCameraRoll.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTCameraRoll.xcodeproj; path = "../node_modules/react-native/Libraries/CameraRoll/RCTCameraRoll.xcodeproj"; sourceTree = "<group>"; };
 		FFDE373C1D9A707600F2F4C2 /* SF-UI-Display-Black.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-UI-Display-Black.otf"; sourceTree = "<group>"; };
 		FFDE373D1D9A707600F2F4C2 /* SF-UI-Display-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-UI-Display-Bold.otf"; sourceTree = "<group>"; };
@@ -474,6 +477,8 @@
 				13B07FB71A68108700A75B9A /* main.m */,
 				04FE741D1D36C67400292C84 /* StoreManager.m */,
 				04FE74291D36C6B600292C84 /* StoreManager.h */,
+				FF4E259B1D9FE518003CF7EE /* PhotoAlbum.m */,
+				FF4E259C1D9FE518003CF7EE /* PhotoAlbum.h */,
 			);
 			name = hairfolio;
 			sourceTree = "<group>";
@@ -954,6 +959,7 @@
 			files = (
 				04FE741E1D36C67400292C84 /* StoreManager.m in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
+				FF4E259D1D9FE518003CF7EE /* PhotoAlbum.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

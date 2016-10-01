@@ -2,6 +2,7 @@ import React from 'react';
 import PureComponent from '../components/PureComponent';
 import {
   CameraRoll,
+  ScrollView,
   View, Text, Dimensions, TouchableOpacity, TouchableWithoutFeedback, Image} from 'react-native';
 import connect from '../lib/connect';
 import {app} from '../selectors/app';
@@ -24,8 +25,6 @@ import Camera from 'react-native-camera';
 import SlimHeader from '../components/SlimHeader.js'
 
 
-
-
 const CameraView = observer(({isOpen, inputMethod}) => {
 
   if (!isOpen) {
@@ -38,11 +37,12 @@ const CameraView = observer(({isOpen, inputMethod}) => {
 
 
   if (inputMethod === 'Library') {
-    alert(Library);
     return (
       <View
-        style={{backgroundColor: 'orange', height: Dimensions.get('window').width, width: Dimensions.get('window').width, }}
-      />
+        style={{height: Dimensions.get('window').width, width: Dimensions.get('window').width, justifyContent: 'center', alignItems: 'center' }}
+      >
+        <Text style={{fontSize: 30, textAlign: 'center'}}> Last 20 pictures </Text>
+      </View>
     );
   }
 
@@ -70,7 +70,7 @@ const CameraView = observer(({isOpen, inputMethod}) => {
 
 const Footer = ({selectedMode, onSelect}) => {
   return (
-    <View style={{flexDirection: 'row', alignItems: 'center', marginBottom: SCALE.h(46), paddingHorizontal: SCALE.h(25)}}>
+    <View style={{flexDirection: 'row', alignItems: 'center', paddingVertical: SCALE.h(25), paddingHorizontal: SCALE.h(25)}}>
       <TouchableWithoutFeedback
         onPress={() => onSelect('Library')}
       >
@@ -94,19 +94,40 @@ const Footer = ({selectedMode, onSelect}) => {
         </View>
       </TouchableWithoutFeedback>
       <TouchableWithoutFeedback
-        onPress={() => onSelect('Video')}>
+        onPress={() => {/*onSelect('Video')*/}}>
         <View style={{flex: 1}}>
-          <Text style={{
+          {/*<Text style={{
             fontSize: SCALE.h(34),
             fontFamily: selectedMode === 'Video' ? FONTS.SF_BOLD : FONTS.SF_REGULAR,
             textAlign: 'right',
             flex: 1
-          }}>Video</Text>
+          }}>Video</Text>*/}
       </View>
     </TouchableWithoutFeedback>
   </View>
   );
 };
+
+const LibraryView = observer(({pictures}) => {
+  return (
+    <ScrollView style={{height: Dimensions.get('window').height - 2 * (SCALE.h(88) + Dimensions.get('window').width), width: Dimensions.get('window').width}}>
+      <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
+      {pictures.map((el) =>
+          <Image
+            style={{
+              borderColor: 'white',
+              borderWidth: 1,
+              height: Dimensions.get('window').width / 3,
+              width: Dimensions.get('window').width / 3}}
+              source={{uri: el.uri}}
+
+              key={el.key}
+            />
+      )}
+    </View>
+    </ScrollView>
+  );
+});
 
 @connect(app, post)
 @observer
@@ -127,18 +148,29 @@ export default class CreatePost extends PureComponent {
   capture() {
     window.camera.capture()
       .then((data) => {
-        console.log(data);
         CreatePostStore.lastPicture = data;
+        _.last(this.context.navigators).jumpTo(postFilter);
       })
       .catch(err => { alert('error'); console.error(err) });
-    _.last(this.context.navigators).jumpTo(postFilter);
   }
 
   render() {
 
-    console.log('post store', CreatePostStore);
+    let middleElement = (
+      <TouchableOpacity onPress={() => this.capture()}>
+        <Image
+          source={require('../../resources/img/post_capture.png')}
+        />
+      </TouchableOpacity>
+    );
 
-    console.log('render CreateProps', this.props);
+    if (CreatePostStore.inputMethod === 'Library') {
+      middleElement = (
+        <LibraryView
+          pictures={CreatePostStore.libraryPictures}
+        />
+      );
+    }
 
     return (<NavigationSetting
       style={{
@@ -172,14 +204,10 @@ export default class CreatePost extends PureComponent {
             justifyContent: 'center'
           }}
         >
-          <TouchableOpacity onPress={() => this.capture()}>
-            <Image
-              source={require('../../resources/img/post_capture.png')}
-            />
-          </TouchableOpacity>
-        </View>
+        {middleElement}
+                  </View>
         <Footer
-          onSelect={ (value) => { CreatePostStore.inputMethod = value } }
+          onSelect={ (value) => { CreatePostStore.changeInputMethod(value) } }
         selectedMode={CreatePostStore.inputMethod} />
 
           </View>

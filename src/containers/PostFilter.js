@@ -67,8 +67,6 @@ export default class PostFilter extends PureComponent {
         style={{width:  Dimensions.get('window').width, height: Dimensions.get('window').width
         }}
         source={{uri: CreatePostStore.lastPicture.path}}/>
-
-        <Text> Filter Post </Text>
       </View>
     </NavigationSetting>
     );

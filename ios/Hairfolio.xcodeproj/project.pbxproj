@@ -632,7 +632,7 @@
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
-						DevelopmentTeam = FBD8CKV469;
+						DevelopmentTeam = NBCQ5976BP;
 						SystemCapabilities = {
 							com.apple.Push = {
 								enabled = 1;
@@ -1018,6 +1018,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEAD_CODE_STRIPPING = NO;
+				DEVELOPMENT_TEAM = NBCQ5976BP;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -1037,7 +1038,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.hairfolio.appjj;
+				PRODUCT_BUNDLE_IDENTIFIER = com.hairfolio.hairfolio;
 				PRODUCT_NAME = Hairfolio;
 				PROVISIONING_PROFILE = "";
 			};
@@ -1050,6 +1051,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = NBCQ5976BP;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -1069,7 +1071,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.hairfolio.appjj;
+				PRODUCT_BUNDLE_IDENTIFIER = com.hairfolio.hairfolio;
 				PRODUCT_NAME = Hairfolio;
 				PROVISIONING_PROFILE = "";
 			};

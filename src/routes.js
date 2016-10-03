@@ -31,6 +31,7 @@ import UserHairfolio from './containers/UserHairfolio';
 import Feed from './containers/Feed';
 import Search from './containers/Search';
 import CreatePost from './containers/CreatePost';
+import AlbumPage from './containers/AlbumPage';
 import Favourites from './containers/Favourites';
 import Profile from './containers/ProfileWrapper';
 import OnboardingStack from './stacks/Onboarding';
@@ -246,12 +247,21 @@ class PostFilterRoute extends Route {
 
 class CreatePostRoute extends Route {
   SceneComponent = CreatePost;
-  SceneConfig = {
-    ...CustomScenesConfig.FadeInOut
-  };
+  //SceneConfig = {
+  //  ...CustomScenesConfig.FadeInOut
+  //};
 
   icon = 'camera';
 }
+
+class AlbumPageRoute extends Route {
+  SceneComponent = AlbumPage;
+  // SceneConfig = {
+  //  ...CustomScenesConfig.FadeInOut
+  // };
+}
+
+
 class FavouritesRoute extends Route {
   SceneComponent = Favourites;
   SceneConfig = {
@@ -432,7 +442,7 @@ export const oauthStack = new OAuthStackRoute();
 // create Post
 export const createPost = new CreatePostRoute();
 export const postFilter = new PostFilterRoute();
-
+export const albumPage = new AlbumPageRoute();
 
 export const basicInfoConsumer = new BasicInfoRoute({
   accountType: 'consumer',
@@ -515,6 +525,7 @@ export const constructors = {
   FeedRoute,
   SearchRoute,
   CreatePostRoute,
+  AlbumPageRoute,
   PostFilterRoute,
   FavouritesRoute,
   ProfileRoute,

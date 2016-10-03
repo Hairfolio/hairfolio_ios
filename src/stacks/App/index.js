@@ -16,10 +16,12 @@ import utils from '../../utils';
 
 import {COLORS} from '../../style';
 
-import {search, feed, createPost, favourites, profile, profileExternal} from '../../routes';
+import {search, feed, createPost, favourites, profile, profileExternal, createPostStack } from '../../routes';
 
 import {user} from '../../selectors/user';
 import {environment} from '../../selectors/environment';
+
+import CreatePostStore from '../../mobx/stores/CreatePostStore.js';
 
 @connect(user, environment)
 export default class AppStack extends PureComponent {
@@ -36,6 +38,11 @@ export default class AppStack extends PureComponent {
     this.listeners = [
       appEmitter.addListener('logout', () => this.onLogout())
     ];
+  }
+
+  componentDidMount() {
+    // CreatePostStore.isOpen = true;
+    // _.first(this.context.navigators).jumpTo(createPostStack);
   }
 
   componentWillUnmount() {
@@ -55,28 +62,6 @@ export default class AppStack extends PureComponent {
   onWillBlur() {
     if (Platform.OS !== 'ios')
       BackAndroid.removeEventListener('hardwareBackPress', this.onBackAndroid);
-  }
-
-  @autobind
-  onBackAndroid() {
-    /*
-    var scene = this._nav.getCurrentRoutes()[this._nav.state.presentedIndex].scene();
-    scene = scene.getWrappedInstance ? scene.getWrappedInstance() : scene;
-
-    if (scene.backAndroidDisabled && scene.backAndroidDisabled())
-      return true;
-
-    // on est au top du stack
-    if (!this._nav.state.presentedIndex)
-      return false;
-    else
-      this._nav.jumpBack();
-
-    if (scene.onBackAndroidExecuted)
-      scene.onBackAndroidExecuted();
-
-    return true;
-    */
   }
 
   goToProfile(id) {

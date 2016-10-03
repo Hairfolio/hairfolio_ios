@@ -20,6 +20,38 @@
 RCT_EXPORT_MODULE()
 
 
+RCT_EXPORT_METHOD(getPhotosFromAlbums:(NSString *)name callback:(RCTResponseSenderBlock)callback) {
+  
+  NSMutableArray *arr = [[NSMutableArray alloc] init];
+  
+  
+  PHFetchResult *userAlbums = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeAlbum subtype:PHAssetCollectionSubtypeAny options:nil];
+  PHFetchResult *smartAlbums = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeSmartAlbum subtype:PHAssetCollectionSubtypeAny options:nil];
+  
+  for (PHFetchResult * album in @[userAlbums, smartAlbums]) {
+    
+    [album enumerateObjectsUsingBlock:^(PHAssetCollection *collection, NSUInteger idx, BOOL *stop) {
+      if ([collection.localizedTitle isEqualToString:name]) {
+        
+        PHFetchResult *assetsInCollection = [PHAsset fetchAssetsInAssetCollection:collection options:nil];
+        
+        for (PHAsset *asset in assetsInCollection) {
+          [arr addObject:asset.localIdentifier];
+        }
+      }
+      
+      
+      
+    }];
+  }
+  
+  callback(@[arr]);
+}
+
+
+
+
+
 RCT_EXPORT_METHOD(getAlbumNames:(RCTResponseSenderBlock)callback) {
   
   NSMutableArray *arr = [[NSMutableArray alloc] init];
@@ -28,50 +60,42 @@ RCT_EXPORT_METHOD(getAlbumNames:(RCTResponseSenderBlock)callback) {
   PHFetchResult *userAlbums = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeAlbum subtype:PHAssetCollectionSubtypeAny options:nil];
   PHFetchResult *smartAlbums = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeSmartAlbum subtype:PHAssetCollectionSubtypeAny options:nil];
   
-
+  for (PHFetchResult * album in @[userAlbums, smartAlbums]) {
+    
+    [album enumerateObjectsUsingBlock:^(PHAssetCollection *collection, NSUInteger idx, BOOL *stop) {
+      //  NSLog(@"%@", collection);
+      
+      NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+      
+      [dict setObject:collection.localizedTitle forKey:@"title"];
+      
+      
+      PHFetchResult *assetsInCollection = [PHAsset fetchAssetsInAssetCollection:collection options:nil];
+      
+     
+      
+      [dict setObject:[NSNumber numberWithInt:assetsInCollection.count] forKey:@"count"];
+      
+      
+      for (PHAsset *asset in assetsInCollection)
+      {
+        NSLog(@"%@", asset);
+        [dict setObject:asset.localIdentifier forKey:@"uri"];
+        break;
+      }
+      
+     // "assets-library://asset/asset.JPG?id=0DCDB4CA-BB79-477A-983F-8596A7AC55EE&ext=JPG"
+      
+      if (assetsInCollection.count > 0) {
+        [arr addObject:dict];
+      }
+      
+      
+      
+    }];
+  }
   
-  [userAlbums enumerateObjectsUsingBlock:^(PHAssetCollection *collection, NSUInteger idx, BOOL *stop) {
-    // NSLog(@"%@", collection);
-    [arr addObject:collection.localizedTitle];
-    
-    
-    PHFetchResult *assetsInCollection = [PHAsset fetchAssetsInAssetCollection:collection options:nil];
-    
-    
-    for (PHAsset *asset in assetsInCollection)
-    {
-      NSArray *resources = [PHAssetResource assetResourcesForAsset:asset];
-      NSString *orgFilename = ((PHAssetResource*)resources[0]).originalFilename;
-      NSLog(@"%@", orgFilename);
-
-      // [self.recentsDataSource addObject:asset];
-    }
-
-    
-    
-  }];
-  
-  [smartAlbums enumerateObjectsUsingBlock:^(PHAssetCollection *collection, NSUInteger idx, BOOL *stop) {
-  //  NSLog(@"%@", collection);
-    [arr addObject:collection.localizedTitle];
-
-    PHFetchResult *assetsInCollection = [PHAsset fetchAssetsInAssetCollection:collection options:nil];
-    
-    
-    for (PHAsset *asset in assetsInCollection)
-    {
-      NSLog(@"%@", asset);
-      // [self.recentsDataSource addObject:asset];
-    }
-
-    
-  }];
-  
-  
-  NSLog(@"%@", arr);
-
-    // callback(@[nextCursor, arr, [NSNull null]]);
-    // errorCallback(@[[NSNull null]]);
+  callback(@[arr]);
 }
 
 

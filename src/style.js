@@ -5,6 +5,8 @@ export const SCALE = {
   h: (size) => size / 2
 };
 
+export const h = (size) => size / 2;
+
 export const COLORS = {
   DARK: '#393939',
   DARK2: '#494949',

@@ -3,18 +3,19 @@ import PureComponent from '../components/PureComponent';
 import {
   CameraRoll,
   ScrollView,
+
   View, Text, Dimensions, TouchableOpacity, TouchableWithoutFeedback, Image} from 'react-native';
 import connect from '../lib/connect';
 import {app} from '../selectors/app';
 import {post} from '../selectors/post';
 import {postActions} from '../actions/post';
-import {COLORS, FONTS, SCALE} from '../style';
+import {COLORS, FONTS, h, SCALE} from 'hairfolio/src/style';
 import NavigationSetting from '../navigation/NavigationSetting';
 import {observer} from 'mobx-react/native';
 import autobind from 'autobind-decorator'
-
 import _ from 'lodash';
-import {appStack, postFilter} from '../routes';
+
+import {appStack, postFilter, albumPage} from '../routes';
 
 import {STATUSBAR_HEIGHT, POST_INPUT_MODE} from '../constants';
 
@@ -23,7 +24,7 @@ import CreatePostStore from '../mobx/stores/CreatePostStore.js';
 import Camera from 'react-native-camera';
 
 import SlimHeader from '../components/SlimHeader.js'
-
+import LibraryListView from 'components/post/LibraryListView'
 
 const CameraView = observer(({isOpen, inputMethod}) => {
 
@@ -35,16 +36,6 @@ const CameraView = observer(({isOpen, inputMethod}) => {
     );
   }
 
-
-  if (inputMethod === 'Library') {
-    return (
-      <View
-        style={{height: Dimensions.get('window').width, width: Dimensions.get('window').width, justifyContent: 'center', alignItems: 'center' }}
-      >
-        <Text style={{fontSize: 30, textAlign: 'center'}}> Last 20 pictures </Text>
-      </View>
-    );
-  }
 
   return (
     <View>
@@ -66,6 +57,36 @@ const CameraView = observer(({isOpen, inputMethod}) => {
       </Camera>
     </View>
   );
+});
+
+const LibraryPreview = observer(({store}) => {
+
+  let windowWidth =  Dimensions.get('window').width;
+
+  console.log('selectedPicture', store.selectedLibraryPicture);
+
+  if (store.selectedLibraryPicture != null) {
+    return (
+      <View
+        style={{height: Dimensions.get('window').width, width: Dimensions.get('window').width, justifyContent: 'center', alignItems: 'center' }}
+      >
+        <Image
+          style={{height: windowWidth, width: windowWidth}}
+          source={{uri: store.selectedLibraryPicture.uri}}
+        />
+      </View>
+    );
+
+  }
+
+  return (
+    <View
+      style={{height: Dimensions.get('window').width, width: Dimensions.get('window').width, justifyContent: 'center', alignItems: 'center' }}
+    >
+      <Text style={{fontSize: 30, textAlign: 'center'}}>Select a picture</Text>
+    </View>
+  );
+
 });
 
 const Footer = ({selectedMode, onSelect}) => {
@@ -94,9 +115,9 @@ const Footer = ({selectedMode, onSelect}) => {
         </View>
       </TouchableWithoutFeedback>
       <TouchableWithoutFeedback
-        onPress={() => {/*onSelect('Video')*/}}>
+        onPress={() => { /* onSelect('Video')*/ }}>
         <View style={{flex: 1}}>
-          {/*<Text style={{
+          {/* <Text style={{
             fontSize: SCALE.h(34),
             fontFamily: selectedMode === 'Video' ? FONTS.SF_BOLD : FONTS.SF_REGULAR,
             textAlign: 'right',
@@ -108,24 +129,55 @@ const Footer = ({selectedMode, onSelect}) => {
   );
 };
 
-const LibraryView = observer(({pictures}) => {
-  return (
-    <ScrollView style={{height: Dimensions.get('window').height - 2 * (SCALE.h(88) + Dimensions.get('window').width), width: Dimensions.get('window').width}}>
-      <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
-      {pictures.map((el) =>
-          <Image
-            style={{
-              borderColor: 'white',
-              borderWidth: 1,
-              height: Dimensions.get('window').width / 3,
-              width: Dimensions.get('window').width / 3}}
-              source={{uri: el.uri}}
 
-              key={el.key}
-            />
-      )}
-    </View>
-    </ScrollView>
+
+const LibraryHeader = observer(({onLeft, onRight, onTitle, store}) => {
+  console.log('rerender library header');
+  return (
+    <View
+      style={{
+        height: SCALE.h(88),
+        paddingHorizontal: SCALE.h(25),
+        flexDirection: 'row',
+        alignItems: 'center',
+        borderBottomWidth: h(1),
+        borderColor: '#D3D3D3'
+      }}
+    >
+      <TouchableOpacity
+        onPress={onLeft}
+        style={{flex: 1}}>
+        <Text style={{
+          fontSize: SCALE.h(34),
+          fontFamily: FONTS.SF_REGULAR}} >
+          Cancel
+        </Text>
+      </TouchableOpacity>
+      <View style={{flex: 2, }}>
+        <TouchableWithoutFeedback onPress={onTitle}>
+          <View style={{alignItems: 'center', justifyContent: 'center'}}>
+            <Text style={{fontSize: h(34)}}> {store.libraryTitle} </Text>
+            <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
+              <Text style={{fontSize: h(26), color: '#7E7E7E'}}>{store.groupName}</Text>
+              <Image
+                style={{marginLeft: h(6), marginTop: 2}}
+                source={require('../../resources/img/post_down_arrow.png')}
+              />
+            </View>
+          </View>
+        </TouchableWithoutFeedback>
+      </View>
+        <TouchableOpacity
+          onPress={onRight}
+          style={{flex: 1}}>
+          <Text style={{
+            fontSize: SCALE.h(34),
+            textAlign: 'right',
+            fontFamily: FONTS.SF_REGULAR}} >
+            Next
+          </Text>
+        </TouchableOpacity>
+      </View>
   );
 });
 
@@ -148,13 +200,14 @@ export default class CreatePost extends PureComponent {
   capture() {
     window.camera.capture()
       .then((data) => {
-        CreatePostStore.lastPicture = data;
+        CreatePostStore.lastTakenPicture = data;
         _.last(this.context.navigators).jumpTo(postFilter);
       })
       .catch(err => { alert('error'); console.error(err) });
   }
 
   render() {
+    window.createPost = this;
 
     let middleElement = (
       <TouchableOpacity onPress={() => this.capture()}>
@@ -164,11 +217,41 @@ export default class CreatePost extends PureComponent {
       </TouchableOpacity>
     );
 
+    let header = (
+      <SlimHeader
+        onLeft={() => {
+          CreatePostStore.isOpen = false;
+          _.first(this.context.navigators).jumpTo(appStack);
+        }}
+        leftText='Cancel'
+        title={CreatePostStore.title}/>
+    );
+
+    let mainView = <CameraView isOpen={CreatePostStore.isOpen} inputMethod={CreatePostStore.inputMethod} />;
+
     if (CreatePostStore.inputMethod === 'Library') {
       middleElement = (
-        <LibraryView
-          pictures={CreatePostStore.libraryPictures}
-        />
+        <LibraryListView store={CreatePostStore} />
+      );
+
+      mainView = (<LibraryPreview store={CreatePostStore} />);
+
+      header = (
+        <LibraryHeader
+          onTitle={() => { window.navigators =  this.context.navigators; _.last(this.context.navigators).jumpTo(albumPage) }}
+          store={CreatePostStore}
+          onLeft={() => {
+            CreatePostStore.isOpen = false;
+            _.first(this.context.navigators).jumpTo(appStack);
+          }}
+          onRight={() => {
+            if (CreatePostStore.selectedLibraryPicture == null) {
+              alert('Select at least one picture');
+            } else {
+              alert('Gallary view');
+            }
+          }}
+       />
       );
     }
 
@@ -187,14 +270,8 @@ export default class CreatePost extends PureComponent {
       <View style={{
         flex: 1
       }}>
-      <SlimHeader
-        onLeft={() => {
-          CreatePostStore.isOpen = false;
-          _.first(this.context.navigators).jumpTo(appStack);
-        }}
-        leftText='Cancel'
-        title={CreatePostStore.inputMethod}/>
-      <CameraView isOpen={CreatePostStore.isOpen} inputMethod={CreatePostStore.inputMethod} />
+      {header}
+      {mainView}
 
 
         <View

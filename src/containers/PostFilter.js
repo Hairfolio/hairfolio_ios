@@ -37,7 +37,6 @@ export default class PostFilter extends PureComponent {
   };
 
   render() {
-    console.log('pasth', CreatePostStore.lastPicture.path);
     return (<NavigationSetting
       style={{
         flex: 1,
@@ -61,12 +60,13 @@ export default class PostFilter extends PureComponent {
           }
           leftText='Retake'
           rightText='Use Photo'
+          onRight={() => alert('gallery view')}
         />
 
       <Image
         style={{width:  Dimensions.get('window').width, height: Dimensions.get('window').width
         }}
-        source={{uri: CreatePostStore.lastPicture.path}}/>
+        source={{uri: CreatePostStore.lastTakenPicture.path}}/>
       </View>
     </NavigationSetting>
     );

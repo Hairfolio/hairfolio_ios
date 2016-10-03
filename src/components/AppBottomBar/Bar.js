@@ -12,9 +12,6 @@ import {search, feed, createPost, createPostStack, editCustomerStack, favourites
 import CreatePostStore from '../../mobx/stores/CreatePostStore.js'
 
 
-
-
-
 export default class LoginNavigationbar extends PureComponent {
 
   static propTypes = {
@@ -26,12 +23,12 @@ export default class LoginNavigationbar extends PureComponent {
     profilePic: React.PropTypes.string.isRequired
   };
 
-  static defaultProps = {
-    profilePic: 'http://www.disneyclips.com/imagesnewb/images/clipdonhead.gif'
-  };
-
   static contextTypes = {
     navigators: React.PropTypes.array.isRequired
+  };
+
+  static defaultProps = {
+    profilePic: 'http://www.disneyclips.com/imagesnewb/images/clipdonhead.gif'
   };
 
   state = {};
@@ -41,6 +38,14 @@ export default class LoginNavigationbar extends PureComponent {
       selected: _.map(this.props.navState.routeStack, (route, i) =>
         i === this.props.navState.presentedIndex
       )
+    });
+  }
+
+  componentDidMount() {
+    setTimeout(() =>  {
+      CreatePostStore.isOpen = true;
+      _.first(this.context.navigators).jumpTo(createPostStack);
+      CreatePostStore.changeInputMethod('Library');
     });
   }
 
@@ -56,7 +61,7 @@ export default class LoginNavigationbar extends PureComponent {
 
   renderItem(route, opts = {}, onPress) {
     opts.borders = opts.borders || {};
-    opts.height = opts.height || BOTTOMBAR_HEIGHT;
+    opts.height = opts.height || BOTTOMBAR_HEIGHT;
     opts.itemSize = opts.itemSize || SCALE.h(54);
 
     return (<TouchableWithoutFeedback
@@ -130,7 +135,6 @@ export default class LoginNavigationbar extends PureComponent {
             createPostStack
           );
         }
-
 
 
       )}

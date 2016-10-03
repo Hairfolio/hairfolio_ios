@@ -12,7 +12,8 @@ import PureComponent from '../../components/PureComponent';
 import {COLORS, SCALE} from '../../style';
 import {
   createPost,
-  postFilter
+  postFilter,
+  albumPage
 } from '../../routes';
 
 export default class EditCustomerStack extends PureComponent {
@@ -50,7 +51,8 @@ export default class EditCustomerStack extends PureComponent {
           initialRoute={createPost}
           initialRouteStack={[
             createPost,
-            postFilter
+            postFilter,
+            albumPage
           ]}
           ref={(navigator) => this._nav = navigator && navigator.navigator()}
         />

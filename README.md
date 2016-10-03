@@ -40,3 +40,7 @@ This fix an issue when tabs are too long. Facebook did know that their method co
 `// TODO: this is not ideal because there is no guarantee that the navigator
 // is full screen, however we don't have a good way to measure the actual
 // size of the navigator right now, so this is the next best thing.`
+
+Project structure :
+
+cd node_modules && ln -nsf ../app

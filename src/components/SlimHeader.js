@@ -1,5 +1,5 @@
 import React from 'react';
-import {COLORS, FONTS, SCALE} from '../style';
+import {h, COLORS, FONTS, SCALE} from '../style';
 import {observer} from 'mobx-react/native';
 
 import {View, Text, Dimensions, TouchableOpacity, TouchableWithoutFeedback, Image} from 'react-native';
@@ -12,8 +12,8 @@ const SlimHeader = observer(({leftText, rightText, onLeft, onRight, title}, cont
         paddingHorizontal: SCALE.h(25),
         flexDirection: 'row',
         alignItems: 'center',
-        borderBottomWidth: 2,
-        borderColor: 'black'
+        borderBottomWidth: h(1),
+        borderColor: '#D3D3D3'
       }}
     >
       <TouchableOpacity
@@ -25,7 +25,7 @@ const SlimHeader = observer(({leftText, rightText, onLeft, onRight, title}, cont
           {leftText}
         </Text>
       </TouchableOpacity>
-      <View style={{flex: 1}}>
+      <View style={{width: 100}}>
         <Text
           style={{
             textAlign: 'center',

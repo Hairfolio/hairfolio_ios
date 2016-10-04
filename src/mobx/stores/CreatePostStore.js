@@ -73,6 +73,7 @@ class Gallery {
   @observable pictures = [];
   @observable selectedPicture = null;
   @observable selectedTag = null;
+  @observable description = '';
 
   wasOpened = false;
 
@@ -96,6 +97,7 @@ class Gallery {
     this.selectedPicture = null;
     this.selectedTag = null;
     this.pictures = [];
+    this.description = '';
     this.wasOpened = false;
   }
 
@@ -110,7 +112,21 @@ class Gallery {
   }
 
   @action addPicture(pic) {
+    console.log('addPicture');
     this.pictures.unshift(pic);
+    this.selectedPicture = _.first(this.pictures);
+  }
+
+  @action addLibraryPictures(libraryPictures) {
+    let pictures = libraryPictures.map((el) => new Picture({uri: el.uri}, this));
+
+    for (let el of this.pictures) {
+      pictures.push(el);
+    }
+
+    this.pictures = pictures;
+
+
     this.selectedPicture = _.first(this.pictures);
   }
 
@@ -132,11 +148,18 @@ class CreatePostStore {
     this.updateLibraryPictures();
   }
 
-  reset() {
+  reset(resetGallary = true) {
     this.inputMethod = 'Photo';
-    this.isOpen = false;
+    this.lastTakenPicture = {};
     this.groupName = 'Camera Roll';
-    this.gallery.reset();
+    this.libraryPictures = [];
+    this.selectedPictures = [];
+    this.updateLibraryPictures();
+
+    if (resetGallary) {
+      this.isOpen = false;
+      this.gallery.reset();
+    }
   }
 
   @computed get selectedLibraryPicture() {
@@ -145,6 +168,13 @@ class CreatePostStore {
     } else {
       return this.selectedPictures[this.selectedPictures.length - 1];
     }
+  }
+
+  @action addLibraryPicturesToGallary() {
+    this.gallery.addLibraryPictures(
+      this.selectedPictures
+    );
+    this.gallery.wasOpened = true;
   }
 
   @action addTakenPictureToGallery() {
@@ -170,9 +200,7 @@ class CreatePostStore {
       this.selectedPictures = this.selectedPictures.filter((el) => el.key != picture.key);
 
       for (var pic of this.selectedPictures) {
-        console.log('pic', pic.selectedNumber);
         if (pic.selectedNumber >= selectedNumber) {
-          console.log('decrease');
           pic.selectedNumber--;
         }
       }
@@ -209,6 +237,8 @@ class CreatePostStore {
       return this.inputMethod;
     }
   }
+
+
 };
 
 const store = new CreatePostStore();

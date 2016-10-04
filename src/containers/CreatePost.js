@@ -219,7 +219,7 @@ export default class CreatePost extends PureComponent {
 
     let cancel = () => {
       if (!CreatePostStore.gallery.wasOpened) {
-        CreatePostStore.isOpen = false;
+        CreatePostStore.reset();
         _.first(this.context.navigators).jumpTo(appStack);
       } else {
         _.last(this.context.navigators).jumpTo(gallery)
@@ -252,7 +252,9 @@ export default class CreatePost extends PureComponent {
             if (CreatePostStore.selectedLibraryPicture == null) {
               alert('Select at least one picture');
             } else {
-              alert('Gallary view');
+              CreatePostStore.addLibraryPicturesToGallary();
+              _.last(this.context.navigators).jumpTo(gallery)
+              StatusBar.setHidden(false);
             }
           }}
        />

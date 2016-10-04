@@ -10,8 +10,9 @@ import {
   windowHeight,
   // react-native components
   AlertIOS,
+  Modal,
   ScrollView,
-  StatusBar,  Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet
+  StatusBar, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet
 } from 'hairfolio/src/helpers.js';
 
 import SlimHeader from 'components/SlimHeader.js'
@@ -19,6 +20,12 @@ import AlbumStore from 'stores/AlbumStore.js'
 import CreatePostStore from 'stores/CreatePostStore.js'
 
 import {appStack, createPost, onPress, postFilter, albumPage} from '../routes';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+
+var RCTUIManager = require('NativeModules').UIManager;
+
+
+import ReactNative from 'react-native';
 
 const ImagePreview = observer(({gallery}) => {
 
@@ -118,10 +125,10 @@ const ActionMenu = observer(({gallery}) => {
   );
 });
 
-const PlusPicture = observer(() => {
+const PlusPicture = observer(({onPress}) => {
   return (
     <View style={{flexDirection: 'row', alignItems: 'center', paddingLeft: h(30)}}>
-      <TouchableOpacity>
+      <TouchableOpacity onPress={onPress} >
         <View
           style={{
             height: h(134),
@@ -177,7 +184,7 @@ const Picture = observer(({picture}) => {
         }}
       >
         <Image
-          style={{height: h(134), width:h(134)}}
+          style={{height: h(134), width: h(134)}}
           source={picture.source}
         />
         {selectedBox}
@@ -187,10 +194,7 @@ const Picture = observer(({picture}) => {
   );
 });
 
-const PictureView = observer(({gallery}) => {
-
-
-
+const PictureView = observer(({gallery, onPlus}) => {
 
 
   return (
@@ -200,7 +204,7 @@ const PictureView = observer(({gallery}) => {
         height: h(170)
       }}
     >
-      <PlusPicture />
+      <PlusPicture onPress={onPlus} />
       <View style={{flexDirection: 'row', alignItems: 'center', marginRight: h(30)}}>
         {gallery.pictures.map((el) => <Picture picture={el} key={el.key} />)}
     </View>
@@ -216,6 +220,22 @@ export default class GalleryPage extends Component {
     navigators: React.PropTypes.array.isRequired
   };
 
+  scrollToElement(reactNode) {
+    RCTUIManager.measure(ReactNative.findNodeHandle(reactNode), (x, y, width, height, pageX, pageY) => {
+      RCTUIManager.measure(this.refs.scrollView.getInnerViewNode(), (x2, y2, width2, height2, pageX2, pageY2) => {
+        console.log('pageY', pageY, pageY2, height, height2);
+        // currentPos: 64
+        var currentScroll = 64 - pageY2;
+        var differenceY =  -pageY - 240 + (windowHeight - 20 - h(88));
+
+        console.log(differenceY);
+        if (currentScroll - differenceY > 0) {
+          this.refs.scrollView.scrollTo({y: currentScroll - differenceY});
+        }
+      });
+    });
+  }
+
   render() {
     let line = (
       <View
@@ -228,24 +248,56 @@ export default class GalleryPage extends Component {
     );
 
     return (
-      <View style={{paddingTop: 20, backgroundColor: 'white'}}>
-        <SlimHeader
-          leftText='Cancel'
-          onLeft={() =>{
-            _.first(this.context.navigators).jumpTo(appStack)
-            _.last(this.context.navigators).jumpTo(createPost)
-            CreatePostStore.reset();
-          }}
-          title='Gallery'
-          titleStyle={{fontFamily: FONTS.SF_MEDIUM}}
-          rightText='Next'
-        />
-        <ImagePreview gallery={CreatePostStore.gallery} />
-        <ActionMenu gallery={CreatePostStore.gallery} />
-        {line}
-        <PictureView gallery={CreatePostStore.gallery} />
-        {line}
-      </View>
+        <View style={{paddingTop: 20, backgroundColor: 'white'}}>
+          <SlimHeader
+            leftText='Cancel'
+            onLeft={() => {
+              _.first(this.context.navigators).jumpTo(appStack)
+              _.last(this.context.navigators).jumpTo(createPost)
+
+              // only reset after view is gone
+              setTimeout(() => CreatePostStore.reset(), 1000);
+            }}
+            title='Gallery'
+            titleStyle={{fontFamily: FONTS.SF_MEDIUM}}
+            rightText='Next'
+          />
+          <ScrollView
+            ref='scrollView'
+            bounces={false}
+            style={{
+              backgroundColor: 'white',
+              height: windowHeight - 20 - h(88)
+            }}
+          >
+            <ImagePreview gallery={CreatePostStore.gallery} />
+            <ActionMenu gallery={CreatePostStore.gallery} />
+            {line}
+            <PictureView
+              onPlus={() => {
+                CreatePostStore.reset(false)
+                StatusBar.setHidden(true)
+                _.last(this.context.navigators).jumpTo(createPost)
+              }}
+              gallery={CreatePostStore.gallery}
+            />
+            {line}
+            <TextInput
+              onFocus={(element) => this.scrollToElement(element.target)}
+              onEndEditing={() => this.refs.scrollView.scrollTo({y: 0})}
+              style={{
+                height: 40,
+                backgroundColor: 'white',
+                paddingLeft: h(30),
+                fontSize: h(28),
+                color: '#3E3E3E'
+              }}
+              placeholder='Post description'
+              value={CreatePostStore.gallery.description}
+              onChangeText={(text) => CreatePostStore.gallery.description = text}
+            />
+          </ScrollView>
+        </View>
     );
   }
 }

@@ -45,7 +45,7 @@ export default class LoginNavigationbar extends PureComponent {
     setTimeout(() =>  {
       CreatePostStore.isOpen = true;
       _.first(this.context.navigators).jumpTo(createPostStack);
-      // CreatePostStore.changeInputMethod('Library');
+      CreatePostStore.changeInputMethod('Library');
     });
   }
 

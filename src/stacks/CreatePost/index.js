@@ -13,6 +13,7 @@ import {COLORS, SCALE} from '../../style';
 import {
   createPost,
   postFilter,
+  gallery,
   albumPage
 } from '../../routes';
 
@@ -52,7 +53,8 @@ export default class EditCustomerStack extends PureComponent {
           initialRouteStack={[
             createPost,
             postFilter,
-            albumPage
+            albumPage,
+            gallery
           ]}
           ref={(navigator) => this._nav = navigator && navigator.navigator()}
         />

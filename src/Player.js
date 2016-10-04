@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 
-import AlbumPage from './containers/AlbumPage.js'
+import AlbumPage from 'containers/AlbumPage.js'
+import GalleryPage from 'containers/GalleryPage.js'
 
 import {
   AppRegistry,
@@ -32,7 +33,7 @@ export default class Player extends Component {
     console.log('hello');
 
     let initialRoute = {
-      component: AlbumPage,
+      component: GalleryPage,
     };
 
     return (

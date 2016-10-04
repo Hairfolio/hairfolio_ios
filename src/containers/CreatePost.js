@@ -3,7 +3,7 @@ import PureComponent from '../components/PureComponent';
 import {
   CameraRoll,
   ScrollView,
-
+  StatusBar,
   View, Text, Dimensions, TouchableOpacity, TouchableWithoutFeedback, Image} from 'react-native';
 import connect from '../lib/connect';
 import {app} from '../selectors/app';
@@ -15,7 +15,7 @@ import {observer} from 'mobx-react/native';
 import autobind from 'autobind-decorator'
 import _ from 'lodash';
 
-import {appStack, postFilter, albumPage} from '../routes';
+import {appStack, gallery, postFilter, albumPage} from '../routes';
 
 import {STATUSBAR_HEIGHT, POST_INPUT_MODE} from '../constants';
 
@@ -217,12 +217,19 @@ export default class CreatePost extends PureComponent {
       </TouchableOpacity>
     );
 
+    let cancel = () => {
+      if (!CreatePostStore.gallery.wasOpened) {
+        CreatePostStore.isOpen = false;
+        _.first(this.context.navigators).jumpTo(appStack);
+      } else {
+        _.last(this.context.navigators).jumpTo(gallery)
+        StatusBar.setHidden(false);
+      }
+    };
+
     let header = (
       <SlimHeader
-        onLeft={() => {
-          CreatePostStore.isOpen = false;
-          _.first(this.context.navigators).jumpTo(appStack);
-        }}
+        onLeft={cancel}
         leftText='Cancel'
         title={CreatePostStore.title}/>
     );
@@ -240,10 +247,7 @@ export default class CreatePost extends PureComponent {
         <LibraryHeader
           onTitle={() => { window.navigators =  this.context.navigators; _.last(this.context.navigators).jumpTo(albumPage) }}
           store={CreatePostStore}
-          onLeft={() => {
-            CreatePostStore.isOpen = false;
-            _.first(this.context.navigators).jumpTo(appStack);
-          }}
+          onLeft={cancel}
           onRight={() => {
             if (CreatePostStore.selectedLibraryPicture == null) {
               alert('Select at least one picture');

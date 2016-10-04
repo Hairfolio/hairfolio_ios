@@ -1,6 +1,6 @@
 import React from 'react';
 import PureComponent from '../components/PureComponent';
-import {View, Text, Image, Dimensions, TouchableOpacity, TouchableWithoutFeedback} from 'react-native';
+import {View, Text, Image, Dimensions, StatusBar, TouchableOpacity, TouchableWithoutFeedback} from 'react-native';
 import connect from '../lib/connect';
 import {app} from '../selectors/app';
 import {post} from '../selectors/post';
@@ -23,7 +23,8 @@ import SlimHeader from '../components/SlimHeader.js'
 import {
   createPost,
   postFilter,
-  appStack
+  appStack,
+  gallery
 } from '../routes';
 
 
@@ -55,12 +56,16 @@ export default class PostFilter extends PureComponent {
         }}
       >
         <SlimHeader
-          onLeft={() =>
-              _.last(this.context.navigators).jumpTo(createPost)
-          }
+          onLeft={() =>{
+            _.last(this.context.navigators).jumpTo(createPost);
+          }}
           leftText='Retake'
           rightText='Use Photo'
-          onRight={() => alert('gallery view')}
+          onRight={() => {
+            CreatePostStore.addTakenPictureToGallery()
+            _.last(this.context.navigators).jumpTo(gallery)
+            StatusBar.setHidden(false);
+          }}
         />
 
       <Image

@@ -26,6 +26,7 @@ import EditCustomerAddress from './containers/EditCustomerAddress';
 import ChangePassword from './containers/ChangePassword';
 import UserStylists from './containers/UserStylists';
 import UserAbout from './containers/UserAbout';
+import GalleryPage from './containers/GalleryPage';
 import UserPosts from './containers/UserPosts';
 import UserHairfolio from './containers/UserHairfolio';
 import Feed from './containers/Feed';
@@ -48,6 +49,12 @@ import OAuthStack from './stacks/OAuth';
 // post
 import PostFilter from './containers/PostFilter';
 
+class GalleryRoute extends Route {
+  SceneComponent = GalleryPage;
+  SceneConfig = {
+    ...CustomScenesConfig.FadeInOut
+  };
+}
 
 class HelloRoute extends Route {
   SceneComponent = Hello;
@@ -341,6 +348,7 @@ class OAuthStackRoute extends Route {
 }
 
 export const hello = new HelloRoute();
+export const gallery = new GalleryRoute();
 export const loginOAuth = new LoginOAuthRoute();
 export const register = new RegisterRoute();
 export const register2 = new Register2Route();

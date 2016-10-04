@@ -4,7 +4,7 @@ import {observer} from 'mobx-react/native';
 
 import {View, Text, Dimensions, TouchableOpacity, TouchableWithoutFeedback, Image} from 'react-native';
 
-const SlimHeader = observer(({leftText, rightText, onLeft, onRight, title}, context) => {
+const SlimHeader = observer(({leftText, titleStyle, rightText, onLeft, onRight, title}, context) => {
   return (
     <View
       style={{
@@ -13,7 +13,8 @@ const SlimHeader = observer(({leftText, rightText, onLeft, onRight, title}, cont
         flexDirection: 'row',
         alignItems: 'center',
         borderBottomWidth: h(1),
-        borderColor: '#D3D3D3'
+        borderColor: '#D3D3D3',
+        backgroundColor: 'white'
       }}
     >
       <TouchableOpacity
@@ -30,7 +31,9 @@ const SlimHeader = observer(({leftText, rightText, onLeft, onRight, title}, cont
           style={{
             textAlign: 'center',
             fontSize: SCALE.h(34),
-            fontFamily: FONTS.SF_BOLD }}>
+            fontFamily: FONTS.SF_BOLD,
+            ...titleStyle
+          }}>
             {title}
           </Text>
         </View>

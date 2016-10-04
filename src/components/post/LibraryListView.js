@@ -13,7 +13,6 @@ const SelectedBorder = observer(({width, picture}) => {
   }
 
   return (
-
     <View style={{
       position: 'absolute',
       width: width - 1,

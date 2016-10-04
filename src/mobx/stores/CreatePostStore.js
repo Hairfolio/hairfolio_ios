@@ -24,9 +24,97 @@ class LibraryPicture {
   @action select() {
     this.parent.selectPicture(this);
   }
-
-
 };
+
+class TagMenu {
+
+
+  @observable selected = false;
+
+  constructor(title, source, parent) {
+    this.title = title;
+    this.source = source;
+    this.parent = parent;
+  }
+
+  @action select() {
+    this.parent.selectTag(this);
+  }
+
+  @computed get opacity() {
+    if (this.selected) {
+      return 1;
+    } else {
+      return 0.5;
+    }
+  }
+}
+
+class Picture {
+
+  @observable parent;
+
+  constructor(source, parent) {
+    this.source = source;
+    this.key = v4();
+    this.parent = parent;
+  }
+
+  @computed get selected() {
+    return this.parent.selectedPicture == this;
+  }
+
+  @action select() {
+    this.parent.selectedPicture = this;
+  }
+}
+
+class Gallery {
+  @observable pictures = [];
+  @observable selectedPicture = null;
+  @observable selectedTag = null;
+
+  wasOpened = false;
+
+  @observable hashTagMenu = new TagMenu('Add Tag', require('img/post_hashtag.png'), this);
+  @observable serviceTagMenu = new TagMenu('Add Service', require('img/post_service.png'), this);
+  @observable linkTagMenu = new TagMenu('Add Link', require('img/post_link.png'), this);
+
+
+  @action selectTag(tag) {
+    for (let el of [this.hashTagMenu, this.serviceTagMenu, this.linkTagMenu]) {
+      if (el != tag) {
+        el.selected = false;
+      } else {
+        el.selected = !el.selected;
+      }
+    }
+
+  }
+
+  @action reset() {
+    this.selectedPicture = null;
+    this.selectedTag = null;
+    this.pictures = [];
+    this.wasOpened = false;
+  }
+
+  constructor() {
+    window.gallary = this;
+  }
+
+  @action deleteSelectedPicture() {
+    this.pictures = this.pictures.filter(el => el != this.selectedPicture);
+
+    this.selectedPicture = _.first(this.pictures);
+  }
+
+  @action addPicture(pic) {
+    this.pictures.unshift(pic);
+    this.selectedPicture = _.first(this.pictures);
+  }
+
+}
 
 class CreatePostStore {
   @observable inputMethod = 'Photo';
@@ -34,11 +122,21 @@ class CreatePostStore {
   @observable lastTakenPicture = {};
   @observable groupName = 'Camera Roll';
   @observable libraryPictures = [];
-
   @observable selectedPictures = [];
+
+
+  @observable gallery = new Gallery();
+
 
   constructor() {
     this.updateLibraryPictures();
+  }
+
+  reset() {
+    this.inputMethod = 'Photo';
+    this.isOpen = false;
+    this.groupName = 'Camera Roll';
+    this.gallery.reset();
   }
 
   @computed get selectedLibraryPicture() {
@@ -47,6 +145,16 @@ class CreatePostStore {
     } else {
       return this.selectedPictures[this.selectedPictures.length - 1];
     }
+  }
+
+  @action addTakenPictureToGallery() {
+    this.gallery.addPicture(
+      new Picture(
+        {uri: this.lastTakenPicture.path},
+        this.gallery
+      )
+    );
+    this.gallery.wasOpened = true;
   }
 
   @action selectPicture(picture) {
@@ -92,8 +200,6 @@ class CreatePostStore {
 
   @action changeInputMethod(name) {
     this.inputMethod = name;
-
-    console.log('change input');
   }
 
   @computed get title() {

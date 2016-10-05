@@ -49,7 +49,10 @@ export default class EditCustomerStack extends PureComponent {
         }}
       >
         <Navigator
-          initialRoute={createPost}
+          initialRoute={
+            gallery
+            // TODO CHANGE BEFORE RELEASE
+          }
           initialRouteStack={[
             createPost,
             postFilter,

@@ -7,7 +7,7 @@ import {COLORS, FONTS, SCALE} from '../../style';
 
 import Icon from '../Icon';
 
-import {search, feed, createPost, createPostStack, editCustomerStack, favourites, profile} from '../../routes';
+import {search, feed, gallery, createPost, createPostStack, editCustomerStack, favourites, profile} from '../../routes';
 
 import CreatePostStore from '../../mobx/stores/CreatePostStore.js'
 
@@ -44,8 +44,8 @@ export default class LoginNavigationbar extends PureComponent {
   componentDidMount() {
     setTimeout(() =>  {
       CreatePostStore.isOpen = true;
+      CreatePostStore.gallery.addSamplePicture();
       _.first(this.context.navigators).jumpTo(createPostStack);
-      CreatePostStore.changeInputMethod('Library');
     });
   }
 
@@ -131,9 +131,16 @@ export default class LoginNavigationbar extends PureComponent {
         () => {
 
           CreatePostStore.isOpen = true;
+          CreatePostStore.gallery.addSamplePicture();
+
           _.first(this.context.navigators).jumpTo(
             createPostStack
           );
+
+          _.last(this.context.navigators).jumpTo(
+            gallery
+          );
+
         }
 
 

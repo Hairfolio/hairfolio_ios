@@ -69,11 +69,47 @@ class Picture {
   }
 }
 
+class ServiceBox {
+  @observable show = false;
+  @observable locY = 0;
+  @observable locX = 0;
+};
+
+class Picker {
+
+  constructor(title, data, value, onCancel, onConfirm) {
+    this.title = title;
+    this.data = data;
+    this.value = value;
+    this.onCancel = onCancel;
+    this.onConfirm = onConfirm;
+  }
+};
+
 class Gallery {
   @observable pictures = [];
   @observable selectedPicture = null;
   @observable selectedTag = null;
   @observable description = '';
+
+  @observable serviceBox = new ServiceBox();
+
+  @observable openedPicker = null;
+
+  // TODO
+  @observable showPicker = true;
+  @observable pickerData = [
+    'Single Process Color',
+    'Dual Process Color',
+    'Highlights',
+    'Lowlights',
+    'Straightening'
+  ];
+  @observable pickerValue = 'Highlights';
+  @observable pickerTitle = 'Service';
+
+
+  @observable lastClick;
 
   wasOpened = false;
 
@@ -82,15 +118,27 @@ class Gallery {
   @observable linkTagMenu = new TagMenu('Add Link', require('img/post_link.png'), this);
 
 
+
+  @action displayServiceBox(posX, posY) {
+    this.serviceBox.locY = posY;
+    this.serviceBox.locX = posX;
+    this.serviceBox.show = true;
+  }
+
+
   @action selectTag(tag) {
     for (let el of [this.hashTagMenu, this.serviceTagMenu, this.linkTagMenu]) {
       if (el != tag) {
         el.selected = false;
       } else {
         el.selected = !el.selected;
+        if (!el.selected) {
+          this.selectedTag = null;
+        } else {
+          this.selectedTag = tag;
+        }
       }
     }
-
   }
 
   @action reset() {
@@ -109,6 +157,19 @@ class Gallery {
     this.pictures = this.pictures.filter(el => el != this.selectedPicture);
 
     this.selectedPicture = _.first(this.pictures);
+  }
+
+  @action addSamplePicture() {
+
+    this.addPicture(
+      new Picture(
+        {uri: 'assets-library://asset/asset.JPG?id=106E99A1-4F6A-45A2-B320-B0AD4A8E8473/L0/001&ext=JPG' },
+        this
+      )
+    );
+    this.selectedPicture = this.pictures[0];
+    this.selectedTag = this.serviceTagMenu;
+    this.serviceTagMenu.selected = true;
   }
 
   @action addPicture(pic) {

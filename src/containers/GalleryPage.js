@@ -12,7 +12,7 @@ import {
   AlertIOS,
   Modal,
   ScrollView,
-  StatusBar, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet
+  PickerIOS, Picker, StatusBar, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet
 } from 'hairfolio/src/helpers.js';
 
 import SlimHeader from 'components/SlimHeader.js'
@@ -24,8 +24,13 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 
 var RCTUIManager = require('NativeModules').UIManager;
 
+import MyPicker from 'components/MyPicker.js'
+
 
 import ReactNative from 'react-native';
+
+import ServiceBox from 'components/post/ServiceBox.js'
+
 
 const ImagePreview = observer(({gallery}) => {
 
@@ -71,10 +76,18 @@ const ImagePreview = observer(({gallery}) => {
         height: windowWidth,
       }}
     >
-    <Image
-      style={{height: windowWidth, width: windowWidth}}
-      source={gallery.selectedPicture.source}
-    />
+      <TouchableWithoutFeedback
+        onPress={(a, b) => {
+          window.event = a;
+          console.log('image', a.nativeEvent)
+          gallery.displayServiceBox(a.nativeEvent.locationX, a.nativeEvent.locationY);
+
+        }}>
+        <Image
+          style={{height: windowWidth, width: windowWidth}}
+          source={gallery.selectedPicture.source}
+        />
+      </TouchableWithoutFeedback>
     <TouchableOpacity
       onPress={deletePicture}
       style={{
@@ -212,6 +225,34 @@ const PictureView = observer(({gallery, onPlus}) => {
   );
 });
 
+const TagInfo = observer(({gallery}) => {
+
+  console.log('selectedTag', gallery.selectedTag);
+  if (gallery.selectedTag == null) {
+    return null;
+  }
+
+  return (
+    <View
+      style={{
+        height: h(88),
+        width: windowWidth,
+        backgroundColor: '#3E3E3E',
+        justifyContent: 'center',
+        alignItems: 'center'
+      }}
+    >
+      <Text
+        style={{
+          color: 'white',
+          fontSize: h(35)
+        }}
+      >Tap on the photo</Text>
+    </View>
+
+  );
+});
+
 @observer
 @autobind
 export default class GalleryPage extends Component {
@@ -226,7 +267,7 @@ export default class GalleryPage extends Component {
         console.log('pageY', pageY, pageY2, height, height2);
         // currentPos: 64
         var currentScroll = 64 - pageY2;
-        var differenceY =  -pageY - 240 + (windowHeight - 20 - h(88));
+        var differenceY = -pageY - 240 + (windowHeight - 20 - h(88));
 
         console.log(differenceY);
         if (currentScroll - differenceY > 0) {
@@ -237,6 +278,8 @@ export default class GalleryPage extends Component {
   }
 
   render() {
+
+    let gal =  CreatePostStore.gallery;
     let line = (
       <View
         style={{
@@ -267,10 +310,11 @@ export default class GalleryPage extends Component {
             bounces={false}
             style={{
               backgroundColor: 'white',
-              height: windowHeight - 20 - h(88)
+              height: windowHeight - 20 - h(88) - 250
             }}
           >
             <ImagePreview gallery={CreatePostStore.gallery} />
+            <TagInfo gallery={CreatePostStore.gallery} />
             <ActionMenu gallery={CreatePostStore.gallery} />
             {line}
             <PictureView
@@ -296,7 +340,21 @@ export default class GalleryPage extends Component {
               value={CreatePostStore.gallery.description}
               onChangeText={(text) => CreatePostStore.gallery.description = text}
             />
+
+            <ServiceBox serviceBox={CreatePostStore.gallery.serviceBox}/>
           </ScrollView>
+
+          <MyPicker
+            onValueChange={(val) => gal.pickerValue = val }
+
+            title={gal.pickerTitle}
+            value={gal.pickerValue}
+            data={gal.pickerData}
+            isShown={gal.showPicker}
+            onConfirm={() => console.log('confirm') }
+            onCancel={() => console.log('cancel')}
+          />
+
         </View>
     );
   }

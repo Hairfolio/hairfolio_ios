@@ -14,7 +14,10 @@ import {
   createPost,
   postFilter,
   gallery,
-  albumPage
+  albumPage,
+  addServiceOne,
+  addServiceTwo,
+  addServiceThree,
 } from '../../routes';
 
 export default class EditCustomerStack extends PureComponent {
@@ -50,14 +53,17 @@ export default class EditCustomerStack extends PureComponent {
       >
         <Navigator
           initialRoute={
-            gallery
+            addServiceTwo
             // TODO CHANGE BEFORE RELEASE
           }
           initialRouteStack={[
             createPost,
             postFilter,
             albumPage,
-            gallery
+            gallery,
+            addServiceOne,
+            addServiceTwo,
+            addServiceThree,
           ]}
           ref={(navigator) => this._nav = navigator && navigator.navigator()}
         />

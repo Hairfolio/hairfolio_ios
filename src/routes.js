@@ -29,6 +29,10 @@ import UserAbout from './containers/UserAbout';
 import GalleryPage from './containers/GalleryPage';
 import UserPosts from './containers/UserPosts';
 import UserHairfolio from './containers/UserHairfolio';
+
+import AddServicePageOne from 'containers/AddServicePageOne';
+import AddServicePageTwo from 'containers/AddServicePageTwo';
+import AddServicePageThree from 'containers/AddServicePageThree';
 import Feed from './containers/Feed';
 import Search from './containers/Search';
 import CreatePost from './containers/CreatePost';
@@ -54,6 +58,18 @@ class GalleryRoute extends Route {
   SceneConfig = {
     ...CustomScenesConfig.FadeInOut
   };
+}
+
+class AddServiceOneRoute extends Route {
+  SceneComponent = AddServicePageOne;
+}
+
+class AddServiceTwoRoute extends Route {
+  SceneComponent = AddServicePageTwo;
+}
+
+class AddServiceThreeRoute extends Route {
+  SceneComponent = AddServicePageThree;
 }
 
 class HelloRoute extends Route {
@@ -349,6 +365,9 @@ class OAuthStackRoute extends Route {
 
 export const hello = new HelloRoute();
 export const gallery = new GalleryRoute();
+export const addServiceOne = new AddServiceOneRoute();
+export const addServiceTwo = new AddServiceTwoRoute();
+export const addServiceThree = new AddServiceThreeRoute();
 export const loginOAuth = new LoginOAuthRoute();
 export const register = new RegisterRoute();
 export const register2 = new Register2Route();

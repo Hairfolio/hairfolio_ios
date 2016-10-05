@@ -19,7 +19,7 @@ import SlimHeader from 'components/SlimHeader.js'
 import AlbumStore from 'stores/AlbumStore.js'
 import CreatePostStore from 'stores/CreatePostStore.js'
 
-import {appStack, createPost, onPress, postFilter, albumPage} from '../routes';
+import {appStack, createPost, onPress, postFilter, albumPage, addServiceOne, addServiceTwo, addServiceThree} from '../routes';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 var RCTUIManager = require('NativeModules').UIManager;
@@ -32,7 +32,7 @@ import ReactNative from 'react-native';
 import ServiceBox from 'components/post/ServiceBox.js'
 
 
-const ImagePreview = observer(({gallery}) => {
+const ImagePreview = observer(({gallery, navigators}) => {
 
   if (gallery.selectedPicture == null) {
     return (
@@ -78,9 +78,18 @@ const ImagePreview = observer(({gallery}) => {
     >
       <TouchableWithoutFeedback
         onPress={(a, b) => {
-          window.event = a;
-          console.log('image', a.nativeEvent)
-          gallery.displayServiceBox(a.nativeEvent.locationX, a.nativeEvent.locationY);
+
+          if (gallery.selectedTag) {
+            gallery.position.x = a.nativeEvent.locationX;
+            gallery.position.y = a.nativeEvent.locationY;
+
+            _.last(navigators).jumpTo(addServiceOne);
+
+
+
+
+
+          }
 
         }}>
         <Image
@@ -247,7 +256,7 @@ const TagInfo = observer(({gallery}) => {
           color: 'white',
           fontSize: h(35)
         }}
-      >Tap on the photo</Text>
+      >Tap where to add tag</Text>
     </View>
 
   );
@@ -310,10 +319,12 @@ export default class GalleryPage extends Component {
             bounces={false}
             style={{
               backgroundColor: 'white',
-              height: windowHeight - 20 - h(88) - 250
+              height: windowHeight - 20 - h(88)
             }}
           >
-            <ImagePreview gallery={CreatePostStore.gallery} />
+            <ImagePreview
+              navigators={this.context.navigators}
+              gallery={CreatePostStore.gallery} />
             <TagInfo gallery={CreatePostStore.gallery} />
             <ActionMenu gallery={CreatePostStore.gallery} />
             {line}
@@ -340,21 +351,7 @@ export default class GalleryPage extends Component {
               value={CreatePostStore.gallery.description}
               onChangeText={(text) => CreatePostStore.gallery.description = text}
             />
-
-            <ServiceBox serviceBox={CreatePostStore.gallery.serviceBox}/>
           </ScrollView>
-
-          <MyPicker
-            onValueChange={(val) => gal.pickerValue = val }
-
-            title={gal.pickerTitle}
-            value={gal.pickerValue}
-            data={gal.pickerData}
-            isShown={gal.showPicker}
-            onConfirm={() => console.log('confirm') }
-            onCancel={() => console.log('cancel')}
-          />
-
         </View>
     );
   }

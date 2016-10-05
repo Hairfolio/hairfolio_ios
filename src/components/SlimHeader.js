@@ -4,7 +4,7 @@ import {observer} from 'mobx-react/native';
 
 import {View, Text, Dimensions, TouchableOpacity, TouchableWithoutFeedback, Image} from 'react-native';
 
-const SlimHeader = observer(({leftText, titleStyle, rightText, onLeft, onRight, title}, context) => {
+const SlimHeader = observer(({leftText, titleStyle, rightText, onLeft, onRight, title, rightStyle}, context) => {
   return (
     <View
       style={{
@@ -43,7 +43,9 @@ const SlimHeader = observer(({leftText, titleStyle, rightText, onLeft, onRight, 
           <Text style={{
             fontSize: SCALE.h(34),
             textAlign: 'right',
-            fontFamily: FONTS.SF_REGULAR}} >
+            fontFamily: FONTS.SF_REGULAR,
+            ...rightStyle
+          }} >
             {rightText}
           </Text>
         </TouchableOpacity>

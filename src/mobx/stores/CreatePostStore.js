@@ -86,13 +86,22 @@ class Picker {
   }
 };
 
+class Position {
+
+  constructor(x, y) {
+    this.x = x;
+    this.y = y;
+  }
+}
+
 class Gallery {
   @observable pictures = [];
   @observable selectedPicture = null;
   @observable selectedTag = null;
   @observable description = '';
 
-  @observable serviceBox = new ServiceBox();
+  position = new Position(50, 50);
+
 
   @observable openedPicker = null;
 

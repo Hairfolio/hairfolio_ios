@@ -9,10 +9,13 @@ import {PickerIOS, Picker, Dimensions, Modal, StatusBar, AlertIOS, ScrollView, P
 let windowWidth = Dimensions.get('window').width;
 let windowHeight = Dimensions.get('window').height;
 
+let s = (el) => (a) => el = a;
+
 export {
   _, // lodash
   observer, // mobx
   h,
+  s,
   FONTS,
   autobind,
   React, // react

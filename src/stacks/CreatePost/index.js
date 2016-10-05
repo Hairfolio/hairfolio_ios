@@ -53,7 +53,8 @@ export default class EditCustomerStack extends PureComponent {
       >
         <Navigator
           initialRoute={
-            addServiceTwo
+            createPost
+            // addServiceThree
             // TODO CHANGE BEFORE RELEASE
           }
           initialRouteStack={[
@@ -63,7 +64,7 @@ export default class EditCustomerStack extends PureComponent {
             gallery,
             addServiceOne,
             addServiceTwo,
-            addServiceThree,
+            addServiceThree
           ]}
           ref={(navigator) => this._nav = navigator && navigator.navigator()}
         />

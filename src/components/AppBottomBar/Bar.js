@@ -42,11 +42,11 @@ export default class LoginNavigationbar extends PureComponent {
   }
 
   componentDidMount() {
-    setTimeout(() =>  {
-      CreatePostStore.isOpen = true;
-      CreatePostStore.gallery.addSamplePicture();
-      _.first(this.context.navigators).jumpTo(createPostStack);
-    });
+    //setTimeout(() =>  {
+    //      CreatePostStore.isOpen = true;
+    //CreatePostStore.gallery.addSamplePicture();
+    // _.first(this.context.navigators).jumpTo(createPostStack);
+    // });
   }
 
   updateProgress(progress, fromIndex, toIndex) {
@@ -131,15 +131,15 @@ export default class LoginNavigationbar extends PureComponent {
         () => {
 
           CreatePostStore.isOpen = true;
-          CreatePostStore.gallery.addSamplePicture();
+          // CreatePostStore.gallery.addSamplePicture();
 
           _.first(this.context.navigators).jumpTo(
             createPostStack
           );
 
-          _.last(this.context.navigators).jumpTo(
-            gallery
-          );
+          //_.last(this.context.navigators).jumpTo(
+          //gallery
+          // );
 
         }
 

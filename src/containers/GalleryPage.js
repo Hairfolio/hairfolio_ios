@@ -112,6 +112,26 @@ const ImagePreview = observer(({gallery, navigators}) => {
         />
       </View>
     </TouchableOpacity>
+    {gallery.selectedPicture.serviceTags.map((pic) => {
+      return (
+        <View
+          key={pic.key}
+          style={{
+            position: 'absolute',
+            top: pic.y - 13,
+            left: pic.x - 13,
+            height: 26,
+            width: 26,
+            backgroundColor: '#3E3E3E',
+            borderRadius: 13,
+            justifyContent: 'center',
+            alignItems: 'center'
+          }}>
+          <Text style={{fontSize: 15, backgroundColor: 'transparent', color: 'white'}}>S</Text>
+        </View>
+      );
+
+    })}
   </View>
   );
 });

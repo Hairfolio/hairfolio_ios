@@ -7,6 +7,13 @@ import {v4} from 'uuid';
 
 import {_} from 'hairfolio/src/helpers';
 
+class ServiceTag {
+  constructor(x, y) {
+    this.x = x;
+    this.y = y;
+    this.key = v4();
+  }
+}
 
 var counter = 0;
 const COLORS = ['blue', 'orange', 'red'];
@@ -15,6 +22,7 @@ class LibraryPicture {
   @observable selectedNumber;
   @observable parent;
 
+  @observable serviceTags = [];
   constructor(uri, parent) {
     this.key = v4();
     this.parent = parent;
@@ -24,6 +32,8 @@ class LibraryPicture {
   @action select() {
     this.parent.selectPicture(this);
   }
+
+
 };
 
 class TagMenu {
@@ -53,6 +63,7 @@ class TagMenu {
 class Picture {
 
   @observable parent;
+  @observable serviceTags = [];
 
   constructor(source, parent) {
     this.source = source;
@@ -66,6 +77,10 @@ class Picture {
 
   @action select() {
     this.parent.selectedPicture = this;
+  }
+
+  @action addServiceTag(x, y) {
+    this.serviceTags.push(new ServiceTag(x, y));
   }
 }
 
@@ -105,7 +120,6 @@ class Gallery {
 
   @observable openedPicker = null;
 
-  // TODO
   @observable showPicker = true;
   @observable pickerData = [
     'Single Process Color',
@@ -128,11 +142,6 @@ class Gallery {
 
 
 
-  @action displayServiceBox(posX, posY) {
-    this.serviceBox.locY = posY;
-    this.serviceBox.locX = posX;
-    this.serviceBox.show = true;
-  }
 
 
   @action selectTag(tag) {
@@ -179,6 +188,14 @@ class Gallery {
     this.selectedPicture = this.pictures[0];
     this.selectedTag = this.serviceTagMenu;
     this.serviceTagMenu.selected = true;
+  }
+
+  @action addServicePicture(x, y) {
+    this.selectedTag = null;
+    this.serviceTagMenu.selected = false;
+    this.hashTagMenu.selected = false;
+    this.linkTagMenu.selected = false;
+    this.selectedPicture.addServiceTag(x, y);
   }
 
   @action addPicture(pic) {

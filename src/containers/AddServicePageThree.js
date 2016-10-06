@@ -69,50 +69,38 @@ const Summary = observer(({store}) => {
 
 const ColorInfo = observer(({color}) => {
   return (
-    <View style={{flex: 1, paddingLeft: h(15)}}>
-      <TouchableWithoutFeedback
-        onPress={
-          () => {
-            color.amountSelector.openPageThree();
-          }
-        }
-      >
-        <View
-          style={{
-            height: h(82),
-            backgroundColor: '#F3F3F3',
-            justifyContent: 'center',
-            alignItems: 'center'
-          }}>
-          <Text
-            style={{
-              fontFamily: FONTS.BOOK
-            }}
-          >{color.amountSelector.value}</Text>
-        </View>
-      </TouchableWithoutFeedback>
-      <View
+    <View style={{
+      paddingLeft: h(15),
+      width: (windowWidth - h(15)) / 2,
+      height: h(175),
+      marginTop: h(12),
+      flexDirection: 'row'
+    }}>
+
+    <View
+      style={{
+        width: (windowWidth - h(15)) / 4 - h(15),
+        height: h(175),
+        backgroundColor: color.color,
+        justifyContent: 'center',
+        alignItems: 'center',
+        ...color.borderStyle
+      }}
+    >
+      <Text
         style={{
-          marginTop: h(12),
-          height: h(120),
-          backgroundColor: color.color,
-          justifyContent: 'center',
-          alignItems: 'center',
-          ...color.borderStyle
+          color: color.textColor,
+          fontFamily: FONTS.BOOK_OBLIQUE,
+          fontSize: h(42)
         }}
       >
-        <Text
-          style={{
-            color: color.textColor,
-            fontFamily: FONTS.BOOK_OBLIQUE,
-            fontSize: h(42)
-          }}
-        >
-          {color.name}
-        </Text>
+        {color.name}
+      </Text>
 
-      </View>
     </View>
+    <PickerBox
+      selector={color.amountSelector2} />
+  </View>
   );
 });
 
@@ -120,7 +108,16 @@ const ColorSummary = observer(({store}) => {
 
   console.log('selectedColros', store.selectedColors.length);
   return (
-    <View style={{flexDirection: 'row', backgroundColor: 'white',  marginTop: h(36), paddingRight: h(15)}}>
+    <View
+      style={{
+        flexDirection: 'row',
+        backgroundColor: 'white',
+        marginTop: h(36),
+        paddingRight: h(15),
+        flexWrap: 'wrap',
+        width: windowWidth
+      }}
+    >
       {
         store.selectedColors.map((el) => <ColorInfo key={el.key} color={el} />)
       }
@@ -149,27 +146,72 @@ const PickerPageThree = observer(({store}) => {
   );
 });
 
+const PickerBox = observer(({selector, style, pickerStyle}) => {
+  return (
+    <View
+      style={{
+        height: h(175),
+        borderWidth: 1 / 2,
+        borderColor: 'black',
+        overflow: 'hidden',
+        marginLeft: h(15),
+        ...style
+      }}>
+      <Picker
+        selectedValue={selector.selectedValue}
+        style={{
+          marginTop: -65,
+          width: (windowWidth - h(30)) / 4 - h(15),
+          ...pickerStyle
+        }}
+        itemStyle={{
+          color: 'black',
+          fontSize: h(30),
+          fontFamily: FONTS.ROMAN
+        }}
+        onValueChange={(val) => selector.selectedValue = val}>
+        { selector.data.map((val) => <Picker.Item key={val[0] + val[1]} label={val} value={val} />) }
+
+      </Picker>
+    </View>
+  );
+});
+
 const LastRowColor = observer(({store}) => {
   return (
     <View style={{flexDirection: 'row', backgroundColor: 'white',  marginTop: h(36), paddingRight: h(15)}}>
-      <ColorInfo color={store.specialColor} />
+      <View
+        style={{
+          flex: 1,
+          height: h(175),
+          flexDirection: 'row',
+        }}>
+
+        <PickerBox selector={store.vlSelector} />
+        <PickerBox selector={store.vlWeightSelector} />
+
+
+      </View>
       <View
         style={{
           marginLeft: h(15),
           flex: 1,
-          height: h(214),
+          height: h(175),
           borderWidth: 1 / 2,
           borderColor: 'black',
           alignItems:'center',
           justifyContent: 'center',
-          overflow: 'hidden'
+          overflow: 'hidden',
+          backgroundColor: 'black'
         }}>
         <Picker
           selectedValue={store.selectedMinutes}
-          style={{ height: h(214), marginTop: -100, width: (windowWidth - h(30)) / 2 - h(15) }}
+          style={{ height: h(175), marginTop: -100, width: (windowWidth - h(30)) / 2 - h(15) }}
           itemStyle={{
-            color: 'black',
+            color: 'white',
+            backgroundColor: 'black',
             fontSize: h(40),
+            marginTop: -13,
             fontFamily: FONTS.ROMAN
           }}
           onValueChange={(val) => store.selectedMinutes = val}>

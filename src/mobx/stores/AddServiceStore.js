@@ -7,6 +7,16 @@ import {v4} from 'uuid';
 
 import {_} from 'hairfolio/src/helpers';
 
+class SimpleSelector {
+  @observable data=[];
+  @observable selectedValue;
+
+  constructor(data, selectedValue) {
+    this.data = data;
+    this.selectedValue = selectedValue;
+  }
+}
+
 class Selector {
 
   @observable isEnabled;
@@ -72,6 +82,11 @@ class ColorField {
     this.mainStore = mainStore;
     this.isSelected = isSelected;
     this.amount = 20;
+
+    this.amountSelector2 = new SimpleSelector(
+      _.times(301, (n) => `${n} g`),
+      '20 g'
+    );
 
     this.amountSelector = new Selector(
       mainStore,
@@ -198,6 +213,8 @@ class ColorGrid {
 
 }
 
+
+
 class AddServiceStore {
 
   serviceSelector = new Selector(
@@ -231,7 +248,18 @@ class AddServiceStore {
 
   @observable specialColor = new ColorField('white', 'VL', this)
   @observable selectedMinutes = '30 min';
+
   minData = _.times(100, (n) => `${n + 1} min`);
+
+  @observable vlSelector = new SimpleSelector(
+    _.times(12, (n) => `${5 * (n + 1)} VL`),
+    '20 VL'
+  );
+
+  @observable vlWeightSelector = new SimpleSelector(
+    _.times(301, (n) => `${n} g`),
+    '30 g'
+  );
 
 
   constructor() {

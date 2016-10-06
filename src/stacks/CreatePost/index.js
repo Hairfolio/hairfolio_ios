@@ -54,7 +54,7 @@ export default class EditCustomerStack extends PureComponent {
         <Navigator
           initialRoute={
             createPost
-            // addServiceThree
+            // gallery
             // TODO CHANGE BEFORE RELEASE
           }
           initialRouteStack={[

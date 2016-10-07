@@ -15,6 +15,7 @@ import {
   postFilter,
   gallery,
   albumPage,
+  addLink,
   addServiceOne,
   addServiceTwo,
   addServiceThree,
@@ -53,7 +54,8 @@ export default class EditCustomerStack extends PureComponent {
       >
         <Navigator
           initialRoute={
-            createPost
+            addLink
+            // createPost
             // gallery
             // TODO CHANGE BEFORE RELEASE
           }
@@ -61,6 +63,7 @@ export default class EditCustomerStack extends PureComponent {
             createPost,
             postFilter,
             albumPage,
+            addLink,
             gallery,
             addServiceOne,
             addServiceTwo,

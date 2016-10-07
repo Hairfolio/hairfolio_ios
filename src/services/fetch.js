@@ -60,7 +60,7 @@ export default class Fetch {
 
     var uri = this.store.getState().app.host + path;
 
-    console.log(uri, opts);
+    console.log('fetch', uri, opts);
 
     return window.fetch(uri, opts)
       .then(utils.parseJSON)

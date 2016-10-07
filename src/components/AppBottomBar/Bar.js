@@ -42,8 +42,8 @@ export default class LoginNavigationbar extends PureComponent {
   }
 
   componentDidMount() {
-    // TODO
-      /*    setTimeout(() =>  {
+      /*
+    setTimeout(() =>  {
       CreatePostStore.isOpen = true;
       CreatePostStore.gallery.addSamplePicture();
       _.first(this.context.navigators).jumpTo(createPostStack);
@@ -133,15 +133,10 @@ export default class LoginNavigationbar extends PureComponent {
         () => {
 
           CreatePostStore.isOpen = true;
-          // CreatePostStore.gallery.addSamplePicture();
 
           _.first(this.context.navigators).jumpTo(
             createPostStack
           );
-
-          //_.last(this.context.navigators).jumpTo(
-          //gallery
-          // );
 
         }
 

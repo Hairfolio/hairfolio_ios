@@ -102,8 +102,10 @@ export default class UserAbout extends PureComponent {
     let seperator;
 
     if (this.profile.get('business_website') && this.hasAddress()) {
-      seperator = <View
-      style={{width: 1, backgroundColor: COLORS.ABOUT_SEPARATOR}} />;
+      seperator = (
+        <View
+          style={{width: 1, backgroundColor: COLORS.ABOUT_SEPARATOR}} />
+      );
     }
 
     return (<View style={{
@@ -322,7 +324,7 @@ export default class UserAbout extends PureComponent {
           fontFamily: FONTS.ROMAN,
           fontSize: SCALE.h(30),
           color: COLORS.DARK2
-        }}>{offer.get('price')}$</Text>
+        }}>${offer.get('price')}</Text>
       </View>
     );
   }

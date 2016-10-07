@@ -60,7 +60,7 @@ export default class SalonSP extends PureComponent {
         fontFamily: FONTS.ROMAN,
         fontSize: SCALE.h(30),
         color: COLORS.DARK2
-      }}>{sp.get('price')}$</Text>
+      }}>${sp.get('price')}</Text>
     </TouchableOpacity>);
   }
 
@@ -68,6 +68,7 @@ export default class SalonSP extends PureComponent {
     var offerings = new OrderedMap(this.props.user.get('offerings').map(offerings => [offerings.get('id'), offerings]));
 
     console.log(this.props.user.get('offerings').count());
+    console.log('offerings', this.props.user.get('offerings'));
 
     return (<View style={{
       flex: 1

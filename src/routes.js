@@ -36,6 +36,7 @@ import AddServicePageThree from 'containers/AddServicePageThree';
 import Feed from './containers/Feed';
 import Search from './containers/Search';
 import CreatePost from './containers/CreatePost';
+import AddLink from './containers/AddLink';
 import AlbumPage from './containers/AlbumPage';
 import Favourites from './containers/Favourites';
 import Profile from './containers/ProfileWrapper';
@@ -267,21 +268,28 @@ class PostFilterRoute extends Route {
   };
 }
 
+class AddLinkRoute extends Route {
+  SceneComponent = AddLink;
+  SceneConfig = {
+    ...CustomScenesConfig.FadeInOut
+  };
+}
+
 
 class CreatePostRoute extends Route {
   SceneComponent = CreatePost;
-  //SceneConfig = {
-  //  ...CustomScenesConfig.FadeInOut
-  //};
+  SceneConfig = {
+    ...CustomScenesConfig.FadeInOut
+  };
 
   icon = 'camera';
 }
 
 class AlbumPageRoute extends Route {
   SceneComponent = AlbumPage;
-  // SceneConfig = {
-  //  ...CustomScenesConfig.FadeInOut
-  // };
+  SceneConfig = {
+    ...CustomScenesConfig.FadeInOut
+  };
 }
 
 
@@ -470,6 +478,7 @@ export const oauthStack = new OAuthStackRoute();
 export const createPost = new CreatePostRoute();
 export const postFilter = new PostFilterRoute();
 export const albumPage = new AlbumPageRoute();
+export const addLink = new AddLinkRoute();
 
 export const basicInfoConsumer = new BasicInfoRoute({
   accountType: 'consumer',

@@ -12,6 +12,26 @@ class ServiceTag {
     this.x = x;
     this.y = y;
     this.key = v4();
+    this.abbrev = 'S';
+  }
+}
+
+class LinkTag {
+  constructor(x, y) {
+    this.x = x;
+    this.y = y;
+    this.key = v4();
+    this.abbrev = 'L';
+  }
+}
+
+
+class HashTag {
+  constructor(x, y) {
+    this.x = x;
+    this.y = y;
+    this.key = v4();
+    this.abbrev = 'H';
   }
 }
 
@@ -63,7 +83,7 @@ class TagMenu {
 class Picture {
 
   @observable parent;
-  @observable serviceTags = [];
+  @observable tags = [];
 
   constructor(source, parent) {
     this.source = source;
@@ -80,7 +100,16 @@ class Picture {
   }
 
   @action addServiceTag(x, y) {
-    this.serviceTags.push(new ServiceTag(x, y));
+    this.tags.push(new ServiceTag(x, y));
+  }
+
+
+  @action addLinkTag(x, y) {
+    this.tags.push(new LinkTag(x, y));
+  }
+
+  @action addHashTag(x, y) {
+    this.tags.push(new HashTag(x, y));
   }
 }
 
@@ -132,6 +161,8 @@ class Gallery {
   @observable pickerTitle = 'Service';
 
 
+
+
   @observable lastClick;
 
   wasOpened = false;
@@ -139,6 +170,18 @@ class Gallery {
   @observable hashTagMenu = new TagMenu('Add Tag', require('img/post_hashtag.png'), this);
   @observable serviceTagMenu = new TagMenu('Add Service', require('img/post_service.png'), this);
   @observable linkTagMenu = new TagMenu('Add Link', require('img/post_link.png'), this);
+
+  @computed get serviceTagSelected() {
+    return this.selectedTag == this.serviceTagMenu;
+  }
+
+  @computed get linkTagSelected() {
+    return this.selectedTag == this.linkTagMenu;
+  }
+
+  @computed get hashTagSelected() {
+    return this.selectedTag == this.hashTagMenu;
+  }
 
 
 
@@ -186,8 +229,8 @@ class Gallery {
       )
     );
     this.selectedPicture = this.pictures[0];
-    this.selectedTag = this.serviceTagMenu;
-    this.serviceTagMenu.selected = true;
+    // this.selectedTag = this.serviceTagMenu;
+    // this.serviceTagMenu.selected = true;
   }
 
   @action addServicePicture(x, y) {
@@ -196,6 +239,23 @@ class Gallery {
     this.hashTagMenu.selected = false;
     this.linkTagMenu.selected = false;
     this.selectedPicture.addServiceTag(x, y);
+  }
+
+
+  @action addLinkToPicture(x, y) {
+    this.selectedTag = null;
+    this.serviceTagMenu.selected = false;
+    this.hashTagMenu.selected = false;
+    this.linkTagMenu.selected = false;
+    this.selectedPicture.addLinkTag(x, y);
+  }
+
+  @action addHashToPicture(x, y) {
+    this.selectedTag = null;
+    this.serviceTagMenu.selected = false;
+    this.hashTagMenu.selected = false;
+    this.linkTagMenu.selected = false;
+    this.selectedPicture.addHashTag(x, y);
   }
 
   @action addPicture(pic) {

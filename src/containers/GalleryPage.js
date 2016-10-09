@@ -19,7 +19,7 @@ import SlimHeader from 'components/SlimHeader.js'
 import AlbumStore from 'stores/AlbumStore.js'
 import CreatePostStore from 'stores/CreatePostStore.js'
 
-import {appStack, createPost, onPress, postFilter, albumPage, addServiceOne, addServiceTwo, addServiceThree} from '../routes';
+import {appStack, createPost, onPress, postFilter, albumPage, addServiceOne, addLink, addServiceTwo, addServiceThree} from '../routes';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 var RCTUIManager = require('NativeModules').UIManager;
@@ -30,6 +30,8 @@ import MyPicker from 'components/MyPicker.js'
 import ReactNative from 'react-native';
 
 import ServiceBox from 'components/post/ServiceBox.js'
+
+import AddTagModal from 'components/post/AddTagModal.js'
 
 
 const ImagePreview = observer(({gallery, navigators}) => {
@@ -79,16 +81,13 @@ const ImagePreview = observer(({gallery, navigators}) => {
       <TouchableWithoutFeedback
         onPress={(a, b) => {
 
-          if (gallery.selectedTag) {
-            gallery.position.x = a.nativeEvent.locationX;
-            gallery.position.y = a.nativeEvent.locationY;
+          gallery.position.x = a.nativeEvent.locationX;
+          gallery.position.y = a.nativeEvent.locationY;
 
+          if (gallery.serviceTagSelected) {
             _.last(navigators).jumpTo(addServiceOne);
-
-
-
-
-
+          } else if (gallery.linkTagSelected) {
+            _.last(navigators).jumpTo(addLink);
           }
 
         }}>
@@ -112,7 +111,7 @@ const ImagePreview = observer(({gallery, navigators}) => {
         />
       </View>
     </TouchableOpacity>
-    {gallery.selectedPicture.serviceTags.map((pic) => {
+    {gallery.selectedPicture.tags.map((pic) => {
       return (
         <View
           key={pic.key}
@@ -127,7 +126,7 @@ const ImagePreview = observer(({gallery, navigators}) => {
             justifyContent: 'center',
             alignItems: 'center'
           }}>
-          <Text style={{fontSize: 15, backgroundColor: 'transparent', color: 'white'}}>S</Text>
+          <Text style={{fontSize: 15, backgroundColor: 'transparent', color: 'white'}}>{pic.abbrev}</Text>
         </View>
       );
 
@@ -308,7 +307,7 @@ export default class GalleryPage extends Component {
 
   render() {
 
-    let gal =  CreatePostStore.gallery;
+    let gal = CreatePostStore.gallery;
     let line = (
       <View
         style={{
@@ -342,6 +341,7 @@ export default class GalleryPage extends Component {
               height: windowHeight - 20 - h(88)
             }}
           >
+            <AddTagModal />
             <ImagePreview
               navigators={this.context.navigators}
               gallery={CreatePostStore.gallery} />

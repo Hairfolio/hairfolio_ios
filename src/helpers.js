@@ -4,7 +4,7 @@ import _ from 'lodash';
 import {observer} from 'mobx-react/native'
 import autobind from 'autobind-decorator'
 import {h, FONTS} from 'hairfolio/src/style.js'
-import {PickerIOS, Picker, Dimensions, Modal, StatusBar, WebView, AlertIOS, ScrollView, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet } from 'react-native'
+import {PickerIOS, Animated, Picker, Dimensions, Modal, StatusBar, ActivityIndicator, WebView, AlertIOS, ScrollView, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet } from 'react-native'
 
 let windowWidth = Dimensions.get('window').width;
 let windowHeight = Dimensions.get('window').height;
@@ -24,6 +24,6 @@ export {
   windowWidth,
   windowHeight,
   // react-native components
-  PickerIOS, WebView, Picker,  Modal, StatusBar, ScrollView, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet, Dimensions
+  PickerIOS, ActivityIndicator, WebView, Picker, Animated, Modal, StatusBar, ScrollView, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet, Dimensions
 };
 

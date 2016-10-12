@@ -26,7 +26,7 @@ import Camera from 'react-native-camera';
 import SlimHeader from '../components/SlimHeader.js'
 import LibraryListView from 'components/post/LibraryListView'
 
-const CameraView = observer(({isOpen, inputMethod}) => {
+const CameraView = observer(({store, isOpen, inputMethod}) => {
 
   if (!isOpen) {
     return (
@@ -43,16 +43,23 @@ const CameraView = observer(({isOpen, inputMethod}) => {
         ref={(cam) => {
           window.camera = cam;
         }}
+        type={store.cameraType}
         style={{
           width: Dimensions.get('window').width,
           height: Dimensions.get('window').width
         }}
-        captureMode={inputMethod === 'Video' ? Camera.constants.CaptureMode.video : Camera.constants.CaptureMode.photos}
+        flashMode={store.cameraFlashMode}
+        captureMode={Camera.constants.CaptureMode.photos}
         aspect={Camera.constants.Aspect.fill}>
 
-        <TouchableOpacity onPress={() => alert('light')} style={{ position: 'absolute', right: 0, bottom: 0, padding: SCALE.h(40)}}>
+        <TouchableOpacity onPress={() => CreatePostStore.switchCameraFlashMode()} style={{ position: 'absolute', right: 0, bottom: 0, padding: SCALE.h(40)}}>
           <Image
-            source={require('../../resources/img/post_light.png')} />
+            style={{height: 35, width: 35}}
+            source={store.flashIconSource} />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => CreatePostStore.switchCameraType()} style={{ position: 'absolute', left: 0, top: 0, padding: SCALE.h(40)}}>
+          <Image
+            source={require('img/post_camera_swift.png')} />
         </TouchableOpacity>
       </Camera>
     </View>
@@ -234,7 +241,7 @@ export default class CreatePost extends PureComponent {
         title={CreatePostStore.title}/>
     );
 
-    let mainView = <CameraView isOpen={CreatePostStore.isOpen} inputMethod={CreatePostStore.inputMethod} />;
+    let mainView = <CameraView store={CreatePostStore} isOpen={CreatePostStore.isOpen} inputMethod={CreatePostStore.inputMethod} />;
 
     if (CreatePostStore.inputMethod === 'Library') {
       middleElement = (

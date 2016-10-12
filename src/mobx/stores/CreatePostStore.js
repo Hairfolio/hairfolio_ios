@@ -1,5 +1,6 @@
 import {observable, computed, action} from 'mobx';
 import {CameraRoll, NativeModules} from 'react-native';
+import Camera from 'react-native-camera';
 
 import FilterStore from 'stores/FilterStore.js'
 
@@ -302,13 +303,40 @@ class CreatePostStore {
   @observable groupName = 'Camera Roll';
   @observable libraryPictures = [];
   @observable selectedPictures = [];
-
-
+  @observable cameraType = Camera.constants.Type.back;
+  @observable cameraFlashMode = Camera.constants.FlashMode.off;
   @observable gallery = new Gallery();
-
 
   constructor() {
     this.updateLibraryPictures();
+  }
+
+  @computed get flashIconSource() {
+    if (this.cameraFlashMode == Camera.constants.FlashMode.off) {
+      return require('img/post_flash_no.png');
+    } else if (this.cameraFlashMode == Camera.constants.FlashMode.auto) {
+      return require('img/post_flash_auto.png');
+    } else {
+      return require('img/post_flash.png');
+    }
+  }
+
+  @action switchCameraType() {
+    if (this.cameraType == Camera.constants.Type.front) {
+      this.cameraType = Camera.constants.Type.back;
+    } else {
+      this.cameraType = Camera.constants.Type.front;
+    }
+  }
+
+  @action switchCameraFlashMode() {
+    if (this.cameraFlashMode == Camera.constants.FlashMode.off) {
+      this.cameraFlashMode = Camera.constants.FlashMode.auto;
+    } else if (this.cameraFlashMode == Camera.constants.FlashMode.auto) {
+      this.cameraFlashMode = Camera.constants.FlashMode.on;
+    } else {
+      this.cameraFlashMode = Camera.constants.FlashMode.off;
+    }
   }
 
   reset(resetGallary = true) {

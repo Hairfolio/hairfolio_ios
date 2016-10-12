@@ -75,6 +75,12 @@ const ImagePreview = observer(({gallery, navigators}) => {
     );
 
   };
+
+  let filterPicture = () => {
+    CreatePostStore.gallery.filterStore.reset();
+    setTimeout(()=> CreatePostStore.gallery.filterStore.setMainImage(CreatePostStore.gallery.selectedPicture), 500);
+    _.last(navigators).jumpTo(filter)
+  };
   return (
     <View
       style={{
@@ -116,6 +122,23 @@ const ImagePreview = observer(({gallery, navigators}) => {
       <View>
         <Image
           source={require('img/post_close.png')}
+        />
+      </View>
+    </TouchableOpacity>
+
+    <TouchableOpacity
+      onPress={filterPicture}
+      style={{
+        position: 'absolute',
+        bottom: 0,
+        right: 0,
+        padding: h(14)
+      }}
+    >
+      <View>
+        <Image
+          style={{height: 35, width: 35}}
+          source={require('img/post_filter.png')}
         />
       </View>
     </TouchableOpacity>
@@ -356,24 +379,6 @@ export default class GalleryPage extends Component {
               navigators={this.context.navigators}
               gallery={CreatePostStore.gallery} />
             <TagInfo gallery={CreatePostStore.gallery} />
-
-            <TouchableOpacity
-              style={{
-                alignItems: 'center',
-                justifyContent: 'center',
-                height: 50, backgroundColor: 'blue'
-              }}
-              onPress={() => {
-
-                CreatePostStore.gallery.filterStore.reset();
-                CreatePostStore.gallery.filterStore                  .setMainImage(CreatePostStore.gallery.selectedPicture);
-                _.last(this.context.navigators).jumpTo(filter)
-
-              }}
-
-            >
-              <Text>Filter</Text>
-            </TouchableOpacity>
 
             <ActionMenu gallery={CreatePostStore.gallery} />
             {line}

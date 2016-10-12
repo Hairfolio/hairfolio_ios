@@ -59,10 +59,13 @@ class Selector {
     this.parent.openSelector(this);
   }
 
+  @action close() {
+    this.parent.confirmSelector(this);
+  }
+
   @action openPageThree() {
     this.parent.openSelectorPageThree(this);
   }
-
 
 }
 
@@ -319,6 +322,14 @@ class AddServiceStore {
     }
 
     this.selector.isOpen = true;
+
+    if (sel == this.serviceSelector) {
+      this.brandSelector.isEnabled = true;
+    }
+
+    if (sel == this.brandSelector) {
+      this.colorNameSelector.isEnabled = true;
+    }
   }
 
 
@@ -366,5 +377,15 @@ const store = new AddServiceStore();
 
 
 export default store;
+  /*
 
-
+   <MyPicker
+            onValueChange={(val) => store.selector.value = val}
+            title={store.selector.title}
+            value={store.selector.value}
+            data={store.selector.data}
+            isShown={store.selector.isOpen}
+            onConfirm={() => store.confirmSelector()}
+            onCancel={() => store.cancelSelector()}
+          />
+          */

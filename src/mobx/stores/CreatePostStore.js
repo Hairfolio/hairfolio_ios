@@ -1,6 +1,8 @@
 import {observable, computed, action} from 'mobx';
 import {CameraRoll, NativeModules} from 'react-native';
 
+import FilterStore from 'stores/FilterStore.js'
+
 let PhotoAlbum = NativeModules.PhotoAlbum;
 
 import {v4} from 'uuid';
@@ -25,7 +27,6 @@ class LinkTag {
   }
 }
 
-
 class HashTag {
   constructor(x, y) {
     this.x = x;
@@ -47,6 +48,7 @@ class LibraryPicture {
     this.key = v4();
     this.parent = parent;
     this.uri = `assets-library://asset/asset.JPG?id=${uri}&ext=JPG`;
+    this.imageID  = uri;
   }
 
   @action select() {
@@ -80,13 +82,15 @@ class TagMenu {
   }
 }
 
-class Picture {
+export class Picture {
 
   @observable parent;
   @observable tags = [];
+  @observable source;
 
-  constructor(source, parent) {
+  constructor(orignalSource, source, parent) {
     this.source = source;
+    this.originalSource = source;
     this.key = v4();
     this.parent = parent;
   }
@@ -139,8 +143,13 @@ class Position {
 }
 
 class Gallery {
+
   @observable pictures = [];
   @observable selectedPicture = null;
+  @observable filterStore;
+
+  @observable sepiaPicture = null;
+
   @observable selectedTag = null;
   @observable description = '';
 
@@ -171,6 +180,11 @@ class Gallery {
   @observable serviceTagMenu = new TagMenu('Add Service', require('img/post_service.png'), this);
   @observable linkTagMenu = new TagMenu('Add Link', require('img/post_link.png'), this);
 
+
+  @action applyFilter() {
+    this.selectedPicture.source = this.filterStore.mainPicture.source;
+  }
+
   @computed get serviceTagSelected() {
     return this.selectedTag == this.serviceTagMenu;
   }
@@ -182,10 +196,6 @@ class Gallery {
   @computed get hashTagSelected() {
     return this.selectedTag == this.hashTagMenu;
   }
-
-
-
-
 
   @action selectTag(tag) {
     for (let el of [this.hashTagMenu, this.serviceTagMenu, this.linkTagMenu]) {
@@ -212,6 +222,7 @@ class Gallery {
 
   constructor() {
     window.gallary = this;
+    this.filterStore = new FilterStore(this);
   }
 
   @action deleteSelectedPicture() {
@@ -225,12 +236,20 @@ class Gallery {
     this.addPicture(
       new Picture(
         {uri: 'assets-library://asset/asset.JPG?id=106E99A1-4F6A-45A2-B320-B0AD4A8E8473/L0/001&ext=JPG' },
+    {uri: 'assets-library://asset/asset.JPG?id=106E99A1-4F6A-45A2-B320-B0AD4A8E8473/L0/001&ext=JPG' },
         this
       )
     );
     this.selectedPicture = this.pictures[0];
-    // this.selectedTag = this.serviceTagMenu;
-    // this.serviceTagMenu.selected = true;
+
+    this.filterStore.setMainImage(this.selectedPicture);
+    this.selectedTag = this.serviceTagMenu;
+    this.serviceTagMenu.selected = true;
+  }
+
+  @action updateFilterStore() {
+    this.filterStore = new FilterStore(this);
+    this.filterStore.setMainImage(this.selectedPicture);
   }
 
   @action addServicePicture(x, y) {
@@ -240,7 +259,6 @@ class Gallery {
     this.linkTagMenu.selected = false;
     this.selectedPicture.addServiceTag(x, y);
   }
-
 
   @action addLinkToPicture(x, y) {
     this.selectedTag = null;
@@ -265,15 +283,13 @@ class Gallery {
   }
 
   @action addLibraryPictures(libraryPictures) {
-    let pictures = libraryPictures.map((el) => new Picture({uri: el.uri}, this));
+    let pictures = libraryPictures.map((el) => new Picture({uri: el.uri}, {uri: el.uri}, this));
 
     for (let el of this.pictures) {
       pictures.push(el);
     }
 
     this.pictures = pictures;
-
-
     this.selectedPicture = _.first(this.pictures);
   }
 
@@ -327,6 +343,7 @@ class CreatePostStore {
   @action addTakenPictureToGallery() {
     this.gallery.addPicture(
       new Picture(
+        {uri: this.lastTakenPicture.path},
         {uri: this.lastTakenPicture.path},
         this.gallery
       )
@@ -384,8 +401,6 @@ class CreatePostStore {
       return this.inputMethod;
     }
   }
-
-
 };
 
 const store = new CreatePostStore();

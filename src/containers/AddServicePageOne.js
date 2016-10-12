@@ -12,7 +12,7 @@ import {
   AlertIOS,
   Modal,
   ScrollView,
-  PickerIOS, Picker, StatusBar, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet
+  Picker, StatusBar, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet
 } from 'hairfolio/src/helpers.js';
 
 import SlimHeader from 'components/SlimHeader.js'
@@ -33,43 +33,65 @@ import ReactNative from 'react-native';
 
 
 const BoxSelector = observer(({selector}) => {
+
+  let picker;
+
+  if (selector.isOpen) {
+    picker = <Picker
+      selectedValue={selector.value}
+      style={{marginTop: h(20), backgroundColor: 'white'}}
+      onValueChange={val => selector.value = val}>
+      {selector.data.map(data =>
+          <Picker.Item key={data} label={data} value={data} />
+      )}
+    </Picker>;
+  }
+
+
   return (
-    <TouchableWithoutFeedback
-      onPress={
-        () => {
-          if (selector.isEnabled) {
-            selector.open();
+    <View>
+      <TouchableWithoutFeedback
+        onPress={
+          () => {
+            if (selector.isEnabled) {
+              if (!selector.isOpen) {
+                selector.open();
+              } else {
+                selector.close()
+              }
+            }
           }
         }
-      }
-    >
-      <View
-        style={{
-          height: h(80),
-          backgroundColor: 'white',
-          marginHorizontal: h(20),
-          marginTop: h(20),
-          flexDirection: 'row',
-        }}>
-        <View style={{flex: 1, paddingLeft: h(40), justifyContent: 'center' }}>
-          <Text
-            style={{
-              fontSize: h(28),
-              opacity: selector.opacity
-            }}
-          >{selector.value}</Text>
-        </View>
-        <View style={{width: h(81), flexDirection: 'row'}}>
-          <View style={{width: h(1), height: h(80), backgroundColor: '#C5C5C5'}} />
-          <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-            <Image
-              style={{opacity: selector.opacity}}
-              source={selector.arrowImage}
-            />
+      >
+        <View
+          style={{
+            height: h(80),
+            backgroundColor: 'white',
+            marginHorizontal: h(20),
+            marginTop: h(20),
+            flexDirection: 'row',
+          }}>
+          <View style={{flex: 1, paddingLeft: h(40), justifyContent: 'center' }}>
+            <Text
+              style={{
+                fontSize: h(28),
+                opacity: selector.opacity
+              }}
+            >{selector.value}</Text>
+          </View>
+          <View style={{width: h(81), flexDirection: 'row'}}>
+            <View style={{width: h(1), height: h(80), backgroundColor: '#C5C5C5'}} />
+            <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+              <Image
+                style={{opacity: selector.opacity}}
+                source={selector.arrowImage}
+              />
+            </View>
           </View>
         </View>
-      </View>
-    </TouchableWithoutFeedback>
+      </TouchableWithoutFeedback>
+      {picker}
+    </View>
   );
 });
 
@@ -113,15 +135,6 @@ export default class AddServicePageOne extends Component {
             <BoxSelector selector={store.colorNameSelector} />
 
           </View>
-          <MyPicker
-            onValueChange={(val) => store.selector.value = val}
-            title={store.selector.title}
-            value={store.selector.value}
-            data={store.selector.data}
-            isShown={store.selector.isOpen}
-            onConfirm={() => store.confirmSelector()}
-            onCancel={() => store.cancelSelector()}
-          />
         </View>
     );
   }

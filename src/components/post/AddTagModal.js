@@ -20,6 +20,7 @@ import {appStack, createPost, onPress, postFilter, albumPage} from 'hairfolio/sr
 
 import AddTagStore from 'stores/AddTagStore.js'
 import CreatePostStore from 'stores/CreatePostStore.js'
+import KeyboardStore from 'stores/KeyboardStore.js'
 
 const SearchResultItem = observer(({item}) => {
   console.log('item', item.name);
@@ -27,11 +28,20 @@ const SearchResultItem = observer(({item}) => {
     <TouchableHighlight
       underlayColor='#ccc'
       onPress={() => {
+
         CreatePostStore.gallery.addHashToPicture(
           CreatePostStore.gallery.position.x,
           CreatePostStore.gallery.position.y
-        );
-        AddTagStore.visibility = false;
+         );
+
+        AddTagStore.persistent = false
+
+        // timeout because otherwise keyboar does not hide
+        // personanal hack because
+        setTimeout(() => {
+          AddTagStore.visibility = false
+          StatusBar.setHidden(false);
+        }, 0);
       }}
     >
       <View
@@ -49,9 +59,10 @@ const SearchResultItem = observer(({item}) => {
 
 const SearchResults = observer(({store}) => {
 
+  let myHeight = windowHeight - h(90) - KeyboardStore.height;
   if (store.isLoading) {
     return (
-      <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+      <View style={{height: myHeight, alignItems: 'center', justifyContent: 'center'}}>
         <ActivityIndicator size='large' />
       </View>
     );
@@ -65,15 +76,25 @@ const SearchResults = observer(({store}) => {
     </View>
   }
 
-  return <ScrollView bounces={false}>
-    {store.items.map(el =>
-        <SearchResultItem key={el.key} item={el} />
-    )}
-  </ScrollView>
 
+  return (<View
+      style={{height: myHeight}}
+    >
+      <ScrollView
+        bounces={false}
+        style={{height: myHeight}}
+      >
+        {store.items.map(el =>
+            <SearchResultItem key={el.key} item={el} />
+        )}
+      </ScrollView>
+    </View>
+  );
 });
 
 const Header = observer(({store}) => {
+
+  console.log('render header');
   return (
     <View
       style = {{
@@ -83,6 +104,12 @@ const Header = observer(({store}) => {
       }}
     >
       <TextInput
+        persistent={store.persistent}
+        ref={(el) => {
+          if(el) {
+            el.focus();
+          }
+        }}
         onSubmitEditing={() => store.search()}
         style={{
           flex: 1,
@@ -104,7 +131,16 @@ const Header = observer(({store}) => {
         justifyContent: 'center',
         alignItems: 'center'
       }}
-      onPress={() => store.visibility = false}
+      onPress={() => {
+        store.persistent = false
+
+        // timeout because otherwise keyboar does not hide
+        // personanal hack because
+        setTimeout(() => {
+          store.visibility = false
+          StatusBar.setHidden(false);
+        }, 0);
+      }}
     >
       <Text
         style={{

@@ -1,5 +1,6 @@
 import {
   _, // lodash
+  v4,
   observer, // mobx
   h,
   FONTS,
@@ -18,11 +19,14 @@ import {
 import SlimHeader from 'components/SlimHeader.js'
 import AlbumStore from 'stores/AlbumStore.js'
 import CreatePostStore from 'stores/CreatePostStore.js'
+import AddTagStore from 'stores/AddTagStore.js'
 
-import {appStack, createPost, onPress, postFilter, albumPage, addServiceOne, addLink, addServiceTwo, addServiceThree} from '../routes';
+import {appStack, createPost, onPress, postFilter, albumPage, addServiceOne, filter, addLink, addServiceTwo, addServiceThree} from '../routes';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 var RCTUIManager = require('NativeModules').UIManager;
+
+var ImageFilter = require('NativeModules').ImageFilter;
 
 import MyPicker from 'components/MyPicker.js'
 
@@ -88,10 +92,14 @@ const ImagePreview = observer(({gallery, navigators}) => {
             _.last(navigators).jumpTo(addServiceOne);
           } else if (gallery.linkTagSelected) {
             _.last(navigators).jumpTo(addLink);
+          } else if (gallery.hashTagSelected) {
+            StatusBar.setHidden(true);
+            AddTagStore.show();
           }
 
         }}>
         <Image
+          ref={(el) => window.img = el}
           style={{height: windowWidth, width: windowWidth}}
           source={gallery.selectedPicture.source}
         />
@@ -307,7 +315,9 @@ export default class GalleryPage extends Component {
 
   render() {
 
+
     let gal = CreatePostStore.gallery;
+
     let line = (
       <View
         style={{
@@ -346,6 +356,25 @@ export default class GalleryPage extends Component {
               navigators={this.context.navigators}
               gallery={CreatePostStore.gallery} />
             <TagInfo gallery={CreatePostStore.gallery} />
+
+            <TouchableOpacity
+              style={{
+                alignItems: 'center',
+                justifyContent: 'center',
+                height: 50, backgroundColor: 'blue'
+              }}
+              onPress={() => {
+
+                CreatePostStore.gallery.filterStore.reset();
+                CreatePostStore.gallery.filterStore                  .setMainImage(CreatePostStore.gallery.selectedPicture);
+                _.last(this.context.navigators).jumpTo(filter)
+
+              }}
+
+            >
+              <Text>Filter</Text>
+            </TouchableOpacity>
+
             <ActionMenu gallery={CreatePostStore.gallery} />
             {line}
             <PictureView

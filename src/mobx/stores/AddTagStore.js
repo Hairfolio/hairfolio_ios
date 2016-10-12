@@ -17,13 +17,17 @@ class TagItem {
 
 class AddTagStore {
   @observable searchTerm = '';
-  @observable visibility = true;
+  @observable visibility = false;
   @observable isLoading = false;
+  @observable persistent = true;
   @observable items = null;
 
-  reset() {
+  show() {
     this.searchTerm = '';
-    this.visibility = false;
+    this.visibility = true;
+    this.persistent = true;
+    this.items = null;
+    this.isLoading = false;
   }
 
   search() {
@@ -32,6 +36,7 @@ class AddTagStore {
     setTimeout(() => {
       if (_.random(1) == 0) {
         this.items = [];
+        this.items = _.times(13, n => new TagItem(`#item ${n + 1}`))
       } else {
         this.items = _.times(13, n => new TagItem(`#item ${n + 1}`))
       }

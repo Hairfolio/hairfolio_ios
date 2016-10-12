@@ -27,6 +27,7 @@ import ChangePassword from './containers/ChangePassword';
 import UserStylists from './containers/UserStylists';
 import UserAbout from './containers/UserAbout';
 import GalleryPage from './containers/GalleryPage';
+import FilterPage from './containers/FilterPage';
 import UserPosts from './containers/UserPosts';
 import UserHairfolio from './containers/UserHairfolio';
 
@@ -59,6 +60,10 @@ class GalleryRoute extends Route {
   SceneConfig = {
     ...CustomScenesConfig.FadeInOut
   };
+}
+
+class FilterRoute extends Route {
+  SceneComponent = FilterPage;
 }
 
 class AddServiceOneRoute extends Route {
@@ -373,6 +378,7 @@ class OAuthStackRoute extends Route {
 
 export const hello = new HelloRoute();
 export const gallery = new GalleryRoute();
+export const filter = new FilterRoute();
 export const addServiceOne = new AddServiceOneRoute();
 export const addServiceTwo = new AddServiceTwoRoute();
 export const addServiceThree = new AddServiceThreeRoute();

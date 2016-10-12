@@ -44,6 +44,7 @@
 		FAEDA34C281A48E7BC8D7385 /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A4B5392F7F84425E9E427465 /* Ionicons.ttf */; };
 		FF4E259D1D9FE518003CF7EE /* PhotoAlbum.m in Sources */ = {isa = PBXBuildFile; fileRef = FF4E259B1D9FE518003CF7EE /* PhotoAlbum.m */; };
 		FF8CF22F1D99DEB100D2AD14 /* libRCTCameraRoll.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FF8CF2201D99DE8C00D2AD14 /* libRCTCameraRoll.a */; };
+		FF9AD50F1DAD4BA9001E1690 /* ImageFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = FF9AD50E1DAD4BA9001E1690 /* ImageFilter.m */; };
 		FFDE37631D9A709400F2F4C2 /* SF-UI-Display-Black.otf in Resources */ = {isa = PBXBuildFile; fileRef = FFDE373C1D9A707600F2F4C2 /* SF-UI-Display-Black.otf */; };
 		FFDE37641D9A709400F2F4C2 /* SF-UI-Display-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = FFDE373D1D9A707600F2F4C2 /* SF-UI-Display-Bold.otf */; };
 		FFDE37651D9A709400F2F4C2 /* SF-UI-Display-Heavy.otf in Resources */ = {isa = PBXBuildFile; fileRef = FFDE373E1D9A707600F2F4C2 /* SF-UI-Display-Heavy.otf */; };
@@ -267,6 +268,8 @@
 		FF4E259B1D9FE518003CF7EE /* PhotoAlbum.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PhotoAlbum.m; path = hairfolio/PhotoAlbum.m; sourceTree = "<group>"; };
 		FF4E259C1D9FE518003CF7EE /* PhotoAlbum.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PhotoAlbum.h; path = hairfolio/PhotoAlbum.h; sourceTree = "<group>"; };
 		FF8CF2191D99DE8C00D2AD14 /* RCTCameraRoll.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTCameraRoll.xcodeproj; path = "../node_modules/react-native/Libraries/CameraRoll/RCTCameraRoll.xcodeproj"; sourceTree = "<group>"; };
+		FF9AD50D1DAD4BA9001E1690 /* ImageFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ImageFilter.h; path = hairfolio/ImageFilter.h; sourceTree = "<group>"; };
+		FF9AD50E1DAD4BA9001E1690 /* ImageFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ImageFilter.m; path = hairfolio/ImageFilter.m; sourceTree = "<group>"; };
 		FFDE373C1D9A707600F2F4C2 /* SF-UI-Display-Black.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-UI-Display-Black.otf"; sourceTree = "<group>"; };
 		FFDE373D1D9A707600F2F4C2 /* SF-UI-Display-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-UI-Display-Bold.otf"; sourceTree = "<group>"; };
 		FFDE373E1D9A707600F2F4C2 /* SF-UI-Display-Heavy.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-UI-Display-Heavy.otf"; sourceTree = "<group>"; };
@@ -475,6 +478,8 @@
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB71A68108700A75B9A /* main.m */,
+				FF9AD50D1DAD4BA9001E1690 /* ImageFilter.h */,
+				FF9AD50E1DAD4BA9001E1690 /* ImageFilter.m */,
 				04FE741D1D36C67400292C84 /* StoreManager.m */,
 				04FE74291D36C6B600292C84 /* StoreManager.h */,
 				FF4E259B1D9FE518003CF7EE /* PhotoAlbum.m */,
@@ -959,6 +964,7 @@
 			files = (
 				04FE741E1D36C67400292C84 /* StoreManager.m in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
+				FF9AD50F1DAD4BA9001E1690 /* ImageFilter.m in Sources */,
 				FF4E259D1D9FE518003CF7EE /* PhotoAlbum.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 			);

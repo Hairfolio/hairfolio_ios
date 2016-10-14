@@ -57,7 +57,7 @@ const CameraView = observer(({store, isOpen, inputMethod}) => {
             style={{height: 35, width: 35}}
             source={store.flashIconSource} />
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => CreatePostStore.switchCameraType()} style={{ position: 'absolute', left: 0, top: 0, padding: SCALE.h(40)}}>
+        <TouchableOpacity onPress={() => CreatePostStore.switchCameraType()} style={{ position: 'absolute', left: 0, bottom: 0, padding: SCALE.h(40)}}>
           <Image
             source={require('img/post_camera_swift.png')} />
         </TouchableOpacity>

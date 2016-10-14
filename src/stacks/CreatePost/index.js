@@ -59,7 +59,7 @@ export default class EditCustomerStack extends PureComponent {
             createPost
             // gallery
             //filter
-            //addServiceOne
+            // addServiceThree
             // TODO CHANGE BEFORE RELEASE
           }
           initialRouteStack={[

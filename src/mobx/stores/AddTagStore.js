@@ -31,15 +31,12 @@ class AddTagStore {
   }
 
   search() {
+    let term = this.searchTerm;
     this.isLoading = true;
 
     setTimeout(() => {
-      if (_.random(1) == 0) {
-        this.items = [];
-        this.items = _.times(13, n => new TagItem(`#item ${n + 1}`))
-      } else {
-        this.items = _.times(13, n => new TagItem(`#item ${n + 1}`))
-      }
+      this.items = _.times(13, n => new TagItem(`#item ${n + 1}`))
+      this.items.unshift(new TagItem('#' + term))
       this.isLoading = false;
     }, 1000);
 

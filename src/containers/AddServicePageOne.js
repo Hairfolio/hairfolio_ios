@@ -12,6 +12,7 @@ import {
   AlertIOS,
   Modal,
   ScrollView,
+  ActivityIndicator,
   Picker, StatusBar, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet
 } from 'hairfolio/src/helpers.js';
 
@@ -30,6 +31,7 @@ import AddServiceStore from 'stores/AddServiceStore.js'
 
 
 import ReactNative from 'react-native';
+import LoadingScreen from 'components/LoadingScreen.js'
 
 
 const BoxSelector = observer(({selector}) => {
@@ -37,14 +39,28 @@ const BoxSelector = observer(({selector}) => {
   let picker;
 
   if (selector.isOpen) {
-    picker = <Picker
-      selectedValue={selector.value}
-      style={{marginTop: h(20), backgroundColor: 'white'}}
-      onValueChange={val => selector.value = val}>
-      {selector.data.map(data =>
-          <Picker.Item key={data} label={data} value={data} />
-      )}
-    </Picker>;
+
+    if (selector.isLoaded) {
+      picker = <Picker
+        selectedValue={selector.value}
+        style={{marginTop: h(20), backgroundColor: 'white'}}
+        itemStyle={{fontSize: h(32)}}
+        onValueChange={val => selector.value = val}>
+        {selector.data.map(data =>
+            <Picker.Item key={data.id} label={data.name} value={data.name} />
+        )}
+      </Picker>;
+    } else {
+      picker = <View style={{
+        marginTop: h(20),
+        height: 200,
+        backgroundColor: 'white',
+        alignItems: 'center',
+        justifyContent: 'center'
+      }}>
+      <ActivityIndicator size="large" />
+      </View>
+    }
   }
 
 
@@ -119,9 +135,22 @@ export default class AddServicePageOne extends Component {
             titleStyle={{fontFamily: FONTS.SF_MEDIUM}}
             rightText={'Next'}
             rightStyle={{opacity: store.nextOpacity}}
-            onRight={() => {
+            onRight={async () => {
               if (store.colorNameSelector.hasValue) {
-                _.last(this.context.navigators).jumpTo(addServiceTwo)
+
+                let res = await store.loadColors();
+
+                if (res.length > 0) {
+                  _.last(this.context.navigators).jumpTo(addServiceTwo)
+                } else {
+                  CreatePostStore.gallery.addServicePicture(
+                    CreatePostStore.gallery.position.x,
+                    CreatePostStore.gallery.position.y
+                  );
+                  _.last(this.context.navigators).jumpTo(
+                    gallery
+                  );
+                }
               } else {
                 alert('Please fill out all the fields first');
               }
@@ -133,8 +162,10 @@ export default class AddServicePageOne extends Component {
             <BoxSelector selector={store.brandSelector} />
 
             <BoxSelector selector={store.colorNameSelector} />
-
           </View>
+
+          <LoadingScreen store={store} />
+
         </View>
     );
   }

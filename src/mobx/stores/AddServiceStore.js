@@ -1,6 +1,8 @@
 import {observable, computed, action} from 'mobx';
 import {CameraRoll, NativeModules} from 'react-native';
 
+import ServiceBackend from 'backend/ServiceBackend.js'
+
 let PhotoAlbum = NativeModules.PhotoAlbum;
 
 import {v4} from 'uuid';
@@ -17,6 +19,14 @@ class SimpleSelector {
   }
 }
 
+class SelectorData {
+  constructor({name, id, unit}) {
+    this.name = name;
+    this.id = id;
+    this.unit = unit;
+  }
+}
+
 class Selector {
 
   @observable isEnabled;
@@ -24,16 +34,42 @@ class Selector {
   @observable data;
   @observable title;
   @observable value;
+  @observable isLoaded;
 
-  constructor(parent, value, data, isEnabled, title) {
+  constructor(parent, data, value, isEnabled, title) {
     this.parent = parent;
     this.title = title ? title : value;
     this.oldValue = value;
     this.value = value;
-    this.data = data;
     this.isOpen = false;
+    this.data = data;
     this.isEnabled = isEnabled;
+    this.isLoaded = false;
   }
+
+  @action setData(data) {
+    this.data = data.map(el => new SelectorData(el));
+
+    this.isLoaded = true;
+
+    if (this.isOpen && this.value == this.title) {
+      this.value = this.data[~~(this.data.length / 2)].name;
+    }
+  }
+
+  @computed get selectedData() {
+    if (this.data) {
+      let res = this.data.filter(({name}) => name == this.value);
+      if (res.length == 0) {
+        return null;
+      } else {
+        return res[0];
+      }
+
+    }
+    return null;
+  }
+
 
   @computed get arrowImage() {
     if (this.isOpen) {
@@ -77,9 +113,9 @@ class ColorField {
 
   @observable amountSelector;
 
-  constructor(color, name, mainStore, isSelected = false) {
-    this.name = name;
-    this.color = color;
+  constructor({code, hex}, unit, mainStore, isSelected = false) {
+    this.name = code;
+    this.color = `#${hex}`;
     this.key = v4();
     this.isSelected = false;
     this.mainStore = mainStore;
@@ -87,14 +123,14 @@ class ColorField {
     this.amount = 20;
 
     this.amountSelector2 = new SimpleSelector(
-      _.times(301, (n) => `${n} g`),
-      '20 g'
+      _.times(301, (n) => `${n} ${unit}`),
+      `20 ${unit}`
     );
 
     this.amountSelector = new Selector(
       mainStore,
-      '20g',
-      _.times(100, (n) => `${n + 1}g`),
+      `20${unit}`,
+      _.times(100, (n) => `${n + 1}${unit}`),
       true,
       'Amount'
     );
@@ -146,81 +182,20 @@ class ColorGrid {
   @observable colors;
 
   constructor(parent) {
-    this.colors = [
-      [
-        new ColorField('#DFCFC2', '10N', parent),
-        // TODO only for testing
-        new ColorField('#C0A285', '9N', parent),
-        new ColorField('#BC9B7C', '8N', parent),
-        new ColorField('#AB9580', '7N', parent),
-        new ColorField('#706664', '6N', parent),
-        new ColorField('#665C5A', '5N', parent),
-        new ColorField('#514A49', '4N', parent),
-        new ColorField('#48413F', '3N', parent)
-      ],
-      [
-        new ColorField('#F1E2CD', '10G', parent),
-        new ColorField('#EFD298', '9G', parent),
-        // TODO only for testing
-        new ColorField('#EEC061', '8G', parent),
-        new ColorField('#E9B859', '7G', parent),
-        new ColorField('#E08F41', '6G', parent),
-        new ColorField('#D77D49', '5G', parent),
-        new ColorField('#CB6B2D', '4G', parent),
-        // TODO only for testing
-        new ColorField('#B55F27', '3G', parent)
-      ],
-      [
-        new ColorField('#DFCFC2', '10N', parent),
-        new ColorField('#C0A285', '9N', parent),
-        new ColorField('#BC9B7C', '8N', parent),
-        // TODO only for testing
-        new ColorField('#AB9580', '7N', parent),
-        new ColorField('#706664', '6N', parent),
-        new ColorField('#665C5A', '5N', parent),
-        new ColorField('#514A49', '4N', parent),
-        new ColorField('#48413F', '3N', parent)
-      ],
-      [
-        new ColorField('#F1E2CD', '10G', parent),
-        new ColorField('#EFD298', '9G', parent),
-        new ColorField('#EEC061', '8G', parent),
-        new ColorField('#E9B859', '7G', parent),
-        new ColorField('#E08F41', '6G', parent),
-        new ColorField('#D77D49', '5G', parent),
-        new ColorField('#CB6B2D', '4G', parent),
-        new ColorField('#B55F27', '3G', parent)
-      ],
-      [
-        new ColorField('#DFCFC2', '10N', parent),
-        new ColorField('#C0A285', '9N', parent),
-        new ColorField('#BC9B7C', '8N', parent),
-        new ColorField('#AB9580', '7N', parent),
-        new ColorField('#706664', '6N', parent),
-        new ColorField('#665C5A', '5N', parent),
-        new ColorField('#514A49', '4N', parent),
-        new ColorField('#48413F', '3N', parent)
-      ],
-      [
-        new ColorField('#F1E2CD', '10G', parent),
-        new ColorField('#EFD298', '9G', parent),
-        new ColorField('#EEC061', '8G', parent),
-        new ColorField('#E9B859', '7G', parent),
-        new ColorField('#E08F41', '6G', parent),
-        new ColorField('#D77D49', '5G', parent),
-        new ColorField('#CB6B2D', '4G', parent),
-        new ColorField('#B55F27', '3G', parent)
-      ],
-    ]
+    this.parent = parent;
+    this.colors = [ ];
+  }
+
+  @action setColors(data, unit) {
+    this.colors = data.map(({colors}) => colors.map(d => new ColorField(d, unit, this.parent)));
   }
 
 }
 
 
-
 class AddServiceStore {
 
-  serviceSelector = new Selector(
+  @observable serviceSelector = new Selector(
     this,
     'Service',
     [ 'Single Process Color',
@@ -229,10 +204,10 @@ class AddServiceStore {
       'Lowlights',
       'Straightening'
     ],
-    true
+    false
   );
 
-  brandSelector = new Selector(
+  @observable brandSelector = new Selector(
     this,
     'Brand',
     _.times(5, (num) => 'Brand ' + num),
@@ -240,7 +215,7 @@ class AddServiceStore {
   );
 
 
-  colorNameSelector = new Selector(
+  @observable colorNameSelector = new Selector(
     this,
     'Color name',
     _.times(5, (num) => 'Color name ' + num),
@@ -248,6 +223,7 @@ class AddServiceStore {
   );
 
   @observable colorGrid;
+  @observable isLoading;
 
   @observable specialColor = new ColorField('white', 'VL', this)
   @observable selectedMinutes = '30 min';
@@ -267,6 +243,60 @@ class AddServiceStore {
 
   constructor() {
     this.colorGrid = new ColorGrid(this);
+  }
+
+  async loadService() {
+    let res = await ServiceBackend.getServices();
+    this.serviceSelector.setData(res);
+  }
+
+  async loadColors() {
+    this.isLoading = true;
+    let lineId = this.colorNameSelector.selectedData.id;
+
+    let res = await ServiceBackend.getColors(lineId);
+    this.colorGrid.setColors(res, this.colorNameSelector.selectedData.unit);
+    return res;
+  }
+
+  async loadBrand() {
+    let serviceID = this.serviceSelector.selectedData.id;
+    let res = await ServiceBackend.getBrands(serviceID);
+    this.brandSelector.setData(res);
+  }
+
+  async loadLines() {
+    let brandID = this.brandSelector.selectedData.id;
+    let res = await ServiceBackend.getLines(brandID);
+    this.colorNameSelector.setData(res);
+  }
+
+  reset() {
+    this.isLoading = false;
+
+    this.serviceSelector = new Selector(
+      this,
+      [],
+      'Service',
+      true
+    );
+
+    this.loadService();
+
+    this.brandSelector = new Selector(
+      this,
+      [],
+      'Brand',
+      false
+    );
+
+
+    this.colorNameSelector = new Selector(
+      this,
+      [],
+      'Color name',
+      false
+    );
   }
 
   @computed get descriptionPageTwo() {
@@ -307,7 +337,6 @@ class AddServiceStore {
   @observable pageThreeSelector;
 
   @action openSelector(sel) {
-    console.log('open selector');
     this.selector = sel;
 
     for (let s of [this.serviceSelector, this.brandSelector, this.colorNameSelector]) {
@@ -315,13 +344,23 @@ class AddServiceStore {
         s.isOpen = false;
       } else {
         s.isOpen = true;
-        if (s.value == s.title) {
-          s.value = s.data[~~(s.data.length / 2)];
+
+        if (s.isLoaded && s.value == s.title) {
+          s.data[~~(s.data.length / 2)].name;
         }
       }
     }
 
     this.selector.isOpen = true;
+
+    if (sel == this.brandSelector && !this.brandSelector.isLoaded) {
+      this.loadBrand();
+    }
+
+
+    if (sel == this.colorNameSelector && !this.colorNameSelector.isLoaded) {
+      this.loadLines();
+    }
 
     if (sel == this.serviceSelector) {
       this.brandSelector.isEnabled = true;
@@ -372,20 +411,6 @@ class AddServiceStore {
   }
 }
 
-
 const store = new AddServiceStore();
 
-
 export default store;
-  /*
-
-   <MyPicker
-            onValueChange={(val) => store.selector.value = val}
-            title={store.selector.title}
-            value={store.selector.value}
-            data={store.selector.data}
-            isShown={store.selector.isOpen}
-            onConfirm={() => store.confirmSelector()}
-            onCancel={() => store.cancelSelector()}
-          />
-          */

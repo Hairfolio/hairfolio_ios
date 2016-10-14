@@ -20,6 +20,7 @@ import SlimHeader from 'components/SlimHeader.js'
 import AlbumStore from 'stores/AlbumStore.js'
 import CreatePostStore from 'stores/CreatePostStore.js'
 import AddTagStore from 'stores/AddTagStore.js'
+import AddServiceStore from 'stores/AddServiceStore.js'
 
 import {appStack, createPost, onPress, postFilter, albumPage, addServiceOne, filter, addLink, addServiceTwo, addServiceThree} from '../routes';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
@@ -95,6 +96,9 @@ const ImagePreview = observer(({gallery, navigators}) => {
           gallery.position.y = a.nativeEvent.locationY;
 
           if (gallery.serviceTagSelected) {
+
+
+            AddServiceStore.reset();
             _.last(navigators).jumpTo(addServiceOne);
           } else if (gallery.linkTagSelected) {
             _.last(navigators).jumpTo(addLink);

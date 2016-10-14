@@ -14,10 +14,7 @@ if (process.env.NODE_ENV == 'production') {
   filters = [
     'None',
     'CILinearToSRGBToneCurve',
-    'CISRGBToneCurveToLinear',
-    'CIColorInvert',
     'CIColorMonochrome',
-    'CIColorPosterize',
     'CIFalseColor',
     'CIPhotoEffectFade',
     'CIPhotoEffectInstant',
@@ -25,7 +22,6 @@ if (process.env.NODE_ENV == 'production') {
     'CIPhotoEffectNoir',
     'CIPhotoEffectProcess',
     'CISepiaTone',
-    'CIVignetteEffect',
     'CIUnsharpMask'
   ];
 } else {

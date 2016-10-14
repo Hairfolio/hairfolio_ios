@@ -146,7 +146,7 @@ const PickerPageThree = observer(({store}) => {
   );
 });
 
-const PickerBox = observer(({selector, style, pickerStyle}) => {
+const PickerBox = observer(({selector, style, pickerStyle, itemStyle}) => {
   return (
     <View
       style={{
@@ -167,7 +167,8 @@ const PickerBox = observer(({selector, style, pickerStyle}) => {
         itemStyle={{
           color: 'black',
           fontSize: h(30),
-          fontFamily: FONTS.ROMAN
+          fontFamily: FONTS.ROMAN,
+          ...itemStyle
         }}
         onValueChange={(val) => selector.selectedValue = val}>
         { selector.data.map((val) => <Picker.Item key={val[0] + val[1]} label={val} value={val} />) }
@@ -187,7 +188,11 @@ const LastRowColor = observer(({store}) => {
           flexDirection: 'row',
         }}>
 
-        <PickerBox selector={store.vlSelector} />
+        <PickerBox
+          style={{backgroundColor: '#979797'}}
+          itemStyle={{color: 'white'}}
+          selector={store.vlSelector}
+        />
         <PickerBox selector={store.vlWeightSelector} />
 
 

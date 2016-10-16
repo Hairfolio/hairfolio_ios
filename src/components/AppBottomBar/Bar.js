@@ -11,7 +11,6 @@ import {search, feed, gallery, createPost, createPostStack, editCustomerStack, f
 
 import CreatePostStore from '../../mobx/stores/CreatePostStore.js'
 
-
 export default class LoginNavigationbar extends PureComponent {
 
   static propTypes = {
@@ -42,7 +41,8 @@ export default class LoginNavigationbar extends PureComponent {
   }
 
   componentDidMount() {
-      /*setTimeout(() =>  {
+      /*
+    setTimeout(() =>  {
       CreatePostStore.isOpen = true;
       CreatePostStore.gallery.addSamplePicture();
       _.first(this.context.navigators).jumpTo(createPostStack);
@@ -138,7 +138,6 @@ export default class LoginNavigationbar extends PureComponent {
           );
 
         }
-
 
       )}
       {this.renderItem(favourites, {borders: {right: true}})}

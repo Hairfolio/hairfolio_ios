@@ -10,6 +10,7 @@ import {
   windowHeight,
   // react-native components
   AlertIOS,
+  Alert,
   ActivityIndicator,
   Modal,
   ScrollView,
@@ -104,13 +105,20 @@ const Header = observer(({store}) => {
       }}
     >
       <TextInput
+        autoCapitalize='none'
         persistent={store.persistent}
         ref={(el) => {
           if(el) {
             el.focus();
           }
         }}
-        onSubmitEditing={() => store.search()}
+        onSubmitEditing={() => {
+          if (store.searchTerm.length == 0) {
+            Alert.alert('Error', 'The search term is empty!');
+            return;
+          }
+          store.search();
+        }}
         style={{
           flex: 1,
           margin: h(16),

@@ -7,7 +7,7 @@ let PhotoAlbum = NativeModules.PhotoAlbum;
 
 import {v4} from 'uuid';
 
-import {_} from 'hairfolio/src/helpers';
+import {_, Alert} from 'hairfolio/src/helpers';
 
 class SimpleSelector {
   @observable data=[];
@@ -20,10 +20,11 @@ class SimpleSelector {
 }
 
 class SelectorData {
-  constructor({name, id, unit}) {
+  constructor({name, id, unit, brand_count}) {
     this.name = name;
     this.id = id;
     this.unit = unit;
+    this.brandCount = brand_count;
   }
 }
 
@@ -35,6 +36,7 @@ class Selector {
   @observable title;
   @observable value;
   @observable isLoaded;
+  @observable isHidden;
 
   constructor(parent, data, value, isEnabled, title) {
     this.parent = parent;
@@ -45,6 +47,32 @@ class Selector {
     this.data = data;
     this.isEnabled = isEnabled;
     this.isLoaded = false;
+    this.isHidden = !isEnabled;
+    this.isLoading = false;
+  }
+
+  reset() {
+    this.value = this.title;
+    this.isLoaded = false;
+  }
+
+  shouldLoad() {
+    return !this.isLoading && !this.isLoaded;
+  }
+
+  @action closeAfterError() {
+    this.isOpen = false;
+    this.isLoading = false;
+    this.isLoaded = false;
+    Alert.alert('Error', 'The data could not be loaded. Please check your internet connection');
+  }
+
+  @action hide() {
+    this.isHidden = true;
+  }
+
+  @action show() {
+    this.isHidden = false;
   }
 
   @action setData(data) {
@@ -53,7 +81,8 @@ class Selector {
     this.isLoaded = true;
 
     if (this.isOpen && this.value == this.title) {
-      this.value = this.data[~~(this.data.length / 2)].name;
+      this.setValue(this.data[~~(this.data.length / 2)].name);
+
     }
   }
 
@@ -68,6 +97,11 @@ class Selector {
 
     }
     return null;
+  }
+
+  @action setValue(val) {
+    this.value = val;
+    this.parent.selectorValueChanged(this);
   }
 
 
@@ -245,30 +279,45 @@ class AddServiceStore {
     this.colorGrid = new ColorGrid(this);
   }
 
+  async loadBrand() {
+    let serviceID = this.serviceSelector.selectedData.id;
+
+    this.brandSelector.isLoading = true;
+    try {
+      let res = await ServiceBackend.getBrands(serviceID);
+      this.brandSelector.setData(res);
+    } catch (err) {
+      this.brandSelector.closeAfterError();
+    }
+  }
+
+  async loadLines() {
+    let brandID = this.brandSelector.selectedData.id;
+    this.colorNameSelector.isLoading = true;
+    try {
+      let res = await ServiceBackend.getLines(brandID);
+      this.colorNameSelector.setData(res);
+    } catch (err) {
+      this.colorNameSelector.closeAfterError();
+    }
+  }
+
   async loadService() {
-    let res = await ServiceBackend.getServices();
-    this.serviceSelector.setData(res);
+    this.serviceSelector.isLoading = true;
+    try {
+      let res = await ServiceBackend.getServices();
+      this.serviceSelector.setData(res);
+    } catch (err) {
+      this.serviceSelector.closeAfterError();
+    }
   }
 
   async loadColors() {
-    this.isLoading = true;
     let lineId = this.colorNameSelector.selectedData.id;
 
     let res = await ServiceBackend.getColors(lineId);
     this.colorGrid.setColors(res, this.colorNameSelector.selectedData.unit);
     return res;
-  }
-
-  async loadBrand() {
-    let serviceID = this.serviceSelector.selectedData.id;
-    let res = await ServiceBackend.getBrands(serviceID);
-    this.brandSelector.setData(res);
-  }
-
-  async loadLines() {
-    let brandID = this.brandSelector.selectedData.id;
-    let res = await ServiceBackend.getLines(brandID);
-    this.colorNameSelector.setData(res);
   }
 
   reset() {
@@ -324,12 +373,20 @@ class AddServiceStore {
     return this.selectedColors.length > 0
   }
 
-  @computed get nextOpacity() {
-    if (this.colorNameSelector.hasValue) {
-      return 1.0;
+  @computed get canGoNext() {
+    if (this.colorNameSelector.hasValue ||
+      this.serviceSelector.selectedData != null &&
+      this.serviceSelector.selectedData.brandCount == 0
+    ) {
+      return true;
     } else {
-      return 0.5;
+      return false;
     }
+  }
+
+  @computed get nextOpacity() {
+    if (this.canGoNext) return 1.0;
+    return 0.5;
   }
 
   @observable selector = this.serviceSelector;
@@ -346,19 +403,24 @@ class AddServiceStore {
         s.isOpen = true;
 
         if (s.isLoaded && s.value == s.title) {
-          s.data[~~(s.data.length / 2)].name;
+          s.setValue(s.data[~~(s.data.length / 2)].name);
         }
       }
     }
 
     this.selector.isOpen = true;
 
-    if (sel == this.brandSelector && !this.brandSelector.isLoaded) {
+
+    if (sel == this.serviceSelector && this.serviceSelector.shouldLoad) {
+      this.loadService();
+    }
+
+    if (sel == this.brandSelector && this.brandSelector.shouldLoad) {
       this.loadBrand();
     }
 
 
-    if (sel == this.colorNameSelector && !this.colorNameSelector.isLoaded) {
+    if (sel == this.colorNameSelector && this.colorNameSelector.shouldLoad) {
       this.loadLines();
     }
 
@@ -380,6 +442,27 @@ class AddServiceStore {
   @action cancelSelector() {
     this.selector.isOpen = false;
     this.selector.value = this.selector.oldValue;
+  }
+
+  @action selectorValueChanged(selector) {
+
+    if (selector == this.serviceSelector) {
+      let data = this.serviceSelector.selectedData;
+      console.log('selectedData', data);
+
+      this.brandSelector.reset();
+      this.colorNameSelector.reset();
+
+      if (data.brandCount == 0) {
+        this.brandSelector.hide();
+        this.colorNameSelector.hide();
+      } else {
+        this.brandSelector.show();
+        this.colorNameSelector.hide();
+      }
+    } else if (selector == this.brandSelector) {
+      this.colorNameSelector.show();
+    }
   }
 
   @action confirmSelector() {

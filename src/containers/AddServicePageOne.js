@@ -10,6 +10,7 @@ import {
   windowHeight,
   // react-native components
   AlertIOS,
+  Alert,
   Modal,
   ScrollView,
   ActivityIndicator,
@@ -38,6 +39,10 @@ const BoxSelector = observer(({selector}) => {
 
   let picker;
 
+  if (selector.isHidden) {
+    return null;
+  }
+
   if (selector.isOpen) {
 
     if (selector.isLoaded) {
@@ -45,7 +50,7 @@ const BoxSelector = observer(({selector}) => {
         selectedValue={selector.value}
         style={{marginTop: h(20), backgroundColor: 'white'}}
         itemStyle={{fontSize: h(32)}}
-        onValueChange={val => selector.value = val}>
+        onValueChange={val => selector.setValue(val)}>
         {selector.data.map(data =>
             <Picker.Item key={data.id} label={data.name} value={data.name} />
         )}
@@ -136,13 +141,34 @@ export default class AddServicePageOne extends Component {
             rightText={'Next'}
             rightStyle={{opacity: store.nextOpacity}}
             onRight={async () => {
-              if (store.colorNameSelector.hasValue) {
+              if (store.canGoNext) {
 
-                let res = await store.loadColors();
+                if (store.colorNameSelector.hasValue) {
+                  store.isLoading = true;
 
-                if (res.length > 0) {
-                  _.last(this.context.navigators).jumpTo(addServiceTwo)
+                  let res;
+
+                  try {
+                    res = await store.loadColors();
+                  } catch(err) {
+                    Alert.alert('Error', 'The data could not be loaded. Please check your internet connection');
+                    store.isLoading = false;
+                    return;
+                  }
+
+                  if (res.length > 0) {
+                    _.last(this.context.navigators).jumpTo(addServiceTwo)
+                  } else {
+                    CreatePostStore.gallery.addServicePicture(
+                      CreatePostStore.gallery.position.x,
+                      CreatePostStore.gallery.position.y
+                    );
+                    _.last(this.context.navigators).jumpTo(
+                      gallery
+                    );
+                  }
                 } else {
+                  // no brand
                   CreatePostStore.gallery.addServicePicture(
                     CreatePostStore.gallery.position.x,
                     CreatePostStore.gallery.position.y

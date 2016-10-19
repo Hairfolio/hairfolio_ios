@@ -60,7 +60,4 @@ class AddTagStore {
 
 const store = new AddTagStore();
 
-
 export default store;
-
-

@@ -13,8 +13,7 @@ class ServiceBackend {
   async get(url) {
     let response = await myfetch(BASE_URL + url, {
       method: 'GET',
-      follow: 20, // maximum redirect count, 0 to not follow redirect
-      timeout: 2000, // req/res timeout in ms, 0 to disable, timeout reset on redirect
+      timeout: 20000, // req/res timeout in ms, 0 to disable, timeout reset on redirect
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
@@ -43,6 +42,10 @@ class ServiceBackend {
 
   async getHashTags(name) {
     return await this.get(`hashtags?name=${name}`);
+  }
+
+  async getCatalogItems(name) {
+    return await this.get(`catalog_items?product_name=${name}`);
   }
 
 }

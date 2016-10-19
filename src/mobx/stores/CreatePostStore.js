@@ -8,7 +8,7 @@ let PhotoAlbum = NativeModules.PhotoAlbum;
 
 import {v4} from 'uuid';
 
-import {_} from 'hairfolio/src/helpers';
+import {_, React, Text} from 'hairfolio/src/helpers';
 
 class ServiceTag {
   constructor(x, y) {
@@ -16,7 +16,9 @@ class ServiceTag {
     this.y = y;
     this.key = v4();
     this.abbrev = 'S';
+    this.imageSource = require('img/post_service_tag.png');
   }
+
 }
 
 class LinkTag {
@@ -26,6 +28,7 @@ class LinkTag {
     this.key = v4();
     this.abbrev = 'L';
   }
+
 }
 
 class HashTag {
@@ -35,6 +38,7 @@ class HashTag {
     this.key = v4();
     this.abbrev = 'H';
   }
+
 }
 
 var counter = 0;
@@ -244,8 +248,8 @@ class Gallery {
     this.selectedPicture = this.pictures[0];
 
     this.filterStore.setMainImage(this.selectedPicture);
-    this.selectedTag = this.serviceTagMenu;
-    this.serviceTagMenu.selected = true;
+    this.selectedTag = this.linkTagMenu;
+    this.linkTagMenu.selected = true;
   }
 
   @action updateFilterStore() {

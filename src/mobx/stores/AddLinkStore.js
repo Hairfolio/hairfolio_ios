@@ -1,10 +1,11 @@
 import {observable, computed, action} from 'mobx';
 import {CameraRoll, NativeModules} from 'react-native';
 
+import ServiceBackend from 'backend/ServiceBackend.js'
 
 import {v4} from 'uuid';
 
-import {_} from 'hairfolio/src/helpers';
+import {_, Alert} from 'hairfolio/src/helpers';
 
 const INDEX = {
   CATALOG: 0,
@@ -13,9 +14,12 @@ const INDEX = {
 }
 
 class CatalogItem {
-  constructor(name, link) {
-    this.link = link;
-    this.name = name;
+  constructor({product_name, hashtag, image_url, link_url }) {
+    this.name = product_name;
+    this.imageUrl = image_url;
+    console.log(this.imageUrl);
+    this.linkUrl = link_url;
+    this.hashtag = hashtag;
     this.key = v4();
   }
 };
@@ -25,20 +29,23 @@ class Catalog {
   @observable items = null;
   @observable isLoading = false;
 
-  @action search() {
+  async search() {
+    let term = this.searchText;
     this.isLoading = true;
 
-    setTimeout(() => {
-      if (_.random(1) == 0) {
-        this.items = [];
-      } else {
-        this.items = _.times(13, n => new CatalogItem(`Item ${n + 1}`, 'http://www.google.com'))
-      }
+    try {
+
+      let results = await ServiceBackend.getCatalogItems(term);
+      console.log('searchresults', results);
+
+      this.items = results.map(n => new CatalogItem(n));
+
+    } catch(error) {
+      Alert.alert('Query failed', 'The query failed, please check your internet conection and try again');
+    } finally {
       this.isLoading = false;
-    }, 1000);
-
+    }
   }
-
 }
 
 class Browse {
@@ -67,13 +74,8 @@ class AddLinkStore {
     this.title = '';
     this.link = '';
   }
-
 }
-
 
 const store = new AddLinkStore();
 
-
 export default store;
-
-

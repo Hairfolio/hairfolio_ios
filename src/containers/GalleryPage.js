@@ -147,21 +147,32 @@ const ImagePreview = observer(({gallery, navigators}) => {
       </View>
     </TouchableOpacity>
     {gallery.selectedPicture.tags.map((pic) => {
+
+      let style = {
+        position: 'absolute',
+        top: pic.y - 13,
+        left: pic.x - 13,
+        height: 26,
+        width: 26,
+        backgroundColor: '#3E3E3E',
+        borderRadius: 13,
+        justifyContent: 'center',
+        alignItems: 'center'
+      };
+
+      if (pic.imageSource) {
+        return <Image
+          style={style}
+          key={pic.key}
+          source={pic.imageSource}
+          />;
+      }
+
       return (
         <View
           key={pic.key}
-          style={{
-            position: 'absolute',
-            top: pic.y - 13,
-            left: pic.x - 13,
-            height: 26,
-            width: 26,
-            backgroundColor: '#3E3E3E',
-            borderRadius: 13,
-            justifyContent: 'center',
-            alignItems: 'center'
-          }}>
-          <Text style={{fontSize: 15, backgroundColor: 'transparent', color: 'white'}}>{pic.abbrev}</Text>
+          style={style}>
+            <Text style={{fontSize: 15, backgroundColor: 'transparent', color: 'white'}}>{pic.abbrev}</Text>
         </View>
       );
 

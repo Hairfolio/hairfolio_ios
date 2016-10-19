@@ -13,16 +13,25 @@ let filters;
 if (process.env.NODE_ENV == 'production') {
   filters = [
     'None',
-    'CILinearToSRGBToneCurve',
-    'CIColorMonochrome',
-    'CIFalseColor',
+    'CIColorControls',
+    'CIColorMatrix',
+    'CIColorPolynomial',
+    'CIExposureAdjust',
+    'CIGammaAdjust',
+    'CISRGBToneCurveToLinear',
+    'CIVibrance',
+    'CIColorCubeWithColorSpace',
+    'CIPhotoEffectChrome',
     'CIPhotoEffectFade',
     'CIPhotoEffectInstant',
-    'CIPhotoEffectMono',
     'CIPhotoEffectNoir',
-    'CIPhotoEffectProcess',
-    'CISepiaTone',
-    'CIUnsharpMask'
+    'CIPhotoEffectMono',
+    'CIPhotoEffectTonal',
+    'CIVignette',
+    'CISharpenLuminance',
+    'CIUnsharpMask',
+    'CIDepthOfField',
+    'CIHighlightShadowAdjust',
   ];
 } else {
   filters = [

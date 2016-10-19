@@ -315,8 +315,18 @@ class AddServiceStore {
   async loadColors() {
     let lineId = this.colorNameSelector.selectedData.id;
 
+    let unit = this.colorNameSelector.selectedData.unit;
     let res = await ServiceBackend.getColors(lineId);
-    this.colorGrid.setColors(res, this.colorNameSelector.selectedData.unit);
+    this.colorGrid.setColors(res, unit);
+
+
+    this.vlWeightSelector = new SimpleSelector(
+      _.times(301, (n) => `${n} ${unit}`),
+      '30 ${unit}'
+    );
+
+
+
     return res;
   }
 

@@ -158,6 +158,7 @@ export default class AddServicePageOne extends Component {
 
                   if (res.length > 0) {
                     _.last(this.context.navigators).jumpTo(addServiceTwo)
+                    setTimeout(() => store.isLoading = false, 500);
                   } else {
                     CreatePostStore.gallery.addServicePicture(
                       CreatePostStore.gallery.position.x,

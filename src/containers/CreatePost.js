@@ -208,7 +208,9 @@ export default class CreatePost extends PureComponent {
     window.camera.capture()
       .then((data) => {
         CreatePostStore.lastTakenPicture = data;
-        _.last(this.context.navigators).jumpTo(postFilter);
+        CreatePostStore.addTakenPictureToGallery()
+        _.last(this.context.navigators).jumpTo(gallery)
+        StatusBar.setHidden(false);
       })
       .catch(err => { alert('error'); console.error(err) });
   }

@@ -114,9 +114,14 @@ const CatalogResultItem = observer(({item}) => {
         style={{
           borderBottomWidth: h(1),
           borderColor: '#979797',
-          justifyContent: 'center',
+          alignItems: 'center',
           height: h(86),
+          flexDirection: 'row'
         }}>
+        <Image
+          source={{uri: item.imageUrl}}
+          style={{height: h(64), width: h(64), marginLeft: h(11) }}
+        />
         <Text style={{paddingLeft: 20, fontSize: h(28)}}>{item.name}</Text>
       </View>
     </TouchableHighlight>

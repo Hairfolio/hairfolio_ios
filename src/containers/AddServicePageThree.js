@@ -30,6 +30,8 @@ var RCTUIManager = require('NativeModules').UIManager;
 import MyPicker from 'components/MyPicker.js'
 import ReactNative from 'react-native';
 
+import LinearGradient from 'react-native-linear-gradient';
+
 const ServiceRow = observer(({selector}) => {
   return (
     <View style={{flexDirection: 'row', paddingLeft: h(30), marginBottom: h(10)}}>
@@ -77,11 +79,11 @@ const ColorInfo = observer(({color}) => {
       flexDirection: 'row'
     }}>
 
-    <View
+    <LinearGradient
+      colors={color.gradientColors}
       style={{
         width: (windowWidth - h(15)) / 4 - h(15),
         height: h(175),
-        backgroundColor: color.color,
         justifyContent: 'center',
         alignItems: 'center',
         ...color.borderStyle
@@ -91,13 +93,13 @@ const ColorInfo = observer(({color}) => {
         style={{
           color: color.textColor,
           fontFamily: FONTS.BOOK_OBLIQUE,
-          fontSize: h(42)
+          fontSize: h(42),
+          backgroundColor: 'transparent'
         }}
       >
         {color.name}
       </Text>
-
-    </View>
+    </LinearGradient>
     <PickerBox
       selector={color.amountSelector2} />
   </View>

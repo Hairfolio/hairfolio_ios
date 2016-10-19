@@ -22,6 +22,9 @@ import CreatePostStore from 'stores/CreatePostStore.js'
 import AddTagStore from 'stores/AddTagStore.js'
 import AddServiceStore from 'stores/AddServiceStore.js'
 
+
+import LinearGradient from 'react-native-linear-gradient';
+
 import {appStack, createPost, onPress, postFilter, albumPage, addServiceOne, filter, addLink, addServiceTwo, addServiceThree} from '../routes';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 

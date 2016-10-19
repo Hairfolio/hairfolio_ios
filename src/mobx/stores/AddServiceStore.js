@@ -147,9 +147,15 @@ class ColorField {
 
   @observable amountSelector;
 
-  constructor({code, hex}, unit, mainStore, isSelected = false) {
+  constructor({code, hex, start_hex, end_hex}, unit, mainStore, isSelected = false) {
     this.name = code;
+
     this.color = `#${hex}`;
+
+    this.startColor = start_hex ? `#${start_hex}` : null;
+    this.endColor = end_hex ? `#${end_hex}` : null;
+
+
     this.key = v4();
     this.isSelected = false;
     this.mainStore = mainStore;
@@ -195,6 +201,15 @@ class ColorField {
     }
   }
 
+  @computed get gradientColors() {
+
+    if (this.startColor && this.endColor) {
+      return [this.startColor, this.endColor];
+    }
+
+    return [this.color, this.color];
+  }
+
   @computed get borderWidth() {
     if (this.isSelected) {
       return 3;
@@ -221,6 +236,8 @@ class ColorGrid {
   }
 
   @action setColors(data, unit) {
+    // data[0].colors[1].start_hex = 'ff0000';
+    // data[0].colors[1].end_hex = '0000ff';
     this.colors = data.map(({colors}) => colors.map(d => new ColorField(d, unit, this.parent)));
   }
 

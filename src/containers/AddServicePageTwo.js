@@ -15,6 +15,9 @@ import {
   PickerIOS, Picker, StatusBar, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet
 } from 'hairfolio/src/helpers.js';
 
+
+import LinearGradient from 'react-native-linear-gradient';
+
 import SlimHeader from 'components/SlimHeader.js'
 import AlbumStore from 'stores/AlbumStore.js'
 import CreatePostStore from 'stores/CreatePostStore.js'
@@ -45,13 +48,13 @@ const ColorItem = observer(({colorField}) => {
       }}
 
     >
-      <View
+      <LinearGradient
+        colors={colorField.gradientColors}
         style={{
           width: h(150),
           height: h(106),
           justifyContent: 'center',
           alignItems: 'center',
-          backgroundColor: colorField.color,
           borderColor: colorField.borderColor,
           borderWidth: colorField.borderWidth
         }}
@@ -59,7 +62,8 @@ const ColorItem = observer(({colorField}) => {
         <Text
           style={{
             fontSize: h(35),
-            color: 'white'
+            color: 'white',
+            backgroundColor: 'transparent'
           }}
         >
           {colorField.name}
@@ -68,10 +72,11 @@ const ColorItem = observer(({colorField}) => {
           style={{
             color: '#CDC1B4',
             position: 'absolute',
+            backgroundColor: 'transparent',
             top: 0,
             left: 3
           }}>#</Text>
-      </View>
+      </LinearGradient>
     </TouchableWithoutFeedback>
   );
 });

@@ -67,6 +67,9 @@ RCT_EXPORT_METHOD(filterImage:(NSString *)path filterName:(NSString *)filterName
                                             CIFilter *filter = [CIFilter filterWithName:filterName
                                                                           keysAndValues:kCIInputImageKey, ciImage, nil];
                                             
+                                            // [filter setValue:[NSNumber numberWithDouble:0.75]  forKey: @"inputPower"];
+
+                                            
                                             ciImage = [filter outputImage];
                                             
                                             

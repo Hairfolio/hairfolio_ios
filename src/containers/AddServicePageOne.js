@@ -162,7 +162,11 @@ export default class AddServicePageOne extends Component {
                   } else {
                     CreatePostStore.gallery.addServicePicture(
                       CreatePostStore.gallery.position.x,
-                      CreatePostStore.gallery.position.y
+                      CreatePostStore.gallery.position.y,
+                      {
+                        service_id: AddServiceStore.serviceSelector.selectedData.id,
+                        line_id: AddServiceStore.colorNameSelector.selectedData.id
+                      }
                     );
                     _.last(this.context.navigators).jumpTo(
                       gallery
@@ -170,9 +174,13 @@ export default class AddServicePageOne extends Component {
                   }
                 } else {
                   // no brand
+                  let data = {
+                    service_id: AddServiceStore.serviceSelector.selectedData.id
+                  }
                   CreatePostStore.gallery.addServicePicture(
                     CreatePostStore.gallery.position.x,
-                    CreatePostStore.gallery.position.y
+                    CreatePostStore.gallery.position.y,
+                    data
                   );
                   _.last(this.context.navigators).jumpTo(
                     gallery

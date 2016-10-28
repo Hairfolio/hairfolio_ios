@@ -10,6 +10,26 @@ let myfetch = function(input, opts) {
 // for managing the backend one needs to also catch the exceptions
 class ServiceBackend {
 
+  async post(url, data) {
+
+    console.log('post1');
+    let response = await myfetch(BASE_URL + url, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      timeout: 20000, // req/res timeout in ms, 0 to disable, timeout reset on redirect
+      body: JSON.stringify(data)
+    });
+
+    console.log('post2', response);
+    let json = await response.json();
+
+    console.log('post3');
+    return json;
+  }
+
   async get(url) {
     let response = await myfetch(BASE_URL + url, {
       method: 'GET',
@@ -46,6 +66,11 @@ class ServiceBackend {
 
   async getCatalogItems(name) {
     return await this.get(`catalog_items?product_name=${name}`);
+  }
+
+  async postPost(data) {
+    console.log('postPost', data);
+    return await this.post('posts', data);
   }
 
 }

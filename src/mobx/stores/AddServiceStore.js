@@ -147,10 +147,11 @@ class ColorField {
 
   @observable amountSelector;
 
-  constructor({code, hex, start_hex, end_hex}, unit, mainStore, isSelected = false) {
+  constructor({id, code, hex, start_hex, end_hex}, unit, mainStore, isSelected = false) {
     this.name = code;
 
     this.color = `#${hex}`;
+    this.id = id;
 
     this.startColor = start_hex ? `#${start_hex}` : null;
     this.endColor = end_hex ? `#${end_hex}` : null;
@@ -339,7 +340,7 @@ class AddServiceStore {
 
     this.vlWeightSelector = new SimpleSelector(
       _.times(301, (n) => `${n} ${unit}`),
-      '30 ${unit}'
+      `30 ${unit}`
     );
 
 

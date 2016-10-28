@@ -60,6 +60,8 @@ export const FONTS = {
   SEMIBOLD: 'Avenir-Semibold',
   BOOK_OBLIQUE: 'Avenir-BookOblique',
   HEAVY_OBLIQUE: 'Avenir-HeavyOblique',
+  LIGHT_OBLIQUE: 'Avenir-LightOblique',
+  LIGHT: 'Avenir-Light',
   SF_BOLD: 'SFUIDisplay-Bold',
   SF_REGULAR: 'SFUIDisplay-Regular',
 };

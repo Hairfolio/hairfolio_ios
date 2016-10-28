@@ -22,6 +22,8 @@ import CreatePostStore from 'stores/CreatePostStore.js'
 import AddTagStore from 'stores/AddTagStore.js'
 import AddServiceStore from 'stores/AddServiceStore.js'
 
+import ServiceBackend from 'backend/ServiceBackend.js'
+
 
 import LinearGradient from 'react-native-linear-gradient';
 
@@ -383,6 +385,9 @@ export default class GalleryPage extends Component {
             title='Gallery'
             titleStyle={{fontFamily: FONTS.SF_MEDIUM}}
             rightText='Next'
+            onRight={() => {
+              ServiceBackend.postPost(CreatePostStore.gallery.toJSON());
+            }}
           />
           <ScrollView
             ref='scrollView'

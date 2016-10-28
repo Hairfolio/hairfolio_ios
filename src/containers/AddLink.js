@@ -105,7 +105,8 @@ const CatalogResultItem = observer(({item}) => {
       onPress={() => {
         CreatePostStore.gallery.addLinkToPicture(
           CreatePostStore.gallery.position.x,
-          CreatePostStore.gallery.position.y
+          CreatePostStore.gallery.position.y,
+          item
         );
         _.last(window.navigators).jumpTo(gallery);
       }}
@@ -186,7 +187,8 @@ const BrowseFooter = observer(() => {
         onPress={() => {
           CreatePostStore.gallery.addLinkToPicture(
             CreatePostStore.gallery.position.x,
-            CreatePostStore.gallery.position.y
+            CreatePostStore.gallery.position.y,
+            {name: AddLinkStore.browse.title, linkUrl: AddLinkStore.browse.link}
           );
           _.last(window.navigators).jumpTo(gallery);
         }}
@@ -285,10 +287,15 @@ const ManualPage = observer(() => {
         }}
         onPress={() => {
           if (manual.title.val.length > 0 && manual.link.val.length > 0) {
+            let data = {
+              name: manual.title.val,
+              linkUrl: manual.link.val
+            };
             CreatePostStore.gallery.addLinkToPicture(
-            CreatePostStore.gallery.position.x,
-            CreatePostStore.gallery.position.y
-          );
+              CreatePostStore.gallery.position.x,
+              CreatePostStore.gallery.position.y,
+              data
+            );
             _.last(window.navigators).jumpTo(gallery);
           } else {
             alert('Fill out all the fields');

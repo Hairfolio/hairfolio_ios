@@ -4,42 +4,13 @@ import Camera from 'react-native-camera';
 
 import FilterStore from 'stores/FilterStore.js'
 
+import Picture from 'stores/Picture.js'
+
 let PhotoAlbum = NativeModules.PhotoAlbum;
 
 import {v4} from 'uuid';
 
 import {_, React, Text} from 'hairfolio/src/helpers';
-
-class ServiceTag {
-  constructor(x, y) {
-    this.x = x;
-    this.y = y;
-    this.key = v4();
-    this.abbrev = 'S';
-    this.imageSource = require('img/post_service_tag.png');
-  }
-
-}
-
-class LinkTag {
-  constructor(x, y) {
-    this.x = x;
-    this.y = y;
-    this.key = v4();
-    this.abbrev = 'L';
-  }
-
-}
-
-class HashTag {
-  constructor(x, y) {
-    this.x = x;
-    this.y = y;
-    this.key = v4();
-    this.abbrev = 'H';
-  }
-
-}
 
 var counter = 0;
 const COLORS = ['blue', 'orange', 'red'];
@@ -53,14 +24,12 @@ class LibraryPicture {
     this.key = v4();
     this.parent = parent;
     this.uri = `assets-library://asset/asset.JPG?id=${uri}&ext=JPG`;
-    this.imageID  = uri;
+    this.imageID = uri;
   }
 
   @action select() {
     this.parent.selectPicture(this);
   }
-
-
 };
 
 class TagMenu {
@@ -87,40 +56,7 @@ class TagMenu {
   }
 }
 
-export class Picture {
 
-  @observable parent;
-  @observable tags = [];
-  @observable source;
-
-  constructor(orignalSource, source, parent) {
-    this.source = source;
-    this.originalSource = source;
-    this.key = v4();
-    this.parent = parent;
-  }
-
-  @computed get selected() {
-    return this.parent.selectedPicture == this;
-  }
-
-  @action select() {
-    this.parent.selectedPicture = this;
-  }
-
-  @action addServiceTag(x, y) {
-    this.tags.push(new ServiceTag(x, y));
-  }
-
-
-  @action addLinkTag(x, y) {
-    this.tags.push(new LinkTag(x, y));
-  }
-
-  @action addHashTag(x, y) {
-    this.tags.push(new HashTag(x, y));
-  }
-}
 
 class ServiceBox {
   @observable show = false;
@@ -153,8 +89,6 @@ class Gallery {
   @observable selectedPicture = null;
   @observable filterStore;
 
-  @observable sepiaPicture = null;
-
   @observable selectedTag = null;
   @observable description = '';
 
@@ -173,8 +107,6 @@ class Gallery {
   ];
   @observable pickerValue = 'Highlights';
   @observable pickerTitle = 'Service';
-
-
 
 
   @observable lastClick;
@@ -250,6 +182,9 @@ class Gallery {
     this.filterStore.setMainImage(this.selectedPicture);
     this.selectedTag = this.linkTagMenu;
     this.linkTagMenu.selected = true;
+
+    // add hashtag
+    this.addHashToPicture(20, 100, 'test');
   }
 
   @action updateFilterStore() {
@@ -257,28 +192,28 @@ class Gallery {
     this.filterStore.setMainImage(this.selectedPicture);
   }
 
-  @action addServicePicture(x, y) {
+  @action addServicePicture(x, y, data) {
     this.selectedTag = null;
     this.serviceTagMenu.selected = false;
     this.hashTagMenu.selected = false;
     this.linkTagMenu.selected = false;
-    this.selectedPicture.addServiceTag(x, y);
+    this.selectedPicture.addServiceTag(x, y, data);
   }
 
-  @action addLinkToPicture(x, y) {
+  @action addLinkToPicture(x, y, data) {
     this.selectedTag = null;
     this.serviceTagMenu.selected = false;
     this.hashTagMenu.selected = false;
     this.linkTagMenu.selected = false;
-    this.selectedPicture.addLinkTag(x, y);
+    this.selectedPicture.addLinkTag(x, y, data);
   }
 
-  @action addHashToPicture(x, y) {
+  @action addHashToPicture(x, y, hashtag) {
     this.selectedTag = null;
     this.serviceTagMenu.selected = false;
     this.hashTagMenu.selected = false;
     this.linkTagMenu.selected = false;
-    this.selectedPicture.addHashTag(x, y);
+    this.selectedPicture.addHashTag(x, y, hashtag);
   }
 
   @action addPicture(pic) {
@@ -296,6 +231,15 @@ class Gallery {
 
     this.pictures = pictures;
     this.selectedPicture = _.first(this.pictures);
+  }
+
+  toJSON() {
+    return {
+      post: {
+        description: this.description,
+        pictures: this.pictures.map(e => e.toJSON())
+      }
+    };
   }
 
 }
@@ -433,6 +377,8 @@ class CreatePostStore {
       return this.inputMethod;
     }
   }
+
+
 };
 
 const store = new CreatePostStore();

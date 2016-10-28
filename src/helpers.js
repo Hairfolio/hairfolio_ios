@@ -4,8 +4,29 @@ import _ from 'lodash';
 import {observer} from 'mobx-react/native'
 import autobind from 'autobind-decorator'
 import {v4} from 'uuid';
-import {h, FONTS} from 'hairfolio/src/style.js'
+import {h, FONTS, COLORS} from 'hairfolio/src/style.js'
 import {Alert, PickerIOS, Animated, Picker, Dimensions, Modal, StatusBar, ActivityIndicator, WebView, AlertIOS, ScrollView, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet } from 'react-native'
+
+let moment = require('moment');
+
+moment.locale('en', {
+  relativeTime: {
+    future: 'in %s',
+    past: '%s ago',
+    s:  'seconds',
+    ss: '%ss',
+    m:  'a minute',
+    mm: '%dm',
+    h:  'an hour',
+    hh: '%dh',
+    d:  'a day',
+    dd: '%dd',
+    M:  'a month',
+    MM: '%dM',
+    y:  'a year',
+    yy: '%dY'
+  }
+});
 
 let windowWidth = Dimensions.get('window').width;
 let windowHeight = Dimensions.get('window').height;
@@ -23,8 +44,10 @@ export {
   Component,
   AlertIOS,
   Alert,
+  COLORS,
   windowWidth,
   windowHeight,
+  moment,
   v4,
   // react-native components
   PickerIOS, ActivityIndicator, WebView, Picker, Animated, Modal, StatusBar, ScrollView, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet, Dimensions

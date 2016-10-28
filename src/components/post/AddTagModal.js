@@ -32,7 +32,8 @@ const SearchResultItem = observer(({item}) => {
 
         CreatePostStore.gallery.addHashToPicture(
           CreatePostStore.gallery.position.x,
-          CreatePostStore.gallery.position.y
+          CreatePostStore.gallery.position.y,
+          item.name
          );
 
         AddTagStore.persistent = false

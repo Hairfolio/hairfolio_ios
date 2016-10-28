@@ -258,7 +258,17 @@ export default class AddServicePageThree extends Component {
           onRight={() => {
             CreatePostStore.gallery.addServicePicture(
               CreatePostStore.gallery.position.x,
-              CreatePostStore.gallery.position.y
+              CreatePostStore.gallery.position.y,
+              {
+                service_id: AddServiceStore.serviceSelector.selectedData.id,
+                line_id: AddServiceStore.colorNameSelector.selectedData.id,
+                colors: AddServiceStore.selectedColors,
+                developer: {
+                  volume: AddServiceStore.vlWeightSelector.selectedValue,
+                  amount: AddServiceStore.vlSelector.selectedValue,
+                  time: AddServiceStore.selectedMinutes
+                }
+              }
             );
             _.last(this.context.navigators).jumpTo(
               gallery

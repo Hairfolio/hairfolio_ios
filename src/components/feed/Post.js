@@ -20,6 +20,7 @@ import {
 import PostHeader from 'components/feed/PostHeader.js'
 import PostPicture from 'components/feed/PostPicture.js'
 import PostActionButtons from 'components/feed/PostActionButtons.js'
+import PostDescription from 'components/feed/PostDescription.js'
 
 import Swiper from 'react-native-swiper';
 
@@ -30,7 +31,8 @@ const Post = observer(({post}) => {
       <PostHeader post={post} />
       <PostPicture post={post} />
       <PostActionButtons post={post} />
-          </View>
+      <PostDescription post={post} />
+    </View>
   );
 });
 

@@ -49,6 +49,21 @@ class Post {
     return this.pictures[this.currentIndex];
   }
 
+  hashTags = [
+    {val: 'beautiful', key: v4()},
+    {val: 'life', key: v4()},
+    {val: 'anotherHashtag', key: v4()},
+    {val: 'example', key: v4()},
+    {val: 'now', key: v4()},
+    {val: 'test', key: v4()},
+  ];
+
+  // TODO do this properly with computed function
+  hashTags() {
+    // TODO do this properly
+    return this.hashTags;
+  }
+
   @computed get starImageSource() {
     if (this.hasStarred) {
       return require('img/feed_star_on.png');
@@ -66,7 +81,7 @@ class Post {
   }
 
   samplePost() {
-    this.description = 'This is a test';
+    this.description = 'This is a test description that should go to at least two lines so we can test it properly.';
     this.pictures = [];
 
 
@@ -124,9 +139,11 @@ class FeedStore {
   constructor() {
     this.elements = [];
 
-    let post = new Post();
-    post.samplePost();
-    this.elements.push(post);
+    for (let i = 0; i < 2; i++) {
+      let post = new Post();
+      post.samplePost();
+      this.elements.push(post);
+    }
   }
 
 }

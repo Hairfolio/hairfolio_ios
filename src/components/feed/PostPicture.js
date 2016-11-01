@@ -40,7 +40,7 @@ const PostPicture = observer(({post}) => {
           let diff = currentClickTime - post.lastClickTime;
 
           if (diff < 300) {
-            post.savePost();
+            post.starPost();
           }
         }
 
@@ -48,13 +48,15 @@ const PostPicture = observer(({post}) => {
       }}
       onLongPress={(e) => {
         console.log('long press');
-        post.starPost();
+        post.savePost();
       }}
     >
       <View>
         <View
           style={{height: windowWidth, width: windowWidth}}>
           <Swiper
+            showsButtons={false}
+            showsPagination={false}
             index={post.currentIndex}
             refs={(el) => window.swiper = el}
             autoplay={autoplay}

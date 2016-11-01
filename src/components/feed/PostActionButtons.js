@@ -18,7 +18,7 @@ import {
 } from 'hairfolio/src/helpers.js';
 
 
-
+import {starGivers} from '../../routes';
 
 const PostActionButtons = observer(({post}) => {
   return (
@@ -32,7 +32,10 @@ const PostActionButtons = observer(({post}) => {
         borderBottomColor: '#C1C1C1'
       }}
     >
-      <View
+      <TouchableOpacity
+        onPress={() => {
+          window.navigators[0].jumpTo(starGivers);
+        }}
         style={{
           flexDirection: 'row',
           marginRight: h(50)
@@ -54,7 +57,7 @@ const PostActionButtons = observer(({post}) => {
         >
           {post.starNumber}
         </Text>
-      </View>
+      </TouchableOpacity>
 
       <View
         style={{

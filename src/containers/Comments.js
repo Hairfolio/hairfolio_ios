@@ -30,6 +30,86 @@ import BlackHeader from 'components/BlackHeader.js'
 
 import CommentsStore from 'stores/CommentsStore.js'
 
+const CommentRow = observer(({store}) => {
+  return (
+    <View
+      style = {{
+        flexDirection: 'row',
+        paddingTop: h(16)
+      }}
+    >
+      <View
+        style = {{
+          width: h(121)
+        }}
+      >
+        <Image
+          style={{height: h(80), width: h(80)}}
+          source={store.user.profilePicture.source}
+        />
+      </View>
+      <View
+        style = {{
+          flexDirection: 'row',
+          flex: 1,
+          paddingBottom: h(23),
+          borderBottomWidth: h(1),
+          borderBottomColor: '#D8D8D8'
+        }}
+      >
+        <View
+          style = {{
+            flex: 1
+          }}
+        >
+          <Text
+            style = {{
+              fontFamily: FONTS.MEDIUM,
+              fontSize: h(26),
+              color: '#393939'
+            }}>
+            {store.user.name}
+          </Text>
+          <Text
+            style = {{
+              fontSize: h(24),
+              color: '#868686',
+              fontFamily: FONTS.ROMAN
+            }}
+          >
+            {store.text}
+          </Text>
+        </View>
+
+        <View
+          style = {{
+            width: h(108),
+            paddingTop: h(37),
+            paddingRight: h(15)
+          }}
+        >
+          <Text
+            style = {{
+              fontFamily: FONTS.ROMAN,
+              color: '#D8D8D8',
+              fontSize: h(24),
+              flex: 1,
+              textAlign: 'right'
+            }}
+
+          >
+            {store.timeDifference}
+          </Text>
+        </View>
+
+      </View>
+
+
+    </View>
+
+  );
+});
+
 
 const InputBar = observer(({inputStore, onAction}) => {
   return (
@@ -97,25 +177,40 @@ const CommentsContent = observer(() => {
     return (
       <LoadingScreen
         store={CommentsStore}
-        onAction={() => alert('send')}
       />
+    );
+  }
+
+  if (CommentsStore.isEmpty) {
+    return (
+      <View style={{flex: 1}}>
+        <Text
+          style= {{
+            paddingTop: h(38),
+            fontSize: h(34),
+            textAlign: 'center',
+            fontFamily: FONTS.BOOK_OBLIQUE
+          }}
+        >
+          There have been no comments yet.
+        </Text>
+      </View>
     );
   }
 
   return (
     <View style={{flex: 1}}>
-      <Text
-        style= {{
-          paddingTop: h(38),
-          fontSize: h(34),
-          textAlign: 'center',
-          fontFamily: FONTS.BOOK_OBLIQUE
-        }}
+      <ScrollView
+        ref={el => {CommentsStore.scrollView = el}}
+        onContentSizeChange={(w, h) => CommentsStore.contentHeight = h}
+        onLayout={ev => CommentsStore.scrollViewHeight = ev.nativeEvent.layout.height}
       >
-    There have been no comments yet.
-    </Text>
+        {CommentsStore.comments.map(e => <CommentRow key={e.key} store={e} />)}
+      </ScrollView>
     </View>
   );
+
+
 });
 
 const CommentInput = observer(() => {
@@ -124,9 +219,7 @@ const CommentInput = observer(() => {
     <View>
       <InputBar
         inputStore={store.inputStore}
-        onAction={() => {
-          store.inputStore.value = '';
-        }}
+        onAction={() => CommentsStore.send()}
       />
       <KeyboardSpacer />
     </View>

@@ -18,7 +18,7 @@ import {
 } from 'hairfolio/src/helpers.js';
 
 
-import {starGivers} from '../../routes';
+import {starGivers, comments} from '../../routes';
 
 const PostActionButtons = observer(({post}) => {
   return (
@@ -59,7 +59,10 @@ const PostActionButtons = observer(({post}) => {
         </Text>
       </TouchableOpacity>
 
-      <View
+      <TouchableOpacity
+        onPress={() => {
+          window.navigators[0].jumpTo(comments);
+        }}
         style={{
           flexDirection: 'row',
           marginRight: h(50)
@@ -82,7 +85,7 @@ const PostActionButtons = observer(({post}) => {
         >
           {post.numberOfComments}
         </Text>
-      </View>
+      </TouchableOpacity>
 
       <View
         style={{

@@ -75,7 +75,7 @@ export default class Root extends PureComponent {
         this.initialRoute = appStack;
       }
 
-      this.initialRoute = comments;
+      // this.initialRoute = comments;
       //this.initialRoute = signupSalonStack;
 
 

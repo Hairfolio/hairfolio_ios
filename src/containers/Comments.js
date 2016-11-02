@@ -40,7 +40,8 @@ const CommentRow = observer(({store}) => {
     >
       <View
         style = {{
-          width: h(121)
+          width: h(121),
+          paddingLeft: h(16)
         }}
       >
         <Image

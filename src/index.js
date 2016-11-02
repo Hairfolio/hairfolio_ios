@@ -18,7 +18,7 @@ import utils from './utils';
 
 import Intro from './components/Intro';
 
-import {hello, starGivers, oauthStack, loginStack, forgottenPasswordStack, signupConsumerStack, signupStylistStack, signupSalonStack, signupBrandStack, appStack, editCustomerStack, createPostStack
+import {hello, comments, starGivers, oauthStack, loginStack, forgottenPasswordStack, signupConsumerStack, signupStylistStack, signupSalonStack, signupBrandStack, appStack, editCustomerStack, createPostStack
 } from './routes';
 
 import {appActions} from './actions/app';
@@ -75,7 +75,7 @@ export default class Root extends PureComponent {
         this.initialRoute = appStack;
       }
 
-      // this.initialRoute = starGivers;
+      this.initialRoute = comments;
       //this.initialRoute = signupSalonStack;
 
 
@@ -144,7 +144,8 @@ export default class Root extends PureComponent {
                   oauthStack,
                   editCustomerStack,
                   createPostStack,
-                  starGivers
+                  starGivers,
+                  comments
                 ]}
               />
             </Provider>

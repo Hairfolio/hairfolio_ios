@@ -42,6 +42,7 @@ import AlbumPage from './containers/AlbumPage';
 import Favourites from './containers/Favourites';
 import Profile from './containers/ProfileWrapper';
 import StarGivers from './containers/StarGivers';
+import Comments from './containers/Comments';
 import OnboardingStack from './stacks/Onboarding';
 import ForgottenPasswordStack from './stacks/ForgottenPassword';
 import CreatePostStack from './stacks/CreatePost';
@@ -314,6 +315,13 @@ class ProfileRoute extends Route {
   };
 }
 
+class CommentsRoute extends Route {
+  SceneComponent = Comments;
+  SceneConfig = {
+    ...CustomScenesConfig.FadeInOut
+  };
+}
+
 class StarGiversRoute extends Route {
   SceneComponent = StarGivers;
   SceneConfig = {
@@ -476,6 +484,7 @@ export const search = new SearchRoute();
 export const favourites = new FavouritesRoute();
 export const profile = new ProfileRoute();
 export const starGivers = new StarGiversRoute();
+export const comments = new CommentsRoute();
 export const profileExternal = new ProfileRoute();
 export const loginStack = new OnboardingStackRoute();
 export const forgottenPasswordStack = new ForgottenPasswordStackRoute();
@@ -591,5 +600,6 @@ export const constructors = {
   SignupStylistStackRoute,
   AppStackRoute,
   OAuthStackRoute,
-  StarGiversRoute
+  StarGiversRoute,
+  CommentsRoute
 };

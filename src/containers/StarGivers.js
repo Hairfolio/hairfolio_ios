@@ -24,52 +24,8 @@ import {appStack, gallery, postFilter, albumPage} from '../routes';
 import {STATUSBAR_HEIGHT, POST_INPUT_MODE} from '../constants';
 
 import LoadingScreen from 'components/LoadingScreen.js'
+import BlackHeader from 'components/BlackHeader.js'
 
-const Header = observer(() => {
-  return (
-    <View
-      style={{
-        backgroundColor: '#393939',
-        height: h(86) + 20,
-        paddingTop: 20,
-        paddingHorizontal: h(26),
-        flexDirection: 'row',
-        alignItems: 'center'
-      }}
-    >
-      <TouchableOpacity
-        style={{
-          width: 80
-        }}
-        onPress={() => window.navigators[0].jumpTo(appStack)}
-      >
-        <Image
-          style={{height: h(18), width: h(30)}}
-          source={require('img/nav_white_back.png')}
-        />
-      </TouchableOpacity>
-      <Text
-        style={{
-          flex: 1,
-          fontFamily: FONTS.Regular,
-          fontSize: h(34),
-          color: 'white',
-          textAlign: 'center',
-        }}
-      >
-        Starrers
-      </Text>
-
-      <View
-        style={{
-          width: 80,
-          backgroundColor: 'blue'
-        }}
-      >
-      </View>
-    </View>
-  );
-});
 
 const StarGiverRow = observer(({store}) => {
   return (
@@ -175,10 +131,10 @@ export default class StarGivers extends PureComponent {
       <View style={{
         flex: 1,
       }}>
-      <Header />
+      <BlackHeader
+        onLeft={() => window.navigators[0].jumpTo(appStack)}
+        title='Starrers'/>
       <StarGiversContent />
-
-
 
 
       </View>

@@ -46,6 +46,8 @@
 		FF89C9F01DB7DF9700248CCA /* libBVLinearGradient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FF89C9DE1DB7DF8000248CCA /* libBVLinearGradient.a */; };
 		FF8CF22F1D99DEB100D2AD14 /* libRCTCameraRoll.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FF8CF2201D99DE8C00D2AD14 /* libRCTCameraRoll.a */; };
 		FF9AD50F1DAD4BA9001E1690 /* ImageFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = FF9AD50E1DAD4BA9001E1690 /* ImageFilter.m */; };
+		FFA032FD1DCB5080000158B7 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FFA032FC1DCB5080000158B7 /* Social.framework */; };
+		FFA033001DCB511F000158B7 /* KDSocialShare.m in Sources */ = {isa = PBXBuildFile; fileRef = FFA032FF1DCB511E000158B7 /* KDSocialShare.m */; };
 		FFDE37631D9A709400F2F4C2 /* SF-UI-Display-Black.otf in Resources */ = {isa = PBXBuildFile; fileRef = FFDE373C1D9A707600F2F4C2 /* SF-UI-Display-Black.otf */; };
 		FFDE37641D9A709400F2F4C2 /* SF-UI-Display-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = FFDE373D1D9A707600F2F4C2 /* SF-UI-Display-Bold.otf */; };
 		FFDE37651D9A709400F2F4C2 /* SF-UI-Display-Heavy.otf in Resources */ = {isa = PBXBuildFile; fileRef = FFDE373E1D9A707600F2F4C2 /* SF-UI-Display-Heavy.otf */; };
@@ -279,6 +281,9 @@
 		FF8CF2191D99DE8C00D2AD14 /* RCTCameraRoll.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTCameraRoll.xcodeproj; path = "../node_modules/react-native/Libraries/CameraRoll/RCTCameraRoll.xcodeproj"; sourceTree = "<group>"; };
 		FF9AD50D1DAD4BA9001E1690 /* ImageFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ImageFilter.h; path = hairfolio/ImageFilter.h; sourceTree = "<group>"; };
 		FF9AD50E1DAD4BA9001E1690 /* ImageFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ImageFilter.m; path = hairfolio/ImageFilter.m; sourceTree = "<group>"; };
+		FFA032FC1DCB5080000158B7 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
+		FFA032FE1DCB511E000158B7 /* KDSocialShare.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KDSocialShare.h; path = "../node_modules/react-native-social-share/iOS/KDSocialShare.h"; sourceTree = "<group>"; };
+		FFA032FF1DCB511E000158B7 /* KDSocialShare.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KDSocialShare.m; path = "../node_modules/react-native-social-share/iOS/KDSocialShare.m"; sourceTree = "<group>"; };
 		FFDE373C1D9A707600F2F4C2 /* SF-UI-Display-Black.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-UI-Display-Black.otf"; sourceTree = "<group>"; };
 		FFDE373D1D9A707600F2F4C2 /* SF-UI-Display-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-UI-Display-Bold.otf"; sourceTree = "<group>"; };
 		FFDE373E1D9A707600F2F4C2 /* SF-UI-Display-Heavy.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-UI-Display-Heavy.otf"; sourceTree = "<group>"; };
@@ -305,6 +310,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FFA032FD1DCB5080000158B7 /* Social.framework in Frameworks */,
 				FF89C9F01DB7DF9700248CCA /* libBVLinearGradient.a in Frameworks */,
 				FF8CF22F1D99DEB100D2AD14 /* libRCTCameraRoll.a in Frameworks */,
 				146834051AC3E58100842450 /* libReact.a in Frameworks */,
@@ -517,6 +523,8 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				FFA032FE1DCB511E000158B7 /* KDSocialShare.h */,
+				FFA032FF1DCB511E000158B7 /* KDSocialShare.m */,
 				FF89C9D91DB7DF8000248CCA /* BVLinearGradient.xcodeproj */,
 				FF8CF2191D99DE8C00D2AD14 /* RCTCameraRoll.xcodeproj */,
 				04B328F41D8459BB00A20FC6 /* RCTContacts.xcodeproj */,
@@ -563,6 +571,7 @@
 				FC6A907195BA48E0A3CD2757 /* Resources */,
 				041A2FDE1D5CE28B008B1593 /* Hairfolio.app */,
 				041A2FDF1D5CE28B008B1593 /* HairfolioTests.xctest */,
+				FFA032FB1DCB5080000158B7 /* Frameworks */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -605,6 +614,14 @@
 				FF8CF2201D99DE8C00D2AD14 /* libRCTCameraRoll.a */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		FFA032FB1DCB5080000158B7 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				FFA032FC1DCB5080000158B7 /* Social.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -993,6 +1010,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				04FE741E1D36C67400292C84 /* StoreManager.m in Sources */,
+				FFA033001DCB511F000158B7 /* KDSocialShare.m in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				FF9AD50F1DAD4BA9001E1690 /* ImageFilter.m in Sources */,
 				FF4E259D1D9FE518003CF7EE /* PhotoAlbum.m in Sources */,
@@ -1072,6 +1090,7 @@
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
 					"$(SRCROOT)/../node_modules/react-native-camera/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-camera/ios/**",
+					"$(SRCROOT)/../node_modules/react-native/Libraries/**",
 				);
 				INFOPLIST_FILE = hairfolio/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1105,6 +1124,7 @@
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
 					"$(SRCROOT)/../node_modules/react-native-camera/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-camera/ios/**",
+					"$(SRCROOT)/../node_modules/react-native/Libraries/**",
 				);
 				INFOPLIST_FILE = hairfolio/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

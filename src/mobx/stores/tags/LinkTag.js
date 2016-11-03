@@ -7,6 +7,7 @@ export default class LinkTag {
     this.y = y;
     this.key = v4();
     this.abbrev = 'L';
+    this.type = 'link';
 
     this.linkUrl = linkUrl;
     this.imageUrl = imageUrl;
@@ -16,7 +17,7 @@ export default class LinkTag {
 
   toJSON() {
     return _.pickBy({
-      type: 'link',
+      type: this.type,
       linkUrl: this.linkUrl,
       name: this.name,
       hashtag: this.hashtag,

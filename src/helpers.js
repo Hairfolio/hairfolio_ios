@@ -2,10 +2,11 @@
 import React, { Component } from 'react'
 import _ from 'lodash';
 import {observer} from 'mobx-react/native'
+import {observable, computed, action} from 'mobx';
 import autobind from 'autobind-decorator'
 import {v4} from 'uuid';
 import {h, FONTS, COLORS} from 'hairfolio/src/style.js'
-import {Alert, PickerIOS, Animated, Picker, Dimensions, Modal, StatusBar, ActivityIndicator, WebView, AlertIOS, ScrollView, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet } from 'react-native'
+import {Alert, PickerIOS, Animated, Picker, Dimensions, Modal, StatusBar, ActivityIndicator, WebView, AlertIOS, ScrollView, Platform, View, TextInput, Text, Image, TouchableHighlight, ActionSheetIOS, TouchableOpacity, TouchableWithoutFeedback, StyleSheet } from 'react-native'
 
 let moment = require('moment');
 
@@ -49,7 +50,9 @@ export {
   windowHeight,
   moment,
   v4,
+  // mobx
+  observable, computed, action,
   // react-native components
-  PickerIOS, ActivityIndicator, WebView, Picker, Animated, Modal, StatusBar, ScrollView, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet, Dimensions
+ ActionSheetIOS, PickerIOS, ActivityIndicator, WebView, Picker, Animated, Modal, StatusBar, ScrollView, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet, Dimensions
 };
 

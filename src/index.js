@@ -18,8 +18,9 @@ import utils from './utils';
 
 import Intro from './components/Intro';
 
-import {hello, comments, starGivers, oauthStack, loginStack, forgottenPasswordStack, signupConsumerStack, signupStylistStack, signupSalonStack, signupBrandStack, appStack, editCustomerStack, createPostStack
+import {hello, comments, starGivers, oauthStack, loginStack, forgottenPasswordStack, signupConsumerStack, signupStylistStack, signupSalonStack, signupBrandStack, appStack, editCustomerStack, createPostStack, postDetails
 } from './routes';
+
 
 import {appActions} from './actions/app';
 
@@ -75,8 +76,8 @@ export default class Root extends PureComponent {
         this.initialRoute = appStack;
       }
 
-      // this.initialRoute = comments;
-      //this.initialRoute = signupSalonStack;
+      // this.initialRoute = postDetails;
+      // this.initialRoute = signupSalonStack;
 
 
       // android need workaround because of https://github.com/facebook/react-native/issues/7367
@@ -133,6 +134,7 @@ export default class Root extends PureComponent {
                 backgroundStyle={{flex: 1}}
                 initialRoute={this.initialRoute}
                 initialRouteStack={[
+                  postDetails,
                   hello,
                   loginStack,
                   forgottenPasswordStack,

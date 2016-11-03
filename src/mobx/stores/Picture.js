@@ -38,7 +38,6 @@ export default class Picture {
     this.tags.push(new ServiceTag(x, y, data));
   }
 
-
   @action addLinkTag(x, y, data) {
     this.tags.push(new LinkTag(x, y, data));
   }

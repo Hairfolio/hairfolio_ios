@@ -8,11 +8,12 @@ export default class HashTag {
     this.key = v4();
     this.abbrev = 'H';
     this.hashtag = hashtag;
+    this.type = 'hashtag';
   }
 
   toJSON() {
     return _.pickBy({
-      type: 'hashtag',
+      type: this.type,
       hashtag: this.hashtag,
       left: this.x,
       top: this.y

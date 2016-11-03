@@ -17,6 +17,9 @@ import {
   PickerIOS, Picker, StatusBar, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet
 } from 'hairfolio/src/helpers.js';
 
+import * as routes from 'hairfolio/src/routes';
+
+import PostDetailStore from 'stores/PostDetailStore';
 
 import Swiper from 'react-native-swiper';
 
@@ -36,12 +39,29 @@ const PostPicture = observer(({post}) => {
 
         let currentClickTime = (new Date()).getTime();
 
+        let time = currentClickTime;
+
+        let oneClickFun = () => {
+          if (time == post.lastClickTime && !post.doubleClick) {
+            PostDetailStore.showTags = false;
+            window.navigators[0].jumpTo(routes.postDetails);
+          } else {
+            post.doubleClick = false;
+          }
+        };
+
+
         if (post.lastClickTime) {
           let diff = currentClickTime - post.lastClickTime;
 
           if (diff < 300) {
+            post.doubleClick = true;
             post.starPost();
+          } else {
+            setTimeout(oneClickFun, 350);
           }
+        } else {
+          setTimeout(oneClickFun, 350);
         }
 
         post.lastClickTime = currentClickTime;

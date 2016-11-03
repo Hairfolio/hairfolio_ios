@@ -14,13 +14,56 @@ import {
   AlertIOS,
   Modal,
   ScrollView,
+  ActionSheetIOS,
   PickerIOS, Picker, StatusBar, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet
 } from 'hairfolio/src/helpers.js';
 
+import Communications from 'react-native-communications';
 
 import {starGivers, comments} from '../../routes';
+var KDSocialShare = require('NativeModules').KDSocialShare;
+
+import * as routes from 'hairfolio/src/routes';
+
+import PostDetailStore from 'stores/PostDetailStore'
 
 const PostActionButtons = observer(({post}) => {
+
+  let openMore = () => {
+    ActionSheetIOS.showActionSheetWithOptions({
+      options: ['Share to Facebook', 'Share to Twitter', 'Report', 'Cancel'],
+      destructiveButtonIndex: 2,
+      cancelButtonIndex: 3,
+    },
+    (buttonIndex) => {
+      if (buttonIndex == 0) {
+        // share on facebook
+        KDSocialShare.shareOnFacebook({
+          'text':'Check out this new hairfolio post!',
+          'link':'https://hairfolio.com',
+          'imagelink':'http://res.cloudinary.com/hjqlqfq3w/image/upload/v1478171301/hair_z1v47e.png',
+        },
+          (results) => {
+            console.log(results);
+          }
+        );
+      } else if (buttonIndex == 1) {
+        // share on twitter
+        KDSocialShare.tweet({
+          'text':'Check out this new hairfolio post!',
+          'link':'https://hairfolio.com/',
+          'imagelink':'http://res.cloudinary.com/hjqlqfq3w/image/upload/v1478171301/hair_z1v47e.png',
+        },
+        (results) => {
+          console.log(results);
+        });
+      } else if (buttonIndex == 2) {
+        // report abuse
+        Communications.email(['report@hairfolio.com'], null, null, 'Abusive Post', 'The post from  ' + post.creator.name + ', created on ' + post.createdTime + ' is abusive, please check.')
+      }
+    });
+  }
+
   return (
     <View
       style={{
@@ -87,10 +130,15 @@ const PostActionButtons = observer(({post}) => {
         </Text>
       </TouchableOpacity>
 
-      <View
+      <TouchableOpacity
         style={{
           flexDirection: 'row',
           marginRight: h(50)
+        }}
+
+        onPress={ () => {
+          PostDetailStore.showTags = true;
+          window.navigators[0].jumpTo(routes.postDetails);
         }}
       >
         <Image
@@ -110,7 +158,7 @@ const PostActionButtons = observer(({post}) => {
         >
           {post.numberOfTags}
         </Text>
-      </View>
+      </TouchableOpacity>
 
       <View
         style={{
@@ -125,7 +173,8 @@ const PostActionButtons = observer(({post}) => {
           }}
           source={require('img/feed_share.png')} />
       </View>
-      <View
+      <TouchableOpacity
+        onPress={openMore}
         style={{
           flexDirection: 'row'
         }}
@@ -137,7 +186,7 @@ const PostActionButtons = observer(({post}) => {
             marginRight: h(15),
           }}
           source={require('img/feed_more.png')} />
-      </View>
+      </TouchableOpacity>
 
     </View>
 

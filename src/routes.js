@@ -41,7 +41,6 @@ import AddLink from './containers/AddLink';
 import AlbumPage from './containers/AlbumPage';
 import Favourites from './containers/Favourites';
 import Profile from './containers/ProfileWrapper';
-import StarGivers from './containers/StarGivers';
 import Comments from './containers/Comments';
 import OnboardingStack from './stacks/Onboarding';
 import ForgottenPasswordStack from './stacks/ForgottenPassword';
@@ -53,6 +52,10 @@ import SignupSalonStack from './stacks/SignupSalon';
 import SignupStylistStack from './stacks/SignupStylist';
 import AppStack from './stacks/App';
 import OAuthStack from './stacks/OAuth';
+
+// Feed
+import StarGivers from './containers/StarGivers';
+import PostDetails from './containers/PostDetails.js';
 
 // post
 import PostFilter from './containers/PostFilter';
@@ -322,6 +325,14 @@ class CommentsRoute extends Route {
   };
 }
 
+
+class PostDetailsRoute extends Route {
+  SceneComponent = PostDetails;
+  SceneConfig = {
+    ...CustomScenesConfig.FadeInOut
+  };
+}
+
 class StarGiversRoute extends Route {
   SceneComponent = StarGivers;
   SceneConfig = {
@@ -483,8 +494,6 @@ export const feed = new FeedRoute();
 export const search = new SearchRoute();
 export const favourites = new FavouritesRoute();
 export const profile = new ProfileRoute();
-export const starGivers = new StarGiversRoute();
-export const comments = new CommentsRoute();
 export const profileExternal = new ProfileRoute();
 export const loginStack = new OnboardingStackRoute();
 export const forgottenPasswordStack = new ForgottenPasswordStackRoute();
@@ -503,6 +512,12 @@ export const createPost = new CreatePostRoute();
 export const postFilter = new PostFilterRoute();
 export const albumPage = new AlbumPageRoute();
 export const addLink = new AddLinkRoute();
+
+
+// feed
+export const starGivers = new StarGiversRoute();
+export const comments = new CommentsRoute();
+export const postDetails = new PostDetailsRoute();
 
 export const basicInfoConsumer = new BasicInfoRoute({
   accountType: 'consumer',
@@ -601,5 +616,6 @@ export const constructors = {
   AppStackRoute,
   OAuthStackRoute,
   StarGiversRoute,
-  CommentsRoute
+  CommentsRoute,
+  PostDetailsRoute
 };

@@ -12,6 +12,7 @@ export default class ServiceTag {
     this.line_id = line_id;
     this.colors = colors ? colors : [];
     this.developer = developer;
+    this.type = 'service';
   }
 
   toJSON() {
@@ -34,9 +35,8 @@ export default class ServiceTag {
         time: parseInt(this.developer.time.split(' ')[0], 10)
       };
     }
-
     return _.pickBy({
-      type: 'service',
+      type: this.type,
       service_id: this.service_id,
       line_id: this.line_id,
       colors: colorData,

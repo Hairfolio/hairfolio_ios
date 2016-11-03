@@ -11,7 +11,6 @@ let myfetch = function(input, opts) {
 class ServiceBackend {
 
   async post(url, data) {
-
     console.log('post1');
     let response = await myfetch(BASE_URL + url, {
       method: 'POST',

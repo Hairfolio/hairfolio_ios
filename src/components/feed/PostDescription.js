@@ -18,15 +18,14 @@ import {
 } from 'hairfolio/src/helpers.js';
 
 
-
-
-const PostDescription = observer(({post}) => {
+const PostDescription = observer(({post, style = {}}) => {
   return (
     <View
       style={{
         paddingHorizontal: h(22),
         paddingTop: h(14),
-        paddingBottom: h(28)
+        paddingBottom: h(28),
+        ...style
       }}
     >
       <Text
@@ -49,7 +48,7 @@ const PostDescription = observer(({post}) => {
           post.hashTags.map(e =>
               <Text
                 key={e.key}
-                onPress={() => alert('you clicked ' + e.val)}
+                onPress={() => alert('you clicked ' + e.hashtag)}
                 style = {{
                   fontSize: h(28),
                   color: '#3E3E3E',
@@ -57,7 +56,7 @@ const PostDescription = observer(({post}) => {
                   textAlign: 'left'
                 }}
               >
-                {`#${e.val} `}
+                {`#${e.hashtag} `}
               </Text>
           )
         }

@@ -94,7 +94,7 @@ export default class AppStack extends PureComponent {
         }}
       >
         <Navigator
-          initialRoute={favourites}
+          initialRoute={profile}
           initialRouteStack={[
             search, feed, createPost, favourites, profile, profileExternal,
           ]}

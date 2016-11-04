@@ -679,6 +679,7 @@
 					};
 					13B07F861A680F5B00A75B9A = {
 						DevelopmentTeam = NBCQ5976BP;
+						ProvisioningStyle = Manual;
 						SystemCapabilities = {
 							com.apple.Push = {
 								enabled = 1;
@@ -1101,7 +1102,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.hairfolio.hairfolio;
 				PRODUCT_NAME = Hairfolio;
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "62bec110-6bf1-418e-b5ad-d48076b19280";
+				PROVISIONING_PROFILE_SPECIFIER = hairfolio_new_certificate;
 			};
 			name = Debug;
 		};
@@ -1135,7 +1137,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.hairfolio.hairfolio;
 				PRODUCT_NAME = Hairfolio;
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "62bec110-6bf1-418e-b5ad-d48076b19280";
+				PROVISIONING_PROFILE_SPECIFIER = hairfolio_new_certificate;
 			};
 			name = Release;
 		};

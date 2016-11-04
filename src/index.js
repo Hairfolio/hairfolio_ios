@@ -18,11 +18,14 @@ import utils from './utils';
 
 import Intro from './components/Intro';
 
+import {getHairfolios} from 'backend/HairfolioBackend';
+
 import {hello, comments, starGivers, oauthStack, loginStack, forgottenPasswordStack, signupConsumerStack, signupStylistStack, signupSalonStack, signupBrandStack, appStack, editCustomerStack, createPostStack, postDetails
 } from './routes';
 
 
 import {appActions} from './actions/app';
+import UserStore from 'stores/UserStore.js';
 
 NativeModules.UIManager.setLayoutAnimationEnabledExperimental &&
   NativeModules.UIManager.setLayoutAnimationEnabledExperimental(true);

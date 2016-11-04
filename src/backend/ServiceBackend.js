@@ -1,3 +1,4 @@
+import Backend from './Backend.js'
 const BASE_URL = 'http://hairfolio.herokuapp.com/';
 
 let myfetch = function(input, opts) {
@@ -7,42 +8,8 @@ let myfetch = function(input, opts) {
   });
 }
 
-// for managing the backend one needs to also catch the exceptions
-class ServiceBackend {
 
-  async post(url, data) {
-    console.log('post1');
-    let response = await myfetch(BASE_URL + url, {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      timeout: 20000, // req/res timeout in ms, 0 to disable, timeout reset on redirect
-      body: JSON.stringify(data)
-    });
-
-    console.log('post2', response);
-    let json = await response.json();
-
-    console.log('post3');
-    return json;
-  }
-
-  async get(url) {
-    let response = await myfetch(BASE_URL + url, {
-      method: 'GET',
-      timeout: 20000, // req/res timeout in ms, 0 to disable, timeout reset on redirect
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      }
-    });
-    let json = await response.json();
-    return json;
-  }
-
-
+class ServiceBackend extends Backend {
   async getServices() {
     return await this.get('services');
   }
@@ -71,7 +38,6 @@ class ServiceBackend {
     console.log('postPost', data);
     return await this.post('posts', data);
   }
-
 }
 
 const serviceBackend = new ServiceBackend()

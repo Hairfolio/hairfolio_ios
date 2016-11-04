@@ -8,6 +8,16 @@ import NavigationSetting from '../navigation/NavigationSetting';
 
 import {BOTTOMBAR_HEIGHT, STATUSBAR_HEIGHT} from '../constants';
 
+import WhiteHeader from 'components/WhiteHeader'
+
+
+import LinkTabBar from 'components/post/LinkTabBar.js'
+
+import FavouritesList from 'components/favourites/FavouritesList.js'
+import FavouritesGrid from 'components/favourites/FavouritesGrid.js'
+import ScrollableTabView from 'react-native-scrollable-tab-view'
+
+
 @connect(app)
 export default class Favourites extends PureComponent {
   static propTypes = {
@@ -19,23 +29,21 @@ export default class Favourites extends PureComponent {
   };
 
   render() {
-    return (<NavigationSetting
-      style={{
-        flex: 1,
-        backgroundColor: COLORS.WHITE,
-        paddingTop: STATUSBAR_HEIGHT,
-        paddingBottom: BOTTOMBAR_HEIGHT
-      }}
-    >
-      <View style={{
-        flex: 1
-      }}>
-        <Text style={{
-          fontFamily: FONTS.MEDIUM,
-          fontSize: SCALE.h(26),
-          color: COLORS.TEXT
-        }}>Favourites</Text>
+    return (
+      <NavigationSetting
+        style={{
+          flex: 1,
+          backgroundColor: COLORS.WHITE,
+          paddingBottom: BOTTOMBAR_HEIGHT
+        }}
+      >
+        <View style={{
+          flex: 1
+        }}>
+        <WhiteHeader title='Favourites' />
+        <FavouritesGrid />
       </View>
-    </NavigationSetting>);
+    </NavigationSetting>
+    );
   }
 };

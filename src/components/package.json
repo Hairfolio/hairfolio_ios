@@ -8,5 +8,8 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "random-number": "0.0.7"
+  }
 }

@@ -137,6 +137,7 @@ const PostActionButtons = observer(({post}) => {
         }}
 
         onPress={ () => {
+          PostDetailStore.post = post;
           PostDetailStore.showTags = true;
           window.navigators[0].jumpTo(routes.postDetails);
         }}

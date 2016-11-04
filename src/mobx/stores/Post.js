@@ -106,7 +106,7 @@ export default class Post {
     return this.createdTime.toNow(true);
   }
 
-  samplePost() {
+  samplePost(postNumber = 0) {
     this.description = 'This is a test description that should go to at least two lines so we can test it properly.';
     this.pictures = [];
 
@@ -122,7 +122,44 @@ export default class Post {
     this.createdTime = moment().subtract({minutes: 2});
 
 
-    let pictureObj = {uri: 'assets-library://asset/asset.JPG?id=106E99A1-4F6A-45A2-B320-B0AD4A8E8473/L0/001&ext=JPG' }
+    if (postNumber == 1) {
+      let pic = require('img/feed_example4.png');
+
+      this.pictures.push(
+        new Picture(
+          pic,
+          pic,
+          null
+        )
+      );
+    } else if (postNumber == 2) {
+      let pic = require('img/feed_example5.png');
+
+      this.pictures.push(
+        new Picture(
+          pic,
+          pic,
+          null
+        )
+      );
+    } else if (postNumber == 3) {
+
+      let pic = require('img/feed_example6.png');
+
+      this.pictures.push(
+        new Picture(
+          pic,
+          pic,
+          null
+        )
+      );
+
+    }
+
+    if (postNumber != 0) {
+      return;
+    }
+
 
     let pictureObj2 = require('img/feed_example1.png');
     let pictureObj3 = require('img/feed_example2.png');

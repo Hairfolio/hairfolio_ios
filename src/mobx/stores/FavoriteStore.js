@@ -13,7 +13,7 @@ import {_, moment, React, Text} from 'hairfolio/src/helpers';
 
 import Post from 'stores/Post.js'
 
-class FeedStore {
+class FavoriteStore {
   @observable elements;
 
   constructor() {
@@ -28,7 +28,7 @@ class FeedStore {
 
 }
 
-const store = new FeedStore();
+const store = new FavoriteStore();
 
 export default store;
 

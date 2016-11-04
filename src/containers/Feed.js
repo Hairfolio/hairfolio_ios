@@ -13,6 +13,7 @@ import FeedStore from 'stores/FeedStore.js'
 import {profile, profileExternal, appStack} from '../routes';
 
 import Post from 'components/feed/Post.js'
+import WhiteHeader from 'components/WhiteHeader.js'
 
 import {
   _, // lodash
@@ -62,8 +63,6 @@ export default class Feed extends PureComponent {
 
       <ScrollView>
         {store.elements.map(p => <Post key={p.key} post={p} />)}
-
-
       </ScrollView>
 
       </View>

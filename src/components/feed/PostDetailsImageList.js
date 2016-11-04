@@ -26,7 +26,7 @@ const PostDetailsImage = observer(({picture, index}) => {
   return (
     <TouchableWithoutFeedback
       onPress={
-        () =>  store.selectedIndex = index
+        () =>  store.selectIndex(index)
       }
     >
       <Image

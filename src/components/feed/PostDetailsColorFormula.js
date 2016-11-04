@@ -18,34 +18,198 @@ import {
 } from 'hairfolio/src/helpers.js';
 
 import PostDetailStore from 'stores/PostDetailStore.js'
+import LinearGradient from 'react-native-linear-gradient';
 
+import Swiper from 'react-native-swiper';
+
+import ServiceRow from 'components/post/ServiceRow.js'
+
+const ColorInfo = observer(({store, unit, textStyle, style}) => {
+
+  let colorArray;
+
+  if (store.start_hex && store.end_hex) {
+    colorArray = [`#${store.start_hex}`, `#${store.end_hex}`];
+  } else {
+    colorArray = [`#${store.hex}`, `#${store.hex}`];
+  }
+
+  return (
+    <View
+      style={{
+        paddingLeft: h(15),
+        width: (windowWidth - h(15)) / 4,
+        marginTop: h(12),
+        height: h(210)
+      }}
+    >
+      <View
+        style={{
+          height: h(80),
+          backgroundColor: '#F3F3F3',
+          alignItems: 'center',
+          justifyContent: 'center',
+          marginBottom: h(10)
+        }}
+      >
+        <Text
+          style = {{
+            fontSize: h(33),
+            fontFamily: FONTS.BOOK,
+            color: '#3C3C3C'
+          }}
+
+        >
+          {store.amount}{unit}
+        </Text>
+      </View>
+      <LinearGradient
+        colors={colorArray}
+        style={{
+          width: (windowWidth - h(15)) / 4 - h(15),
+          height: h(116),
+          justifyContent: 'center',
+          alignItems: 'center',
+          ...style
+        }}
+      >
+        <Text
+          style={{
+            color: 'white',
+            fontFamily: FONTS.BOOK_OBLIQUE,
+            fontSize: h(42),
+            backgroundColor: 'transparent',
+            ...textStyle
+          }}
+        >
+          {store.code}
+        </Text>
+      </LinearGradient>
+    </View>
+  );
+});
+
+const DuratationInfo = observer(({store}) => {
+
+  if (!store.developerTime) {
+    return null;
+  }
+
+  return (
+    <View
+      style={{
+        paddingLeft: h(15),
+        width: (windowWidth - h(15)) / 2 - h(15),
+        marginTop: h(12),
+        height: h(210),
+        backgroundColor: 'black',
+        marginLeft: h(15),
+        alignItems: 'center',
+        justifyContent: 'center'
+      }}
+    >
+      <Text
+        style = {{
+          color: 'white',
+          fontSize: h(42)
+        }}
+      >{store.developerTime} min
+      </Text>
+    </View>
+
+  );
+});
+
+const ServiceInfo = observer(({store}) => {
+
+  let colors = (
+    <View
+      style = {{
+        flexDirection: 'row',
+        flexWrap: 'wrap'
+      }}
+    >
+
+    {store.colors.map(c => <ColorInfo unit={store.unit} key={c.id} store={c} />)}
+
+    <ColorInfo
+      unit={store.unit}
+      textStyle={{color: '#3C3C3C'}}
+      style={{borderWidth: h(1), borderColor: '#979797' }}
+      store={{
+        code: `${store.developerVolume}VL`,
+        start_hex: 'ffffff',
+        end_hex: 'ffffff',
+        amount: store.developerAmount
+      }}
+    />
+      <DuratationInfo store={store}/>
+    </View>
+  );
+
+  return (
+    <View>
+      <View style={{marginTop: h(61)}}>
+        <ServiceRow selector={{title: 'Service', value: store.serviceName }} />
+        <ServiceRow selector={{title: 'Brand', value: store.brandName}} />
+        <ServiceRow selector={{title: 'Color', value: store.lineName}} />
+      </View>
+      {colors}
+    </View>
+  );
+});
 
 const PostDetailsColorFormula = observer(() => {
 
   let store = PostDetailStore;
 
+  let serviceTags =  store.serviceTags;
+
+  if (store.serviceTags.length == 0) {
+    return null;
+  }
+
   return (
-    <View>
+    <View
+      onLayout={({nativeEvent}) => store.colorFormulaPosY = nativeEvent.layout.y}
+    >
       <View
         style = {{
           flex: 1,
           height: h(80),
           backgroundColor: '#F3F3F3',
           flexDirection: 'row',
-          paddingLeft: 24,
-          alignItems: 'center'
+          alignItems: 'center',
         }}
       >
         <Text
           style = {{
             fontFamily: FONTS.ROMAN,
             fontSize: h(28),
-            color: '#BFBFBF'
+            color: '#BFBFBF',
+            paddingLeft: h(24)
           }}
         >
           COLOR FORMULA
         </Text>
       </View>
+      <Swiper
+        showsButtons={false}
+        ref={(el) => {
+          window.formula = el;
+          store.swiper = el
+        }}
+        paginationStyle={{
+          position: 'absolute',
+          top: 10,
+          bottom: null
+        }}
+
+      >
+        {store.serviceTags.map(e =>
+            <ServiceInfo key={e.key} store={e} />
+            )}
+      </Swiper>
     </View>
   );
 });

@@ -20,6 +20,8 @@ import {
   PickerIOS, Picker, StatusBar, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet
 } from 'hairfolio/src/helpers.js';
 
+import PostDetailStore from 'stores/PostDetailStore'
+
 const PostTags  = observer(({store}) => {
 
   if (!store.showTags) {
@@ -51,7 +53,9 @@ const PostTags  = observer(({store}) => {
         if (pic.imageSource) {
           return (
             <TouchableWithoutFeedback
-              onPress={() => alert('service clicked')}
+              onPress={() => {
+                PostDetailStore.selectTag(pic);
+              }}
               key={pic.key}>
               <Image
                 style={style}
@@ -62,11 +66,18 @@ const PostTags  = observer(({store}) => {
         }
 
         return (
-          <View
+          <TouchableWithoutFeedback
             key={pic.key}
-            style={style}>
-            <Text style={{fontSize: 15, backgroundColor: 'transparent', color: 'white'}}>{pic.abbrev}</Text>
-          </View>
+            onPress={() => {
+              PostDetailStore.selectTag(pic);
+            }}
+          >
+            <View
+              key={pic.key}
+              style={style}>
+              <Text style={{fontSize: 15, backgroundColor: 'transparent', color: 'white'}}>{pic.abbrev}</Text>
+            </View>
+          </TouchableWithoutFeedback>
         );
 
       })}

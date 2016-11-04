@@ -2,16 +2,23 @@ import {observable, computed, action} from 'mobx';
 import {_, v4, Text} from 'hairfolio/src/helpers';
 
 export default class ServiceTag {
-  constructor(x, y, {service_id, line_id, colors, developer}) {
+  constructor(x, y, {service_id, service_name, brand_name, line_name,  line_id, post_item_tag_colors, developer_volume, developer_amount, developer_time, unit}) {
     this.x = x;
     this.y = y;
     this.key = v4();
     this.abbrev = 'S';
     this.imageSource = require('img/post_service_tag.png');
     this.service_id = service_id;
+    this.serviceName = service_name;
+    this.brandName = brand_name;
+    this.lineName = line_name;
+    this.developerTime = developer_time;
+    this.developerAmount = developer_amount;
+    this.developerVolume = developer_volume;
+    this.unit = unit;
+
     this.line_id = line_id;
-    this.colors = colors ? colors : [];
-    this.developer = developer;
+    this.colors = post_item_tag_colors ? post_item_tag_colors : [];
     this.type = 'service';
   }
 
@@ -28,19 +35,14 @@ export default class ServiceTag {
 
     let developerData = null;
 
-    if (this.developer) {
-      developerData = {
-        volume: parseInt(this.developer.volume.split(' ')[0], 10),
-        amount: parseInt(this.developer.amount.split(' ')[0], 10),
-        time: parseInt(this.developer.time.split(' ')[0], 10)
-      };
-    }
     return _.pickBy({
       type: this.type,
       service_id: this.service_id,
       line_id: this.line_id,
-      colors: colorData,
-      developer: developerData
+      post_item_tag_colors: colorData,
+      developer_time: this.developerTime,
+      developer_volume: this.developerVolume,
+      developer_amount: this.developerAmount
     });
   }
 

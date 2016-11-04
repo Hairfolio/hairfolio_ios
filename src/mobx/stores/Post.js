@@ -153,24 +153,30 @@ export default class Post {
       }
     );
 
-    this.pictures[2].addServiceTag(90, 100,
+    this.pictures[0].addServiceTag(250, 100,
       {
         service_id: 4,
         line_id: 5,
-        colors: [
+        service_name: 'Bleach',
+        brand_name: 'Loreal',
+        line_name: 'Name',
+        unit: 'g',
+        post_item_tag_colors: [
           {
             id: 3,
             code: 'A3',
             hex: '352423',
             start_hex: '352423',
-            end_hex: '975fa4'
+            end_hex: '975fa4',
+            amount: 23
           },
           {
             id: 10,
             code: 'B3',
             hex: '7ba3ce',
             start_hex: '7ba3ce',
-            end_hex: '080c4f'
+            end_hex: '080c4f',
+            amount: 20
           }
         ],
         developer_volume: 50,
@@ -178,6 +184,39 @@ export default class Post {
         developer_time: 20
       }
     );
+
+    this.pictures[0].addServiceTag(80, 250,
+      {
+        service_id: 4,
+        line_id: 5,
+        service_name: 'Hair',
+        brand_name: 'Brand 2',
+        line_name: 'Color name',
+        unit: 'oz',
+        post_item_tag_colors: [
+          {
+            id: 8,
+            code: 'A3',
+            hex: '352423',
+            start_hex: 'b59423',
+            end_hex: '975fa4',
+            amount: 23
+          },
+          {
+            id: 10,
+            code: 'B3',
+            hex: '7ba3ce',
+            start_hex: '2ba3ce',
+            end_hex: '080c4f',
+            amount: 20
+          }
+        ],
+        developer_volume: 10,
+        developer_amount: 3,
+        developer_time: 20
+      }
+    );
+
   }
 
   @action starPost() {

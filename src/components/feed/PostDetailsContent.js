@@ -32,13 +32,15 @@ const PostDetailsContent = observer(() => {
 
   let store = PostDetailStore;
   return (
-    <ScrollView>
+    <ScrollView
+      ref={el => {store.scrollView = el}}
+    >
       <PostDetailsHeader />
       <PostDetailsImageList />
       <PostDescription
         style={{paddingTop: h(28)}}
         post={store.post}
-      />
+        />
       <PostDetailsColorFormula />
     </ScrollView>
   );

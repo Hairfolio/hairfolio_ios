@@ -40,7 +40,6 @@ export default class PostDetails extends PureComponent {
 
 
   render() {
-
     return (<NavigationSetting
       style={{
         flex: 1,

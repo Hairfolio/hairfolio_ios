@@ -43,6 +43,8 @@
 		DF38CA524BFC41D297EF2939 /* libRCTCamera.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2130E4AFBE5546F1A7E3696D /* libRCTCamera.a */; };
 		FAEDA34C281A48E7BC8D7385 /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A4B5392F7F84425E9E427465 /* Ionicons.ttf */; };
 		FF4E259D1D9FE518003CF7EE /* PhotoAlbum.m in Sources */ = {isa = PBXBuildFile; fileRef = FF4E259B1D9FE518003CF7EE /* PhotoAlbum.m */; };
+		FF7347611DD0A8D7005A7E47 /* RCTImageResizer.m in Sources */ = {isa = PBXBuildFile; fileRef = FF73475E1DD0A8D7005A7E47 /* RCTImageResizer.m */; };
+		FF7347621DD0A8D7005A7E47 /* ImageHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = FF7347601DD0A8D7005A7E47 /* ImageHelpers.m */; };
 		FF89C9F01DB7DF9700248CCA /* libBVLinearGradient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FF89C9DE1DB7DF8000248CCA /* libBVLinearGradient.a */; };
 		FF8CF22F1D99DEB100D2AD14 /* libRCTCameraRoll.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FF8CF2201D99DE8C00D2AD14 /* libRCTCameraRoll.a */; };
 		FF9AD50F1DAD4BA9001E1690 /* ImageFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = FF9AD50E1DAD4BA9001E1690 /* ImageFilter.m */; };
@@ -277,6 +279,10 @@
 		D832DCB264524ADFAB69455A /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 0; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
 		FF4E259B1D9FE518003CF7EE /* PhotoAlbum.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PhotoAlbum.m; path = hairfolio/PhotoAlbum.m; sourceTree = "<group>"; };
 		FF4E259C1D9FE518003CF7EE /* PhotoAlbum.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PhotoAlbum.h; path = hairfolio/PhotoAlbum.h; sourceTree = "<group>"; };
+		FF73475D1DD0A8D7005A7E47 /* RCTImageResizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RCTImageResizer.h; path = "../react-native-image-resize/ios/RCTImageResizer/RCTImageResizer.h"; sourceTree = "<group>"; };
+		FF73475E1DD0A8D7005A7E47 /* RCTImageResizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RCTImageResizer.m; path = "../react-native-image-resize/ios/RCTImageResizer/RCTImageResizer.m"; sourceTree = "<group>"; };
+		FF73475F1DD0A8D7005A7E47 /* ImageHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ImageHelpers.h; path = "../react-native-image-resize/ios/RCTImageResizer/ImageHelpers.h"; sourceTree = "<group>"; };
+		FF7347601DD0A8D7005A7E47 /* ImageHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ImageHelpers.m; path = "../react-native-image-resize/ios/RCTImageResizer/ImageHelpers.m"; sourceTree = "<group>"; };
 		FF89C9D91DB7DF8000248CCA /* BVLinearGradient.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = BVLinearGradient.xcodeproj; path = "../node_modules/react-native-linear-gradient/BVLinearGradient.xcodeproj"; sourceTree = "<group>"; };
 		FF8CF2191D99DE8C00D2AD14 /* RCTCameraRoll.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTCameraRoll.xcodeproj; path = "../node_modules/react-native/Libraries/CameraRoll/RCTCameraRoll.xcodeproj"; sourceTree = "<group>"; };
 		FF9AD50D1DAD4BA9001E1690 /* ImageFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ImageFilter.h; path = hairfolio/ImageFilter.h; sourceTree = "<group>"; };
@@ -523,6 +529,10 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				FF73475D1DD0A8D7005A7E47 /* RCTImageResizer.h */,
+				FF73475E1DD0A8D7005A7E47 /* RCTImageResizer.m */,
+				FF73475F1DD0A8D7005A7E47 /* ImageHelpers.h */,
+				FF7347601DD0A8D7005A7E47 /* ImageHelpers.m */,
 				FFA032FE1DCB511E000158B7 /* KDSocialShare.h */,
 				FFA032FF1DCB511E000158B7 /* KDSocialShare.m */,
 				FF89C9D91DB7DF8000248CCA /* BVLinearGradient.xcodeproj */,
@@ -670,7 +680,7 @@
 		83CBB9F71A601CBA00E9B192 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0800;
+				LastUpgradeCheck = 800;
 				ORGANIZATIONNAME = Facebook;
 				TargetAttributes = {
 					00E356ED1AD99517003FC87E = {
@@ -1010,12 +1020,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FF7347611DD0A8D7005A7E47 /* RCTImageResizer.m in Sources */,
 				04FE741E1D36C67400292C84 /* StoreManager.m in Sources */,
 				FFA033001DCB511F000158B7 /* KDSocialShare.m in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				FF9AD50F1DAD4BA9001E1690 /* ImageFilter.m in Sources */,
 				FF4E259D1D9FE518003CF7EE /* PhotoAlbum.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
+				FF7347621DD0A8D7005A7E47 /* ImageHelpers.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1044,7 +1056,6 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/HairfolioTests\"",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.Hairfolio.app;
 				PRODUCT_NAME = HairfolioTests;
@@ -1063,7 +1074,6 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/HairfolioTests\"",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.Hairfolio.app;
 				PRODUCT_NAME = HairfolioTests;

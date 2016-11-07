@@ -145,7 +145,7 @@ const HairfolioList = observer(() => {
     return (
       <View style={{flex: 1}}>
         {store.hairfolios.map(e => <HairfolioItem key={e.id} store={e} />)}
-        <HairfolioEdit key={v4()} />
+        <HairfolioEdit />
       </View>
     );
   }

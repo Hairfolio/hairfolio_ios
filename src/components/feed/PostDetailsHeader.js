@@ -18,8 +18,12 @@ import {
 } from 'hairfolio/src/helpers.js';
 
 import PostDetailStore from 'stores/PostDetailStore.js'
+import StarGiversStore from 'stores/StarGiversStore.js'
+import CommentsStore from 'stores/CommentsStore.js'
 
 import PostTags from 'components/feed/PostTags.js'
+
+import * as routes from 'hairfolio/src/routes.js'
 
 const PostDetailsActionButtons = observer(() => {
   let store = PostDetailStore;
@@ -39,6 +43,11 @@ const PostDetailsActionButtons = observer(() => {
           alignItems: 'center',
           width: h(120),
         }}
+        onPress={() => {
+          StarGiversStore.back = () => window.navigators[0].jumpTo(routes.postDetails);
+          window.navigators[0].jumpTo(routes.starGivers);
+        }}
+
       >
         <Image
           style={{height: h(40), width: h(43)}}
@@ -62,6 +71,10 @@ const PostDetailsActionButtons = observer(() => {
           flexDirection: 'row',
           alignItems: 'center',
           width: h(100)
+        }}
+        onPress={() => {
+          CommentsStore.back = () => window.navigators[0].jumpTo(routes.postDetails);
+          window.navigators[0].jumpTo(routes.comments);
         }}
       >
         <Image

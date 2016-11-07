@@ -16,18 +16,18 @@ import {
   StatusBar, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet
 } from 'hairfolio/src/helpers.js';
 
-const LoadinScreen = observer(({store}) => {
+const LoadinScreen = observer(({store, style = {}}) => {
   if (!store.isLoading) {
     return null;
   }
   return (
-    <View style={style}>
+    <View style={[loadingStyle, style]}>
       <ActivityIndicator size='large' />
     </View>
   );
 });
 
-const style = {
+const loadingStyle = {
   position: 'absolute',
   backgroundColor: 'black',
   opacity: 0.4,

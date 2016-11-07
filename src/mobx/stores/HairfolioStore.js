@@ -40,6 +40,7 @@ class HairfolioStore {
     if (name.length > 0) {
       let res = await ServiceBackend.post('hairfolios', {name: name});
       this.hairfolios.push(new Hairfolio(res.hairfolio));
+      this.textInput.clear();
     }
   }
 

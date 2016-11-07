@@ -37,12 +37,16 @@ export default class ServiceTag {
 
     return _.pickBy({
       type: this.type,
+      top: this.y,
+      left: this.x,
       service_id: this.service_id,
       line_id: this.line_id,
       post_item_tag_colors: colorData,
-      developer_time: this.developerTime,
-      developer_volume: this.developerVolume,
-      developer_amount: this.developerAmount
+      developer: {
+        time: this.developerTime,
+        volume: this.developerVolume,
+        amount: this.developerAmount
+      }
     });
   }
 

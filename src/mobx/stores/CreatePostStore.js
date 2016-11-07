@@ -179,6 +179,8 @@ class Gallery {
     );
     this.selectedPicture = this.pictures[0];
 
+    this.description = 'This is a sample post';
+
     this.filterStore.setMainImage(this.selectedPicture);
     this.selectedTag = this.linkTagMenu;
     this.linkTagMenu.selected = true;
@@ -233,11 +235,19 @@ class Gallery {
     this.selectedPicture = _.first(this.pictures);
   }
 
-  toJSON() {
+  async toJSON() {
+
+    let items = [];
+
+    for (let pic of this.pictures) {
+      let el = await pic.toJSON();
+      items.push(el);
+    }
+
     return {
       post: {
         description: this.description,
-        pictures: this.pictures.map(e => e.toJSON())
+        post_items: items
       }
     };
   }
@@ -254,6 +264,8 @@ class CreatePostStore {
   @observable cameraType = Camera.constants.Type.back;
   @observable cameraFlashMode = Camera.constants.FlashMode.off;
   @observable gallery = new Gallery();
+
+  @observable isLoading = false;
 
   constructor() {
     this.updateLibraryPictures();

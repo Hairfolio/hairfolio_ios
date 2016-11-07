@@ -262,12 +262,10 @@ export default class AddServicePageThree extends Component {
               {
                 service_id: AddServiceStore.serviceSelector.selectedData.id,
                 line_id: AddServiceStore.colorNameSelector.selectedData.id,
-                colors: AddServiceStore.selectedColors,
-                developer: {
-                  volume: AddServiceStore.vlWeightSelector.selectedValue,
-                  amount: AddServiceStore.vlSelector.selectedValue,
-                  time: AddServiceStore.selectedMinutes
-                }
+                post_item_tag_colors: AddServiceStore.selectedColors,
+                developer_volume: parseInt(AddServiceStore.vlSelector.selectedValue.split(' ')[0], 10),
+                developer_amount: parseInt(AddServiceStore.vlWeightSelector.selectedValue.split(' ')[0], 10),
+                developer_time: parseInt(AddServiceStore.selectedMinutes.split(' ')[0], 10)
               }
             );
             _.last(this.context.navigators).jumpTo(

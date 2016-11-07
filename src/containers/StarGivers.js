@@ -132,7 +132,7 @@ export default class StarGivers extends PureComponent {
         flex: 1,
       }}>
       <BlackHeader
-        onLeft={() => window.navigators[0].jumpTo(appStack)}
+        onLeft={() => StarGiversStore.back()}
         title='Starrers'/>
       <StarGiversContent />
 

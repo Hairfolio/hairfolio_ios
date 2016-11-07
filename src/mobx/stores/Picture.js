@@ -4,7 +4,9 @@ import {_, v4, Text} from 'hairfolio/src/helpers';
 import LinkTag from 'stores/tags/LinkTag.js'
 import HashTag from 'stores/tags/HashTag.js'
 import ServiceTag from 'stores/tags/ServiceTag.js'
-
+import {ImageEditor} from 'react-native';
+import Service from 'hairfolio/src/services/index.js'
+import ImageResizer from 'react-native-image-resizer';
 
 export default class Picture {
 
@@ -19,10 +21,42 @@ export default class Picture {
     this.parent = parent;
   }
 
-  toJSON() {
+  async resizeImage(uri) {
+    return ImageResizer.createResizedImage(uri, 250, 250, 'JPEG', 90, 0, null);
+  }
+
+
+  async toJSON() {
+    let uri = await this.resizeImage(this.source.uri);
+
+    var formdata = new FormData();
+    formdata.append('file', {
+      type: 'image/jpeg',
+      uri,
+      name: 'upload.jpg'
+    });
+
+    let preset = Service.fetch.store.getState().environment.environment.get('cloud_preset');
+    let cloudName = Service.fetch.store.getState().environment.environment.get('cloud_name');
+
+    formdata.append('upload_preset', preset);
+    let res = await fetch(
+      `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'multipart/form-data; boundary=6ff46e0b6b5148d984f148b6542e5a5d'
+        },
+        body: formdata
+      }
+    );
+
+    let json = await res.json();
+
+
     return {
-      url: 'http://www.example.com',
-      tags: this.tags.map(e => e.toJSON())
+      url: json.url,
+      post_item_tags: this.tags.map(e => e.toJSON())
     };
   }
 

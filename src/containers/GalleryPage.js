@@ -23,6 +23,7 @@ import AddTagStore from 'stores/AddTagStore.js'
 import AddServiceStore from 'stores/AddServiceStore.js'
 
 import ServiceBackend from 'backend/ServiceBackend.js'
+import LoadingScreen from 'components/LoadingScreen.js'
 
 
 import LinearGradient from 'react-native-linear-gradient';
@@ -372,7 +373,7 @@ export default class GalleryPage extends Component {
     );
 
     return (
-        <View style={{paddingTop: 20, backgroundColor: 'white'}}>
+      <View style={{paddingTop: 20, backgroundColor: 'white'}}>
           <SlimHeader
             leftText='Cancel'
             onLeft={() => {
@@ -384,9 +385,9 @@ export default class GalleryPage extends Component {
             }}
             title='Gallery'
             titleStyle={{fontFamily: FONTS.SF_MEDIUM}}
-            rightText='Next'
+            rightText='Post'
             onRight={() => {
-              ServiceBackend.postPost(CreatePostStore.gallery.toJSON());
+              ServiceBackend.postPost();
             }}
           />
           <ScrollView
@@ -429,6 +430,7 @@ export default class GalleryPage extends Component {
               onChangeText={(text) => CreatePostStore.gallery.description = text}
             />
           </ScrollView>
+          <LoadingScreen style={{opacity: 0.6}} store={CreatePostStore} />
         </View>
     );
   }

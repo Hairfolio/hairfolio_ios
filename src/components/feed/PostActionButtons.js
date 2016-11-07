@@ -18,9 +18,12 @@ import {
   PickerIOS, Picker, StatusBar, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet
 } from 'hairfolio/src/helpers.js';
 
+import StarGiversStore from 'stores/StarGiversStore'
+import CommentsStore from 'stores/CommentsStore'
+
 import Communications from 'react-native-communications';
 
-import {starGivers, comments} from '../../routes';
+import {starGivers, comments, appStack} from '../../routes';
 var KDSocialShare = require('NativeModules').KDSocialShare;
 
 import * as routes from 'hairfolio/src/routes';
@@ -77,6 +80,7 @@ const PostActionButtons = observer(({post}) => {
     >
       <TouchableOpacity
         onPress={() => {
+          StarGiversStore.back = () => window.navigators[0].jumpTo(appStack);
           window.navigators[0].jumpTo(starGivers);
         }}
         style={{
@@ -104,6 +108,7 @@ const PostActionButtons = observer(({post}) => {
 
       <TouchableOpacity
         onPress={() => {
+          CommentsStore.back = () => window.navigators[0].jumpTo(appStack);
           window.navigators[0].jumpTo(comments);
         }}
         style={{

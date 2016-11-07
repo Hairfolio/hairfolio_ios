@@ -1,0 +1,105 @@
+{
+  "_args": [
+    [
+      {
+        "raw": "react-native-image-resizer",
+        "scope": null,
+        "escapedName": "react-native-image-resizer",
+        "name": "react-native-image-resizer",
+        "rawSpec": "",
+        "spec": "latest",
+        "type": "tag"
+      },
+      "/Users/patrickklitzke/hairfolio_ios"
+    ]
+  ],
+  "_from": "react-native-image-resizer@latest",
+  "_id": "react-native-image-resizer@0.0.12",
+  "_inCache": true,
+  "_location": "/react-native-image-resizer",
+  "_nodeVersion": "4.2.1",
+  "_npmOperationalInternal": {
+    "host": "packages-18-east.internal.npmjs.com",
+    "tmp": "tmp/react-native-image-resizer-0.0.12.tgz_1478381241562_0.1383157114032656"
+  },
+  "_npmUser": {
+    "name": "4ian",
+    "email": "Florian.rival@gmail.com"
+  },
+  "_npmVersion": "2.14.7",
+  "_phantomChildren": {},
+  "_requested": {
+    "raw": "react-native-image-resizer",
+    "scope": null,
+    "escapedName": "react-native-image-resizer",
+    "name": "react-native-image-resizer",
+    "rawSpec": "",
+    "spec": "latest",
+    "type": "tag"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/react-native-image-resizer/-/react-native-image-resizer-0.0.12.tgz",
+  "_shasum": "fd93d411462a64b6745176441b756d839e6a37ce",
+  "_shrinkwrap": null,
+  "_spec": "react-native-image-resizer",
+  "_where": "/Users/patrickklitzke/hairfolio_ios",
+  "author": {
+    "name": "Florian Rival",
+    "email": "florianr@bam.tech",
+    "url": "http://bam.tech"
+  },
+  "bugs": {
+    "url": "https://github.com/4ian/react-native-image-resizer/issues"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  },
+  "dependencies": {},
+  "description": "Rescale local images with React Native",
+  "devDependencies": {
+    "cz-conventional-changelog": "^1.2.0"
+  },
+  "directories": {},
+  "dist": {
+    "shasum": "fd93d411462a64b6745176441b756d839e6a37ce",
+    "tarball": "https://registry.npmjs.org/react-native-image-resizer/-/react-native-image-resizer-0.0.12.tgz"
+  },
+  "gitHead": "28f81335ccf551f5c8c3449928ba797de0085fce",
+  "homepage": "https://github.com/4ian/react-native-image-resizer#readme",
+  "keywords": [
+    "react-native",
+    "react",
+    "android",
+    "ios",
+    "images",
+    "image",
+    "image-resizer",
+    "scaling",
+    "scale",
+    "resize"
+  ],
+  "license": "MIT",
+  "maintainers": [
+    {
+      "name": "4ian",
+      "email": "Florian.rival@gmail.com"
+    }
+  ],
+  "name": "react-native-image-resizer",
+  "optionalDependencies": {},
+  "peerDependencies": {
+    "react-native": ">=v0.14.2"
+  },
+  "readme": "ERROR: No README data found!",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/4ian/react-native-image-resizer.git"
+  },
+  "scripts": {},
+  "version": "0.0.12"
+}

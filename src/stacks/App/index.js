@@ -41,8 +41,6 @@ export default class AppStack extends PureComponent {
   }
 
   componentDidMount() {
-    // CreatePostStore.isOpen = true;
-    // _.first(this.context.navigators).jumpTo(createPostStack);
   }
 
   componentWillUnmount() {
@@ -94,7 +92,7 @@ export default class AppStack extends PureComponent {
         }}
       >
         <Navigator
-          initialRoute={profile}
+          initialRoute={feed}
           initialRouteStack={[
             search, feed, createPost, favourites, profile, profileExternal,
           ]}

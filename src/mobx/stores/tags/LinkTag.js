@@ -18,10 +18,9 @@ export default class LinkTag {
   toJSON() {
     return _.pickBy({
       type: this.type,
-      linkUrl: this.linkUrl,
+      url: this.linkUrl,
       name: this.name,
       hashtag: this.hashtag,
-      imageUrl: this.imageUrl,
       left: this.x,
       top: this.y
     });

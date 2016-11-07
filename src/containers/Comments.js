@@ -248,7 +248,7 @@ export default class Comments extends PureComponent {
     >
        <View style={{flex: 1}}>
         <BlackHeader
-          onLeft={() => window.navigators[0].jumpTo(appStack)}
+          onLeft={() => CommentsStore.back()}
           title='Comments'/>
         <CommentsContent />
         <CommentInput />

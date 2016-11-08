@@ -116,12 +116,12 @@ const CatalogResultItem = observer(({item}) => {
           borderBottomWidth: h(1),
           borderColor: '#979797',
           alignItems: 'center',
-          height: h(86),
+          height: h(172),
           flexDirection: 'row'
         }}>
         <Image
           source={{uri: item.imageUrl}}
-          style={{height: h(64), width: h(64), marginLeft: h(11) }}
+          style={{height: h(150), width: h(150), marginLeft: h(11) }}
         />
         <Text style={{paddingLeft: 20, fontSize: h(28)}}>{item.name}</Text>
       </View>

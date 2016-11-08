@@ -20,13 +20,48 @@ import {
   PickerIOS, Picker, StatusBar, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet
 } from 'hairfolio/src/helpers.js';
 
+import utils from 'hairfolio/src/utils.js'
+import EnvironmentStore from 'stores/EnvironmentStore.js'
+
+
+import Service from 'hairfolio/src/services/index.js'
+import FavoriteStore from 'stores/FavoriteStore.js'
+
+import ServiceBackend from 'backend/ServiceBackend.js'
+
 import Picture from 'stores/Picture.js'
+
+class GetObj {
+  constructor(obj) {
+    this.data = obj;
+  }
+
+  get(index) {
+    return this.data[index];
+  }
+}
 
 class User {
   @observable profilePicture;
   @observable name;
 
-  constructor() {
+  async init(data) {
+    if (!data) {
+      return;
+    }
+
+    this.name = `${data.first_name} ${data.last_name}`;
+
+    window.ser = Service;
+    let environment = await EnvironmentStore.get();
+
+    let picObj = {uri: utils.getUserProfilePicURI(new GetObj(data), new GetObj(environment))};
+
+    this.profilePicture = new Picture(
+      picObj,
+      picObj,
+      null
+    );
   }
 
   sample() {
@@ -53,6 +88,194 @@ export default class Post {
   @observable numberOfComments;
   @observable showStar;
   @observable showSave;
+
+  constructor() {
+
+  }
+
+  async init(data) {
+    if (!data) {
+      return;
+    }
+
+    this.id = data.id;
+    this.description = data.description;
+    this.pictures = [];
+
+    // TODO
+    this.starNumber = data.star_count;
+    this.numberOfComments = data.comment_count;
+    this.hasStarred = data.starred_by_me;
+
+    // TODO
+    let user = new User();
+    await user.init(data.user);
+    this.creator = user;
+
+    this.createdTime = moment(data.created_at);
+
+    for (let pic of data.post_items) {
+
+      let url = pic.url.split('upload');
+
+      let newUrl = `${url[0]}upload/h_${2 * windowWidth}${url[1]}`;
+
+
+      let picObj = {uri: newUrl};
+      let picture = new Picture(
+        picObj,
+        picObj,
+        null
+      );
+
+      for (let item of pic.post_item_tags) {
+        if (item.type == 'hashtag') {
+          picture.addHashTag(item.left, item.top, item.hashtag);
+        } else if (item.type == 'link') {
+          picture.addLinkTag(item.left, item.top, item);
+        } else if (item.type == 'service') {
+          picture.addServiceTag(item.left, item.top, item);
+        }
+      }
+
+      this.pictures.push(picture);
+      return;
+    }
+
+      /*
+    if (postNumber == 1) {
+      let pic = require('img/feed_example4.png');
+
+      this.pictures.push(
+        new Picture(
+          pic,
+          pic,
+          null
+        )
+      );
+    } else if (postNumber == 2) {
+      let pic = require('img/feed_example5.png');
+
+      this.pictures.push(
+        new Picture(
+          pic,
+          pic,
+          null
+        )
+      );
+    } else if (postNumber == 3) {
+
+      let pic = require('img/feed_example6.png');
+
+      this.pictures.push(
+        new Picture(
+          pic,
+          pic,
+          null
+        )
+      );
+
+    }
+
+    if (postNumber != 0) {
+      return;
+    }
+
+
+    let pictureObj2 = require('img/feed_example1.png');
+    let pictureObj3 = require('img/feed_example2.png');
+    let pictureObj4 = require('img/feed_example3.png');
+
+
+    for (let obj of [pictureObj2, pictureObj3, pictureObj4]) {
+      this.pictures.push(
+        new Picture(
+          obj,
+          obj,
+          null
+        )
+      );
+    }
+
+    this.pictures[0].addHashTag(60, 50, 'beautiful');
+    this.pictures[0].addHashTag(300, 250, 'test');
+
+    this.pictures[0].addHashTag(100, 60, 'life');
+
+    this.pictures[1].addLinkTag(80, 200,
+      {
+        linkUrl: 'http://www.google.com',
+        name: 'My Link',
+        hashtag: {name: 'test'}
+      }
+    );
+
+    this.pictures[0].addServiceTag(250, 100,
+      {
+        service_id: 4,
+        line_id: 5,
+        service_name: 'Bleach',
+        brand_name: 'Loreal',
+        line_name: 'Name',
+        unit: 'g',
+        post_item_tag_colors: [
+          {
+            id: 3,
+            code: 'A3',
+            hex: '352423',
+            start_hex: '352423',
+            end_hex: '975fa4',
+            amount: 23
+          },
+          {
+            id: 10,
+            code: 'B3',
+            hex: '7ba3ce',
+            start_hex: '7ba3ce',
+            end_hex: '080c4f',
+            amount: 20
+          }
+        ],
+        developer_volume: 50,
+        developer_amount: 15,
+        developer_time: 20
+      }
+    );
+
+    this.pictures[0].addServiceTag(80, 250,
+      {
+        service_id: 4,
+        line_id: 5,
+        service_name: 'Hair',
+        brand_name: 'Brand 2',
+        line_name: 'Color name',
+        unit: 'oz',
+        post_item_tag_colors: [
+          {
+            id: 8,
+            code: 'A3',
+            hex: '352423',
+            start_hex: 'b59423',
+            end_hex: '975fa4',
+            amount: 23
+          },
+          {
+            id: 10,
+            code: 'B3',
+            hex: '7ba3ce',
+            start_hex: '2ba3ce',
+            end_hex: '080c4f',
+            amount: 20
+          }
+        ],
+        developer_volume: 10,
+        developer_amount: 3,
+        developer_time: 20
+      }
+    );
+    */
+  }
+
 
   @computed get currentImage() {
     return this.pictures[this.currentIndex];
@@ -166,7 +389,6 @@ export default class Post {
     let pictureObj4 = require('img/feed_example3.png');
 
 
-
     for (let obj of [pictureObj2, pictureObj3, pictureObj4]) {
       this.pictures.push(
         new Picture(
@@ -200,19 +422,23 @@ export default class Post {
         unit: 'g',
         post_item_tag_colors: [
           {
-            id: 3,
-            code: 'A3',
-            hex: '352423',
-            start_hex: '352423',
-            end_hex: '975fa4',
+            color: {
+              id: 3,
+              code: 'A3',
+              hex: '352423',
+              start_hex: '352423',
+              end_hex: '975fa4',
+            },
             amount: 23
           },
           {
-            id: 10,
-            code: 'B3',
-            hex: '7ba3ce',
-            start_hex: '7ba3ce',
-            end_hex: '080c4f',
+            color: {
+              id: 10,
+              code: 'B3',
+              hex: '7ba3ce',
+              start_hex: '7ba3ce',
+              end_hex: '080c4f',
+            },
             amount: 20
           }
         ],
@@ -232,19 +458,23 @@ export default class Post {
         unit: 'oz',
         post_item_tag_colors: [
           {
-            id: 8,
-            code: 'A3',
-            hex: '352423',
-            start_hex: 'b59423',
-            end_hex: '975fa4',
+            color: {
+              id: 3,
+              code: 'A3',
+              hex: '352423',
+              start_hex: '352423',
+              end_hex: '975fa4',
+            },
             amount: 23
           },
           {
-            id: 10,
-            code: 'B3',
-            hex: '7ba3ce',
-            start_hex: '2ba3ce',
-            end_hex: '080c4f',
+            color: {
+              id: 10,
+              code: 'B3',
+              hex: '7ba3ce',
+              start_hex: '7ba3ce',
+              end_hex: '080c4f',
+            },
             amount: 20
           }
         ],
@@ -256,13 +486,28 @@ export default class Post {
 
   }
 
-  @action starPost() {
+  async starPost() {
     this.showStar = true;
+
+    let hasStarred = this.hasStarred;
+
     this.hasStarred = !this.hasStarred;
 
     setTimeout(() => {
       this.showStar = false;
     }, 1500);
+
+    if (hasStarred) {
+      this.starNumber--;
+      let starResult = await ServiceBackend.post(`/posts/${this.id}/unstar`);
+      console.log('starResult', starResult);
+    } else {
+      this.starNumber++;
+      let starResult = await ServiceBackend.post(`/posts/${this.id}/star`);
+      console.log('starResult', starResult);
+    }
+
+    FavoriteStore.load();
   }
 
   @action savePost() {

@@ -26,6 +26,8 @@ import {hello, comments, starGivers, oauthStack, loginStack, forgottenPasswordSt
 
 import {appActions} from './actions/app';
 import UserStore from 'stores/UserStore.js';
+import FeedStore from 'stores/FeedStore.js';
+import FavoriteStore from 'stores/FavoriteStore.js';
 
 NativeModules.UIManager.setLayoutAnimationEnabledExperimental &&
   NativeModules.UIManager.setLayoutAnimationEnabledExperimental(true);
@@ -72,11 +74,14 @@ export default class Root extends PureComponent {
       // prepare services
       _.each(services, service => service.setStore(store));
       _.each(services, service => service.ready());
-
       this.initialRoute = loginStack;
 
       if (utils.isReady(store.getState().user.state)) {
         this.initialRoute = appStack;
+
+        // initial loading
+        FeedStore.load();
+        FavoriteStore.load();
       }
 
       // this.initialRoute = postDetails;

@@ -33,6 +33,10 @@ import PostDetailStore from 'stores/PostDetailStore'
 const PostActionButtons = observer(({post}) => {
 
   let openMore = () => {
+
+
+    let imageLink =  post.pictures[0].source.uri;
+
     ActionSheetIOS.showActionSheetWithOptions({
       options: ['Share to Facebook', 'Share to Twitter', 'Report', 'Cancel'],
       destructiveButtonIndex: 2,
@@ -43,8 +47,8 @@ const PostActionButtons = observer(({post}) => {
         // share on facebook
         KDSocialShare.shareOnFacebook({
           'text':'Check out this new hairfolio post!',
-          'link':'https://hairfolio.com',
-          'imagelink':'http://res.cloudinary.com/hjqlqfq3w/image/upload/v1478171301/hair_z1v47e.png',
+          'link':'',
+          'imagelink': imageLink,
         },
           (results) => {
             console.log(results);
@@ -54,15 +58,15 @@ const PostActionButtons = observer(({post}) => {
         // share on twitter
         KDSocialShare.tweet({
           'text':'Check out this new hairfolio post!',
-          'link':'https://hairfolio.com/',
-          'imagelink':'http://res.cloudinary.com/hjqlqfq3w/image/upload/v1478171301/hair_z1v47e.png',
+          'link':'',
+          'imagelink': imageLink,
         },
         (results) => {
           console.log(results);
         });
       } else if (buttonIndex == 2) {
         // report abuse
-        Communications.email(['report@hairfolio.com'], null, null, 'Abusive Post', 'The post from  ' + post.creator.name + ', created on ' + post.createdTime + ' is abusive, please check.')
+        Communications.email(['stephendamico@gmail.com'], null, null, 'Abusive Post', 'The post from  ' + post.creator.name + ', created on ' + post.createdTime + ' is abusive, please check. id: ' + post.id)
       }
     });
   }

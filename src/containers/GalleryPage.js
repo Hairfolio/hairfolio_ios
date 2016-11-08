@@ -387,7 +387,14 @@ export default class GalleryPage extends Component {
             titleStyle={{fontFamily: FONTS.SF_MEDIUM}}
             rightText='Post'
             onRight={() => {
-              ServiceBackend.postPost();
+
+              console.log('gallery description', CreatePostStore.gallery.description);
+
+              if (!CreatePostStore.gallery.description ||  CreatePostStore.gallery.description.length == 0) {
+                alert('Description cannot be blank');
+              } else {
+                ServiceBackend.postPost();
+              }
             }}
           />
           <ScrollView

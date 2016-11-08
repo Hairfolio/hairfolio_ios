@@ -5,6 +5,8 @@ import Camera from 'react-native-camera';
 import FilterStore from 'stores/FilterStore.js'
 import Picture from 'stores/Picture.js'
 
+import ServiceBackend from 'backend/ServiceBackend.js'
+
 let PhotoAlbum = NativeModules.PhotoAlbum;
 
 import {v4} from 'uuid';
@@ -14,16 +16,38 @@ import {_, moment, React, Text} from 'hairfolio/src/helpers';
 import Post from 'stores/Post.js'
 
 class FeedStore {
-  @observable elements;
+  @observable elements = [];
+
+  @observable isLoading = false;
 
   constructor() {
     this.elements = [];
 
+      /*
     for (let i = 0; i < 4; i++) {
       let post = new Post();
       post.samplePost(i);
       this.elements.push(post);
     }
+    */
+  }
+
+  async load() {
+    this.isLoading = true;
+
+    let res = await ServiceBackend.get('posts');
+    this.elements = [];
+
+
+    for (let a = 0; a < res.length; a++)  {
+      let post = new Post();
+      await post.init(res[a]);
+      this.elements.push(post);
+    }
+
+
+    this.isLoading = false;
+
   }
 
 }

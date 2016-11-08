@@ -8,20 +8,8 @@ import {ImageEditor} from 'react-native';
 import Service from 'hairfolio/src/services/index.js'
 import ImageResizer from 'react-native-image-resizer';
 
-export default class Picture {
+export default class Environment {
 
-  @observable parent;
-  @observable tags = [];
-  @observable source;
-
-  constructor(orignalSource, source, parent) {
-    this.source = source;
-    this.originalSource = source;
-    this.key = v4();
-    this.parent = parent;
-  }
-
-  async resizeImage(uri) {
     return ImageResizer.createResizedImage(uri, 250, 250, 'JPEG', 90, 0, null);
   }
 
@@ -69,7 +57,6 @@ export default class Picture {
   }
 
   @action addServiceTag(x, y, data) {
-    console.log('service', data);
     this.tags.push(new ServiceTag(x, y, data));
   }
 

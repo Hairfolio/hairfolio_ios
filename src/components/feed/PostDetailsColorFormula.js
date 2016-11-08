@@ -25,13 +25,12 @@ import Swiper from 'react-native-swiper';
 import ServiceRow from 'components/post/ServiceRow.js'
 
 const ColorInfo = observer(({store, unit, textStyle, style}) => {
-
   let colorArray;
 
-  if (store.start_hex && store.end_hex) {
-    colorArray = [`#${store.start_hex}`, `#${store.end_hex}`];
+  if (store.color.start_hex && store.color.end_hex) {
+    colorArray = [`#${store.color.start_hex}`, `#${store.color.end_hex}`];
   } else {
-    colorArray = [`#${store.hex}`, `#${store.hex}`];
+    colorArray = [`#${store.color.hex}`, `#${store.color.hex}`];
   }
 
   return (
@@ -82,7 +81,7 @@ const ColorInfo = observer(({store, unit, textStyle, style}) => {
             ...textStyle
           }}
         >
-          {store.code}
+          {store.color.code}
         </Text>
       </LinearGradient>
     </View>
@@ -130,19 +129,22 @@ const ServiceInfo = observer(({store}) => {
       }}
     >
 
-    {store.colors.map(c => <ColorInfo unit={store.unit} key={c.id} store={c} />)}
+    {store.colors.map(c => <ColorInfo unit={store.unit} key={c.color.id} store={c} />)}
 
     <ColorInfo
+      key='vl'
       unit={store.unit}
       textStyle={{color: '#3C3C3C'}}
       style={{borderWidth: h(1), borderColor: '#979797' }}
       store={{
-        code: `${store.developerVolume}VL`,
-        start_hex: 'ffffff',
-        end_hex: 'ffffff',
+        color: {
+          code: `${store.developerVolume}VL`,
+          start_hex: 'ffffff',
+          end_hex: 'ffffff',
+        },
         amount: store.developerAmount
       }}
-    />
+      />
       <DuratationInfo store={store}/>
     </View>
   );
@@ -208,7 +210,7 @@ const PostDetailsColorFormula = observer(() => {
       >
         {store.serviceTags.map(e =>
             <ServiceInfo key={e.key} store={e} />
-            )}
+        )}
       </Swiper>
     </View>
   );

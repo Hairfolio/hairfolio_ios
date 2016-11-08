@@ -29,6 +29,9 @@ export default class Backend {
       headers.Authorization = token;
     }
 
+
+    console.log('token', token);
+
     return headers;
   }
 

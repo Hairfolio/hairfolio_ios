@@ -2,6 +2,7 @@ import Backend from './Backend.js'
 const BASE_URL = 'http://hairfolio.herokuapp.com/';
 
 import CreatePostStore from 'stores/CreatePostStore.js'
+import FeedStore from 'stores/FeedStore.js'
 
 import * as routes from 'hairfolio/src/routes.js'
 
@@ -45,9 +46,14 @@ class ServiceBackend extends Backend {
     let data = await CreatePostStore.gallery.toJSON();
     console.log('postPost', JSON.stringify(data));
     let res = await this.post('posts', data);
+
+    FeedStore.load();
     console.log('postresponse', res);
 
+    window.navigators[1].jumpTo(routes.createPost)
     window.navigators[0].jumpTo(routes.appStack);
+
+    CreatePostStore.isLoading = false
 
     // only reset after view is gone
     setTimeout(() => CreatePostStore.reset(), 1000);

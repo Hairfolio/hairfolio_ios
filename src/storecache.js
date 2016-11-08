@@ -44,7 +44,6 @@ export default function(store, initialState, toBeSaved, reviveState) {
     queued = true;
     InteractionManager.runAfterInteractions(() => {
       queued = false;
-      console.log('trysaving');
 
       state = store.getState();
       // so it won't save on the first run declenched by the

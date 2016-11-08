@@ -31,14 +31,47 @@ import {
   AlertIOS,
   Modal,
   ScrollView,
+  ActivityIndicator,
   PickerIOS, Picker, StatusBar, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet
 } from 'hairfolio/src/helpers.js';
 
 
+const FeedHeader = observer(() => {
+  return (
+    <View
+      style = {{
+        height: h(92),
+        flexDirection: 'row',
+        alignItems: 'center'
+      }}
+    >
+      <View style={{
+        width: h(150),
+        flex: 1,
+      }} />
+      <Image
+        style = {{
+          height: h(36),
+          width: h(172)
+        }}
+        source={require('img/feed_header.png')}
+      />
+      <View style={{width: h(150), flex: 1}} >
+        <Image
+          style={{alignSelf: 'flex-end', marginRight: h(28), height: h(32), width: h(44)}}
+          source={require('img/feed_mail.png')}
+        />
+      </View>
+
+    </View>
+
+  );
+});
 
 
 
 @connect(app, user)
+@observer
 export default class Feed extends PureComponent {
 
   static contextTypes = {
@@ -48,6 +81,20 @@ export default class Feed extends PureComponent {
   render() {
 
     let store = FeedStore;
+
+    let content = (
+      <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+        <ActivityIndicator size='large' />
+      </View>
+    );
+
+    if (!store.isLoading) {
+      content = (
+        <ScrollView>
+          {store.elements.map(p => <Post key={p.key} post={p} />)}
+        </ScrollView>
+      );
+    }
 
     return (<NavigationSetting
       style={{
@@ -60,12 +107,9 @@ export default class Feed extends PureComponent {
       <View style={{
         flex: 1
       }}>
-
-      <ScrollView>
-        {store.elements.map(p => <Post key={p.key} post={p} />)}
-      </ScrollView>
-
-      </View>
-    </NavigationSetting>);
+      <FeedHeader />
+      {content}
+    </View>
+  </NavigationSetting>);
   }
 };

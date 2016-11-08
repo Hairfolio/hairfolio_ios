@@ -29,8 +29,6 @@ import BlackHeader from 'components/BlackHeader.js'
 import PostDetailsContent from 'components/feed/PostDetailsContent.js'
 
 
-
-
 @connect(app)
 export default class PostDetails extends PureComponent {
 

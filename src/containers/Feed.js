@@ -96,6 +96,23 @@ export default class Feed extends PureComponent {
       );
     }
 
+    if (store.elements.length == 0) {
+      content =  (
+        <View style={{flex: 1}}>
+          <Text
+            style= {{
+              paddingTop: h(38),
+              fontSize: h(34),
+              textAlign: 'center',
+              fontFamily: FONTS.BOOK_OBLIQUE
+            }}
+          >
+            There are no posts in the feed yet.
+          </Text>
+        </View>
+      );
+    }
+
     return (<NavigationSetting
       style={{
         flex: 1,

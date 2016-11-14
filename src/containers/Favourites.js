@@ -17,6 +17,13 @@ import FavouritesList from 'components/favourites/FavouritesList.js'
 import FavouritesGrid from 'components/favourites/FavouritesGrid.js'
 import ScrollableTabView from 'react-native-scrollable-tab-view'
 
+import ActivityYou from 'components/favourites/ActivityYou.js'
+import ActivityFollowing from 'components/favourites/ActivityFollowing.js'
+
+
+import ActivityYouStore from 'stores/ActivityYouStore'
+import ActivityFollowingStore from 'stores/ActivityFollowingStore'
+
 
 @connect(app)
 export default class Favourites extends PureComponent {
@@ -36,12 +43,26 @@ export default class Favourites extends PureComponent {
           backgroundColor: COLORS.WHITE,
           paddingBottom: BOTTOMBAR_HEIGHT
         }}
+        onWillFocus={
+          () => {
+            ActivityYouStore.load();
+            ActivityFollowingStore.load();
+          }
+        }
       >
         <View style={{
           flex: 1
         }}>
-        <WhiteHeader title='Favourites' />
-        <FavouritesGrid />
+        <WhiteHeader title='Activity' />
+
+        <ScrollableTabView
+          renderTabBar={() => <LinkTabBar />}
+          initialPage={0}
+        >
+          <FavouritesGrid tabLabel="Favorites" />
+          <ActivityYou tabLabel='You' />
+          <ActivityFollowing tabLabel='Following' />
+        </ScrollableTabView>
       </View>
     </NavigationSetting>
     );

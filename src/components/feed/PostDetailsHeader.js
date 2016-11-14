@@ -45,6 +45,7 @@ const PostDetailsActionButtons = observer(() => {
         }}
         onPress={() => {
           StarGiversStore.back = () => window.navigators[0].jumpTo(routes.postDetails);
+          StarGiversStore.load(store.post.id);
           window.navigators[0].jumpTo(routes.starGivers);
         }}
 

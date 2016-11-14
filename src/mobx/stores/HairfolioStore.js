@@ -20,6 +20,7 @@ class Hairfolio {
   @observable numberOfPosts;
 
   constructor(obj) {
+    console.log('hairfolios', obj);
     this.name = obj.name;
     this.id = obj.id;
     this.numberOfPosts = 0;
@@ -39,7 +40,7 @@ class HairfolioStore {
 
     if (name.length > 0) {
       let res = await ServiceBackend.post('hairfolios', {name: name});
-      this.hairfolios.push(new Hairfolio(res.hairfolio));
+      this.hairfolios.push(new Hairfolio(res));
       this.textInput.clear();
     }
   }
@@ -62,7 +63,7 @@ class HairfolioStore {
       let res = await ServiceBackend.post('hairfolios', {name: 'Inspiration'});
       this.hairfolios.push(new Hairfolio(res.hairfolio));
     } else {
-      this.hairfolios = results.map(e => new Hairfolio(e.hairfolio)).reverse();
+      this.hairfolios = results.map(e => new Hairfolio(e)).reverse();
     }
 
     this.isLoading = false;

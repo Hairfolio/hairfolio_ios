@@ -51,8 +51,8 @@ const FeedHeader = observer(() => {
       }} />
       <Image
         style = {{
-          height: h(36),
-          width: h(172)
+          height: h(25),
+          width: h(231)
         }}
         source={require('img/feed_header.png')}
       />

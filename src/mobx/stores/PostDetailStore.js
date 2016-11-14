@@ -8,7 +8,7 @@ import Picture from 'stores/Picture.js'
 let PhotoAlbum = NativeModules.PhotoAlbum;
 
 import {v4} from 'uuid';
-import {_, moment, React, Text, ActionSheetIOS} from 'hairfolio/src/helpers';
+import {_, Linking, moment, React, Text, ActionSheetIOS} from 'hairfolio/src/helpers';
 import Post from 'stores/Post';
 
 import * as routes from 'hairfolio/src/routes';
@@ -75,12 +75,29 @@ class PostDetailStore {
 
         });
     } else if (tag.type == 'link') {
+
+      let options = ['Open website', 'Cancel'];
+
+      if (tag.hashtag) {
+        options.unshift(`See all posts tagged #${tag.hashtag}`);
+      }
+
+
       ActionSheetIOS.showActionSheetWithOptions({
         title: `${tag.name}`,
-        options: [`See all posts tagged #${tag.hashtag}`, 'Open website', 'Cancel'],
-        cancelButtonIndex: 2,
+        options: options,
+        cancelButtonIndex: options.length - 1,
       },
         (buttonIndex) => {
+          if (options[buttonIndex] == 'Open website') {
+            Linking.canOpenURL(tag.linkUrl).then(supported => {
+              if (supported) {
+                Linking.openURL(tag.linkUrl);
+              } else {
+                console.log('Don\'t know how to open URI: ' + this.props.url);
+              }
+            });
+          }
         });
     }
   }

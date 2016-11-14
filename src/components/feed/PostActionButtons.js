@@ -85,6 +85,7 @@ const PostActionButtons = observer(({post}) => {
       <TouchableOpacity
         onPress={() => {
           StarGiversStore.back = () => window.navigators[0].jumpTo(appStack);
+          StarGiversStore.load(post.id);
           window.navigators[0].jumpTo(starGivers);
         }}
         style={{

@@ -23,6 +23,8 @@ import {
 import utils from 'hairfolio/src/utils.js'
 import EnvironmentStore from 'stores/EnvironmentStore.js'
 
+import User from 'stores/User.js';
+
 
 import Service from 'hairfolio/src/services/index.js'
 import FavoriteStore from 'stores/FavoriteStore.js'
@@ -30,51 +32,6 @@ import FavoriteStore from 'stores/FavoriteStore.js'
 import ServiceBackend from 'backend/ServiceBackend.js'
 
 import Picture from 'stores/Picture.js'
-
-class GetObj {
-  constructor(obj) {
-    this.data = obj;
-  }
-
-  get(index) {
-    return this.data[index];
-  }
-}
-
-class User {
-  @observable profilePicture;
-  @observable name;
-
-  async init(data) {
-    if (!data) {
-      return;
-    }
-
-    this.name = `${data.first_name} ${data.last_name}`;
-
-    window.ser = Service;
-    let environment = await EnvironmentStore.get();
-
-    let picObj = {uri: utils.getUserProfilePicURI(new GetObj(data), new GetObj(environment))};
-
-    this.profilePicture = new Picture(
-      picObj,
-      picObj,
-      null
-    );
-  }
-
-  sample() {
-    let picObj = require('img/feed_example_profile.png');
-    this.profilePicture = new Picture(
-      picObj,
-      picObj,
-      null
-    );
-
-    this.name = 'First Last name';
-  }
-}
 
 export default class Post {
   @observable description
@@ -105,7 +62,11 @@ export default class Post {
     // TODO
     this.starNumber = data.star_count;
     this.numberOfComments = data.comment_count;
+
+    console.log('starData', data);
     this.hasStarred = data.starred_by_me;
+
+    console.log('hasStarred', this.hasStarred);
 
     // TODO
     let user = new User();
@@ -132,6 +93,7 @@ export default class Post {
         if (item.type == 'hashtag') {
           picture.addHashTag(item.left, item.top, item.hashtag);
         } else if (item.type == 'link') {
+          console.log('myLink', item);
           picture.addLinkTag(item.left, item.top, item);
         } else if (item.type == 'service') {
           picture.addServiceTag(item.left, item.top, item);

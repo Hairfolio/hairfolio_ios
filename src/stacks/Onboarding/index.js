@@ -21,6 +21,10 @@ import {COLORS, SCALE} from '../../style';
 import {register, login, register2, loginEmail} from '../../routes';
 import {Dims} from '../../constants';
 
+import {
+  h
+} from 'hairfolio/src/helpers.js';
+
 export default class OnboardingStack extends PureComponent {
   static propTypes = {};
 
@@ -132,10 +136,9 @@ export default class OnboardingStack extends PureComponent {
                 justifyContent: 'flex-end',
                 alignItems: 'center'
               }}>
-                <Icon
-                  color={COLORS.WHITE}
-                  name="logo"
-                  size={SCALE.h(172)}
+                <Image
+                  style={{height: h(42), width: h(383)}}
+                  source={require('img/onboarding_logo.png')}
                 />
               </View>
               <Navigator

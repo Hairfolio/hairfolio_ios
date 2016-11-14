@@ -80,7 +80,7 @@ export default class Register extends PureComponent {
             fontSize: SCALE.h(28),
             color: COLORS.WHITE,
             textAlign: 'center'
-          }}>Aready a Member? <Text style={{fontFamily: FONTS.HEAVY}}>Sign in</Text></Text>
+          }}>Already a Member? <Text style={{fontFamily: FONTS.HEAVY}}>Sign in</Text></Text>
         </TouchableOpacity>
       </View>
     </NavigationSetting>);

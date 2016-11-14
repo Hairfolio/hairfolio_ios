@@ -27,6 +27,8 @@ import LoadingScreen from 'components/LoadingScreen.js'
 import BlackHeader from 'components/BlackHeader.js'
 
 
+
+
 const StarGiverRow = observer(({store}) => {
   return (
     <View
@@ -38,7 +40,7 @@ const StarGiverRow = observer(({store}) => {
       }}
     >
       <Image
-        style={{height: h(80), width:h(80)}}
+        style={{height: h(80), width:h(80), borderRadius:h(40)}}
         source={store.profilePicture.source}
       />
       <View
@@ -63,7 +65,7 @@ const StarGiverRow = observer(({store}) => {
         >{store.name}
         </Text>
 
-        <FollowButton store={store} />
+        {store.showFollowButton ?  <FollowButton store={store} /> : null}
       </View>
 
     </View>

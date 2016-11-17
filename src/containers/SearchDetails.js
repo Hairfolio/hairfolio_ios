@@ -10,8 +10,10 @@ import {profile, profileExternal, appStack} from '../routes';
 
 import SimpleButton from '../components/Buttons/Simple';
 
-import SearchElement from '../components/search/Search.js'
+import SearchDetailsElement from 'components/search/SearchDetailsElement.js'
 import SearchStore from 'stores/SearchStore.js'
+
+import SearchDetailsStore from 'stores/search/SearchDetailsStore.js';
 
 import {
   _, // lodash
@@ -85,7 +87,7 @@ const SampleActions = observer(() => {
 });
 
 @connect(app)
-export default class Search extends PureComponent {
+export default class SearchDetails extends PureComponent {
   static propTypes = {
     appVersion: React.PropTypes.string.isRequired
   };
@@ -98,17 +100,24 @@ export default class Search extends PureComponent {
     return (<NavigationSetting
       style={{
         flex: 1,
-        backgroundColor: COLORS.WHITE,
-        paddingBottom: BOTTOMBAR_HEIGHT
+        backgroundColor: COLORS.WHITE
       }}
       onWillFocus={
-        () => SearchStore.load()
+        () => {
+          StatusBar.setBarStyle('light-content')
+          SearchDetailsStore.reset();
+        }
+      }
+      onFocus={
+        ()  => {
+          setTimeout(() => SearchDetailsStore.input.focus());
+        }
       }
     >
       <View style={{
         flex: 1
       }}>
-        <SearchElement />
+        <SearchDetailsElement />
       </View>
     </NavigationSetting>);
   }

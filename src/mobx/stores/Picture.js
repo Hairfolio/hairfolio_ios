@@ -25,6 +25,19 @@ export default class Picture {
     return ImageResizer.createResizedImage(uri, 250, 250, 'JPEG', 90, 0, null);
   }
 
+  getSource(width) {
+    let uri = this.source.uri;
+
+    if (uri && uri.indexOf('cloudinary') > -1) {
+      let splitUrl = uri.split('upload');
+      let newUrl = `${splitUrl[0]}upload/w_${width}${splitUrl[1]}`;
+      console.log(newUrl);
+      return {uri: newUrl};
+    }
+
+    return this.source;
+  }
+
 
   async toJSON() {
     let uri = await this.resizeImage(this.source.uri);

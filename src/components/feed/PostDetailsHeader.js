@@ -23,6 +23,9 @@ import CommentsStore from 'stores/CommentsStore.js'
 
 import PostTags from 'components/feed/PostTags.js'
 
+import PostStar from 'components/feed/PostStar.js'
+import PostSave from 'components/feed/PostSave.js'
+
 import * as routes from 'hairfolio/src/routes.js'
 
 const PostDetailsActionButtons = observer(() => {
@@ -48,7 +51,6 @@ const PostDetailsActionButtons = observer(() => {
           StarGiversStore.load(store.post.id);
           window.navigators[0].jumpTo(routes.starGivers);
         }}
-
       >
         <Image
           style={{height: h(40), width: h(43)}}
@@ -101,7 +103,7 @@ const PostDetailsActionButtons = observer(() => {
           alignItems: 'center',
           width: h(120)
         }}
-        onPress={() => {store.showTags = !store.showTags}}
+        onPress={() => { store.showTags = !store.showTags }}
       >
         <Image
           style={{height: h(39), width: h(40)}}
@@ -128,48 +130,90 @@ const PostDetailsHeader = observer(() => {
 
   let store = PostDetailStore;
 
+  let post = store.post;
+
   return (
-    <View style={{height: windowWidth, width: windowWidth}}>
-      <Image
-        style={{height: windowWidth, width:windowWidth}}
-        source={store.selectedPicture.source}
-      />
-      <TouchableOpacity
-        style = {{
-          position: 'absolute',
-          top: h(40),
-          left: h(33)
-        }}
-        onPress={() => store.back()}
-      >
-        <Image
-          style={{height: h(29), width: h(42)}}
-          source={require('img/feed_white_arrow_back.png')}
-        />
-      </TouchableOpacity>
+    <TouchableWithoutFeedback
+      onPress={
+        (e) => {
+          let data = e.touchHistory.touchBank[1];
+          let timeDiff = data.currentTimeStamp - data.previousTimeStamp;
 
-      <TouchableOpacity
-        style = {{
-          position: 'absolute',
-          top: h(43),
-          right: h(33)
+          let currentClickTime = (new Date()).getTime();
+
+          let time = currentClickTime;
+
+          let oneClickFun = () => {
+            if (time == post.lastClickTime && !post.doubleClick) {
+            } else {
+              post.doubleClick = false;
+            }
+          };
+
+          if (post.lastClickTime) {
+            let diff = currentClickTime - post.lastClickTime;
+
+            if (diff < 300) {
+              post.doubleClick = true;
+              post.starPost();
+            } else {
+              setTimeout(oneClickFun, 350);
+            }
+          } else {
+            setTimeout(oneClickFun, 350);
+          }
+
+          post.lastClickTime = currentClickTime;
         }}
-      >
+      onLongPress={(e) => {
+        console.log('long press');
+        post.savePost();
+      }}
+    >
+
+      <View style={{height: windowWidth, width: windowWidth}}>
         <Image
+          style={{height: windowWidth, width: windowWidth}}
+          source={store.selectedPicture.getSource(2 * windowWidth)}
+        />
+        <TouchableOpacity
           style = {{
-            height: h(27),
-            width: h(43)
+            position: 'absolute',
+            top: h(40),
+            left: h(33)
           }}
-          source={require('img/feed_white_share_btn.png')}
-        />
-      </TouchableOpacity>
-      <PostTags store={store} />
+          onPress={() => store.back()}
+        >
+          <Image
+            style={{height: h(29), width: h(42)}}
+            source={require('img/feed_white_arrow_back.png')}
+          />
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style = {{
+            position: 'absolute',
+            top: h(43),
+            right: h(33)
+          }}
+        >
+          <Image
+            style = {{
+              height: h(27),
+              width: h(43)
+            }}
+            source={require('img/feed_white_share_btn.png')}
+          />
+        </TouchableOpacity>
+        <PostTags store={store} />
 
 
+        <PostDetailsActionButtons />
+        <PostSave post={post} />
+        <PostStar post={post} />
+      </View>
 
-      <PostDetailsActionButtons />
-    </View>
-
+    </TouchableWithoutFeedback>
   );
 });
 

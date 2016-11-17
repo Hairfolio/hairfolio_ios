@@ -3,6 +3,7 @@ const BASE_URL = 'http://hairfolio.herokuapp.com/';
 
 import CreatePostStore from 'stores/CreatePostStore.js'
 import FeedStore from 'stores/FeedStore.js'
+import SearchStore from 'stores/SearchStore.js'
 
 import * as routes from 'hairfolio/src/routes.js'
 
@@ -40,23 +41,31 @@ class ServiceBackend extends Backend {
   }
 
   async postPost() {
-    CreatePostStore.isLoading = true;
 
-    console.log('upload picture');
-    let data = await CreatePostStore.gallery.toJSON();
-    console.log('postPost', JSON.stringify(data));
-    let res = await this.post('posts', data);
+    try {
+      CreatePostStore.isLoading = true;
 
-    FeedStore.load();
-    console.log('postresponse', res);
+      CreatePostStore.loadingText = 'Uploading pictures ..';
+      let data = await CreatePostStore.gallery.toJSON();
 
-    window.navigators[1].jumpTo(routes.createPost)
-    window.navigators[0].jumpTo(routes.appStack);
 
-    CreatePostStore.isLoading = false
+      CreatePostStore.loadingText = 'Publishing the post';
+      let res = await this.post('posts', data);
 
-    // only reset after view is gone
-    setTimeout(() => CreatePostStore.reset(), 1000);
+      FeedStore.load();
+      SearchStore.refresh();
+
+      window.navigators[1].jumpTo(routes.createPost)
+      window.navigators[0].jumpTo(routes.appStack);
+
+      CreatePostStore.isLoading = false
+
+      // only reset after view is gone
+      //  setTimeout(() => CreatePostStore.reset(), 1000);
+    } catch(err) {
+      CreatePostStore.isLoading = false;
+      alert('An error occured ' + err.toString());
+    }
   }
 }
 

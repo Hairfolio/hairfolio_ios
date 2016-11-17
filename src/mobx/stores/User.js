@@ -50,8 +50,6 @@ export default class User {
       return;
     }
 
-    console.log('myUser', data);
-
     this.id = data.id;
 
     if (data.account_type == 'salon' || data.account_type == 'brand') {
@@ -64,7 +62,7 @@ export default class User {
 
     let picObj = {uri: utils.getUserProfilePicURI(new GetObj(data), new GetObj(environment))};
 
-    console.log('picObj', picObj);
+    console.log('uri', utils.getUserProfilePicURI(new GetObj(data), new GetObj(environment)));
 
     this.profilePicture = new Picture(
       picObj,

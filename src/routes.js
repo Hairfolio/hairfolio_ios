@@ -57,6 +57,9 @@ import OAuthStack from './stacks/OAuth';
 import StarGivers from './containers/StarGivers';
 import PostDetails from './containers/PostDetails.js';
 
+// search
+import SearchDetails from './containers/SearchDetails.js';
+
 // post
 import PostFilter from './containers/PostFilter';
 
@@ -340,6 +343,13 @@ class StarGiversRoute extends Route {
   };
 }
 
+class SearchDetailsRoute extends Route {
+  SceneComponent = SearchDetails;
+  SceneConfig = {
+    ...CustomScenesConfig.FadeInOut
+  };
+}
+
 class OnboardingStackRoute extends Route {
   SceneComponent = OnboardingStack;
   SceneConfig = {
@@ -513,6 +523,8 @@ export const postFilter = new PostFilterRoute();
 export const albumPage = new AlbumPageRoute();
 export const addLink = new AddLinkRoute();
 
+// search
+export const searchDetails = new SearchDetailsRoute();
 
 // feed
 export const starGivers = new StarGiversRoute();

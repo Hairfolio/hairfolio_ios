@@ -266,6 +266,7 @@ class CreatePostStore {
   @observable gallery = new Gallery();
 
   @observable isLoading = false;
+  @observable loadingText;
 
   constructor() {
     this.updateLibraryPictures();

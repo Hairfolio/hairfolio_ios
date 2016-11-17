@@ -59,6 +59,7 @@ export const FONTS = {
   OBLIQUE: 'Avenir-Oblique',
   SEMIBOLD: 'Avenir-Semibold',
   BOOK_OBLIQUE: 'Avenir-BookOblique',
+  MEDIUM_OBLIQUE: 'Avenir-MediumOblique',
   HEAVY_OBLIQUE: 'Avenir-HeavyOblique',
   LIGHT_OBLIQUE: 'Avenir-LightOblique',
   LIGHT: 'Avenir-Light',

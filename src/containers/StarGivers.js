@@ -26,90 +26,7 @@ import {STATUSBAR_HEIGHT, POST_INPUT_MODE} from '../constants';
 import LoadingScreen from 'components/LoadingScreen.js'
 import BlackHeader from 'components/BlackHeader.js'
 
-
-
-
-const StarGiverRow = observer(({store}) => {
-  return (
-    <View
-      style={{
-        paddingLeft: h(20),
-        alignItems: 'center',
-        flexDirection: 'row',
-
-      }}
-    >
-      <Image
-        style={{height: h(80), width:h(80), borderRadius:h(40)}}
-        source={store.profilePicture.source}
-      />
-      <View
-        style={{
-          marginLeft: 20,
-          flexDirection: 'row',
-          alignItems: 'center',
-          borderBottomWidth: h(1),
-          borderBottomColor: '#D8D8D8',
-          height: h(122),
-          flex: 1,
-          paddingRight: h(20),
-        }}
-      >
-        <Text
-          style={{
-            color: '#3E3E3E',
-            fontFamily: FONTS.MEDIUM,
-            fontSize: h(28),
-            flex: 1
-          }}
-        >{store.name}
-        </Text>
-
-        {store.showFollowButton ?  <FollowButton store={store} /> : null}
-      </View>
-
-    </View>
-
-
-  );
-});
-
-const StarGiversContent = observer(() => {
-
-  if (StarGiversStore.isLoading) {
-    return (
-      <LoadingScreen store={StarGiversStore} />
-    );
-  }
-
-  if (StarGiversStore.isEmpty) {
-    return (
-      <View>
-        <Text
-          style= {{
-            paddingTop: h(38),
-            fontSize: h(34),
-            textAlign: 'center',
-            fontFamily: FONTS.BOOK_OBLIQUE
-          }}
-        >
-          There have been no starrers yet.
-        </Text>
-      </View>
-    );
-  }
-
-  return (
-    <ScrollView>
-      {StarGiversStore.starGivers.map(e => (
-        <StarGiverRow
-          store={e}
-          key={e.key} />
-      ))}
-    </ScrollView>
-
-  );
-});
+import FollowUserList from 'components/FollowUserList.js'
 
 @connect(app)
 export default class StarGivers extends PureComponent {
@@ -136,7 +53,7 @@ export default class StarGivers extends PureComponent {
       <BlackHeader
         onLeft={() => StarGiversStore.back()}
         title='Starrers'/>
-      <StarGiversContent />
+      <FollowUserList store={StarGiversStore} />
 
 
       </View>

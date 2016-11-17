@@ -22,14 +22,6 @@ class FeedStore {
 
   constructor() {
     this.elements = [];
-
-      /*
-    for (let i = 0; i < 4; i++) {
-      let post = new Post();
-      post.samplePost(i);
-      this.elements.push(post);
-    }
-    */
   }
 
   async load() {

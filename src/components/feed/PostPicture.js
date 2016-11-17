@@ -21,6 +21,9 @@ import * as routes from 'hairfolio/src/routes';
 
 import PostDetailStore from 'stores/PostDetailStore';
 
+import PostStar from 'components/feed/PostStar.js'
+import PostSave from 'components/feed/PostSave.js'
+
 import Swiper from 'react-native-swiper';
 
 let autoplay;
@@ -92,7 +95,7 @@ const PostPicture = observer(({post}) => {
                 <Image
                   key={pic.key}
                   style={{height: windowWidth, width: windowWidth}}
-                  source={pic.source}
+                  source={pic.getSource(windowWidth * 2)}
                 />
               )
             )}
@@ -123,72 +126,7 @@ const PostPicture = observer(({post}) => {
         </View>
       </View>
     </TouchableWithoutFeedback>
-
   );
 });
-
-const PostStar = observer(({post}) => {
-
-  if (!post.showStar) {
-    return null;
-  }
-
-
-  return (
-    <View
-      style={{
-        height: windowWidth,
-        width: windowWidth,
-        position: 'absolute',
-        left: 0,
-        top: 0,
-        alignItems: 'center',
-        justifyContent: 'center'
-      }}
-    >
-    <Image
-      style={{
-        height: h(221),
-        width: h(223),
-        opacity: 0.73
-      }}
-      source={require('img/feed_action_star.png')}
-    />
-    </View>
-  );
-});
-
-
-const PostSave = observer(({post}) => {
-
-  if (!post.showSave) {
-    return null;
-  }
-
-
-  return (
-    <View
-      style={{
-        height: windowWidth,
-        width: windowWidth,
-        position: 'absolute',
-        left: 0,
-        top: 0,
-        alignItems: 'center',
-        justifyContent: 'center'
-      }}
-    >
-    <Image
-      style={{
-        height: h(265),
-        width: h(265),
-        opacity: 0.73
-      }}
-      source={require('img/feed_action_save.png')}
-    />
-    </View>
-  );
-});
-
 
 export default PostPicture;

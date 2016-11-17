@@ -66,5 +66,3 @@ export default class Activity {
     this.post.sample();
   }
 }
-
-

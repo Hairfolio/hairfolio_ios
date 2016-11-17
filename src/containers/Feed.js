@@ -88,15 +88,13 @@ export default class Feed extends PureComponent {
       </View>
     );
 
-    if (!store.isLoading) {
+    if (store.isLoading) {
       content = (
-        <ScrollView>
-          {store.elements.map(p => <Post key={p.key} post={p} />)}
-        </ScrollView>
+        <View style={{height: h(188), justifyContent: 'center'}}>
+          <ActivityIndicator size='large' />
+        </View>
       );
-    }
-
-    if (store.elements.length == 0) {
+    } else  if (store.elements.length == 0) {
       content =  (
         <View style={{flex: 1}}>
           <Text
@@ -110,6 +108,12 @@ export default class Feed extends PureComponent {
             There are no posts in the feed yet.
           </Text>
         </View>
+      );
+    } else {
+      content = (
+        <ScrollView>
+          {store.elements.map(p => <Post key={p.key} post={p} />)}
+        </ScrollView>
       );
     }
 

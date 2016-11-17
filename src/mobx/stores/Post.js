@@ -77,12 +77,11 @@ export default class Post {
 
     for (let pic of data.post_items) {
 
-      let url = pic.url.split('upload');
+      //let url = pic.url.split('upload');
+      // let newUrl = `${url[0]}upload/h_${2 * windowWidth}${url[1]}`;
 
-      let newUrl = `${url[0]}upload/h_${2 * windowWidth}${url[1]}`;
 
-
-      let picObj = {uri: newUrl};
+      let picObj = {uri: pic.url};
       let picture = new Picture(
         picObj,
         picObj,
@@ -253,6 +252,9 @@ export default class Post {
     return counter;
   }
 
+  @computed get topHashTag() {
+    return '#test';
+  }
 
   @computed get hashTags() {
     let hashTags = [];

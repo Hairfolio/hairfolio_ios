@@ -51,8 +51,8 @@ const HairfolioItem = observer(({store}) => {
 
   let previewPicture = <View
     style = {{
-      height: h(110),
-      width: h(110),
+      height: h(142),
+      width: h(142),
       marginLeft: h(18),
       backgroundColor: '#D8D8D8'
     }} />;
@@ -61,8 +61,8 @@ const HairfolioItem = observer(({store}) => {
     previewPicture = (
       <Image
         style = {{
-          height: h(110),
-          width: h(110),
+          height: h(142),
+          width: h(142),
           marginLeft: h(18),
         }}
         source={store.picture.getSource(110)}
@@ -91,7 +91,7 @@ const HairfolioItem = observer(({store}) => {
 
       <View
         style={{
-          height: h(140),
+          height: h(172),
           flexDirection: 'row',
           alignItems: 'center',
           backgroundColor: 'white',

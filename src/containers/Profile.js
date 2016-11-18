@@ -247,7 +247,7 @@ export default class Profile extends PureComponent {
                       fontSize: SCALE.h(28),
                       textAlign: 'center',
                       backgroundColor: 'transparent'
-                    }}>X Stars</Text>
+                    }}>2 Stars</Text>
                     <View style={{width: 10}} />
                     <Text style={{
                       color: COLORS.WHITE,

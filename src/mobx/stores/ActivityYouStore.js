@@ -16,7 +16,7 @@ class ActivityYouStore {
   constructor() {
   }
 
-  load() {
+  async load() {
     this.isLoading = true;
 
     this.elements = [];

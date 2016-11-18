@@ -15,6 +15,7 @@ import {observer} from 'mobx-react/native';
 import autobind from 'autobind-decorator'
 import _ from 'lodash';
 
+import * as routes from 'hairfolio/src/routes.js';
 import FollowButton from 'components/FollowButton.js'
 
 import StarGiversStore from 'stores/StarGiversStore.js'
@@ -39,6 +40,9 @@ const Content = observer(({store}) => {
         onLeft={() => store.back()}
         title={store.title} />
       <GridList
+        onBack={
+          () => window.navigators[0].jumpTo(routes.tagPosts)
+        }
         noElementsText='There are no posts with this tag'
         store={store} />
   </View>

@@ -31,7 +31,9 @@ class TopTags {
     for (let a = 0; a < res.length; a++)  {
       let post = new Post();
       await post.init(res[a]);
-      this.elements.push(post);
+      if (post.hashTags.length > 0) {
+        this.elements.push(post);
+      }
     }
     this.isLoading = false;
   }

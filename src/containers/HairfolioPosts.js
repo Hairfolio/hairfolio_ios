@@ -30,6 +30,8 @@ import BlackHeader from 'components/BlackHeader.js'
 import GridList from 'components/GridList'
 import HairfolioPostStore from 'stores/HairfolioPostStore.js'
 
+import * as routes from 'hairfolio/src/routes.js'
+
 const Content = observer(({store}) => {
   return (
     <View style={{
@@ -39,6 +41,9 @@ const Content = observer(({store}) => {
         onLeft={() => store.back()}
         title={store.title} />
       <GridList
+        onBack={
+          () => window.navigators[0].jumpTo(routes.hairfolioPosts)
+        }
         noElementsText='There are no posts with this tag'
         store={store} />
   </View>

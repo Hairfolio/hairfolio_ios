@@ -23,6 +23,8 @@ import {
 
 import {BOTTOMBAR_HEIGHT, STATUSBAR_HEIGHT} from 'hairfolio/src/constants.js';
 
+import TagPostStore from 'stores/TagPostStore'
+
 import SearchStore from 'stores/SearchStore';
 
 import GridView from 'components/GridView.js';
@@ -85,29 +87,43 @@ const SearchBar = observer(({store}) => {
 
 const TagItem = observer(({store}) => {
   return (
-    <View
-      style = {{
-        height: h(188),
-        width: h(188)
-      }}
+    <TouchableWithoutFeedback
+      onPress={
+        () => {
+          let name = store.topHashTag.substring(1);
+          TagPostStore.title = `#${name}`;
+          TagPostStore.load(name);
+          TagPostStore.back = () => {
+            window.navigators[0].jumpTo(routes.appStack);
+          }
+          window.navigators[0].jumpTo(routes.tagPosts);
+        }
+      }
     >
-      <Image
-        style={{height: h(188), width: h(188)}}
-        source={store.pictures[0].source} />
-      <Text
+      <View
         style = {{
-          position: 'absolute',
-          bottom: 0,
-          left: h(13),
-          color: '#FCFAFA',
-          fontFamily: FONTS.MEDIUM_OBLIQUE,
-          fontSize: h(27),
-          backgroundColor: 'transparent'
+          height: h(188),
+          width: h(188)
         }}
       >
-        {store.topHashTag}
-      </Text>
-    </View>
+        <Image
+          style={{height: h(188), width: h(188)}}
+          source={store.pictures[0].source} />
+        <Text
+          style = {{
+            position: 'absolute',
+            bottom: 0,
+            left: h(13),
+            color: '#FCFAFA',
+            fontFamily: FONTS.MEDIUM_OBLIQUE,
+            fontSize: h(27),
+            backgroundColor: 'transparent'
+          }}
+        >
+          {store.topHashTag}
+        </Text>
+      </View>
+    </TouchableWithoutFeedback>
   );
 });
 

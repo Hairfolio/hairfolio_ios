@@ -15,6 +15,16 @@ class PostInfo {
   constructor() {
   }
 
+  init(obj) {
+    this.id = obj.id;
+    let picObj =  {uri: obj.post_items[0].url};
+    this.picture = new Picture(
+      picObj,
+      picObj,
+      null
+    );
+  }
+
   sample() {
     let pic = require('img/feed_example4.png');
 
@@ -35,6 +45,33 @@ export default class Activity {
 
   constructor() {
     this.key = v4();
+  }
+
+  init(obj) {
+    this.createdTime = moment(obj.created_at);
+
+    let user = new User();
+    user.init(obj.user);
+    this.user = user;
+
+    if (obj.activity_type == 'follow_user') {
+      this.type = 'follow';
+
+      let user2 = new User();
+      user2.init(obj.subject);
+      this.user2 = user2;
+
+    } else {
+      this.type = 'star';
+
+      let user2 = new User();
+      user2.init(obj.subject.user);
+      this.user2 = user2;
+
+      this.post = new PostInfo();
+      this.post.init(obj.subject);
+    }
+
   }
 
 

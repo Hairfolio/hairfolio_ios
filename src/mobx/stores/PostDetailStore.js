@@ -29,7 +29,11 @@ class PostDetailStore {
   }
 
   back() {
-    window.navigators[0].jumpTo(routes.appStack);
+    if (this.myBack) {
+      this.myBack();
+    } else {
+      window.navigators[0].jumpTo(routes.appStack);
+    }
   }
 
 

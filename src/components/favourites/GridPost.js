@@ -87,13 +87,14 @@ const ActionButtons = observer(({post}) => {
   );
 });
 
-const GridPost = observer(({post}) => {
+const GridPost = observer(({post, onBack}) => {
   return (
     <TouchableWithoutFeedback
       onPress={
         () => {
           PostDetailStore.showTags = false;
           PostDetailStore.post = post;
+          PostDetailStore.myBack = onBack;
           window.navigators[0].jumpTo(routes.postDetails);
         }
       }

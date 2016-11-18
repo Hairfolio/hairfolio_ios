@@ -24,16 +24,16 @@ const HairfolioItem = observer(({store}) => {
 
   var swipeoutBtns = [
     {
-      height: h(140),
-      width: h(140),
+      height: h(172),
+      width: h(172),
       onPress: () => HairfolioStore.delete(store),
       component:
       <View style={{
         backgroundColor: '#E62727',
         alignItems: 'center',
         justifyContent: 'center',
-        width: h(140),
-        height: h(140),
+        width: h(172),
+        height: h(172),
       }}
     >
       <Image

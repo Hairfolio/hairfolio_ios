@@ -23,7 +23,7 @@ import {
 
 import GridPost from 'components/favourites/GridPost'
 
-const GridList = observer(({store, noElementsText}) => {
+const GridList = observer(({store, noElementsText, onBack}) => {
 
   if (store.isLoading) {
     return (
@@ -58,7 +58,7 @@ const GridList = observer(({store, noElementsText}) => {
           flexWrap: 'wrap'
         }}
       >
-    {store.elements.map(p => <GridPost key={p.key} post={p} />)}
+    {store.elements.map(p => <GridPost onBack={onBack} key={p.key} post={p} />)}
     </View>
     </ScrollView>
   );

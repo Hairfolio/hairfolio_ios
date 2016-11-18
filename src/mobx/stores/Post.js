@@ -253,7 +253,12 @@ export default class Post {
   }
 
   @computed get topHashTag() {
-    return '#test';
+    let help = this.hashTags;
+    if (help.length > 0) {
+      return '#' + help[0].hashtag;
+    } else {
+      return '';
+    }
   }
 
   @computed get hashTags() {

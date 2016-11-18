@@ -57,6 +57,7 @@ import OAuthStack from './stacks/OAuth';
 import StarGivers from './containers/StarGivers';
 import PostDetails from './containers/PostDetails.js';
 import TagPosts from './containers/TagPosts.js';
+import HairfolioPosts from './containers/HairfolioPosts.js';
 
 // search
 import SearchDetails from './containers/SearchDetails.js';
@@ -344,6 +345,13 @@ class TagPostsRoute extends Route {
   };
 }
 
+class HairfolioPostsRoute extends Route {
+  SceneComponent = HairfolioPosts;
+  SceneConfig = {
+    ...CustomScenesConfig.FadeInOut
+  };
+}
+
 class StarGiversRoute extends Route {
   SceneComponent = StarGivers;
   SceneConfig = {
@@ -539,6 +547,7 @@ export const starGivers = new StarGiversRoute();
 export const comments = new CommentsRoute();
 export const postDetails = new PostDetailsRoute();
 export const tagPosts = new TagPostsRoute();
+export const hairfolioPosts = new HairfolioPostsRoute();
 
 export const basicInfoConsumer = new BasicInfoRoute({
   accountType: 'consumer',

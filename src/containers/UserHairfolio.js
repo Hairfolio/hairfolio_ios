@@ -1,6 +1,6 @@
 import React from 'react';
 import PureComponent from '../components/PureComponent';
-import {View, Text} from 'react-native';
+import {View, Text, TouchableHighlight} from 'react-native';
 import connect from '../lib/connect';
 import {app} from '../selectors/app';
 import {COLORS, FONTS, SCALE} from '../style';
@@ -17,7 +17,8 @@ import {
 
 import HairfolioStore from 'stores/HairfolioStore.js'
 import Swipeout from 'hairfolio/react-native-swipeout/index.js';
-h
+import * as routes from 'hairfolio/src/routes.js'
+import HairfolioPostStore from 'stores/HairfolioPostStore'
 
 const HairfolioItem = observer(({store}) => {
 
@@ -71,7 +72,23 @@ const HairfolioItem = observer(({store}) => {
 
   return (
     <Swipeout
+
       right={swipeoutBtns}>
+
+      <TouchableHighlight
+        underlayColor='#ccc'
+        onPress= {
+          () => {
+            HairfolioPostStore.title = `${store.name}`;
+            HairfolioPostStore.load(store.id);
+            HairfolioPostStore.back = () => {
+              window.navigators[0].jumpTo(routes.appStack);
+            }
+            window.navigators[0].jumpTo(routes.hairfolioPosts);
+          }
+        }
+      >
+
       <View
         style={{
           height: h(140),
@@ -105,7 +122,8 @@ const HairfolioItem = observer(({store}) => {
           {store.numberOfPosts}
         </Text>
       </View>
-    </Swipeout>
+    </TouchableHighlight>
+  </Swipeout>
   );
 });
 

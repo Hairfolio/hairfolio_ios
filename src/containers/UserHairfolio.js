@@ -43,6 +43,32 @@ const HairfolioItem = observer(({store}) => {
     }
   ];
 
+  // you cannot delete Inspiration
+  if (store.name == 'Inspiration') {
+    swipeoutBtns = [];
+  }
+
+  let previewPicture = <View
+    style = {{
+      height: h(110),
+      width: h(110),
+      marginLeft: h(18),
+      backgroundColor: '#D8D8D8'
+    }} />;
+
+  if (store.picture) {
+    previewPicture = (
+      <Image
+        style = {{
+          height: h(110),
+          width: h(110),
+          marginLeft: h(18),
+        }}
+        source={store.picture.getSource(110)}
+      />
+    );
+  }
+
   return (
     <Swipeout
       right={swipeoutBtns}>
@@ -56,15 +82,7 @@ const HairfolioItem = observer(({store}) => {
           borderBottomColor: '#DDDDDD'
         }}
       >
-        <View
-          style = {{
-            height: h(110),
-            width: h(110),
-            marginLeft: h(18),
-            backgroundColor: '#D8D8D8'
-          }}
-        >
-        </View>
+        {previewPicture}
         <Text
           style = {{
             marginLeft: h(26),

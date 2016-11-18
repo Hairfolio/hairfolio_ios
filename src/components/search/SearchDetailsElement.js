@@ -24,6 +24,7 @@ import {
 import {BOTTOMBAR_HEIGHT, STATUSBAR_HEIGHT} from 'hairfolio/src/constants.js';
 import FollowUserList from 'components/FollowUserList.js'
 
+import TagPostStore from 'stores/TagPostStore.js'
 import ScrollableTabView from 'react-native-scrollable-tab-view'
 import LinkTabBar from 'components/post/LinkTabBar.js'
 
@@ -144,6 +145,19 @@ const TagItem = observer(({item}) => {
   return (
     <TouchableHighlight
       underlayColor='#ccc'
+      onPress={
+        () => {
+          console.log('onPress');
+          let name = item.name.substring(1);
+          TagPostStore.title = `#${name}`;
+          TagPostStore.load(name);
+          TagPostStore.back = () => {
+            SearchDetailsStore.dontReset = true;
+            window.navigators[0].jumpTo(routes.searchDetails);
+          }
+          window.navigators[0].jumpTo(routes.tagPosts);
+        }
+      }
     >
       <View
         style={{

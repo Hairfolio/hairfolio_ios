@@ -102,7 +102,9 @@ export default class Search extends PureComponent {
         paddingBottom: BOTTOMBAR_HEIGHT
       }}
       onWillFocus={
-        () => SearchStore.load()
+        () => {
+          SearchStore.load();
+        }
       }
     >
       <View style={{

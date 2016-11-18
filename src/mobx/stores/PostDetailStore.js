@@ -5,6 +5,8 @@ import Camera from 'react-native-camera';
 import FilterStore from 'stores/FilterStore.js'
 import Picture from 'stores/Picture.js'
 
+import TagPostStore from 'stores/TagPostStore.js'
+
 let PhotoAlbum = NativeModules.PhotoAlbum;
 
 import {v4} from 'uuid';
@@ -72,6 +74,13 @@ class PostDetailStore {
         cancelButtonIndex: 1,
       },
         (buttonIndex) => {
+          if (buttonIndex == 0) {
+            TagPostStore.title = `#${tag.hashtag}`;
+            TagPostStore.load(tag.hashtag);
+            TagPostStore.back = () =>
+            window.navigators[0].jumpTo(routes.postDetails);
+            window.navigators[0].jumpTo(routes.tagPosts);
+          }
 
         });
     } else if (tag.type == 'link') {
@@ -97,6 +106,12 @@ class PostDetailStore {
                 console.log('Don\'t know how to open URI: ' + this.props.url);
               }
             });
+          } else if (options[buttonIndex].indexOf('tagged') > -1) {
+            TagPostStore.title = `#${tag.hashtag}`;
+            TagPostStore.load(tag.hashtag);
+            TagPostStore.back = () =>
+            window.navigators[0].jumpTo(routes.postDetails);
+            window.navigators[0].jumpTo(routes.tagPosts);
           }
         });
     }

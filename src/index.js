@@ -21,7 +21,7 @@ import Intro from './components/Intro';
 import {getHairfolios} from 'backend/HairfolioBackend';
 
 import {hello, comments, starGivers, oauthStack, loginStack, forgottenPasswordStack, signupConsumerStack, signupStylistStack, signupSalonStack, signupBrandStack, appStack, editCustomerStack, createPostStack, postDetails,
-  searchDetails
+  searchDetails, tagPosts
 } from './routes';
 
 
@@ -85,7 +85,7 @@ export default class Root extends PureComponent {
         FavoriteStore.load();
       }
 
-      // this.initialRoute = searchDetails;
+      // this.initialRoute = tagPosts;
       // this.initialRoute = signupSalonStack;
 
 
@@ -157,7 +157,8 @@ export default class Root extends PureComponent {
                   createPostStack,
                   starGivers,
                   comments,
-                  searchDetails
+                  searchDetails,
+                  tagPosts
                 ]}
               />
             </Provider>

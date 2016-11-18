@@ -105,12 +105,20 @@ export default class SearchDetails extends PureComponent {
       onWillFocus={
         () => {
           StatusBar.setBarStyle('light-content')
-          SearchDetailsStore.reset();
+          if (SearchDetailsStore.dontReset) {
+            // SearchDetailsStore.dontReset = true;
+          } else {
+            SearchDetailsStore.reset();
+          }
         }
       }
       onFocus={
         ()  => {
-          setTimeout(() => SearchDetailsStore.input.focus());
+          if (SearchDetailsStore.dontReset) {
+            SearchDetailsStore.dontReset = false;
+          } else {
+            setTimeout(() => SearchDetailsStore.input.focus());
+          }
         }
       }
     >

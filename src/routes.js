@@ -56,6 +56,7 @@ import OAuthStack from './stacks/OAuth';
 // Feed
 import StarGivers from './containers/StarGivers';
 import PostDetails from './containers/PostDetails.js';
+import TagPosts from './containers/TagPosts.js';
 
 // search
 import SearchDetails from './containers/SearchDetails.js';
@@ -336,6 +337,13 @@ class PostDetailsRoute extends Route {
   };
 }
 
+class TagPostsRoute extends Route {
+  SceneComponent = TagPosts;
+  SceneConfig = {
+    ...CustomScenesConfig.FadeInOut
+  };
+}
+
 class StarGiversRoute extends Route {
   SceneComponent = StarGivers;
   SceneConfig = {
@@ -530,6 +538,7 @@ export const searchDetails = new SearchDetailsRoute();
 export const starGivers = new StarGiversRoute();
 export const comments = new CommentsRoute();
 export const postDetails = new PostDetailsRoute();
+export const tagPosts = new TagPostsRoute();
 
 export const basicInfoConsumer = new BasicInfoRoute({
   accountType: 'consumer',

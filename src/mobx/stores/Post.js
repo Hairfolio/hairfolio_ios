@@ -474,11 +474,40 @@ export default class Post {
     FavoriteStore.load();
   }
 
-  @action savePost() {
+  save() {
+  }
+
+  async savePost() {
     this.showSave = true;
 
-    setTimeout(() => {
-      this.showSave = false;
-    }, 1500);
+    // get inspiration hairfolio
+    let hairfolios = await ServiceBackend.get('/hairfolios');
+
+    let inspiration = hairfolios.filter(e => e.name == 'Inspiration');
+
+    let inspirationId;
+
+    console.log('inspiration length', inspiration.length);
+
+    if (inspiration.length == 0) {
+      console.log('other case');
+      let res = await ServiceBackend.post('hairfolios', {name: 'Inspiration'});
+      inspirationId = res.hairfolio.id;
+    } else {
+      inspirationId = inspiration[0].id;
+    }
+
+    // search for inspiration herfolio
+    // console.log('hairfolios', hairfolios);
+    // console.log('inpiration', inspiration);
+    // console.log('inpiration', inspirationId);
+
+
+    let pinRes = await ServiceBackend.post(`/hairfolios/${inspirationId}/pin`, {post_id: this.id});
+
+
+    this.showSave = false;
+
+
   }
 }

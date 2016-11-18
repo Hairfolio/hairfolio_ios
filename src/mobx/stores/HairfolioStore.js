@@ -13,17 +13,28 @@ import ServiceBackend from 'backend/ServiceBackend.js'
 
 import {_, moment, React, Text} from 'hairfolio/src/helpers';
 
-
 class Hairfolio {
 
   @observable name;
   @observable numberOfPosts;
+  @observable picture;
 
   constructor(obj) {
     console.log('hairfolios', obj);
     this.name = obj.name;
     this.id = obj.id;
-    this.numberOfPosts = 0;
+    this.numberOfPosts = obj.post_count;
+
+    let picObj;
+
+    if (obj.image_url) {
+      picObj = {uri: obj.image_url};
+      this.picture = new Picture(picObj, picObj, null);
+    }
+  }
+
+  @computed get hasPicture() {
+    return this.picture != null;
   }
 }
 

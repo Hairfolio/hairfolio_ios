@@ -16,8 +16,6 @@ import {
   PickerIOS, Picker, StatusBar, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet
 } from 'hairfolio/src/helpers.js';
 
-
-
 const WhiteHeader = observer(({title, onLeft}) => {
   return (
     <View

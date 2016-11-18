@@ -6,6 +6,10 @@ import {app} from '../selectors/app';
 import {COLORS, FONTS, SCALE} from '../style';
 import NavigationSetting from '../navigation/NavigationSetting';
 
+import UserPostStore from 'stores/UserPostStore.js'
+
+import GridList from 'components/GridList'
+
 @connect(app)
 export default class UserPosts extends PureComponent {
   static propTypes = {
@@ -18,21 +22,23 @@ export default class UserPosts extends PureComponent {
   };
 
   render() {
+
     return (<NavigationSetting
       style={{
         flex: 1,
         backgroundColor: COLORS.WHITE,
-        padding: 10
+      }}
+      onWillFocus={() => {
+        let userId = this.props.profile.get('id');
+        UserPostStore.load(userId);
       }}
     >
       <View
         onLayout={this.props.onLayout}
       >
-        <Text style={{
-          fontFamily: FONTS.MEDIUM,
-          fontSize: SCALE.h(26),
-          color: COLORS.TEXT
-        }}>User Posts</Text>
+        <GridList
+          noElementsText='The user has no posts yet'
+          store={UserPostStore} />
       </View>
     </NavigationSetting>);
   }

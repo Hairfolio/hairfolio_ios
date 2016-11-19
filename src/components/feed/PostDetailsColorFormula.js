@@ -17,7 +17,6 @@ import {
   PickerIOS, Picker, StatusBar, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet
 } from 'hairfolio/src/helpers.js';
 
-import PostDetailStore from 'stores/PostDetailStore.js'
 import LinearGradient from 'react-native-linear-gradient';
 
 import Swiper from 'react-native-swiper';
@@ -161,9 +160,7 @@ const ServiceInfo = observer(({store}) => {
   );
 });
 
-const PostDetailsColorFormula = observer(() => {
-
-  let store = PostDetailStore;
+const PostDetailsColorFormula = observer(({store}) => {
 
   let serviceTags =  store.serviceTags;
 

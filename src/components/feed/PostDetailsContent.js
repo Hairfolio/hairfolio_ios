@@ -30,18 +30,24 @@ import PostDescription from 'components/feed/PostDescription.js'
 
 const PostDetailsContent = observer(() => {
 
-  let store = PostDetailStore;
+  if (PostDetailStore.isEmpty) {
+    return null;
+  }
+
+  let store = PostDetailStore.currentStore;
+
+
   return (
     <ScrollView
       ref={el => {store.scrollView = el}}
     >
-      <PostDetailsHeader />
-      <PostDetailsImageList />
+      <PostDetailsHeader store={store} />
+      <PostDetailsImageList store={store} />
       <PostDescription
         style={{paddingTop: h(28)}}
         post={store.post}
         />
-      <PostDetailsColorFormula />
+      <PostDetailsColorFormula store={store} />
     </ScrollView>
   );
 });

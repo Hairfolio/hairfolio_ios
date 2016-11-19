@@ -15,7 +15,7 @@ import Post from 'stores/Post';
 
 import * as routes from 'hairfolio/src/routes';
 
-class PostDetailStore {
+class PostDetailsModel {
   @observable post;
   @observable isLoading;
   @observable selectedIndex = 0;
@@ -123,6 +123,38 @@ class PostDetailStore {
 
   @computed get selectedPicture() {
     return this.post.pictures[this.selectedIndex];
+  }
+
+}
+
+class PostDetailStore {
+
+  @observable stack = [];
+
+  jump(showTags, post, onBack) {
+    let postStore = new PostDetailsModel();
+    postStore.showTags = showTags;
+    postStore.post = post;
+    postStore.myBack = () => {
+      onBack();
+      this.stack.pop();
+    }
+    this.stack.push(postStore);
+
+    window.navigators[0].jumpTo(routes.postDetails);
+  }
+
+  @computed get isEmpty() {
+    return this.stack.length == 0;
+  }
+
+  @computed get currentStore() {
+    if (!this.isEmpty) {
+      let s = this.stack[this.stack.length - 1];
+      return s;
+    } else {
+      return null;
+    }
   }
 }
 

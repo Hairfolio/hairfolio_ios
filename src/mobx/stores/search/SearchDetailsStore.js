@@ -117,8 +117,8 @@ class SearchDetailsStore {
   search() {
     const name = this.searchString;
     this.stylistStore.search(name);
-    //this.brandStore.search(name);
-    //this.salonStore.search(name);
+    this.brandStore.search(name);
+    this.salonStore.search(name);
     this.hashStore.search(name);
   }
 

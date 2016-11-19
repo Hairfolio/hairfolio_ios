@@ -28,8 +28,7 @@ import PostSave from 'components/feed/PostSave.js'
 
 import * as routes from 'hairfolio/src/routes.js'
 
-const PostDetailsActionButtons = observer(() => {
-  let store = PostDetailStore;
+const PostDetailsActionButtons = observer(({store}) => {
 
   return (
     <View
@@ -126,10 +125,7 @@ const PostDetailsActionButtons = observer(() => {
 });
 
 
-const PostDetailsHeader = observer(() => {
-
-  let store = PostDetailStore;
-
+const PostDetailsHeader = observer(({store}) => {
   let post = store.post;
 
   return (
@@ -208,7 +204,7 @@ const PostDetailsHeader = observer(() => {
         <PostTags store={store} />
 
 
-        <PostDetailsActionButtons />
+        <PostDetailsActionButtons store={store} />
         <PostSave post={post} />
         <PostStar post={post} />
       </View>

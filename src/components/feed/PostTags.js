@@ -54,7 +54,7 @@ const PostTags  = observer(({store}) => {
           return (
             <TouchableWithoutFeedback
               onPress={() => {
-                PostDetailStore.selectTag(pic);
+                store.selectTag(pic);
               }}
               key={pic.key}>
               <Image
@@ -69,7 +69,7 @@ const PostTags  = observer(({store}) => {
           <TouchableWithoutFeedback
             key={pic.key}
             onPress={() => {
-              PostDetailStore.selectTag(pic);
+              store.selectTag(pic);
             }}
           >
             <View

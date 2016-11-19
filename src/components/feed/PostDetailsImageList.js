@@ -20,8 +20,7 @@ import {
 import PostDetailStore from 'stores/PostDetailStore.js'
 
 
-const PostDetailsImage = observer(({picture, index}) => {
-  let store = PostDetailStore;
+const PostDetailsImage = observer(({store, picture, index}) => {
 
   return (
     <TouchableWithoutFeedback
@@ -38,9 +37,7 @@ const PostDetailsImage = observer(({picture, index}) => {
   );
 });
 
-const PostDetailsImageList = observer(() => {
-
-  let store = PostDetailStore;
+const PostDetailsImageList = observer(({store}) => {
 
   return (
     <ScrollView
@@ -49,7 +46,7 @@ const PostDetailsImageList = observer(() => {
       horizontal
     >
       {store.post.pictures.map(
-        (e, index) => <PostDetailsImage key={e.key} index={index} picture={e} />
+        (e, index) => <PostDetailsImage store={store} key={e.key} index={index} picture={e} />
       )}
     </ScrollView>
   );

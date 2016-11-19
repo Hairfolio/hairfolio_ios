@@ -46,9 +46,11 @@ const PostPicture = observer(({post}) => {
 
         let oneClickFun = () => {
           if (time == post.lastClickTime && !post.doubleClick) {
-            PostDetailStore.post = post;
-            PostDetailStore.showTags = false;
-            window.navigators[0].jumpTo(routes.postDetails);
+            PostDetailStore.jump(
+              false,
+              post,
+              () => window.navigators[0].jumpTo(routes.appStack)
+            );
           } else {
             post.doubleClick = false;
           }

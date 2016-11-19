@@ -25,7 +25,7 @@ class TopTags {
 
     let myId = Service.fetch.store.getState().user.data.get('id')
 
-    let res = await ServiceBackend.get('posts');
+    let res = await ServiceBackend.get('posts/popular');
     this.elements = [];
 
     for (let a = 0; a < res.length; a++)  {

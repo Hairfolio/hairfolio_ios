@@ -45,6 +45,7 @@ import Comments from './containers/Comments';
 import OnboardingStack from './stacks/Onboarding';
 import ForgottenPasswordStack from './stacks/ForgottenPassword';
 import CreatePostStack from './stacks/CreatePost';
+import CommentsStack from './stacks/CommentsStack'
 import EditCustomerStack from './stacks/EditCustomer';
 import SignupConsumerStack from './stacks/SignupConsumer';
 import SignupBrandStack from './stacks/SignupBrand';
@@ -386,6 +387,13 @@ class CreatePostStackRoute extends Route {
   };
 }
 
+class CommentsStackRoute extends Route {
+  SceneComponent = CommentsStack;
+  SceneConfig = {
+    ... CustomScenesConfig.FadeInOut
+  };
+}
+
 class EditCustomerStackRoute extends Route {
   SceneComponent = EditCustomerStack;
   SceneConfig = {
@@ -539,6 +547,9 @@ export const postFilter = new PostFilterRoute();
 export const albumPage = new AlbumPageRoute();
 export const addLink = new AddLinkRoute();
 
+// routes with one element
+export const commentsStack = new CommentsStackRoute();
+
 // search
 export const searchDetails = new SearchDetailsRoute();
 
@@ -647,5 +658,6 @@ export const constructors = {
   OAuthStackRoute,
   StarGiversRoute,
   CommentsRoute,
-  PostDetailsRoute
+  PostDetailsRoute,
+  CommentsStackRoute
 };

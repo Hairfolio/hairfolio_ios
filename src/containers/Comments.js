@@ -23,6 +23,8 @@ import StarGiversStore from 'stores/StarGiversStore.js'
 
 import {appStack, gallery, postFilter, albumPage} from '../routes';
 
+import * as routes from 'hairfolio/src/routes.js'
+
 import {STATUSBAR_HEIGHT, POST_INPUT_MODE} from '../constants';
 
 import LoadingScreen from 'components/LoadingScreen.js'
@@ -202,6 +204,7 @@ import LoadingPage from 'components/LoadingPage'
 
 
 @connect(app)
+@observer
 export default class Comments extends PureComponent {
 
   static contextTypes = {
@@ -211,7 +214,13 @@ export default class Comments extends PureComponent {
 
   render() {
 
-    let store = this.props.commentsStore;
+    window.nav2 = this.context.navigators;
+
+    if (CommentsStore.isEmpty) {
+      return null;
+    }
+
+    let store = CommentsStore.currentStore;
 
     let Content = LoadingPage(
       CommentsContent,
@@ -229,7 +238,7 @@ export default class Comments extends PureComponent {
     >
        <View style={{flex: 1}}>
         <BlackHeader
-          onLeft={() => window.navigators[0].pop()}
+          onLeft={() => CommentsStore.currentStore.myBack()}
           title='Comments'/>
         <Content />
         <CommentInput store={store}/>

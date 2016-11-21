@@ -47,11 +47,11 @@ export default class Activity {
     this.key = v4();
   }
 
-  init(obj) {
+  async init(obj) {
     this.createdTime = moment(obj.created_at);
 
     let user = new User();
-    user.init(obj.user);
+    await user.init(obj.user);
     this.user = user;
 
     if (obj.activity_type == 'follow_user') {

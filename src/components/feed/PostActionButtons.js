@@ -112,13 +112,11 @@ const PostActionButtons = observer(({post}) => {
       </TouchableOpacity>
 
       <TouchableOpacity
-        onPress={() => {
-          let props = {
-            commentsStore: new CommentsStore(post.id)
-          }
 
-          window.navigators[0].push(new routes.constructors.CommentsRoute(props));
+        onPress={() => {
+          CommentsStore.jump(post.id);
         }}
+
         style={{
           flexDirection: 'row',
           marginRight: h(50)
@@ -148,7 +146,6 @@ const PostActionButtons = observer(({post}) => {
           flexDirection: 'row',
           marginRight: h(50)
         }}
-
         onPress={ () => {
 
           PostDetailStore.jump(

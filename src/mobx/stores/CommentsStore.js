@@ -8,6 +8,8 @@ import {_, v4, moment, React, Text} from 'hairfolio/src/helpers';
 
 import User from 'stores/User.js'
 
+import * as routes from 'hairfolio/src/routes.js'
+
 class Comment {
   @observable user;
   @observable text;
@@ -51,7 +53,7 @@ class InputStore {
   }
 }
 
-export default class CommentsStore {
+class CommentsModel {
   @observable comments = [];
   @observable isLoading = false;
 
@@ -123,3 +125,40 @@ export default class CommentsStore {
   }
 
 }
+
+
+class CommentsStore {
+
+  @observable stack = [];
+
+  jump(postId, onBack = () => window.navigators[0].jumpTo(routes.appStack)) {
+
+    let store = new CommentsModel(postId);
+
+    store.myBack = () => {
+      onBack();
+      this.stack.pop();
+    }
+
+    this.stack.push(store);
+
+    window.navigators[0].jumpTo(routes.comments);
+  }
+
+  @computed get isEmpty() {
+    return this.stack.length == 0;
+  }
+
+  @computed get currentStore() {
+    if (!this.isEmpty) {
+      let s = this.stack[this.stack.length - 1];
+      return s;
+    } else {
+      return null;
+    }
+  }
+}
+
+const store = new CommentsStore();
+
+export default store;

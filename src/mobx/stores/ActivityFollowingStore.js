@@ -1,7 +1,7 @@
 import {observable, computed, action} from 'mobx';
 import {CameraRoll, NativeModules} from 'react-native';
 import Camera from 'react-native-camera';
-
+import ServiceBackend from 'backend/ServiceBackend.js'
 
 import {v4} from 'uuid';
 
@@ -16,18 +16,24 @@ class ActivityFollowingStore {
   constructor() {
   }
 
-  load() {
+  async load() {
     this.isLoading = true;
 
     this.elements = [];
 
-    let a1 = new Activity();
-    a1.sample();
-    this.elements.push(a1);
+    let arr = await ServiceBackend.get('/activities?per_page=20');
 
-    let a2 = new Activity();
-    a2.sample2();
-    this.elements.push(a2);
+    console.log('act', arr);
+
+    this.elements = await Promise.all(
+      arr.map(
+        async e => {
+          let a = new Activity();
+          await a.init(e);
+          return a;
+        }
+      )
+    )
 
     this.isLoading = false;
   }

@@ -5,7 +5,6 @@ import {_, v4, moment} from 'hairfolio/src/helpers';
 
 import FollowUser from 'stores/FollowUser.js'
 
-
 class SearchUserFollowStore {
   @observable users = [];
   @observable isLoading = false;

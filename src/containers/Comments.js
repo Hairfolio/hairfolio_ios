@@ -45,8 +45,8 @@ const CommentRow = observer(({store}) => {
         }}
       >
         <Image
-          style={{height: h(80), width: h(80)}}
-          source={store.user.profilePicture.source}
+          style={{height: h(80), width: h(80), borderRadius: h(40)}}
+          source={store.user.profilePicture.getSource(80)}
         />
       </View>
       <View
@@ -172,60 +172,33 @@ const InputBar = observer(({inputStore, onAction}) => {
   );
 });
 
-const CommentsContent = observer(() => {
-
-  if (CommentsStore.isLoading) {
-    return (
-      <LoadingScreen
-        store={CommentsStore}
-      />
-    );
-  }
-
-  if (CommentsStore.isEmpty) {
-    return (
-      <View style={{flex: 1}}>
-        <Text
-          style= {{
-            paddingTop: h(38),
-            fontSize: h(34),
-            textAlign: 'center',
-            fontFamily: FONTS.BOOK_OBLIQUE
-          }}
-        >
-          There have been no comments yet.
-        </Text>
-      </View>
-    );
-  }
-
+const CommentsContent = observer(({store}) => {
   return (
     <View style={{flex: 1}}>
       <ScrollView
-        ref={el => {CommentsStore.scrollView = el}}
-        onContentSizeChange={(w, h) => CommentsStore.contentHeight = h}
-        onLayout={ev => CommentsStore.scrollViewHeight = ev.nativeEvent.layout.height}
+        ref={el => {store.scrollView = el}}
+        onContentSizeChange={(w, h) => store.contentHeight = h}
+        onLayout={ev => store.scrollViewHeight = ev.nativeEvent.layout.height}
       >
-        {CommentsStore.comments.map(e => <CommentRow key={e.key} store={e} />)}
+        {store.comments.map(e => <CommentRow key={e.key} store={e} />)}
       </ScrollView>
     </View>
   );
-
-
 });
 
-const CommentInput = observer(() => {
-  let store = CommentsStore;
+const CommentInput = observer(({store}) => {
   return (
     <View>
       <InputBar
         inputStore={store.inputStore}
-        onAction={() => CommentsStore.send()}
+        onAction={() => store.send()}
       />
       <KeyboardSpacer />
     </View>
   );
 });
+
+import LoadingPage from 'components/LoadingPage'
 
 
 @connect(app)
@@ -238,6 +211,14 @@ export default class Comments extends PureComponent {
 
   render() {
 
+    let store = this.props.commentsStore;
+
+    let Content = LoadingPage(
+      CommentsContent,
+      store
+    );
+
+
     return (<NavigationSetting
       style={{
         flex: 1,
@@ -248,10 +229,10 @@ export default class Comments extends PureComponent {
     >
        <View style={{flex: 1}}>
         <BlackHeader
-          onLeft={() => CommentsStore.back()}
+          onLeft={() => window.navigators[0].pop()}
           title='Comments'/>
-        <CommentsContent />
-        <CommentInput />
+        <Content />
+        <CommentInput store={store}/>
       </View>
     </NavigationSetting>);
   }

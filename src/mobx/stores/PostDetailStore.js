@@ -131,7 +131,8 @@ class PostDetailStore {
 
   @observable stack = [];
 
-  jump(showTags, post, onBack) {
+  jump(showTags, post, onBack = () => window.navigators[0].jumpTo(routes.appStack)) {
+    ;
     let postStore = new PostDetailsModel();
     postStore.showTags = showTags;
     postStore.post = post;

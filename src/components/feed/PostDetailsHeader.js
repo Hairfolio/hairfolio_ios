@@ -75,8 +75,12 @@ const PostDetailsActionButtons = observer(({store}) => {
           width: h(100)
         }}
         onPress={() => {
-          CommentsStore.back = () => window.navigators[0].jumpTo(routes.postDetails);
-          window.navigators[0].jumpTo(routes.comments);
+
+          let props = {
+            commentsStore: new CommentsStore(store.epost.id)
+          }
+
+          window.navigators[0].push(new routes.constructors.CommentsRoute(props));
         }}
       >
         <Image

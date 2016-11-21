@@ -113,8 +113,11 @@ const PostActionButtons = observer(({post}) => {
 
       <TouchableOpacity
         onPress={() => {
-          CommentsStore.back = () => window.navigators[0].jumpTo(appStack);
-          window.navigators[0].jumpTo(comments);
+          let props = {
+            commentsStore: new CommentsStore(post.id)
+          }
+
+          window.navigators[0].push(new routes.constructors.CommentsRoute(props));
         }}
         style={{
           flexDirection: 'row',

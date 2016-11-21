@@ -156,7 +156,7 @@ export default class Root extends PureComponent {
                   editCustomerStack,
                   createPostStack,
                   starGivers,
-                  comments,
+                  // comments,
                   searchDetails,
                   tagPosts,
                   hairfolioPosts

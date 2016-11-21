@@ -2,32 +2,31 @@ import {observable, computed, action} from 'mobx';
 import {CameraRoll, NativeModules} from 'react-native';
 import Camera from 'react-native-camera';
 import Picture from 'stores/Picture.js'
+import ServiceBackend from 'backend/ServiceBackend.js'
 
 import {_, v4, moment, React, Text} from 'hairfolio/src/helpers';
 
-class User {
-  @observable profilePicture;
-  @observable name;
-
-  sample() {
-    let picObj = require('img/feed_example_profile.png');
-    this.profilePicture = new Picture(
-      picObj,
-      picObj,
-      null
-    );
-
-    this.name = 'First Last name';
-  }
-}
+import User from 'stores/User.js'
 
 class Comment {
   @observable user;
   @observable text;
   @observable createdTime;
 
-  constructor() {
+  constructor(obj) {
     this.key = v4();
+  }
+
+  async init(obj) {
+    console.log('initComment', obj);
+    this.text = obj.comment;
+    this.user = new User();
+
+    // TODO BACKEND INTEGRATION
+    this.createdTime = moment().subtract({hours: 2});
+
+    await this.user.init(obj.user);
+    return this;
   }
 
   @computed get timeDifference() {
@@ -52,51 +51,62 @@ class InputStore {
   }
 }
 
-class CommentsStore {
+export default class CommentsStore {
   @observable comments = [];
   @observable isLoading = false;
 
   @observable inputStore= new InputStore();
 
-  constructor() {
-
-    let texts = [
-      ' Aenean lacinia bibendum nulla sed consectetur.  Lorem ipsum dolor sit amet, consectetur adipisc elit. Praesent commodo cursus magna, vel scelerisque nisl consectetur et.',
-      'Fringilla Condimentum Pharetra Tortor Risus',
-      'Hi ',
-      'Have you tested these comments?',
-      'They seem to work?',
-      'Can you also send me a message?',
-      'Fringilla Condimentum Pharetra Tortor Risus',
-      'Fringilla Condimentum Pharetra Tortor Risus',
-      'Fringilla Condimentum Pharetra Tortor Risus',
-      'Fringilla Condimentum Pharetra Tortor Risus',
-      'Fringilla Condimentum Pharetra Tortor Risus',
-      'Fringilla Condimentum Pharetra Tortor Risus',
-      'Fringilla Condimentum Pharetra Tortor Risus',
-      'test',
-    ];
-
-    texts.forEach((text) => {
-      let comment = new Comment();
-      comment.sample(text);
-      this.comments.push(comment);
-    });
-  }
-
   @computed get isEmpty() {
     return this.comments.length == 0;
   }
 
-  @action send() {
+  get noElementsText() {
+    return 'There have been no comments yet.'
+  }
+
+  constructor(postId) {
+
+    this.postId = postId;
+    this.load();
+  }
+
+  async load() {
+    this.isLoading = true;
+    this.comments = [];
+    let res = await ServiceBackend.get(`/posts/${this.postId}/comments`);
+
+    let myComments = await Promise.all(res.map(e => {
+      let c = new Comment();
+      return c.init(e);
+    }));
+
+    console.log('myComments', myComments);
+
+    this.comments = myComments;
+
+    this.isLoading = false;
+  }
+
+  async send() {
     console.log('send');
     let text = this.inputStore.value;
     this.inputStore.value = '';
+
+    let postData = {
+      comment: {
+        text
+      }
+    };
+
+    let res = await ServiceBackend.post(`/posts/${this.postId}/comments`, postData);
+
+    console.log('postRes', res);
+
     let comment = new Comment();
-    comment.sample(text);
+    await comment.init(res);
     this.comments.push(comment);
 
-    // have a timeout the view is rerrenderd before
     setTimeout(() => {
       this.scrollToBottom();
     }, 100);
@@ -113,8 +123,3 @@ class CommentsStore {
   }
 
 }
-
-const store = new CommentsStore();
-
-export default store;
-

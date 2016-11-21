@@ -101,8 +101,6 @@ class SearchHashStore {
     this.wasLoaded = true;
     this.isLoading = false;
   }
-
-
 }
 
 class SearchDetailsStore {

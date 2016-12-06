@@ -42,6 +42,7 @@ import AlbumPage from './containers/AlbumPage';
 import Favourites from './containers/Favourites';
 import Profile from './containers/ProfileWrapper';
 import Comments from './containers/Comments';
+import Messages from './containers/Messages';
 import OnboardingStack from './stacks/Onboarding';
 import ForgottenPasswordStack from './stacks/ForgottenPassword';
 import CreatePostStack from './stacks/CreatePost';
@@ -331,6 +332,13 @@ class CommentsRoute extends Route {
   };
 }
 
+class MessagesRoute extends Route {
+  SceneComponent = Messages;
+  SceneConfig = {
+    ...CustomScenesConfig.FadeInOut
+  };
+}
+
 
 class PostDetailsRoute extends Route {
   SceneComponent = PostDetails;
@@ -556,6 +564,7 @@ export const searchDetails = new SearchDetailsRoute();
 // feed
 export const starGivers = new StarGiversRoute();
 export const comments = new CommentsRoute();
+export const messagesRoute = new MessagesRoute();
 export const postDetails = new PostDetailsRoute();
 export const tagPosts = new TagPostsRoute();
 export const hairfolioPosts = new HairfolioPostsRoute();

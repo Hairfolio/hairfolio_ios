@@ -72,6 +72,7 @@ const HairfolioItem = observer(({store}) => {
 
   return (
     <Swipeout
+      btnWidth={172 / 2}
 
       right={swipeoutBtns}>
 

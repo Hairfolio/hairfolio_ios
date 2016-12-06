@@ -18,7 +18,14 @@ import {
 
 
 
-const BlackHeader = observer(({title, onLeft}) => {
+const BlackHeader = observer(({title, onLeft, onRenderRight}) => {
+
+  let renderRight = () => null;
+  if (onRenderRight) {
+    renderRight = onRenderRight;
+  }
+
+
   return (
     <View
       style={{
@@ -56,9 +63,10 @@ const BlackHeader = observer(({title, onLeft}) => {
       <View
         style={{
           width: 80,
-          backgroundColor: 'blue'
+          backgroundColor: 'transparent'
         }}
       >
+        {renderRight()}
       </View>
     </View>
   );

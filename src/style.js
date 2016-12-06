@@ -54,7 +54,7 @@ export const FONTS = {
   MEDIUM: 'Avenir-Medium',
   BOOK: 'Avenir-Book',
   ROMAN: 'Avenir-Roman',
-  BOLD: 'Avenir-Bold',
+  BLACK: 'Avenir-Black',
   HEAVY: 'Avenir-Heavy',
   OBLIQUE: 'Avenir-Oblique',
   SEMIBOLD: 'Avenir-Semibold',

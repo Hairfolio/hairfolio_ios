@@ -20,8 +20,6 @@ import _ from 'lodash';
 
 import FollowButton from 'components/FollowButton.js'
 
-import WriteMessageStore from 'stores/WriteMessageStore'
-
 import StarGiversStore from 'stores/StarGiversStore.js'
 
 import {appStack, gallery, postFilter, albumPage} from '../routes';
@@ -40,7 +38,7 @@ import MessagesStore from 'stores/MessagesStore.js'
 
 import Swipeout from 'hairfolio/react-native-swipeout/index.js';
 
-const MessageRow = observer(({store}) => {
+const PeopleRow = observer(({store}) => {
   let pictureElement;
 
   if (store.picture) {
@@ -170,7 +168,7 @@ const MessageRow = observer(({store}) => {
 
 
 
-const MessagesContent = observer(({store}) => {
+const NewMessagesContent = observer(({store}) => {
   return (
     <View style={{flex: 1}}>
       <ScrollView
@@ -179,7 +177,7 @@ const MessagesContent = observer(({store}) => {
         onLayout={ev => store.scrollViewHeight = ev.nativeEvent.layout.height}
       >
       {
-        store.messages.map(e => <MessageRow key={e.key} store={e} />)}
+        store.people.map(e => <PeopleRow key={e.key} store={e} />)}
       </ScrollView>
     </View>
   );
@@ -199,13 +197,12 @@ export default class Messages extends PureComponent {
 
   render() {
 
-    let store = MessagesStore;
+    let store = NewMessageStore;
 
     let Content = LoadingPage(
-      MessagesContent,
+      NewMessagesContent,
       store
     );
-    console.log('render messages');
 
 
     return (<NavigationSetting
@@ -221,14 +218,7 @@ export default class Messages extends PureComponent {
           onLeft={() => MessagesStore.myBack()}
           title='Messages'
           onRenderRight={() =>
-            <TouchableOpacity
-              onPress={
-                () => {
-                  window.navigators[0].jumpTo(routes.writeMessageRoute);
-                  WriteMessageStore.myBack = () => window.navigators[0].jumpTo(routes.messagesRoute);
-                }
-              }
-            >
+            <TouchableOpacity>
               <Image
                 style = {{
                   width: h(28),

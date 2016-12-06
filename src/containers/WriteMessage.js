@@ -20,9 +20,8 @@ import _ from 'lodash';
 
 import FollowButton from 'components/FollowButton.js'
 
-import WriteMessageStore from 'stores/WriteMessageStore'
-
 import StarGiversStore from 'stores/StarGiversStore.js'
+import LoadingPage from 'components/LoadingPage'
 
 import {appStack, gallery, postFilter, albumPage} from '../routes';
 
@@ -33,65 +32,37 @@ import {STATUSBAR_HEIGHT, POST_INPUT_MODE} from '../constants';
 import LoadingScreen from 'components/LoadingScreen.js'
 import BlackHeader from 'components/BlackHeader.js'
 
-import CommentsStore from 'stores/CommentsStore.js'
-
-import MessagesStore from 'stores/MessagesStore.js'
+import WriteMessageStore from 'stores/WriteMessageStore.js'
 
 
 import Swipeout from 'hairfolio/react-native-swipeout/index.js';
 
-const MessageRow = observer(({store}) => {
-  let pictureElement;
+const PeopleRow = observer(({store}) => {
+  let checkElement;
 
-  if (store.picture) {
-    pictureElement = (
+  if (store.isSelected) {
+    checkElement = (
       <Image
-        style={{height: 40, width:40, marginRight: h(15)}}
-        source={store.picture.getSource(40)}
+        style = {{
+          marginRight: h(32),
+          marginTop: h(12)
+        }}
+        source={require('img/message_check.png')}
       />
     );
   }
 
-  var swipeoutBtns = [
-    {
-      height: h(120),
-      width: h(120),
-      onPress: () => MessagesStore.delete(store),
-      component:
-      <View style={{
-        backgroundColor: '#E62727',
-        alignItems: 'center',
-        justifyContent: 'center',
-        width: h(120),
-        height: h(120),
-      }}
-    >
-      <Image
-        style={{height: h(48), width: h(46)}}
-        source={require('img/profile_trash.png')}
-      />
-    </View>
-    }
-  ]
-
-
   return (
-    <Swipeout
-      btnWidth={h(120)}
-      right={swipeoutBtns}>
-      <TouchableHighlight
-        underlayColor='#ccc'
-        onPress={
-          () => {
-            console.log('i guess something should happen');
-          }
-        }
-      >
+    <TouchableWithoutFeedback
+      onPress={
+        () => store.flip()
+      }
+    >
         <View
           style = {{
             flexDirection: 'row',
             paddingTop: h(16),
-            backgroundColor: 'white'
+            backgroundColor: 'white',
           }}
         >
           <View
@@ -109,7 +80,8 @@ const MessageRow = observer(({store}) => {
             style = {{
               flexDirection: 'row',
               flex: 1,
-              paddingBottom: h(23),
+              height: h(100),
+              paddingTop: h(8),
               borderBottomWidth: h(1),
               borderBottomColor: '#D8D8D8'
             }}
@@ -121,56 +93,24 @@ const MessageRow = observer(({store}) => {
             >
               <Text
                 style = {{
-                  fontFamily: store.isNew ? FONTS.HEAVY : FONTS.MEDIUM,
-                  fontSize: h(26),
+                  fontFamily: FONTS.MEDIUM,
+                  fontSize: h(28),
                   color: '#393939'
                 }}>
                 {store.user.name}
               </Text>
-              <Text
-                numberOfLines={1}
-                style = {{
-                  fontSize: h(24),
-                  color:  store.isNew ? '#393939' : '#868686',
-                  fontFamily:  store.isNew ? FONTS.HEAVY : FONTS.ROMAN
-                }}
-              >
-                {store.text}
-              </Text>
             </View>
-
-            <View
-              style = {{
-                paddingLeft: h(15),
-                paddingTop: h(37),
-                paddingRight: h(15)
-              }}
-            >
-              <Text
-                style = {{
-                  fontFamily: store.isNew ? FONTS.HEAVY : FONTS.ROMAN,
-                  color: store.isNew ? '#393939' : '#D8D8D8',
-                  fontSize: h(24),
-                  flex: 1,
-                  textAlign: 'right'
-                }}
-
-              >
-                {store.timeDifference}
-              </Text>
-            </View>
-            {pictureElement}
+            {checkElement}
           </View>
         </View>
-      </TouchableHighlight>
-    </Swipeout>
+      </TouchableWithoutFeedback>
   );
 });
 
 
 
 
-const MessagesContent = observer(({store}) => {
+const WriteMessageContent  = observer(({store}) => {
   return (
     <View style={{flex: 1}}>
       <ScrollView
@@ -179,18 +119,58 @@ const MessagesContent = observer(({store}) => {
         onLayout={ev => store.scrollViewHeight = ev.nativeEvent.layout.height}
       >
       {
-        store.messages.map(e => <MessageRow key={e.key} store={e} />)}
+        store.items.map(e => <PeopleRow key={e.key} store={e} />)}
       </ScrollView>
     </View>
   );
 });
 
-import LoadingPage from 'components/LoadingPage'
+
+const ToInput = observer(({store}) => {
+  return (
+    <View
+      style = {{
+        height: h(95),
+        paddingHorizontal: h(28),
+        flexDirection: 'row',
+        alignItems: 'center',
+        borderBottomWidth: h(1),
+        borderBottomColor: '#D8D8D8'
+      }}
+    >
+      <Text
+        style = {{
+          color: '#393939',
+          fontSize: h(30),
+          fontFamily: FONTS.MEDIUM,
+          marginRight: h(15)
+        }}
+
+      >To: </Text>
+      <TextInput
+        style = {{
+          fontSize: h(30),
+          fontFamily: FONTS.MEDIUM
+        }}
+        text={store.inputText}
+        onChangeText={
+          text => {
+            store.inputText = text;
+          }}
+        placeholder='Search'
+        style={{
+          flex: 1
+        }}
+      />
+    </View>
+
+  );
+});
 
 
 @connect(app)
 @observer
-export default class Messages extends PureComponent {
+export default class WriteMessage extends PureComponent {
 
   static contextTypes = {
     navigators: React.PropTypes.array.isRequired
@@ -199,13 +179,12 @@ export default class Messages extends PureComponent {
 
   render() {
 
-    let store = MessagesStore;
+    let store = WriteMessageStore;
 
     let Content = LoadingPage(
-      MessagesContent,
+      WriteMessageContent,
       store
     );
-    console.log('render messages');
 
 
     return (<NavigationSetting
@@ -214,32 +193,37 @@ export default class Messages extends PureComponent {
       }}
       onWillFocus={() => {
         StatusBar.setBarStyle('light-content');
+        WriteMessageStore.load();
       }}
     >
        <View style={{flex: 1}}>
         <BlackHeader
-          onLeft={() => MessagesStore.myBack()}
-          title='Messages'
+          onLeft={() => WriteMessageStore.myBack()}
+          title='New Message'
           onRenderRight={() =>
             <TouchableOpacity
               onPress={
                 () => {
-                  window.navigators[0].jumpTo(routes.writeMessageRoute);
-                  WriteMessageStore.myBack = () => window.navigators[0].jumpTo(routes.messagesRoute);
+                  // TODO ONES WE HAVE APPROVED THE scren
                 }
               }
             >
-              <Image
+              <Text
                 style = {{
-                  width: h(28),
-                  height: h(28),
-                  alignSelf: 'flex-end'
+                  fontSize: h(34),
+                  color: 'white',
+                  fontFamily: FONTS.MEDIUM,
+                  textAlign: 'right',
+                  opacity: WriteMessageStore.selectedNumber == 0 ? 0.5 : 1
                 }}
-                source={require('img/message_plus.png')}
-              />
+              >
+                Start
+              </Text>
             </TouchableOpacity>
           }
         />
+        <ToInput store={WriteMessageStore} />
+
         <Content />
       </View>
     </NavigationSetting>);

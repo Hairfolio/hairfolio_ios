@@ -71,7 +71,7 @@ export default class User {
     );
   }
 
-  sample() {
+  sample(name = 'First Last Name') {
     let picObj = require('img/feed_example_profile.png');
     this.profilePicture = new Picture(
       picObj,
@@ -79,6 +79,6 @@ export default class User {
       null
     );
 
-    this.name = 'First Last name';
+    this.name = name;
   }
 }

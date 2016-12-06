@@ -22,6 +22,59 @@ import {
 
 import PostDetailStore from 'stores/PostDetailStore'
 
+
+
+class HashTag extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      top: -100,
+      left: -100,
+      width: null,
+    };
+  }
+
+  componentDidMount() {
+    setTimeout(() =>  {
+      this.refs.hashView.measure((a, b, width, height, px, py) => {
+        console.log('myWidth', width);
+        console.log('myWidth', height);
+        this.setState({
+          width: width + 10,
+          left: this.props.pic.x - width / 2 - 5,
+          top: this.props.pic.y - h(25)
+        });
+      });
+    });
+  }
+  render() {
+    return (
+      <TouchableWithoutFeedback
+        onPress={() => {
+          this.props.store.selectTag(this.props.pic);
+        }}
+      >
+        <View
+          ref='hashView'
+          onLayout={(a, b, c, d) => console.log('hash', a, b, c, d)}
+          style={{
+            top: this.state.top,
+            left: this.state.left,
+            width: this.state.width,
+            height: 25,
+            backgroundColor: '#3E3E3E',
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}
+        >
+          <Text style={{fontSize: 15, backgroundColor: 'transparent', color: 'white'}}>#{this.props.pic.hashtag}</Text>
+      </View>
+    </TouchableWithoutFeedback>
+    );
+  }
+}
+
 const PostTags  = observer(({store}) => {
 
   if (!store.showTags) {
@@ -62,6 +115,13 @@ const PostTags  = observer(({store}) => {
                 source={pic.imageSource}
               />
             </TouchableWithoutFeedback>
+          );
+        }
+
+
+        if (pic.type == 'hashtag') {
+          return (
+            <HashTag store={store} key={pic.key} pic={pic} />
           );
         }
 

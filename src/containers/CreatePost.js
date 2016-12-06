@@ -70,8 +70,6 @@ const LibraryPreview = observer(({store}) => {
 
   let windowWidth =  Dimensions.get('window').width;
 
-  console.log('selectedPicture', store.selectedLibraryPicture);
-
   if (store.selectedLibraryPicture != null) {
     return (
       <View

@@ -64,6 +64,8 @@ export default class Picture {
       }
     );
 
+    console.log('res', res);
+
     let json = await res.json();
 
 

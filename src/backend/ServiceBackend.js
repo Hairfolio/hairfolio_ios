@@ -61,7 +61,7 @@ class ServiceBackend extends Backend {
       CreatePostStore.isLoading = false
 
       // only reset after view is gone
-      //  setTimeout(() => CreatePostStore.reset(), 1000);
+      setTimeout(() => CreatePostStore.reset(), 1000);
     } catch(err) {
       CreatePostStore.isLoading = false;
       alert('An error occured ' + err.toString());

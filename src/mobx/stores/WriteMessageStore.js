@@ -37,6 +37,28 @@ class WriteMessageStore {
   @observable inputText = '';
   @observable isLoading = false;
 
+  @computed get titleNames() {
+    let title = '';
+
+    let num = 0;
+
+    for (let u of this.users) {
+      if (u.isSelected) {
+        num++;
+        if (num == 1) {
+          title = u.user.name;
+        } else if (num == 2) {
+          title += ' , ' + u.user.name;
+        } else {
+          title +=  ', ...';
+          return title;
+        }
+      }
+    }
+
+    return title;
+  }
+
   @computed get items() {
     if (this.inputText.length == 0) {
       return this.users;

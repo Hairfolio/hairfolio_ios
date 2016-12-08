@@ -4,6 +4,7 @@ import Camera from 'react-native-camera';
 
 import FilterStore from 'stores/FilterStore.js'
 import Picture from 'stores/Picture.js'
+import Post from 'stores/Post.js'
 
 import ServiceBackend from 'backend/ServiceBackend.js'
 
@@ -11,18 +12,16 @@ let PhotoAlbum = NativeModules.PhotoAlbum;
 
 import {v4} from 'uuid';
 
-
-
 import User from 'stores/User.js'
 import {_, moment, React, Text} from 'hairfolio/src/helpers';
 
-import Post from 'stores/Post.js'
 
 class Message {
 
   @observable text;
   @observable user;
   @observable picture;
+  @observable post;
 
   constructor() {
   }
@@ -30,8 +29,10 @@ class Message {
   @computed get type() {
     if (this.text != null) {
       return 'text';
-    } else {
+    } else if (this.picture != null) {
       return 'picture';
+    } else {
+      return 'post';
     }
   }
 
@@ -69,12 +70,33 @@ class Message {
         null
       );
   }
+
+  samplePost(isMe) {
+
+    if (!isMe) {
+      let user = new User();
+      user.sample();
+      this.user = user;
+    }
+
+    let post = new Post();
+    post.samplePost();
+
+    this.post = post;
+  }
+}
+
+class LoadingStore {
+  @observable isLoading = false;
+  @observable loadingText = 'uploading Picture';
 }
 
 class MessageDetailsStore {
   @observable messages = [];
   @observable isLoading = false;
   @observable inputText = '';
+
+  @observable loadingStore = new LoadingStore();
 
   @observable title = 'First Last Name';
 
@@ -93,6 +115,7 @@ class MessageDetailsStore {
 
   async load() {
     this.isLoading = true;
+    this.loadingStore.isLoading = false;
     this.elements = [];
     this.inputText = '';
 
@@ -114,6 +137,10 @@ class MessageDetailsStore {
     arr.push(message);
 
     message = new Message();
+    message.samplePost(false);
+    arr.push(message);
+
+    message = new Message();
     message.sampleText(true, 'your last message');
     arr.push(message);
 
@@ -124,6 +151,11 @@ class MessageDetailsStore {
 
     message = new Message();
     message.samplePicture(true);
+    arr.push(message);
+
+
+    message = new Message();
+    message.samplePost(true);
     arr.push(message);
 
     this.messages = arr;
@@ -145,6 +177,44 @@ class MessageDetailsStore {
     this.inputText = '';
 
     this.messages.push(msg);
+  }
+
+  async sendPicture(response) {
+
+
+    this.loadingStore.isLoading = true;
+
+    let msg = new Message();
+    let pic = {uri: response.uri, isStatic: true};
+
+    msg.picture = new Picture(
+      pic,
+      pic,
+      null
+    );
+
+
+    // send to cloudinary
+    let res = await msg.picture.toJSON();
+
+    console.log('cloud 2', res);
+
+
+    pic = {uri: res.url, isStatic: true};
+
+    msg.picture = new Picture(
+      pic,
+      pic,
+      null
+    );
+
+    this.messages.push(msg)
+
+    this.loadingStore.isLoading = false;
+
+    setTimeout(() => this.scrollToBottom(), 100)
+
+
   }
 
   @observable text;

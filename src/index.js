@@ -85,7 +85,7 @@ export default class Root extends PureComponent {
         FavoriteStore.load();
       }
 
-      this.initialRoute = messageDetailsRoute;
+      // this.initialRoute = messageDetailsRoute;
 
 
       // android need workaround because of https://github.com/facebook/react-native/issues/7367

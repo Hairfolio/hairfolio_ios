@@ -27,6 +27,8 @@ import {appStack, gallery, postFilter, albumPage} from '../routes';
 
 import * as routes from 'hairfolio/src/routes.js'
 
+import MessageDetailsStore from 'stores/MessageDetailsStore.js';
+
 import {STATUSBAR_HEIGHT, POST_INPUT_MODE} from '../constants';
 
 import LoadingScreen from 'components/LoadingScreen.js'
@@ -204,7 +206,9 @@ export default class WriteMessage extends PureComponent {
             <TouchableOpacity
               onPress={
                 () => {
-                  // TODO ONES WE HAVE APPROVED THE scren
+                  MessageDetailsStore.myBack = () => window.navigators[0].jumpTo(routes.messagesRoute);
+                  MessageDetailsStore.title = WriteMessageStore.titleNames;
+                  window.navigators[0].jumpTo(routes.messageDetailsRoute);
                 }
               }
             >

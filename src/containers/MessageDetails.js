@@ -18,6 +18,11 @@ import {observer} from 'mobx-react/native';
 import autobind from 'autobind-decorator'
 import _ from 'lodash';
 
+
+
+import ImagePicker from 'react-native-image-picker'
+import MyImage from 'hairfolio/src/components/MyImage.js'
+
 import FollowButton from 'components/FollowButton.js'
 
 import WriteMessageStore from 'stores/WriteMessageStore'
@@ -45,6 +50,7 @@ import {
 import Swipeout from 'hairfolio/react-native-swipeout/index.js';
 
 
+@observer
 class MessageContent  extends React.Component {
 
   constructor(props) {
@@ -86,42 +92,101 @@ class MessageContent  extends React.Component {
           >{this.props.store.text}</Text>
         </View>
       );
-    } else { // image
+    } else if (this.props.store.type == 'picture') {
 
-      let imageStyle = {};
-
-      if (this.state.heightRatio) {
-        imageStyle = {
-          width: this.props.maxWidth,
-          height: this.props.maxWidth * this.state.heightRatio
-        };
-      }
+      console.log('imageType', this.props.store.picture.getSource(this.props.maxWidth));
 
       return (
-        <View >
+        <MyImage
+          source={this.props.store.picture.getSource(2 * this.props.maxWidth)}
+          width={this.props.maxWidth}
+        />
+      );
+    } else {
+      // post
+      let store = this.props.store;
+
+      return (
+        <View
+          style = {{
+            borderRadius: 8,
+            borderWidth: h(1),
+            borderStyle: 'solid',
+            borderColor: '#E2DEDE',
+            width: this.props.maxWidth
+          }}
+        >
+          <View
+            style = {{
+              height: h(92),
+              alignItems: 'center',
+              paddingHorizontal: h(15),
+              flexDirection: 'row',
+            }}
+          >
+            <Image
+              style={{height: h(32), width: h(32), borderRadius: h(16)}}
+              source={store.post.creator.profilePicture.getSource(h(32))}
+            />
+
+          <Text
+            style = {{
+              color: '#393939',
+              fontSize: h(26),
+              fontFamily: FONTS.MEDIUM,
+              marginHorizontal: h(10),
+              flex: 1
+            }}
+            numberOfLines={1}
+          >
+            {store.post.creator.name}
+          </Text>
+
           <Image
-            style={imageStyle}
-            onLayout={
-              (event) => {
-                let currentWidth  = event.nativeEvent.layout.width;
-                let currentHeight = event.nativeEvent.layout.height;
-                // console.log('layout pic', event.nativeEvent.layout);
-                // console.log('size', currentWidth, currentHeight);
-
-                let heightRatio = event.nativeEvent.layout.height / event.nativeEvent.layout.width;
-                if (!this.state.heightRatio) {
-                  this.setState({
-                    heightRatio: heightRatio
-                  });
-                }
-
-              }
-            }
-            resizeMode='contain'
-            source={this.props.store.picture.getSource(this.props.maxWidth)}
+            style={{height: h(18), width: h(30)}}
+            source={require('img/message_arrow.png')}
           />
+
+
+          </View>
+
+          <MyImage
+            source={store.post.currentImage.getSource(this.props.maxWidth)}
+            width={this.props.maxWidth}
+          />
+
+        <View
+          style = {{
+            paddingHorizontal: h(24),
+
+          }}
+        >
+          <Text
+            style = {{
+              fontSize: h(26),
+              fontFamily: FONTS.MEDIUM,
+              marginTop: h(18)
+            }}
+            numberOfLines={1}
+           >
+           {store.post.creator.name}
+         </Text>
+          <Text
+            style = {{
+              fontSize: h(24),
+              fontFamily: FONTS.ROMAN,
+              color: '#868686',
+              marginBottom: h(24)
+            }}
+            numberOfLines={1}
+           >
+           {store.post.description}
+          </Text>
+        </View>
+
         </View>
       );
+
     }
   }
 }
@@ -159,7 +224,7 @@ const Message = observer(({store}) => {
     >
       {userImage}
       {leftSpace}
-      <MessageContent store={store} maxWidth = {2 / 3 * windowWidth - h(35) - (store.isMe ? 0 : h(40 + 15))}
+      <MessageContent store={store} maxWidth = {Math.round(2 / 3 * windowWidth - h(35) - (store.isMe ? 0 : h(40 + 15)))}
 
       />
       <View style={{flex: 0}} />
@@ -169,6 +234,7 @@ const Message = observer(({store}) => {
 });
 
 const MessagesContent = observer(({store}) => {
+  console.log('render message content');
   return (
     <View style={{flex: 1}}>
       <ScrollView
@@ -202,7 +268,24 @@ const MessageInput = observer(() => {
         paddingHorizontal: h(15)
       }}
     >
-      <TouchableOpacity>
+      <TouchableOpacity
+        onPress={
+          () => {
+            ImagePicker.showImagePicker({
+              noData: true,
+              allowsEditing: true
+            }, (response) => {
+              if (response.error) {
+                alert(response.error);
+              }
+              if (response.uri) {
+                MessageDetailsStore.sendPicture(response);
+              }
+            });
+          }
+        }
+
+      >
         <Image
           style={{height: h(53), width: h(63)}}
           source={require('img/message_camera.png')}
@@ -309,7 +392,8 @@ export default class MesageDetails extends PureComponent {
         />
         <Content />
         <MessageInput />
-				<KeyboardSpacer/>
+        <KeyboardSpacer/>
+        <LoadingScreen style={{opacity: 0.6}} store={MessageDetailsStore.loadingStore} />
       </View>
     </NavigationSetting>);
   }

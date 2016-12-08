@@ -19,6 +19,7 @@ import autobind from 'autobind-decorator'
 import _ from 'lodash';
 
 import FollowButton from 'components/FollowButton.js'
+import MessageDetailsStore from 'stores/MessageDetailsStore.js'
 
 import WriteMessageStore from 'stores/WriteMessageStore'
 
@@ -83,7 +84,8 @@ const MessageRow = observer(({store}) => {
         underlayColor='#ccc'
         onPress={
           () => {
-            console.log('i guess something should happen');
+            MessageDetailsStore.myBack = () => window.navigators[0].jumpTo(routes.messagesRoute);
+            window.navigators[0].jumpTo(routes.messageDetailsRoute);
           }
         }
       >

@@ -43,6 +43,7 @@ import Favourites from './containers/Favourites';
 import Profile from './containers/ProfileWrapper';
 import Comments from './containers/Comments';
 import Messages from './containers/Messages';
+import MessageDetails from './containers/MessageDetails';
 import WriteMessage from './containers/WriteMessage';
 import OnboardingStack from './stacks/Onboarding';
 import ForgottenPasswordStack from './stacks/ForgottenPassword';
@@ -341,6 +342,15 @@ class MessagesRoute extends Route {
 }
 
 
+
+class MessageDetailsRoute extends Route {
+  SceneComponent = MessageDetails;
+  SceneConfig = {
+    ...CustomScenesConfig.FadeInOut
+  };
+}
+
+
 class WriteMessageRoute extends Route {
   SceneComponent = WriteMessage;
   SceneConfig = {
@@ -573,6 +583,7 @@ export const searchDetails = new SearchDetailsRoute();
 export const starGivers = new StarGiversRoute();
 export const comments = new CommentsRoute();
 export const messagesRoute = new MessagesRoute();
+export const messageDetailsRoute = new MessageDetailsRoute();
 export const writeMessageRoute = new WriteMessageRoute();
 export const postDetails = new PostDetailsRoute();
 export const tagPosts = new TagPostsRoute();

@@ -78,7 +78,7 @@ const Cell = observer(({item}) => {
     <TouchableHighlight
       underlayColor='#ccc'
       onPress={
-        () => alert('details view')
+        () => console.log('details view')/* alert('details view') */
       }
       style={{
         paddingLeft: h(31),
@@ -112,7 +112,39 @@ const Cell = observer(({item}) => {
   );
 });
 
-const MyComponent = observer(({store}) => {
+const ContactList = observer(({store}) => {
+
+  if (store.mode == 'search') {
+
+    if (store.filteredContacts.length == 0) {
+      return (
+        <View style={{flex: 1}}>
+          <Text
+            style= {{
+              paddingTop: h(38),
+              fontSize: h(34),
+              textAlign: 'center',
+              fontFamily: FONTS.BOOK_OBLIQUE
+            }}
+          >
+            No Results
+          </Text>
+        </View>
+      );
+    }
+    return (
+      <View style={{flex: 1}}>
+        <ScrollView>
+          {
+            store.filteredContacts.map(e=>
+              <Cell key={e.key} item={e} />
+            )
+          }
+        </ScrollView>
+      </View>
+    );
+
+  }
 
   if (!store.hasData) {
     return (
@@ -150,10 +182,83 @@ const MyComponent = observer(({store}) => {
 });
 
 const SearchRow = observer(({store}) => {
+
+  if (store.mode == 'search') {
+    return (
+      <View
+        style = {{
+          height: h(86),
+          backgroundColor: '#C9C9CE',
+          padding: h(15),
+          flexDirection: 'row',
+        }}
+      >
+        <View
+          style = {{
+            backgroundColor: 'white',
+            flex: 1,
+            justifyContent: 'center',
+            borderRadius: h(14),
+          }}
+        >
+          <View
+            style = {{
+              flexDirection: 'row',
+              alignItems: 'center',
+              paddingLeft: h(15)
+            }}
+          >
+            <Image
+              style={{height: h(26), width: h(26)}}
+              source={require('img/search_icon.png')}
+            />
+            <TextInput
+              ref={input => store.input = input}
+              value={store.inputText}
+              onChangeText={t => store.inputText = t}
+              style = {{
+                fontSize: h(30),
+                fontFamily: FONTS.BOOK,
+                marginLeft: h(16),
+                flex: 1,
+                paddingRight: h(15),
+                color: '#040404'
+              }}
+              placeholder='Search'
+            />
+          </View>
+        </View>
+        <TouchableOpacity
+          onPress={
+            () => store.cancelSearchMode()
+          }
+          style = {{
+            backgroundColor: '#3E3E3E',
+            borderRadius: h(10),
+            marginLeft: h(15),
+            alignItems: 'center',
+            justifyContent: 'center',
+            paddingHorizontal: h(10)
+          }}
+        >
+          <Text
+            style = {{
+              color: 'white',
+              fontSize: h(30),
+              fontFamily: FONTS.ROMAN,
+            }}
+          >
+            Cancel
+          </Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }
+
   return (
     <TouchableWithoutFeedback
       onPress={
-        () => alert('search')
+        () => store.startSearchMode()
       }
     >
       <View
@@ -203,7 +308,7 @@ const BlackBookContent = observer(({store}) => {
   return (
     <View style={{flex: 1}}>
       <SearchRow store={store} />
-      <MyComponent store={store} />
+      <ContactList store={store} />
     </View>
   );
 });

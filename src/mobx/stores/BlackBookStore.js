@@ -18,6 +18,7 @@ class Contact {
 
   constructor(name) {
     this.name = name;
+    this.key = v4();
 
     let picObj = require('img/feed_example_profile.png');
     this.picture = new Picture(
@@ -31,6 +32,18 @@ class Contact {
 class BlackBookStore {
   @observable isLoading = false;
   @observable contacts = [];
+  @observable mode = 'normal';
+  @observable inputText = '';
+
+  @action startSearchMode() {
+    this.mode = 'search';
+    this.inputText = '';
+    setTimeout(() => store.input.focus(), 100);
+  }
+
+  @action cancelSearchMode() {
+    this.mode = 'normal';
+  }
 
   constructor() {
     this.load();
@@ -46,7 +59,7 @@ class BlackBookStore {
     } else {
       let dict = {};
       'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').forEach(c => {
-        let list = this.contacts.filter(e => e.startLetter == c);
+        let list = this.contacts.map(e => e).filter(e => e.startLetter == c);
 
         if (list.length > 0) {
           list[list.length - 1].isLast = true;
@@ -57,8 +70,23 @@ class BlackBookStore {
     }
   }
 
+  @computed get filteredContacts() {
+    if (this.inputText == '') {
+      return this.contacts;
+    } else {
+      let list = this.contacts.filter(e => e.name.indexOf(this.inputText) > -1).map(e => e);
+
+      for (let el of list) {
+        el.isLast = false;
+      }
+
+      return list;
+    }
+  }
+
   async load() {
     this.isLoading = true;
+    this.inputText = '';
 
     this.contacts = [
       new Contact('Aileen Cordle'),

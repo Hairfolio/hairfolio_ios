@@ -1,5 +1,7 @@
 import Picture from 'stores/Picture.js'
 
+import Communications from 'react-native-communications';
+
 import {
   _, // lodash
   v4,
@@ -34,46 +36,164 @@ class ContactDetailsStore {
 
   @observable isUploadingPicture;
 
+
   @observable picture;
 
   // general
-  @observable firstName= 'Alan';
+  @observable firstName = 'Alan';
   @observable lastName = 'Williams';
-  @observable companyName;
+  @observable companyName = 'My Company';
 
   // phone
-  @observable phoneMobile;
-  @observable phoneHome;
-  @observable phoneWork;
+  @observable phoneMobile = '6156619954';
+  @observable phoneHome = '1234567891';
+  @observable phoneWork = '0123456789';
 
   // email
-  @observable emailPrimary;
-  @observable emailSecondary;
+  @observable emailPrimary = 'test@gmail.com';
+  @observable emailSecondary = 'test2@gmail.com';
 
   // address
-  @observable addressStreet1;
-  @observable addressStreet2;
-  @observable addressPostCode;
-  @observable addressPostCode;
-  @observable addressCountry;
+  @observable addressStreet1 = '214 Overlook Circle';
+  @observable addressStreet2 = 'Suite 220';
+  @observable addressPostCode = '37027';
+  @observable addressCity = 'Brentwood' ;
+  @observable addressCountry = 'United States';
 
+  @computed get hasPrimaryEmail() {
+    return this.emailPrimary.length > 0;
+  }
+
+  @computed get hasAddress() {
+    return this.addressStreet1.length > 0;
+  }
+
+  @computed get hasSecondaryEmail() {
+    return this.emailSecondary.length > 0;
+  }
+
+
+  @computed get hasMobilePhoneNumber() {
+    return this.phoneMobile && this.phoneMobile.length > 0;
+  }
+
+  @computed get hasHomePhoneNumber() {
+    return this.phoneHome && this.phoneHome.length > 0;
+  }
+
+  @computed get hasWorkPhoneNumber() {
+    return this.phoneWork && this.phoneWork.length > 0;
+  }
+
+
+  constructor() {
+    this.sample();
+  }
+
+  reset() {
+    this.mode = 'new';
+    this.picture = null;
+    this.firstName = '';
+    this.lastName = '';
+    this.companyName = '';
+    this.phoneMobile = '';
+    this.phoneHome = '';
+    this.phoneWork = '';
+    this.emailPrimary = '';
+    this.emailSecondary = '';
+    this.addressStreet1 = '';
+    this.addressStreet2 = '';
+    this.addressPostCode = '';
+    this.addressCity = '';
+    this.addressCountry = '';
+  }
+
+  sample() {
+    this.mode = 'view';
+    let picObj = require('img/feed_example_profile.png');
+    this.picture = new Picture(
+      picObj,
+      picObj,
+      null
+    );
+    this.firstName = 'Alice';
+    this.lastName = 'Williams';
+    this.companyName = 'My Company';
+    this.phoneMobile = '6156619954';
+    this.phoneHome = '1234567891';
+    this.phoneWork = '0123456789';
+    this.emailPrimary = 'test@gmail.com';
+    this.emailSecondary = 'test2@gmail.com';
+    this.addressStreet1 = '214 Overlook Circle';
+    this.addressStreet2 = 'Suite 220';
+    this.addressPostCode = '37027';
+    this.addressCity = 'Brentwood';
+    this.addressCountry = 'United States';
+  }
+
+
+  call(number) {
+    Communications.phonecall(number);
+  }
+
+  message(number) {
+    Communications.text(number);
+    // alert('messsage:  ' + number);
+  }
+
+  sendEmail(email) {
+    Communications.email([email], null, null, '', '')
+  }
+
+  formatNumber(str) {
+    return '(' + str.substr(0, 3) + ') ' + str.substr(3, 3) + '-' + str.substr(6, 4);
+  }
 
   rightHeaderClick() {
     if (this.mode == 'view') {
       this.mode = 'edit';
-      // TODO save previous values
+
+      this.oldValues = {
+        picture: this.picture,
+        firstName: this.firstName,
+        lastName: this.lastName,
+        companyName: this.companyName,
+        phoneMobile: this.phoneMobile,
+        phoneHome: this.phoneHome,
+        phoneWork: this.phoneWork,
+        emailPrimary: this.emailPrimary,
+        emailSecondary: this.emailSecondary,
+        addressStreet1: this.addressStreet1,
+        addressStreet2: this.addressStreet2,
+        addressPostCode: this.addressPostCode,
+        addressCity: this.addressCity,
+        addressCountry: this.addressCountry
+      };
+
     } else if (this.mode == 'edit') {
       this.mode = 'view';
-      //TODO save edits in backend
-    } else {
-      // TODO create new contact
+      // TODO save in backend
+    } else { //  created new contact
       this.myBack();
     }
   }
   leftHeaderClick() {
     if (this.mode == 'edit') {
       this.mode = 'view';
-      // TODO reset all the value
+      this.picture = this.oldValues.picture;
+      this.firstName = this.oldValues.firstName;
+      this.lastName = this.oldValues.lastName;
+      this.companyName = this.oldValues.companyName;
+      this.phoneMobile = this.oldValues.phoneMobile;
+      this.phoneHome = this.oldValues.phoneHome;
+      this.phoneWork = this.oldValues.phoneWork;
+      this.emailPrimary = this.oldValues.emailPrimary;
+      this.emailSecondary = this.oldValues.emailSecondary;
+      this.addressStreet1 = this.oldValues.addressStreet1;
+      this.addressStreet2 = this.oldValues.addressStreet2;
+      this.addressPostCode = this.oldValues.addressPostCode;
+      this.addressCity = this.oldValues.addressCity;
+      this.addressCountry = this.oldValues.addressCountr;
     } else {
       this.myBack();
     }

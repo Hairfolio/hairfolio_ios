@@ -114,8 +114,24 @@ const Input = observer(({placeholder, keyboardType = 'default', value}) => {
   );
 });
 
-const GeneralInfo = observer(({store}) => {
+const InfoText = observer(({value, style = {}}) => {
+  let store = ContactDetailsStore;
+  return (
+    <Text
+      style = {{
+        fontSize: h(34),
+        color: 'black',
+        fontFamily: FONTS.BOOK,
+        ...style
+      }}
+      numberOfLines={1}
+    >
+      {value}
+    </Text>
+  );
+});
 
+const GeneralInfo = observer(({store}) => {
 
 
   let profileImage = (
@@ -151,8 +167,32 @@ const GeneralInfo = observer(({store}) => {
     );
   }
 
-  /*
-      */
+  let rightChild;
+
+  if (store.mode != 'view') {
+    rightChild = (
+      <View style={{flex: 1}}>
+        <Input value='firstName' placeholder='First Name' />
+        <Input value='lastName' placeholder='Last Name' />
+        <Input value='companyName' placeholder='Company Name' />
+      </View>
+    );
+  } else {
+    rightChild = (
+      <View style={{flex: 1, marginTop: h(20)}}>
+        <InfoText style={{fontFamily: FONTS.MEDIUM}} value={store.firstName + ' ' + store.lastName} />
+        <InfoText style={{fontSize: h(30)}} value={store.companyName} />
+      </View>
+    );
+
+
+    profileImage = (
+      <Image
+        style={{height: h(120), width: h(120), borderRadius: h(60), marginBottom: h(20)}}
+        source={store.profileImage}
+      />
+    );
+  }
 
   return (
     <View
@@ -169,16 +209,163 @@ const GeneralInfo = observer(({store}) => {
       >
         {profileImage}
       </View>
-      <View style={{flex: 1}}>
-        <Input value='firstName' placeholder='First Name' />
-        <Input value='lastName' placeholder='Last Name' />
-        <Input value='companyName' placeholder='Company Name' />
-      </View>
-    </View>
+      {rightChild}
+          </View>
   );
 });
 
-const PhoneInfo = observer(() => {
+
+const ContactInfoRow = observer(({title, children, onMessage, onPhone}) => {
+
+  let messageElement, phoneElement;
+
+  if (onMessage) {
+    messageElement = (
+      <TouchableOpacity onPress={onMessage}>
+        <Image
+          style={{height: h(38), width: h(42), marginRight: h(30)}}
+          source={require('img/contact_message.png')}
+        />
+      </TouchableOpacity>
+    )
+  }
+
+  if (onPhone) {
+    phoneElement = (
+      <TouchableOpacity onPress={onPhone}>
+        <Image
+          style={{height: h(44), width: h(44), marginRight: h(30)}}
+          source={require('img/contact_phone.png')}
+        />
+      </TouchableOpacity>
+    )
+  }
+
+
+  return (
+    <View>
+      <View
+        style = {{
+          flexDirection: 'row',
+          paddingLeft: h(30),
+          marginTop: h(10)
+        }}
+      >
+        <View
+          style = {{
+            flex: 1
+          }}
+        >
+          <Text
+            style = {{
+              fontSize: h(30),
+              fontFamily: FONTS.BOOK,
+              color: '#56E6A5',
+              marginBottom: h(5)
+            }}
+          >{title}</Text>
+          {children}
+        </View>
+        <View
+          style = {{
+            flexDirection: 'row',
+            alignItems: 'center'
+          }}
+        >
+          {messageElement}
+          {phoneElement}
+      </View>
+      </View>
+      <View
+        style = {{
+          height: h(1),
+          backgroundColor: '#B7B7B7',
+          marginTop: h(12)
+        }}
+      />
+    </View>
+
+  );
+});
+
+const PhoneInfo = observer(({store}) => {
+
+  if (store.mode == 'view') {
+
+    let elements = [];
+
+    if (store.hasMobilePhoneNumber) {
+      elements.push(
+        <ContactInfoRow
+          key='mobile-phone'
+          title='mobile phone'
+          onPhone={
+            () => {
+              store.call(store.phoneMobile)
+            }
+          }
+          onMessage={
+            () => {
+              store.message(store.phoneMobile)
+            }
+          }
+        >
+          <InfoText value={store.formatNumber(store.phoneMobile)} />
+        </ContactInfoRow>
+      );
+    }
+
+    if (store.hasHomePhoneNumber) {
+      elements.push(
+        <ContactInfoRow
+          key='home-phone'
+          title='home phone'
+          onPhone={
+            () => {
+              store.call(store.phoneHome)
+            }
+          }
+          onMessage={
+            () => {
+              store.message(store.phoneHome)
+            }
+          }
+        >
+          <InfoText value={store.formatNumber(store.phoneHome)} />
+        </ContactInfoRow>
+      );
+    }
+
+    if (store.hasWorkPhoneNumber) {
+      elements.push(
+        <ContactInfoRow
+          key='work-phone'
+          title='work phone'
+          onPhone={
+            () => {
+              store.call(store.phoneWork)
+            }
+          }
+          onMessage={
+            () => {
+              store.message(store.phoneWork)
+            }
+          }
+        >
+          <InfoText value={store.formatNumber(store.phoneWork)} />
+        </ContactInfoRow>
+      );
+
+    }
+
+    return (
+      <View>
+        {elements}
+      </View>
+    );
+  }
+
+
   return (
     <View style = {{marginLeft: h(30), marginTop: h(10)}}>
       <Text
@@ -198,7 +385,51 @@ const PhoneInfo = observer(() => {
 });
 
 
-const EmailInfo = observer(() => {
+const EmailInfo = observer(({store}) => {
+
+  if (store.mode == 'view') {
+
+    let elements = [];
+
+    if (store.hasPrimaryEmail) {
+      elements.push(
+        <ContactInfoRow
+          key='primary-email'
+          title='primary email'
+          onMessage={
+            () => {
+              store.sendEmail(store.emailPrimary)
+            }
+          }
+        >
+          <InfoText value={store.emailPrimary} />
+        </ContactInfoRow>
+      );
+    }
+
+    if (store.hasSecondaryEmail) {
+      elements.push(
+        <ContactInfoRow
+          key='secondary-email'
+          title='secondary email'
+          onMessage={
+            () => {
+              store.sendEmail(store.emailSecondary)
+            }
+          }
+        >
+          <InfoText value={store.emailSecondary} />
+        </ContactInfoRow>
+      );
+    }
+
+    return (
+      <View>
+        {elements}
+      </View>
+    );
+  }
+
   return (
     <View style = {{marginLeft: h(30), marginTop: h(10)}}>
       <Text
@@ -216,7 +447,29 @@ const EmailInfo = observer(() => {
   );
 });
 
-const AddressInfo = observer(() => {
+const AddressInfo = observer(({store}) => {
+
+  if (store.mode == 'view') {
+    let elements = [];
+
+    if (!store.hasAddress) {
+      return null;
+    }
+
+
+    return (
+      <ContactInfoRow
+        title='address'
+      >
+        <InfoText value={store.addressStreet1} />
+        <InfoText value={store.addressStreet2} />
+        <InfoText value={store.addressCity + ' ' + store.addressPostCode} />
+        <InfoText value={store.addressCountry} />
+      </ContactInfoRow>
+        );
+  }
+
+
   return (
     <View style = {{marginLeft: h(30), marginTop: h(10)}}>
       <Text
@@ -231,8 +484,8 @@ const AddressInfo = observer(() => {
       <Input value='addressStreet1' placeholder='Street Line 1' />
       <Input value='addressStreet2' placeholder='Street Line 2' />
       <Input value='addressPostCode' keyboardType='numeric' placeholder='Postal Code' />
-      <Input value='addressPostCode' placeholder='City' />
-      <Input  value='addressCountry' placeholder='Country' />
+      <Input value='addressCity' placeholder='City' />
+      <Input value='addressCountry' placeholder='Country' />
     </View>
   );
 });

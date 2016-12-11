@@ -30,6 +30,7 @@ class Contact {
 }
 
 class BlackBookStore {
+  @observable show = false;
   @observable isLoading = false;
   @observable contacts = [];
   @observable mode = 'normal';
@@ -43,6 +44,10 @@ class BlackBookStore {
 
   @action cancelSearchMode() {
     this.mode = 'normal';
+  }
+
+  reset() {
+    this.load();
   }
 
   constructor() {
@@ -87,6 +92,7 @@ class BlackBookStore {
   async load() {
     this.isLoading = true;
     this.inputText = '';
+    this.mode = 'normal';
 
     this.contacts = [
       new Contact('Aileen Cordle'),
@@ -116,6 +122,8 @@ class BlackBookStore {
 }
 
 const store = new BlackBookStore();
+
+window.blackBookStore = store;
 
 export default store;
 

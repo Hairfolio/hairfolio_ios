@@ -18,6 +18,8 @@ import {observer} from 'mobx-react/native';
 import autobind from 'autobind-decorator'
 import _ from 'lodash';
 
+import ContactDetailsStore from 'stores/ContactDetailsStore.js'
+
 import FollowButton from 'components/FollowButton.js'
 
 
@@ -53,6 +55,10 @@ export default class BlackBook extends PureComponent {
 
     let store = BlackBookStore;
 
+    if (!store.show) {
+      return false;
+    }
+
     let Content = LoadingPage(
       BlackBookContent,
       store
@@ -74,7 +80,13 @@ export default class BlackBook extends PureComponent {
           onRenderRight={() =>
             <TouchableOpacity
               onPress={
-                () => alert('Add black book contact')
+                () => {
+                  ContactDetailsStore.reset();
+                  ContactDetailsStore.myBack = () => {
+                    window.navigators[0].jumpTo(routes.blackBook);
+                  }
+                  window.navigators[0].jumpTo(routes.contactDetails);
+                }
               }
             >
               <Image

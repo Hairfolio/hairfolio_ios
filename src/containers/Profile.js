@@ -23,9 +23,17 @@ import Channel from '../components/Channel/Channel';
 
 import {registrationActions} from '../actions/registration';
 
+import {
+  h
+} from 'hairfolio/src/helpers.js';
+
 import {STATUSBAR_HEIGHT} from '../constants';
 
-import {editCustomerStack, createPostStack} from '../routes';
+import BlackBookStore from 'stores/BlackBookStore'
+
+import {editCustomerStack, appStack, blackBook, createPostStack} from '../routes';
+
+import * as routes from '../routes.js'
 
 @connect(app, user, environment)
 export default class Profile extends PureComponent {
@@ -202,6 +210,37 @@ export default class Profile extends PureComponent {
                 }}>"Vestibulum id ligula porta felis euismod semper. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Sed posuere consectetur est at lobortis."</Text>
               </View>
               <View ref="headerContent" style={{position: 'relative', alignItems: 'center'}}>
+
+
+                {this.props.profile === this.props.user ?
+                    <View
+                      style = {{
+                        position: 'absolute',
+                        right: -85,
+                        top: 100
+                      }}
+                      ref="blackbook">
+                  <TouchableOpacity
+                    style={{width: 80}}
+                    onPress={() => {
+                      BlackBookStore.reset();
+                      BlackBookStore.show = true;
+                      BlackBookStore.myBack = () => {
+                        window.navigators[0].jumpTo(routes.appStack);
+                        BlackBookStore.show = false;
+                      };
+                      window.navigators[0].jumpTo(routes.blackBook);
+                    }}
+                  >
+                    <Image
+                      style={{height: h(64), width: h(48)}}
+                      source={require('img/black_book.png')}
+                    />
+                  </TouchableOpacity>
+                </View> : null}
+
+
+
                 <View style={{
                   position: 'relative'
                 }}>
@@ -256,7 +295,10 @@ export default class Profile extends PureComponent {
                       textAlign: 'center',
                       backgroundColor: 'transparent'
                     }}>{this.props.profile.get('followers_count')} Followers</Text>
-                  </View>
+
+
+                </View>
+
                   {this.props.profile.get('id') !== this.props.user.get('id') ? <View style={{
                     flexDirection: 'row',
                     justifyContent: 'center',

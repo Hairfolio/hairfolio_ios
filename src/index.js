@@ -85,7 +85,7 @@ export default class Root extends PureComponent {
         FavoriteStore.load();
       }
 
-      this.initialRoute = contactDetails;
+      // this.initialRoute = blackBook;
 
 
       // android need workaround because of https://github.com/facebook/react-native/issues/7367

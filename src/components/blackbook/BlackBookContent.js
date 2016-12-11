@@ -23,6 +23,10 @@ import {
 
 import BlackBookStore from 'stores/BlackBookStore.js'
 
+import ContactDetailsStore from 'stores/ContactDetailsStore.js'
+
+import * as routes from 'hairfolio/src/routes.js'
+
 import AlphabetListView from 'react-native-alphabetlistview'
 
 const Header = observer(({title}) => {
@@ -78,7 +82,13 @@ const Cell = observer(({item}) => {
     <TouchableHighlight
       underlayColor='#ccc'
       onPress={
-        () => console.log('details view')/* alert('details view') */
+        () => {
+          ContactDetailsStore.sample();
+          ContactDetailsStore.myBack = () => {
+            window.navigators[0].jumpTo(routes.blackBook);
+          }
+          window.navigators[0].jumpTo(routes.contactDetails);
+        }
       }
       style={{
         paddingLeft: h(31),
@@ -165,8 +175,11 @@ const ContactList = observer(({store}) => {
 
   let data = store.data;
 
+  console.log('alpha data', data);
+
   return (
     <AlphabetListView
+      ref={e => store.alphabetView = e}
       useDynamicHeights={true}
       data={data}
       cell={Cell}

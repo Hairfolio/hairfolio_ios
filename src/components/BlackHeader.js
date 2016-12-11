@@ -18,11 +18,22 @@ import {
 
 
 
-const BlackHeader = observer(({title, onLeft, onRenderRight}) => {
+const BlackHeader = observer(({title, onLeft, onRenderRight, onRenderLeft}) => {
 
   let renderRight = () => null;
   if (onRenderRight) {
     renderRight = onRenderRight;
+  }
+
+  let renderLeft = () => (
+    <Image
+      style={{height: h(18), width: h(30)}}
+      source={require('img/nav_white_back.png')}
+    />
+  );
+
+  if (onRenderLeft) {
+    renderLeft = onRenderLeft;
   }
 
 
@@ -43,10 +54,7 @@ const BlackHeader = observer(({title, onLeft, onRenderRight}) => {
         }}
         onPress={onLeft}
       >
-        <Image
-          style={{height: h(18), width: h(30)}}
-          source={require('img/nav_white_back.png')}
-        />
+        {renderLeft()}
       </TouchableOpacity>
       <Text
         style={{

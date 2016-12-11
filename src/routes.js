@@ -43,6 +43,7 @@ import Favourites from './containers/Favourites';
 import Profile from './containers/ProfileWrapper';
 import Comments from './containers/Comments';
 import BlackBook from './containers/BlackBook';
+import ContactDetails from './containers/ContactDetails';
 import Messages from './containers/Messages';
 import MessageDetails from './containers/MessageDetails';
 import WriteMessage from './containers/WriteMessage';
@@ -342,6 +343,13 @@ class BlackBookRoute extends Route {
   };
 }
 
+class ContactDetailsRoute extends Route {
+  SceneComponent = ContactDetails;
+  SceneConfig = {
+    ...CustomScenesConfig.FadeInOut
+  };
+}
+
 class MessagesRoute extends Route {
   SceneComponent = Messages;
   SceneConfig = {
@@ -591,6 +599,7 @@ export const searchDetails = new SearchDetailsRoute();
 export const starGivers = new StarGiversRoute();
 export const comments = new CommentsRoute();
 export const blackBook = new BlackBookRoute();
+export const contactDetails = new ContactDetailsRoute();
 export const messagesRoute = new MessagesRoute();
 export const messageDetailsRoute = new MessageDetailsRoute();
 export const writeMessageRoute = new WriteMessageRoute();

@@ -70,9 +70,10 @@ export default function userReducer(state = initialState, action) {
       return state.setIn(['followingStates', action.payload.id], LOADING_ERROR);
     }
 
+    // DONE
     case registrationTypes.LOGIN_SUCCESS.toString(): {
       return state.mergeDeep({
-        data: Object.assign({}, {education: [], offerings: [], following: []}, action.payload)
+        data: Object.assign({}, {education: [], offerings: [], following: []}, action.payload.user)
       });
     }
 

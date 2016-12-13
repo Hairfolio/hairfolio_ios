@@ -22,24 +22,24 @@ RCT_EXPORT_MODULE();
 
 RCT_EXPORT_METHOD(get:(RCTResponseSenderBlock)callback)
 {
-  
-  
+
+
   NSMutableDictionary *initialState = [NSMutableDictionary dictionaryWithDictionary:@{
-                                                                                      @"cache.app.version": [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"],
-                                                                      @"cache.app.host": @"http://hairfolio.herokuapp.com"
-                                                                                      }];
-  
+                                                               @"cache.app.version": [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"],
+                                                                  @"cache.app.host": @"http://api.hairfolio.tech"
+  }];
+
   // Let's load user defaults we saved previously with Settings
   NSDictionary *userState = [[NSUserDefaults standardUserDefaults] dictionaryRepresentation];
-  
+
   for(NSString *key in userState) {
     if([key hasPrefix:@"cache."]) {
       [initialState setObject:[userState objectForKey:key] forKey:key];
     }
   }
-  
+
   callback(@[initialState]);
-  
+
 }
 
 @end

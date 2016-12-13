@@ -14,6 +14,7 @@ import ScrollableTabView from 'react-native-scrollable-tab-view'
 
 import ShareFollowers from 'components/ShareFollowers'
 import ShareMessage from 'components/ShareMessage'
+import AddBlackBookStore from 'stores/AddBlackBookStore'
 
 import ShareStore from 'stores/ShareStore.js'
 import {
@@ -39,6 +40,7 @@ export default class Share extends PureComponent {
         }}
         onWillFocus={
           () => {
+            AddBlackBookStore.load();
             // ActivityYouStore.load();
             // ActivityFollowingStore.load();
           }

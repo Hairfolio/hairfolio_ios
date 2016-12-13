@@ -48,6 +48,7 @@ import ContactDetails from './containers/ContactDetails';
 import Messages from './containers/Messages';
 import MessageDetails from './containers/MessageDetails';
 import WriteMessage from './containers/WriteMessage';
+import AddBlackBook from './containers/AddBlackBook.js';
 import OnboardingStack from './stacks/Onboarding';
 import ForgottenPasswordStack from './stacks/ForgottenPassword';
 import CreatePostStack from './stacks/CreatePost';
@@ -374,6 +375,15 @@ class MessageDetailsRoute extends Route {
 }
 
 
+
+class AddBlackBookRoute extends Route {
+  SceneComponent = AddBlackBook;
+  SceneConfig = {
+    ...CustomScenesConfig.FadeInOut
+  };
+}
+
+
 class WriteMessageRoute extends Route {
   SceneComponent = WriteMessage;
   SceneConfig = {
@@ -611,6 +621,7 @@ export const contactDetails = new ContactDetailsRoute();
 export const messagesRoute = new MessagesRoute();
 export const messageDetailsRoute = new MessageDetailsRoute();
 export const writeMessageRoute = new WriteMessageRoute();
+export const addBlackBook = new AddBlackBookRoute();
 export const postDetails = new PostDetailsRoute();
 export const tagPosts = new TagPostsRoute();
 export const hairfolioPosts = new HairfolioPostsRoute();

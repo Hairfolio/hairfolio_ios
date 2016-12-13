@@ -18,6 +18,11 @@ class SelectableUser {
     this.key = v4();
   }
 
+
+  background() {
+    return 'white';
+  }
+
   flip() {
     this.isSelected = !this.isSelected;
   }
@@ -76,8 +81,9 @@ class WriteMessageStore {
         users.push(u);
       }
 
-      return users;
     }
+
+    return users;
   }
 
   @computed get isEmpty() {

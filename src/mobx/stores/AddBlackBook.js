@@ -1,33 +1,14 @@
 import {observable, computed, action} from 'mobx';
 import {CameraRoll, NativeModules} from 'react-native';
 import Camera from 'react-native-camera';
-
-import FilterStore from 'stores/FilterStore.js'
 import Picture from 'stores/Picture.js'
-
 import ServiceBackend from 'backend/ServiceBackend.js'
+
+import {_, v4, moment, React, Text} from 'hairfolio/src/helpers';
 
 import User from 'stores/User.js'
 
-let PhotoAlbum = NativeModules.PhotoAlbum;
-
-import {v4} from 'uuid';
-
-import {_, moment, React, Text} from 'hairfolio/src/helpers';
-
-class Hairfolio {
-  @observable name;
-  @observable isSelected;
-  @observable isInEdit;
-
-  constructor(name, isInEdit = false) {
-    this.key = v4();
-    this.name = name;
-    this.isSelected = false;
-    this.isInEdit = isInEdit;
-  }
-}
-
+import * as routes from 'hairfolio/src/routes.js'
 
 class SelectableUser {
   @observable user;
@@ -39,9 +20,8 @@ class SelectableUser {
 
 
   background() {
-    return '#F8F8F8';
+    return 'white';
   }
-
 
   flip() {
     this.isSelected = !this.isSelected;
@@ -57,10 +37,32 @@ class SelectableUser {
 }
 
 
-class SendStore {
+class AddBlackBookStore {
   @observable users = [];
   @observable inputText = '';
   @observable isLoading = false;
+
+  @computed get titleNames() {
+    let title = '';
+
+    let num = 0;
+
+    for (let u of this.users) {
+      if (u.isSelected) {
+        num++;
+        if (num == 1) {
+          title = u.user.name;
+        } else if (num == 2) {
+          title += ' , ' + u.user.name;
+        } else {
+          title +=  ', ...';
+          return title;
+        }
+      }
+    }
+
+    return title;
+  }
 
   @computed get items() {
     if (this.inputText.length == 0) {
@@ -88,6 +90,10 @@ class SendStore {
     return this.users.length == 0;
   }
 
+  @computed get selectedNumber() {
+    return this.users.filter(e => e.isSelected).length;
+  }
+
   get noElementsText() {
     return 'There have been no people yet.'
   }
@@ -95,6 +101,7 @@ class SendStore {
   constructor() {
     this.load();
   }
+
   async load() {
     this.isLoading = true;
     this.inputText = '';
@@ -102,7 +109,7 @@ class SendStore {
 
     let arr = [];
 
-    for (let name of ['Albert Williams', 'Emily Tailor', 'Jack Daniels', 'Norbert King']) {
+    for (let name of ['Albert Williams',  'Emily Tailor', 'Jack Daniels', 'Norbert King']) {
       let user = new SelectableUser();
       user.sample(name);
       arr.push(user);
@@ -113,48 +120,6 @@ class SendStore {
   }
 }
 
-
-class ShareStore {
-
-  @observable hairfolios = [];
-  @observable contacts = [];
-  @observable sendStore = new SendStore();
-
-  @computed get blackBookHeader() {
-    return `${this.contacts.length} People`;
-  }
-
-  newHairfolio() {
-    this.hairfolios.push(
-      new Hairfolio(
-        '',
-        true
-      )
-    );
-
-    setTimeout(() => this.input.focus(), 100);
-  }
-
-  saveHairfolio(store) {
-    // TOOD backend
-    store.isInEdit = false;
-  }
-
-  constructor() {
-
-    this.hairfolios = [
-      new Hairfolio('Inspiration'),
-      new Hairfolio('My work'),
-    ];
-
-  }
-
-  async load() {
-  }
-
-}
-
-const store = new ShareStore();
+const store = new AddBlackBookStore();
 
 export default store;
-

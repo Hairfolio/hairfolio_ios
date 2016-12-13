@@ -212,45 +212,7 @@ export default class Profile extends PureComponent {
               <View ref="headerContent" style={{position: 'relative', alignItems: 'center'}}>
 
 
-                {this.props.profile === this.props.user ?
-                    <View
-                      style = {{
-                        position: 'absolute',
-                        right: -85,
-                        top: 90
-                      }}
-                      ref="blackbook">
-                  <TouchableOpacity
-                    style={{
-                      width: 60,
-                      flexDirection: 'row'
-                    }}
-                    onPress={() => {
-                      BlackBookStore.reset();
-                      BlackBookStore.show = true;
-                      BlackBookStore.myBack = () => {
-                        window.navigators[0].jumpTo(routes.appStack);
-                        BlackBookStore.show = false;
-                      };
-                      window.navigators[0].jumpTo(routes.blackBook);
-                    }}
-                  >
-                    <Image
-                      style={{height: h(64), width: h(48)}}
-                      source={require('img/black_book.png')}
-                    />
-                    <Text
-                      style = {{
-                        fontSize: h(28),
-                        color: 'white',
-                        marginLeft: h(15),
-                        marginTop: h(30)
-                      }}
-                    >
-                      12
-                    </Text>
-                  </TouchableOpacity>
-                </View> : null}
+
 
 
 
@@ -338,14 +300,23 @@ export default class Profile extends PureComponent {
                         />
                       }
                     </View>
+
+
+
                     <View style={{width: SCALE.w(25)}} />
                     <View>
                       <ProfileButton label="MESSAGE" />
                     </View>
                   </View> : null}
+
+
                 </View>
               </View>
+
             </View>
+
+
+
             <View>
               <View ref="statusBarCache" style={{
                 height: 10,
@@ -392,6 +363,38 @@ export default class Profile extends PureComponent {
               />
             </TouchableOpacity>
           </View> : null}
+
+          {this.props.profile === this.props.user ?
+              <View
+                style = {{
+                  position: 'absolute',
+                  right: 15,
+                  top: 140
+                }}
+                ref="blackbook">
+                <TouchableOpacity
+                  style={{
+                    flexDirection: 'row'
+                  }}
+                  onPress={() => {
+                    BlackBookStore.reset();
+                    BlackBookStore.show = true;
+                    BlackBookStore.myBack = () => {
+                      window.navigators[0].jumpTo(routes.appStack);
+                      BlackBookStore.show = false;
+                    };
+                    window.navigators[0].jumpTo(routes.blackBook);
+                  }}
+                >
+                  <Image
+                    style={{height: h(64), width: h(48)}}
+                    source={require('img/black_book.png')}
+                  />
+                </TouchableOpacity>
+              </View> : null}
+
+
+
         </BlurView>
       </View>
 

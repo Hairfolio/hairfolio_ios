@@ -22,6 +22,8 @@ import {
 } from 'hairfolio/src/helpers.js';
 
 import ShareStore from 'stores/ShareStore.js'
+import * as routes from 'hairfolio/src/routes.js'
+import AddBlackBookStore from 'stores/AddBlackBookStore.js'
 
 const Hairfolio  = observer(({store}) => {
 
@@ -145,6 +147,12 @@ const ShareBlackBook = observer(() => {
         </Text>
       </View>
       <TouchableOpacity
+        onPress={
+          () => {
+            AddBlackBookStore.select(ShareStore.contacts);
+            window.navigators[0].jumpTo(routes.addBlackBook);
+          }
+        }
         style = {{
           height: h(86),
           flexDirection: 'row',

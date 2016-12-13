@@ -19,6 +19,7 @@ import autobind from 'autobind-decorator'
 import _ from 'lodash';
 
 import FollowButton from 'components/FollowButton.js'
+import ShareStore from 'stores/ShareStore.js'
 
 import StarGiversStore from 'stores/StarGiversStore.js'
 import LoadingPage from 'components/LoadingPage'
@@ -34,7 +35,7 @@ import {STATUSBAR_HEIGHT, POST_INPUT_MODE} from '../constants';
 import LoadingScreen from 'components/LoadingScreen.js'
 import BlackHeader from 'components/BlackHeader.js'
 
-import WriteMessageStore from 'stores/WriteMessageStore.js'
+import AddBlackBookStore from 'stores/AddBlackBookStore.js'
 
 
 import Swipeout from 'hairfolio/react-native-swipeout/index.js';
@@ -45,7 +46,7 @@ import {SelectPeople, ToInput} from 'components/SelectPeople.js'
 
 @connect(app)
 @observer
-export default class WriteMessage extends PureComponent {
+export default class AddBlackBook extends PureComponent {
 
   static contextTypes = {
     navigators: React.PropTypes.array.isRequired
@@ -54,7 +55,7 @@ export default class WriteMessage extends PureComponent {
 
   render() {
 
-    let store = WriteMessageStore;
+    let store = AddBlackBookStore;
 
     let Content = LoadingPage(
       SelectPeople,
@@ -68,20 +69,44 @@ export default class WriteMessage extends PureComponent {
       }}
       onWillFocus={() => {
         StatusBar.setBarStyle('light-content');
-        WriteMessageStore.load();
       }}
     >
        <View style={{flex: 1}}>
         <BlackHeader
-          onLeft={() => WriteMessageStore.myBack()}
-          title='New Message'
+          onRenderLeft= {() => (
+            <View
+              style = {{
+                flexDirection: 'row',
+                alignItems: 'center'
+              }}
+            >
+              <Text
+                style={{
+                  flex: 1,
+                  fontFamily: FONTS.Regular,
+                  fontSize: h(34),
+                  color: 'white',
+                  alignSelf: 'center'
+                }}
+              >
+                Cancel
+              </Text>
+            </View>
+          )}
+
+          onLeft={
+           () => {
+             window.navigators[0].jumpTo(routes.share)
+           }
+          }
+
+          title='Black Book'
           onRenderRight={() =>
             <TouchableOpacity
               onPress={
                 () => {
-                  MessageDetailsStore.myBack = () => window.navigators[0].jumpTo(routes.messagesRoute);
-                  MessageDetailsStore.title = WriteMessageStore.titleNames;
-                  window.navigators[0].jumpTo(routes.messageDetailsRoute);
+                  ShareStore.contacts = AddBlackBookStore.selectedItems.map(e => e);
+                  window.navigators[0].jumpTo(routes.share)
                 }
               }
             >
@@ -90,17 +115,15 @@ export default class WriteMessage extends PureComponent {
                   fontSize: h(34),
                   color: 'white',
                   fontFamily: FONTS.MEDIUM,
-                  textAlign: 'right',
-                  opacity: WriteMessageStore.selectedNumber == 0 ? 0.5 : 1
+                  textAlign: 'right'
                 }}
               >
-                Start
+                Add
               </Text>
             </TouchableOpacity>
           }
         />
-        <ToInput store={WriteMessageStore} />
-
+        <ToInput store={store} />
         <Content />
       </View>
     </NavigationSetting>);

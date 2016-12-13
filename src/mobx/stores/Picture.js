@@ -64,8 +64,6 @@ export default class Picture {
       }
     );
 
-    console.log('res', res);
-
     let json = await res.json();
 
 
@@ -84,7 +82,6 @@ export default class Picture {
   }
 
   @action addServiceTag(x, y, data) {
-    console.log('service', data);
     this.tags.push(new ServiceTag(x, y, data));
   }
 

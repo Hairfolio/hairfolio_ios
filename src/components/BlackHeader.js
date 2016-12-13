@@ -26,10 +26,18 @@ const BlackHeader = observer(({title, onLeft, onRenderRight, onRenderLeft}) => {
   }
 
   let renderLeft = () => (
-    <Image
-      style={{height: h(18), width: h(30)}}
-      source={require('img/nav_white_back.png')}
-    />
+    <View
+      style = {{
+        height: h(60),
+        flexDirection: 'row',
+        alignItems: 'center'
+      }}
+    >
+      <Image
+        style={{height: h(18), width: h(30)}}
+        source={require('img/nav_white_back.png')}
+      />
+    </View>
   );
 
   if (onRenderLeft) {

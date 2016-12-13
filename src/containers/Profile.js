@@ -217,11 +217,14 @@ export default class Profile extends PureComponent {
                       style = {{
                         position: 'absolute',
                         right: -85,
-                        top: 100
+                        top: 90
                       }}
                       ref="blackbook">
                   <TouchableOpacity
-                    style={{width: 80}}
+                    style={{
+                      width: 60,
+                      flexDirection: 'row'
+                    }}
                     onPress={() => {
                       BlackBookStore.reset();
                       BlackBookStore.show = true;
@@ -236,6 +239,16 @@ export default class Profile extends PureComponent {
                       style={{height: h(64), width: h(48)}}
                       source={require('img/black_book.png')}
                     />
+                    <Text
+                      style = {{
+                        fontSize: h(28),
+                        color: 'white',
+                        marginLeft: h(15),
+                        marginTop: h(30)
+                      }}
+                    >
+                      12
+                    </Text>
                   </TouchableOpacity>
                 </View> : null}
 

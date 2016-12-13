@@ -79,10 +79,6 @@ export default class Root extends PureComponent {
 
       if (utils.isReady(store.getState().user.state)) {
         this.initialRoute = appStack;
-
-        // initial loading
-        FeedStore.load();
-        FavoriteStore.load();
       }
 
       // this.initialRoute = blackBook;

@@ -81,10 +81,6 @@ class BlackBookStore {
     } else {
       let list = this.contacts.filter(e => e.name.indexOf(this.inputText) > -1).map(e => e);
 
-      for (let el of list) {
-        el.isLast = false;
-      }
-
       return list;
     }
   }

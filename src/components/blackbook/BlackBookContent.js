@@ -66,11 +66,11 @@ const AlphabetItem = observer(({title}) => {
   );
 });
 
-const Cell = observer(({item}) => {
+const Cell = observer(({item, showBorder}) => {
 
   let borderStyle = {};
 
-  if (!item.isLast) {
+  if (!item.isLast || showBorder) {
     borderStyle = {
       borderBottomWidth: h(1),
       borderBottomColor: '#AAAAAA',
@@ -147,7 +147,7 @@ const ContactList = observer(({store}) => {
         <ScrollView>
           {
             store.filteredContacts.map(e=>
-              <Cell key={e.key} item={e} />
+              <Cell showBorder={true} key={e.key} item={e} />
             )
           }
         </ScrollView>
@@ -177,7 +177,23 @@ const ContactList = observer(({store}) => {
 
   console.log('alpha data', data);
 
-  return (
+  let children = [];
+
+  for (let key in data) {
+    let child  = <Header key={'header-' + key} title={key} />;
+    children.push(child);
+
+    for (let item of data[key]) {
+      children.push(
+        <Cell
+          item={item}
+          key={item.key}
+        />
+      );
+    }
+  }
+
+  /*
     <AlphabetListView
       ref={e => store.alphabetView = e}
       useDynamicHeights={true}
@@ -191,7 +207,15 @@ const ContactList = observer(({store}) => {
         backgroundColor: 'white'
       }}
     />
+    */
+
+
+  return (
+    <ScrollView>
+      {children}
+    </ScrollView>
   );
+
 });
 
 const SearchRow = observer(({store}) => {

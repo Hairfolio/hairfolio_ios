@@ -231,7 +231,6 @@ const BrowsePage = observer(() => {
         onLoad={({nativeEvent}) => {
           browse.title = nativeEvent.title;
           browse.link = nativeEvent.url;
-          console.log('webview loaded', nativeEvent);
         }}
       />
     <BrowseFooter />

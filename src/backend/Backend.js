@@ -45,6 +45,8 @@ export default class Backend {
       body: JSON.stringify(data)
     });
 
+    console.log('headers', this.getHeaders());
+
     console.log('post2', response);
     let json = await response.json();
 

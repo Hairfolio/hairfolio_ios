@@ -133,7 +133,7 @@ class ContactDetailsStore {
 
 
   call(number) {
-    Communications.phonecall(number);
+    Communications.phonecall(number, true);
   }
 
   message(number) {

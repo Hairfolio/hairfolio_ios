@@ -116,7 +116,7 @@ export const registrationActions = {
           immediateAsyncResult: true
         },
         payload: {
-          promise: fetch.fetch(`/users/${getState().user.data.get('id')}/following`)
+          promise: fetch.fetch(`/users/${getState().user.data.get('id')}/follows`)
         }
       });
   },
@@ -455,8 +455,8 @@ export const registrationActions = {
           promise: dispatch(registrationActions.loginWithEmailBase(value, type))
             .then(throwOnFail)
             .then(() => Promise.all([
-              dispatch(registrationActions.hydrateUserEducation()).then(throwOnFail),
-              dispatch(registrationActions.hydrateUserOfferings()).then(throwOnFail),
+              // dispatch(registrationActions.hydrateUserEducation()).then(throwOnFail),
+              // dispatch(registrationActions.hydrateUserOfferings()).then(throwOnFail),
               dispatch(registrationActions.hydrateUserFollowing()).then(throwOnFail)
             ]))
             .then(() => getState().user.data)

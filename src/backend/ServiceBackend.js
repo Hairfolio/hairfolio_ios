@@ -50,7 +50,9 @@ class ServiceBackend extends Backend {
 
 
       CreatePostStore.loadingText = 'Publishing the post';
+      console.log('post data', data);
       let res = await this.post('posts', data);
+      alert(res.status);
 
       FeedStore.load();
       SearchStore.refresh();

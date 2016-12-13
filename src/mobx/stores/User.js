@@ -24,10 +24,7 @@ import utils from 'hairfolio/src/utils.js'
 import EnvironmentStore from 'stores/EnvironmentStore.js'
 
 
-import Service from 'hairfolio/src/services/index.js'
 import FavoriteStore from 'stores/FavoriteStore.js'
-
-import ServiceBackend from 'backend/ServiceBackend.js'
 
 import Picture from 'stores/Picture.js'
 

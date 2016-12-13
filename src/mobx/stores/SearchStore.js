@@ -36,7 +36,6 @@ class TopTags {
       }
     }
 
-    alert(this.elements.length);
     this.isLoading = false;
   }
 }

@@ -247,7 +247,7 @@ class Gallery {
     return {
       post: {
         description: this.description,
-        post_items: items
+        // post_items: items
       }
     };
   }

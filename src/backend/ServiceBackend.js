@@ -1,5 +1,5 @@
 import Backend from './Backend.js'
-const BASE_URL = 'http://hairfolio.herokuapp.com/';
+const BASE_URL = 'http://api.hairfolio.tech/';
 
 import CreatePostStore from 'stores/CreatePostStore.js'
 import FeedStore from 'stores/FeedStore.js'

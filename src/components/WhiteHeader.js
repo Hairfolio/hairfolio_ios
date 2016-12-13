@@ -16,7 +16,13 @@ import {
   PickerIOS, Picker, StatusBar, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet
 } from 'hairfolio/src/helpers.js';
 
-const WhiteHeader = observer(({title, onLeft}) => {
+const WhiteHeader = observer(({title, onLeft, onRenderRight}) => {
+
+  let renderRight = () => null;
+  if (onRenderRight) {
+    renderRight = onRenderRight;
+  }
+
   return (
     <View
       style={{
@@ -36,11 +42,25 @@ const WhiteHeader = observer(({title, onLeft}) => {
         }}
         onPress={onLeft}
       >
-        {onLeft ?  <Image
-          style={{height: h(18), width: h(30)}}
-          source={require('img/nav_black_back.png')}
-        /> : null}
-      </TouchableOpacity>
+
+
+      {onLeft ?
+          <View
+            style = {{
+              height: h(60),
+              flexDirection: 'row',
+              alignItems: 'center'
+            }}
+          >
+            <Image
+              style={{height: h(18), width: h(30)}}
+              source={require('img/nav_black_back.png')}
+            />
+        </View>
+          : null
+      }
+
+    </TouchableOpacity>
       <Text
         style={{
           flex: 1,
@@ -55,10 +75,10 @@ const WhiteHeader = observer(({title, onLeft}) => {
 
       <View
         style={{
-          width: 80,
-          backgroundColor: 'blue'
+          width: 80
         }}
       >
+        {renderRight()}
       </View>
     </View>
   );

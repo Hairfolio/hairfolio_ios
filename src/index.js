@@ -20,7 +20,7 @@ import Intro from './components/Intro';
 
 import {getHairfolios} from 'backend/HairfolioBackend';
 
-import {hello, comments, starGivers, oauthStack, loginStack, forgottenPasswordStack, signupConsumerStack, signupStylistStack, signupSalonStack, signupBrandStack, appStack, editCustomerStack, createPostStack, postDetails,
+import {hello, comments, starGivers, oauthStack, loginStack, forgottenPasswordStack, signupConsumerStack, signupStylistStack, signupSalonStack, signupBrandStack, appStack, editCustomerStack, createPostStack, postDetails, share,
   searchDetails, tagPosts, hairfolioPosts, messagesRoute, writeMessageRoute, messageDetailsRoute, blackBook, contactDetails
 } from './routes';
 
@@ -81,7 +81,7 @@ export default class Root extends PureComponent {
         this.initialRoute = appStack;
       }
 
-      // this.initialRoute = blackBook;
+      // this.initialRoute = contactDetails;
 
 
       // android need workaround because of https://github.com/facebook/react-native/issues/7367
@@ -159,7 +159,8 @@ export default class Root extends PureComponent {
                   writeMessageRoute,
                   messageDetailsRoute,
                   blackBook,
-                  contactDetails
+                  contactDetails,
+                  share
                 ]}
               />
             </Provider>

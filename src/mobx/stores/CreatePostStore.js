@@ -237,16 +237,18 @@ class Gallery {
 
   async toJSON() {
 
+      /*
     let items = [];
 
     for (let pic of this.pictures) {
       let el = await pic.toJSON();
       items.push(el);
     }
+    */
 
     return {
       post: {
-        description: this.description,
+        description: this.description
         // post_items: items
       }
     };

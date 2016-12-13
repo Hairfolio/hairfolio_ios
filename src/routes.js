@@ -40,6 +40,7 @@ import CreatePost from './containers/CreatePost';
 import AddLink from './containers/AddLink';
 import AlbumPage from './containers/AlbumPage';
 import Favourites from './containers/Favourites';
+import Share from './containers/Share';
 import Profile from './containers/ProfileWrapper';
 import Comments from './containers/Comments';
 import BlackBook from './containers/BlackBook';
@@ -313,6 +314,12 @@ class AlbumPageRoute extends Route {
   };
 }
 
+class ShareRoute extends Route {
+  SceneComponent = Share;
+  SceneConfig = {
+    ...CustomScenesConfig.FadeInOut
+  };
+}
 
 class FavouritesRoute extends Route {
   SceneComponent = Favourites;
@@ -569,6 +576,7 @@ export const stylistPlaceOfWorkEU = new StylistPlaceOfWorkRoute({
 export const feed = new FeedRoute();
 export const search = new SearchRoute();
 export const favourites = new FavouritesRoute();
+export const share = new ShareRoute();
 export const profile = new ProfileRoute();
 export const profileExternal = new ProfileRoute();
 export const loginStack = new OnboardingStackRoute();

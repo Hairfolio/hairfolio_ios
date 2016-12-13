@@ -1,4 +1,4 @@
-const BASE_URL = 'http://hairfolio.herokuapp.com/';
+const BASE_URL = 'http://api.hairfolio.tech/';
 
 import Service from 'hairfolio/src/services/index.js'
 import UserStore from 'stores/UserStore.js';
@@ -38,6 +38,9 @@ export default class Backend {
 
   async post(url, data) {
     console.log('post1');
+
+    window.head = this.getHeaders();
+    window.data = data;
     let response = await myfetch(BASE_URL + url, {
       method: 'POST',
       headers: this.getHeaders(),
@@ -69,9 +72,6 @@ export default class Backend {
   }
 
   async get(url) {
-
-
-
 
     let response = await myfetch(BASE_URL + url, {
       method: 'GET',

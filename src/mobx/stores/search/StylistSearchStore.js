@@ -17,7 +17,7 @@ class StylistSearchStore {
 
     this.isLoading = true;
 
-    let users = await ServiceBackend.get('users?account_type=stylist');
+    let users = (await ServiceBackend.get('users?account_type=stylist')).users;
     console.log('backend res', users);
 
     let userList = users.map(e => {

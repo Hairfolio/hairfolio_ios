@@ -23,8 +23,6 @@ class ActivityFollowingStore {
 
     let arr = await ServiceBackend.get('/activities?per_page=20');
 
-    console.log('act', arr);
-
     this.elements = await Promise.all(
       arr.map(
         async e => {

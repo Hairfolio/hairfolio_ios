@@ -23,7 +23,7 @@ class SearchUserFollowStore {
 
     this.isLoading = true;
 
-    let users = await this.backendSearch(param);
+    let users = (await this.backendSearch(param)).users;
     console.log('backend res', users);
 
     let userList = users.map(e => {
@@ -34,8 +34,6 @@ class SearchUserFollowStore {
     console.log('userList', userList);
 
     this.users = await Promise.all(userList);
-
-    console.log('stylists ', this.StylistSearchStore);
 
     this.wasLoaded = true;
 
@@ -50,20 +48,20 @@ class SearchUserFollowStore {
 
 class SearchStylistStore extends SearchUserFollowStore {
   async backendSearch(name) {
-    let searchString =  `users?account_type=stylist&keyword=${name}`;
+    let searchString =  `users?account_type=stylist&q=${name}`;
     return await ServiceBackend.get(searchString);
   }
 }
 
 class SearchBrandStore extends SearchUserFollowStore {
   async backendSearch(name) {
-    return await ServiceBackend.get(`users?account_type=brand&keyword=${name}`);
+    return await ServiceBackend.get(`users?account_type=brand&q=${name}`);
   }
 }
 
 class SearchSalonStore extends SearchUserFollowStore {
   async backendSearch(name) {
-    return await ServiceBackend.get(`users?account_type=salon&keyword=${name}`);
+    return await ServiceBackend.get(`users?account_type=salon&q=${name}`);
   }
 }
 
@@ -115,8 +113,9 @@ class SearchDetailsStore {
     const name = this.searchString;
     this.stylistStore.search(name);
     this.brandStore.search(name);
-    this.salonStore.search(name);
-    this.hashStore.search(name);
+    // Salon Search
+    // this.salonStore.search(name);
+    // this.hashStore.search(name);
   }
 
   reset() {

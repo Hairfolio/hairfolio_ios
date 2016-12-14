@@ -68,8 +68,8 @@ export default class Picture {
 
 
     return {
-      url: json.url,
-      post_item_tags: this.tags.map(e => e.toJSON())
+      asset_url: json.url,
+      // post_item_tags: this.tags.map(e => e.toJSON())
     };
   }
 

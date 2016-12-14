@@ -35,6 +35,27 @@ export default class Backend {
     return headers;
   }
 
+  async put(url, data) {
+    window.head = this.getHeaders();
+    window.data = data;
+    let response = await myfetch(BASE_URL + url, {
+      method: 'PUT',
+      headers: this.getHeaders(),
+      timeout: 20000, // req/res timeout in ms, 0 to disable, timeout reset on redirect
+      body: JSON.stringify(data)
+    });
+
+    console.log('response', data);
+
+    console.log('put2', response);
+    let json = await response.json();
+
+    if (response.status) {
+      json.status = response.status;
+    }
+    return json;
+  }
+
 
   async post(url, data) {
     console.log('post1');

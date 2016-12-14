@@ -59,35 +59,41 @@ export default class Post {
     this.description = data.description;
     this.pictures = [];
 
-    // TODO
-    this.starNumber = data.star_count;
-    this.numberOfComments = data.comment_count;
+    this.starNumber = data.likes_count;
+    this.numberOfComments = data.comments_count;
 
+    // TODO
     console.log('starData', data);
     this.hasStarred = data.starred_by_me;
 
-    console.log('hasStarred', this.hasStarred);
+    let user = new User();
 
     // TODO
-    let user = new User();
-    await user.init(data.user);
+    user.sample();
+    // await user.init(data.user);
     this.creator = user;
 
     this.createdTime = moment(data.created_at);
 
-    for (let pic of data.post_items) {
+    console.log('post here');
+
+    for (let pic of data.photos) {
+
+
+      console.log('post here 2');
 
       //let url = pic.url.split('upload');
       // let newUrl = `${url[0]}upload/h_${2 * windowWidth}${url[1]}`;
 
-
-      let picObj = {uri: pic.url};
+      let picObj = {uri: pic.asset_url};
       let picture = new Picture(
         picObj,
         picObj,
         null
       );
 
+      /*
+      // TODO
       for (let item of pic.post_item_tags) {
         if (item.type == 'hashtag') {
           picture.addHashTag(item.left, item.top, item.hashtag);
@@ -98,143 +104,12 @@ export default class Post {
           picture.addServiceTag(item.left, item.top, item);
         }
       }
+      */
 
       this.pictures.push(picture);
       return;
     }
 
-      /*
-    if (postNumber == 1) {
-      let pic = require('img/feed_example4.png');
-
-      this.pictures.push(
-        new Picture(
-          pic,
-          pic,
-          null
-        )
-      );
-    } else if (postNumber == 2) {
-      let pic = require('img/feed_example5.png');
-
-      this.pictures.push(
-        new Picture(
-          pic,
-          pic,
-          null
-        )
-      );
-    } else if (postNumber == 3) {
-
-      let pic = require('img/feed_example6.png');
-
-      this.pictures.push(
-        new Picture(
-          pic,
-          pic,
-          null
-        )
-      );
-
-    }
-
-    if (postNumber != 0) {
-      return;
-    }
-
-
-    let pictureObj2 = require('img/feed_example1.png');
-    let pictureObj3 = require('img/feed_example2.png');
-    let pictureObj4 = require('img/feed_example3.png');
-
-
-    for (let obj of [pictureObj2, pictureObj3, pictureObj4]) {
-      this.pictures.push(
-        new Picture(
-          obj,
-          obj,
-          null
-        )
-      );
-    }
-
-    this.pictures[0].addHashTag(60, 50, 'beautiful');
-    this.pictures[0].addHashTag(300, 250, 'test');
-
-    this.pictures[0].addHashTag(100, 60, 'life');
-
-    this.pictures[1].addLinkTag(80, 200,
-      {
-        linkUrl: 'http://www.google.com',
-        name: 'My Link',
-        hashtag: {name: 'test'}
-      }
-    );
-
-    this.pictures[0].addServiceTag(250, 100,
-      {
-        service_id: 4,
-        line_id: 5,
-        service_name: 'Bleach',
-        brand_name: 'Loreal',
-        line_name: 'Name',
-        unit: 'g',
-        post_item_tag_colors: [
-          {
-            id: 3,
-            code: 'A3',
-            hex: '352423',
-            start_hex: '352423',
-            end_hex: '975fa4',
-            amount: 23
-          },
-          {
-            id: 10,
-            code: 'B3',
-            hex: '7ba3ce',
-            start_hex: '7ba3ce',
-            end_hex: '080c4f',
-            amount: 20
-          }
-        ],
-        developer_volume: 50,
-        developer_amount: 15,
-        developer_time: 20
-      }
-    );
-
-    this.pictures[0].addServiceTag(80, 250,
-      {
-        service_id: 4,
-        line_id: 5,
-        service_name: 'Hair',
-        brand_name: 'Brand 2',
-        line_name: 'Color name',
-        unit: 'oz',
-        post_item_tag_colors: [
-          {
-            id: 8,
-            code: 'A3',
-            hex: '352423',
-            start_hex: 'b59423',
-            end_hex: '975fa4',
-            amount: 23
-          },
-          {
-            id: 10,
-            code: 'B3',
-            hex: '7ba3ce',
-            start_hex: '2ba3ce',
-            end_hex: '080c4f',
-            amount: 20
-          }
-        ],
-        developer_volume: 10,
-        developer_amount: 3,
-        developer_time: 20
-      }
-    );
-    */
   }
 
 
@@ -468,11 +343,11 @@ export default class Post {
 
     if (hasStarred) {
       this.starNumber--;
-      let starResult = await ServiceBackend.post(`/posts/${this.id}/unstar`);
+      let starResult = await ServiceBackend.delete(`/posts/${this.id}/likes`);
       console.log('starResult', starResult);
     } else {
       this.starNumber++;
-      let starResult = await ServiceBackend.post(`/posts/${this.id}/star`);
+      let starResult = await ServiceBackend.post(`/posts/${this.id}/likes`);
       console.log('starResult', starResult);
     }
 
@@ -486,33 +361,31 @@ export default class Post {
     this.showSave = true;
 
     // get inspiration hairfolio
-    let hairfolios = await ServiceBackend.get('/hairfolios');
+    let hairfolios = (await ServiceBackend.get('/folios')).folios;
 
     let inspiration = hairfolios.filter(e => e.name == 'Inspiration');
 
     let inspirationId;
+    let postIds;
 
     console.log('inspiration length', inspiration.length);
 
     if (inspiration.length == 0) {
       console.log('other case');
-      let res = await ServiceBackend.post('hairfolios', {name: 'Inspiration'});
-      inspirationId = res.hairfolio.id;
+      let res = await ServiceBackend.post('folios', {folio: {name: 'Inspiration'}});
+      inspirationId = res.folio.id;
+      postIds = res.folio.posts.map(e => e.id);
     } else {
       inspirationId = inspiration[0].id;
+      postIds = inspiration[0].posts.map(e => e.id);
     }
 
-    // search for inspiration herfolio
-    // console.log('hairfolios', hairfolios);
-    // console.log('inpiration', inspiration);
-    // console.log('inpiration', inspirationId);
+    postIds.push(this.id);
 
 
-    let pinRes = await ServiceBackend.post(`/hairfolios/${inspirationId}/pin`, {post_id: this.id});
+    let pinRes = await ServiceBackend.put(`folios/${inspirationId}`, {folio: {post_ids: postIds}});
 
 
     this.showSave = false;
-
-
   }
 }

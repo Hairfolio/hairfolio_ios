@@ -53,6 +53,7 @@ export default class Profile extends PureComponent {
   channel = new Channel();
 
   getName() {
+    window.profile = this.props.profile;
     if (this.props.profile.get('account_type') === 'brand' || this.props.profile.get('account_type') === 'salon')
       return this.props.profile.get('business_name') || 'Business Name';
 
@@ -261,7 +262,7 @@ export default class Profile extends PureComponent {
                       fontSize: SCALE.h(28),
                       textAlign: 'center',
                       backgroundColor: 'transparent'
-                    }}>2 Stars</Text>
+                    }}>{this.props.profile.get('likes_count')} Stars</Text>
                     <View style={{width: 10}} />
                     <Text style={{
                       color: COLORS.WHITE,

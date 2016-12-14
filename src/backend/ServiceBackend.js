@@ -48,22 +48,25 @@ class ServiceBackend extends Backend {
       CreatePostStore.loadingText = 'Uploading pictures ..';
       let data = await CreatePostStore.gallery.toJSON();
 
-
       CreatePostStore.loadingText = 'Publishing the post';
       console.log('post data', data);
       let res = await this.post('posts', data);
-      alert(res.status);
 
-      FeedStore.load();
-      SearchStore.refresh();
+      if (res.status != 201) {
+        alert('An unknown error occured');
+      } else {
 
-      window.navigators[1].jumpTo(routes.createPost)
-      window.navigators[0].jumpTo(routes.appStack);
+        FeedStore.load();
+        SearchStore.refresh();
+
+        window.navigators[1].jumpTo(routes.createPost)
+        window.navigators[0].jumpTo(routes.appStack);
+        setTimeout(() => CreatePostStore.reset(), 1000);
+      }
 
       CreatePostStore.isLoading = false
 
       // only reset after view is gone
-      setTimeout(() => CreatePostStore.reset(), 1000);
     } catch(err) {
       CreatePostStore.isLoading = false;
       alert('An error occured ' + err.toString());

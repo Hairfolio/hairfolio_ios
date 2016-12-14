@@ -27,7 +27,9 @@ class FeedStore {
   async load() {
     this.isLoading = true;
 
-    let res = await ServiceBackend.get('posts');
+    let res = (await ServiceBackend.get('posts')).posts;
+
+    console.log('res feed', res);
     this.elements = [];
 
 

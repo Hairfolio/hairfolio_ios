@@ -83,7 +83,7 @@ const Cell = observer(({item, showBorder}) => {
       underlayColor='#ccc'
       onPress={
         () => {
-          ContactDetailsStore.sample();
+          ContactDetailsStore.init(item);
           ContactDetailsStore.myBack = () => {
             window.navigators[0].jumpTo(routes.blackBook);
           }

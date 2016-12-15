@@ -40,7 +40,7 @@ class FavoriteStore {
     console.log('myId', myId);
 
     // TODO user proper backend
-    let res = (await ServiceBackend.get('/posts')).posts;
+    let res = (await ServiceBackend.get('posts?favorites=true')).posts;
     this.elements = [];
 
     for (let a = 0; a < res.length; a++)  {

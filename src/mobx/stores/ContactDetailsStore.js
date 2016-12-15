@@ -108,6 +108,56 @@ class ContactDetailsStore {
     this.addressCountry = '';
   }
 
+
+  init(store) {
+    let data = store.data;
+    this.mode = 'view';
+
+    let conv = (el) => {
+      return el ? el : '';
+    }
+
+    this.firstName = data.first_name;
+    this.lastName = data.last_name;
+
+    if (data.asset_url) {
+      let pic = {uri: data.asset_url, isStatic: true};
+      this.picture = new Picture(
+        pic,
+        pic,
+        null
+      );
+
+    } else {
+      this.picture = null;
+    }
+
+    this.companyName = conv(data.company);
+
+    // TODO phone
+    this.phoneMobile = '6156619954';
+    this.phoneHome = '1234567891';
+    this.phoneWork = '0123456789';
+
+
+    this.emailPrimary = '';
+    this.emailSecondary = '';
+
+    for (let e of data.emails) {
+      if (e.email_type == 'primary') {
+        this.emailPrimary = e.email;
+      } else if (e.email_type == 'secondary') {
+        this.emailSecondary = e.email;
+      }
+    }
+
+    this.addressStreet1 = conv(data.address);
+    this.addressState = conv(data.state);
+    this.addressPostCode = conv(data.zipcode);
+    this.addressCity = conv(data.city);
+    this.addressCountry = conv(data.country);
+  }
+
   sample() {
     this.mode = 'view';
     let picObj = require('img/feed_example_profile.png');
@@ -177,6 +227,7 @@ class ContactDetailsStore {
 
       if (this.firstName.length == 0 || this.lastName.length == 0) {
         alert('Please Fill in a first and lastName');
+        return;
       }
 
 

@@ -94,7 +94,9 @@ export default class Backend {
 
   async get(url) {
 
-    let response = await myfetch(BASE_URL + url, {
+    let queryUrl = BASE_URL + url;
+
+    let response = await myfetch(queryUrl, {
       method: 'GET',
       timeout: 20000, // req/res timeout in ms, 0 to disable, timeout reset on redirect
       headers: this.getHeaders()

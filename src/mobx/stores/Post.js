@@ -68,9 +68,8 @@ export default class Post {
 
     let user = new User();
 
-    // TODO
-    user.sample();
-    // await user.init(data.user);
+    // user.sample();
+    await user.init(data.user);
     this.creator = user;
 
     this.createdTime = moment(data.created_at);
@@ -107,7 +106,6 @@ export default class Post {
       */
 
       this.pictures.push(picture);
-      return;
     }
 
   }

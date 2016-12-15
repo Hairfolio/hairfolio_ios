@@ -17,6 +17,7 @@ class Contact {
   }
 
   constructor(obj) {
+    this.data = obj;
     this.name = obj.first_name + ' ' + obj.last_name;
     this.key = v4();
 

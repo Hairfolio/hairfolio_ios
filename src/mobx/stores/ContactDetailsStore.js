@@ -111,6 +111,7 @@ class ContactDetailsStore {
 
   init(store) {
     let data = store.data;
+    this.id = store.data.id;
     this.mode = 'view';
 
     let conv = (el) => {
@@ -199,6 +200,73 @@ class ContactDetailsStore {
     return '(' + str.substr(0, 3) + ') ' + str.substr(3, 3) + '-' + str.substr(6, 4);
   }
 
+  createData() {
+    let data = {};
+
+    let add = (a, b) => {
+      if (this[a] != null && this[a].length > 0) { data[b] = this[a]};
+    }
+
+    add('firstName', 'first_name');
+    add('lastName', 'last_name');
+    add('companyName', 'company');
+    add('addressStreet1', 'address');
+    add('addressCity', 'city');
+    add('addressPostCode', 'zipcode');
+    add('addressState', 'state');
+    add('addressCountry', 'country');
+
+
+    let emails_attributes = [];
+
+    if (this.emailPrimary && this.emailPrimary.length > 0) {
+      emails_attributes.push({
+        email_type: 'primary',
+        email: this.emailPrimary
+      });
+    }
+
+    if (this.emailSecondary && this.emailSecondary.length > 0) {
+      emails_attributes.push({
+        email_type: 'secondary',
+        email: this.emailSecondary
+      });
+    }
+
+    data.emails_attributes = emails_attributes;
+
+    console.log('data', data);
+
+    data.phones_attributes = [];
+
+    if (this.phoneHome && this.phoneHome.length > 0) {
+      data.phones_attributes.push({
+        phone_type: 'home',
+        number: this.phoneHome
+      });
+    }
+
+    if (this.phoneMobile && this.phoneMobile.length > 0) {
+      data.phones_attributes.push({
+        phone_type: 'mobile',
+        number: this.phoneMobile
+      });
+    }
+
+    if (this.phoneWork && this.phoneWork.length > 0) {
+      data.phones_attributes.push({
+        phone_type: 'work',
+        number: this.phoneWork
+      });
+    }
+
+    if (this.picture != null) {
+      data.asset_url = this.picture.source.uri;
+    }
+
+    return data;
+  }
+
   async rightHeaderClick() {
     if (this.mode == 'view') {
       this.mode = 'edit';
@@ -223,6 +291,17 @@ class ContactDetailsStore {
     } else if (this.mode == 'edit') {
       this.mode = 'view';
       // TODO save in backend
+
+      if (this.firstName.length == 0 || this.lastName.length == 0) {
+        alert('Please Fill in a first and lastName');
+        return;
+      }
+
+      let data = this.createData();
+
+      let res = await ServiceBackend.put(`contacts/${this.id}`, {contact: data});
+
+
     } else { //  created new contact
 
       if (this.firstName.length == 0 || this.lastName.length == 0) {
@@ -230,69 +309,7 @@ class ContactDetailsStore {
         return;
       }
 
-
-      let data = {};
-
-      let add = (a, b) => {
-        if (this[a] != null && this[a].length > 0) { data[b] = this[a]};
-      }
-
-      add('firstName', 'first_name');
-      add('lastName', 'last_name');
-      add('companyName', 'company');
-      add('addressStreet1', 'address');
-      add('addressCity', 'city');
-      add('addressPostCode', 'zipcode');
-      add('addressState', 'state');
-      add('addressCountry', 'country');
-
-
-      let emails_attributes = [];
-
-      if (this.emailPrimary && this.emailPrimary.length > 0) {
-        emails_attributes.push({
-          email_type: 'primary',
-          email: this.emailPrimary
-        });
-      }
-
-      if (this.emailSecondary && this.emailSecondary.length > 0) {
-        emails_attributes.push({
-          email_type: 'secondary',
-          email: this.emailSecondary
-        });
-      }
-
-      data.emails_attributes = emails_attributes;
-
-      console.log('data', data);
-
-      data.phones_attributes = [];
-
-      if (this.phoneHome && this.phoneHome.length > 0) {
-        data.phones_attributes.push({
-          phone_type: 'home',
-          number: this.phoneHome
-        });
-      }
-
-      if (this.phoneMobile && this.phoneMobile.length > 0) {
-        data.phones_attributes.push({
-          phone_type: 'mobile',
-          number: this.phoneMobile
-        });
-      }
-
-      if (this.phoneWork && this.phoneWork.length > 0) {
-        data.phones_attributes.push({
-          phone_type: 'work',
-          number: this.phoneWork
-        });
-      }
-
-      if (this.picture != null) {
-        data.asset_url = this.picture.source.uri;
-      }
+      let data = this.createData();
 
       let res = await ServiceBackend.post('contacts', {contact: data});
 

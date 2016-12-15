@@ -22,7 +22,6 @@ import ImagePicker from 'react-native-image-picker'
 
 import FollowButton from 'components/FollowButton.js'
 
-
 import {appStack, gallery, postFilter, albumPage} from '../routes';
 
 import * as routes from 'hairfolio/src/routes.js'
@@ -463,8 +462,8 @@ const AddressInfo = observer(({store}) => {
         title='address'
       >
         <InfoText value={store.addressStreet1} />
-        <InfoText value={store.addressState} />
-        <InfoText value={store.addressCity + ' ' + store.addressPostCode} />
+        <InfoText value={store.addressCity} />
+        <InfoText value={store.addressState + ' ' + store.addressPostCode} />
         <InfoText value={store.addressCountry} />
       </ContactInfoRow>
         );
@@ -483,9 +482,9 @@ const AddressInfo = observer(({store}) => {
        Address
       </Text>
       <Input value='addressStreet1' placeholder='Street' />
+      <Input value='addressCity' placeholder='City' />
       <Input value='addressState' placeholder='State' />
       <Input value='addressPostCode' keyboardType='numeric' placeholder='Postal Code' />
-      <Input value='addressCity' placeholder='City' />
       <Input value='addressCountry' placeholder='Country' />
     </View>
   );
@@ -522,10 +521,7 @@ export default class ContactDetails extends PureComponent {
     navigators: React.PropTypes.array.isRequired
   };
 
-
   render() {
-
-
     return (<NavigationSetting
       style={{
         flex: 1,

@@ -150,19 +150,36 @@ export default class Profile extends PureComponent {
               if (e.nativeEvent.contentOffset.y > 60)
                 opacityContent = 1 - Math.min((e.nativeEvent.contentOffset.y - 60) / 30, 1);
 
+
+              let opacityContent2 = opacityContent;
+              if (e.nativeEvent.contentOffset.y > 50) {
+                opacityContent2 = 0;
+              }
+
+
               this.refs.headerContent.setNativeProps({
                 style: {
                   opacity: opacityContent
                 }
               });
 
-              if (this.refs.settings)
+              if (this.refs.settings) {
                 this.refs.settings.setNativeProps({
                   style: {
                     opacity: opacityContent
                   },
                   pointerEvents: opacityContent === 1 ? 'auto' : 'none'
                 });
+              }
+
+              if (this.refs.blackbook) {
+                this.refs.blackbook.setNativeProps({
+                  style: {
+                    opacity: opacityContent2
+                  },
+                  pointerEvents: opacityContent2 === 1 ? 'auto' : 'none'
+                });
+              }
 
               this.refs.statusBarCache.setNativeProps({
                 style: {

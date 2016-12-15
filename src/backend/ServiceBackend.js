@@ -33,7 +33,7 @@ class ServiceBackend extends Backend {
   }
 
   async getHashTags(name) {
-    return await this.get(`hashtags?name=${name}`);
+    return (await this.get(`tags?q=${name}`)).tags;
   }
 
   async getCatalogItems(name) {

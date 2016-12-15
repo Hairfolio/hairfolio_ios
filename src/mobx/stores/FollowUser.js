@@ -22,8 +22,8 @@ export default class FollowUser {
 
   async init(data) {
     this.user = new User();
-    // TODO
-    this.isFollowing = data.followed_by_me;
+    console.log('followUser', data);
+    this.isFollowing = data.is_following;
     await this.user.init(data);
     return this;
   }

@@ -81,7 +81,7 @@ const HairfolioItem = observer(({store}) => {
         onPress= {
           () => {
             HairfolioPostStore.title = `${store.name}`;
-            HairfolioPostStore.load(store.id);
+            HairfolioPostStore.load(store);
             HairfolioPostStore.back = () => {
               window.navigators[0].jumpTo(routes.appStack);
             }

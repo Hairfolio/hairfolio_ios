@@ -25,10 +25,12 @@ class Hairfolio {
     this.id = obj.id;
     this.numberOfPosts = obj.posts.length;
 
+    this.posts = obj.posts;
+
     let picObj;
 
-    if (obj.image_url) {
-      picObj = {uri: obj.image_url};
+    if (this.numberOfPosts > 0) {
+      picObj = {uri: obj.posts[0].photos[0].asset_url};
       this.picture = new Picture(picObj, picObj, null);
     }
   }

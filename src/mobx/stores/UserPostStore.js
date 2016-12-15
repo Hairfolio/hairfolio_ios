@@ -8,7 +8,7 @@ import PostListStore from 'stores/PostListStore'
 
 class UserPostStore extends PostListStore  {
   async backendCall(userId) {
-    return await ServiceBackend.get(`posts?user_id=${userId}`);
+    return await ServiceBackend.get(`users/${userId}/posts`);
   }
 }
 

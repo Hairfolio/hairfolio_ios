@@ -98,13 +98,14 @@ const ContactsDetailsHeader = observer(({store}) => {
   );
 });
 
-const Input = observer(({placeholder, keyboardType = 'default', value}) => {
+const Input = observer(({placeholder, keyboardType = 'default', autoCapitalize = 'words', value}) => {
   let store = ContactDetailsStore;
   return (
     <View>
       <TextInput
         value={store[value]}
         onChangeText={t => store[value] = t}
+        autoCapitalize={autoCapitalize}
         keyboardType={keyboardType}
         placeholder={placeholder}
         onFocus={(element) => ContactDetailsStore.scrollToElement(element.target)}
@@ -441,8 +442,8 @@ const EmailInfo = observer(({store}) => {
       >
         Email
       </Text>
-      <Input value='emailPrimary' keyboardType='email-address' placeholder='primary' />
-      <Input value='emailSecondary' keyboardType='email-address' placeholder='secondary' />
+      <Input value='emailPrimary' autoCapitalize='none' keyboardType='email-address' placeholder='primary' />
+      <Input value='emailSecondary' autoCapitalize='none' keyboardType='email-address' placeholder='secondary' />
     </View>
   );
 });
@@ -462,7 +463,7 @@ const AddressInfo = observer(({store}) => {
         title='address'
       >
         <InfoText value={store.addressStreet1} />
-        <InfoText value={store.addressStreet2} />
+        <InfoText value={store.addressState} />
         <InfoText value={store.addressCity + ' ' + store.addressPostCode} />
         <InfoText value={store.addressCountry} />
       </ContactInfoRow>
@@ -481,8 +482,8 @@ const AddressInfo = observer(({store}) => {
       >
        Address
       </Text>
-      <Input value='addressStreet1' placeholder='Street Line 1' />
-      <Input value='addressStreet2' placeholder='Street Line 2' />
+      <Input value='addressStreet1' placeholder='Street' />
+      <Input value='addressState' placeholder='State' />
       <Input value='addressPostCode' keyboardType='numeric' placeholder='Postal Code' />
       <Input value='addressCity' placeholder='City' />
       <Input value='addressCountry' placeholder='Country' />
@@ -499,6 +500,7 @@ const ContactDetailsContent = observer(() => {
     <View style={{flex: 1}}>
       <ContactsDetailsHeader store={store} />
       <ScrollView
+        keyboardShouldPersistTaps={true}
         ref={e => store.scrollView = e}
       >
         <GeneralInfo store={store} />

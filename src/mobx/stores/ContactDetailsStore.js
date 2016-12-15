@@ -55,7 +55,7 @@ class ContactDetailsStore {
 
   // address
   @observable addressStreet1 = '214 Overlook Circle';
-  @observable addressStreet2 = 'Suite 220';
+  @observable addressState = 'California';
   @observable addressPostCode = '37027';
   @observable addressCity = 'Brentwood' ;
   @observable addressCountry = 'United States';
@@ -102,7 +102,7 @@ class ContactDetailsStore {
     this.emailPrimary = '';
     this.emailSecondary = '';
     this.addressStreet1 = '';
-    this.addressStreet2 = '';
+    this.addressState = '';
     this.addressPostCode = '';
     this.addressCity = '';
     this.addressCountry = '';
@@ -125,7 +125,7 @@ class ContactDetailsStore {
     this.emailPrimary = 'test@gmail.com';
     this.emailSecondary = 'test2@gmail.com';
     this.addressStreet1 = '214 Overlook Circle';
-    this.addressStreet2 = 'Suite 220';
+    this.addressState = 'Suite 220';
     this.addressPostCode = '37027';
     this.addressCity = 'Brentwood';
     this.addressCountry = 'United States';
@@ -149,7 +149,7 @@ class ContactDetailsStore {
     return '(' + str.substr(0, 3) + ') ' + str.substr(3, 3) + '-' + str.substr(6, 4);
   }
 
-  rightHeaderClick() {
+  async rightHeaderClick() {
     if (this.mode == 'view') {
       this.mode = 'edit';
 
@@ -164,7 +164,7 @@ class ContactDetailsStore {
         emailPrimary: this.emailPrimary,
         emailSecondary: this.emailSecondary,
         addressStreet1: this.addressStreet1,
-        addressStreet2: this.addressStreet2,
+        addressState: this.addressState,
         addressPostCode: this.addressPostCode,
         addressCity: this.addressCity,
         addressCountry: this.addressCountry
@@ -174,6 +174,79 @@ class ContactDetailsStore {
       this.mode = 'view';
       // TODO save in backend
     } else { //  created new contact
+
+      if (this.firstName.length == 0 || this.lastName.length == 0) {
+        alert('Please Fill in a first and lastName');
+      }
+
+
+      let data = {};
+
+      let add = (a, b) => {
+        if (this[a] != null && this[a].length > 0) { data[b] = this[a]};
+      }
+
+      add('firstName', 'first_name');
+      add('lastName', 'last_name');
+      add('companyName', 'company');
+      add('addressStreet1', 'address');
+      add('addressCity', 'city');
+      add('addressPostCode', 'zipcode');
+      add('addressState', 'state');
+      add('addressCountry', 'country');
+
+
+      let emails_attributes = [];
+
+      if (this.emailPrimary && this.emailPrimary.length > 0) {
+        emails_attributes.push({
+          email_type: 'primary',
+          email: this.emailPrimary
+        });
+      }
+
+      if (this.emailSecondary && this.emailSecondary.length > 0) {
+        emails_attributes.push({
+          email_type: 'secondary',
+          email: this.emailSecondary
+        });
+      }
+
+      data.emails_attributes = emails_attributes;
+
+      console.log('data', data);
+
+      data.phones_attributes = [];
+
+      if (this.phoneHome && this.phoneHome.length > 0) {
+        data.phones_attributes.push({
+          phone_type: 'home',
+          number: this.phoneHome
+        });
+      }
+
+      if (this.phoneMobile && this.phoneMobile.length > 0) {
+        data.phones_attributes.push({
+          phone_type: 'mobile',
+          number: this.phoneMobile
+        });
+      }
+
+      if (this.phoneWork && this.phoneWork.length > 0) {
+        data.phones_attributes.push({
+          phone_type: 'work',
+          number: this.phoneWork
+        });
+      }
+
+      if (this.picture != null) {
+        data.asset_url = this.picture.source.uri;
+      }
+
+      let res = await ServiceBackend.post('contacts', {contact: data});
+
+      console.log('contact', res);
+
       this.myBack();
     }
   }
@@ -190,7 +263,7 @@ class ContactDetailsStore {
       this.emailPrimary = this.oldValues.emailPrimary;
       this.emailSecondary = this.oldValues.emailSecondary;
       this.addressStreet1 = this.oldValues.addressStreet1;
-      this.addressStreet2 = this.oldValues.addressStreet2;
+      this.addressState = this.oldValues.addressState;
       this.addressPostCode = this.oldValues.addressPostCode;
       this.addressCity = this.oldValues.addressCity;
       this.addressCountry = this.oldValues.addressCountr;
@@ -220,6 +293,7 @@ class ContactDetailsStore {
     if (this.picture == null) {
       return require('img/contact_camera.png');
     } else {
+      console.log('source', this.picture.getSource(120));
       return this.picture.getSource(120);
     }
   }
@@ -240,7 +314,7 @@ class ContactDetailsStore {
 
     console.log('cloud 2', res);
 
-    pic = {uri: res.url, isStatic: true};
+    pic = {uri: res.asset_url, isStatic: true};
 
     this.picture = new Picture(
       pic,

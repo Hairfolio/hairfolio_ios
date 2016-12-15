@@ -16,16 +16,18 @@ class Contact {
     return this.name.toUpperCase()[0];
   }
 
-  constructor(name) {
-    this.name = name;
+  constructor(obj) {
+    this.name = obj.first_name + ' ' + obj.last_name;
     this.key = v4();
 
-    let picObj = require('img/feed_example_profile.png');
-    this.picture = new Picture(
-      picObj,
-      picObj,
-      null
-    );
+    if (obj.asset_url) {
+      let picObj = {uri: obj.asset_url, isStatic: true};
+      this.picture = new Picture(
+        picObj,
+        picObj,
+        null
+      );
+    }
   }
 }
 
@@ -51,7 +53,6 @@ class BlackBookStore {
   }
 
   constructor() {
-    this.load();
   }
 
   @computed get hasData() {
@@ -90,28 +91,10 @@ class BlackBookStore {
     this.inputText = '';
     this.mode = 'normal';
 
-    this.contacts = [
-      new Contact('Aileen Cordle'),
-      new Contact('Antionette Merle'),
-      new Contact('Anton Heber'),
-      new Contact('Chan Dollinger'),
-      new Contact('Daryl Ciesielski'),
-      new Contact('Delia Myles'),
-      new Contact('Ferne Vanbeek'),
-      new Contact('Graham Mackey'),
-      new Contact('Hannelore Rey'),
-      new Contact('Hillary Harlan'),
-      new Contact('Jackqueline Roberto'),
-      new Contact('Lacie Peppler'),
-      new Contact('Magaly Rohe'),
-      new Contact('Marcella Iler'),
-      new Contact('Miguelina Hamlin'),
-      new Contact('Natividad Alpers'),
-      new Contact('Raquel Devlin'),
-      new Contact('Sallie Mcgeorge'),
-      new Contact('Teresia Janis'),
-      new Contact('Vernie Mayoral'),
-    ];
+    let contacts = (await ServiceBackend.get('contacts')).contacts;
+    console.log('contacts', contacts);
+
+    this.contacts = contacts.map(e => new Contact(e));
 
     this.isLoading = false;
   }

@@ -81,7 +81,7 @@ export default class Root extends PureComponent {
         this.initialRoute = appStack;
       }
 
-      // this.initialRoute = share;
+      // this.initialRoute = ;
 
 
       // android need workaround because of https://github.com/facebook/react-native/issues/7367

@@ -80,6 +80,7 @@ export default class WriteMessage extends PureComponent {
               onPress={
                 () => {
                   MessageDetailsStore.myBack = () => window.navigators[0].jumpTo(routes.messagesRoute);
+                  MessageDetailsStore.createConversation(WriteMessageStore.selectedItems);
                   MessageDetailsStore.title = WriteMessageStore.titleNames;
                   window.navigators[0].jumpTo(routes.messageDetailsRoute);
                 }

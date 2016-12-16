@@ -378,9 +378,30 @@ export const registrationActions = {
 
   signupWithEmailBase(value = {}, type) {
     return ({services: {fetch}}) => {
+
+
+      console.log('email signup value', value);
       if (value.business) {
         _.each(value.business, (v, key) => value[`business_${key}`] = v);
         delete value.business;
+      }
+
+      if (type == 'brand') {
+        let name = value['business_name'];
+        delete value.business_name;
+        value.brand_attributes = {
+          name: name
+        };
+
+        type = 'ambassador'
+      } else if (type == 'salon') {
+        let name = value['business_name'];
+        delete value.business_name;
+        value.salon_attributes = {
+          name: name
+        };
+
+        type = 'owner'
       }
 
       return {

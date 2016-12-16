@@ -1,6 +1,7 @@
 import {observable, computed, action} from 'mobx';
 import {CameraRoll, NativeModules} from 'react-native';
 import Camera from 'react-native-camera';
+import Service from 'hairfolio/src/services/index.js'
 
 import FilterStore from 'stores/FilterStore.js'
 import Picture from 'stores/Picture.js'
@@ -103,6 +104,12 @@ class MessageDetailsStore {
   constructor() {
 
     this.load();
+  }
+
+  async createConversation(users) {
+    this.isLoading = true;
+    this.messages = [];
+    let ids = users.map(e => users.user.id);
   }
 
   @computed get sendBtnOpacity() {

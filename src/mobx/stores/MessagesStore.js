@@ -75,45 +75,16 @@ class MessagesStore {
   }
 
   constructor() {
-    this.load();
+    // this.load();
   }
 
   async load() {
     this.isLoading = true;
     this.messages = [];
 
-    let arr = [];
+    let res = (await ServiceBackend.get('conversations')).conversations;
 
-    let message = new Message();
-    message.sample('Fringilla Condimentum Pharetra Tortor Lorem', true, true);
-    arr.push(message);
-
-    let msg2 = new Message();
-    msg2.sample('Fringilla Condimentum Pharetra Tortor Lorem', false, false);
-    arr.push(msg2);
-
-
-    let msg3 = new Message();
-    msg3.sample('Fringilla Condimentum Pharetra Tortor Lorem', false, true);
-    arr.push(msg3);
-
-
-    this.messages = arr;
-
-
-
-    /* TODO BACKEND INTEGRATION
-    let res = await ServiceBackend.get(`/posts/${this.postId}/comments`);
-
-    let myComments = await Promise.all(res.map(e => {
-      let c = new Comment();
-      return c.init(e);
-    }));
-
-    console.log('myComments', myComments);
-
-    this.comments = myComments;
-    */
+    this.messages = res.map(e => new Message(e));
 
     this.isLoading = false;
   }

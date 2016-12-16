@@ -18,6 +18,14 @@ class SelectableUser {
     this.key = v4();
   }
 
+  async init(obj) {
+    console.log('user obj', obj);
+    let user = new User();
+    await user.init(obj);
+    this.user = user;
+    return this;
+  }
+
 
   background() {
     return 'white';
@@ -64,6 +72,18 @@ class WriteMessageStore {
     return title;
   }
 
+
+  @computed get selectedItems() {
+    let users = [];
+    for (let u of this.users) {
+      if (u.isSelected) {
+        users.push(u);
+      }
+    }
+
+    return users;
+  }
+
   @computed get items() {
     if (this.inputText.length == 0) {
       return this.users;
@@ -99,7 +119,7 @@ class WriteMessageStore {
   }
 
   constructor() {
-    this.load();
+    // this.load();
   }
 
   async load() {
@@ -107,15 +127,19 @@ class WriteMessageStore {
     this.inputText = '';
     this.users = [];
 
-    let arr = [];
+    let res = (await ServiceBackend.get('users?account_type=stylist')).users;
 
-    for (let name of ['Albert Williams',  'Emily Tailor', 'Jack Daniels', 'Norbert King']) {
-      let user = new SelectableUser();
-      user.sample(name);
-      arr.push(user);
-    }
+    let myUsers = await Promise.all(res.map(e => {
+      let u = new SelectableUser();
+      return u.init(e);
+    }));
 
-    this.users = arr;
+    console.log('myUsers', myUsers);
+
+    this.users = myUsers;
+
+    console.log('start render');
+
     this.isLoading = false;
   }
 }

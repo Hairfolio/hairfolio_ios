@@ -34,7 +34,11 @@ export const COLORS = {
 
   CONSUMER: '#404040',
   STYLIST: '#56E6A5',
+
+  AMBASSADOR: '#8ADDDE',
   BRAND: '#8ADDDE',
+
+  OWNER: '#D284FF',
   SALON: '#D284FF',
 
   GREEN: '#56E6A5',

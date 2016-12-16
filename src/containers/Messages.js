@@ -216,6 +216,7 @@ export default class Messages extends PureComponent {
       }}
       onWillFocus={() => {
         StatusBar.setBarStyle('light-content');
+        MessagesStore.load();
       }}
     >
        <View style={{flex: 1}}>

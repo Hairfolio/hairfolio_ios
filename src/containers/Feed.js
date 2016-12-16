@@ -174,11 +174,8 @@ export default class Feed extends PureComponent {
       onFocus={() => {
         NewMessageStore.load();
         // initial loading
-        if (!FeedStore.initLoad) {
-          FeedStore.initLoad = true;
-          FeedStore.load();
-          FavoriteStore.load();
-        }
+        FeedStore.load();
+        FavoriteStore.load();
       }}
       style={{
         flex: 1,

@@ -266,8 +266,7 @@ export default class UserAbout extends PureComponent {
   renderStylist() {
     console.log('renderStylist', this.profile);
     window.profile = this.profile;
-    return null;
-      /*
+
     return (<View>
       <CollapsableContainer
         label="EMPLOYMENT"
@@ -289,7 +288,6 @@ export default class UserAbout extends PureComponent {
       </CollapsableContainer>
       {this.renderProfessionalDescription()}
     </View>);
-    */
   }
 
   renderBrand() {

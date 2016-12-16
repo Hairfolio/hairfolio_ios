@@ -39,10 +39,7 @@ export const educationActions = {
           immediateAsyncResult: true
         },
         payload: {
-          promise: utils.isReady(getState().environment.degreesState) ?
-            Promise.resolve(getState().environment.degrees.toJS())
-          :
-            fetch.fetch('/degrees')
+          promise: fetch.fetch('/degrees')
         }
       };
     };

@@ -79,6 +79,7 @@ export const registrationActions = {
     };
   },
 
+  /*
   hydrateUserEducation() {
     return ({services: {fetch}, getState}) =>
       ({
@@ -120,6 +121,7 @@ export const registrationActions = {
         }
       });
   },
+  */
 
   getEnvironment() {
     return ({getState, services: {fetch}}) => {
@@ -183,7 +185,7 @@ export const registrationActions = {
           immediateAsyncResult: true
         },
         payload: {
-          promise: fetch.fetch('/sessions/forgot_pwd', {
+          promise: fetch.fetch('/sessions/recover', {
             method: 'POST',
             body: {email}
           })
@@ -244,9 +246,9 @@ export const registrationActions = {
           promise: dispatch(registrationActions.loginWithFacebookBase(token))
             .then(throwOnFail)
             .then(() => Promise.all([
-              dispatch(registrationActions.hydrateUserEducation()).then(throwOnFail),
-              dispatch(registrationActions.hydrateUserOfferings()).then(throwOnFail),
-              dispatch(registrationActions.hydrateUserFollowing()).then(throwOnFail)
+              // dispatch(registrationActions.hydrateUserEducation()).then(throwOnFail),
+              // dispatch(registrationActions.hydrateUserOfferings()).then(throwOnFail),
+              // dispatch(registrationActions.hydrateUserFollowing()).then(throwOnFail)
             ]))
             .then(() => getState().user.data)
         }
@@ -326,9 +328,9 @@ export const registrationActions = {
           promise: dispatch(registrationActions.loginWithInstagramBase(token))
             .then(throwOnFail)
             .then(() => Promise.all([
-              dispatch(registrationActions.hydrateUserEducation()).then(throwOnFail),
-              dispatch(registrationActions.hydrateUserOfferings()).then(throwOnFail),
-              dispatch(registrationActions.hydrateUserFollowing()).then(throwOnFail)
+              // dispatch(registrationActions.hydrateUserEducation()).then(throwOnFail),
+              // dispatch(registrationActions.hydrateUserOfferings()).then(throwOnFail),
+              // dispatch(registrationActions.hydrateUserFollowing()).then(throwOnFail)
             ]))
             .then(() => getState().user.data)
         }
@@ -478,7 +480,7 @@ export const registrationActions = {
             .then(() => Promise.all([
               // dispatch(registrationActions.hydrateUserEducation()).then(throwOnFail),
               // dispatch(registrationActions.hydrateUserOfferings()).then(throwOnFail),
-              dispatch(registrationActions.hydrateUserFollowing()).then(throwOnFail)
+              // dispatch(registrationActions.hydrateUserFollowing()).then(throwOnFail)
             ]))
             .then(() => getState().user.data)
         }

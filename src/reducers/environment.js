@@ -64,7 +64,7 @@ export default function registrationReducer(state = initialState, action) {
     case educationTypes.GET_DEGREES_SUCCESS.toString(): {
       return state.mergeDeep({
         degreesState: READY,
-        degrees: action.payload
+        degrees: action.degrees
       });
     }
 

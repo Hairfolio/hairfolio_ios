@@ -54,8 +54,14 @@ export default class Profile extends PureComponent {
 
   getName() {
     window.profile = this.props.profile;
-    if (this.props.profile.get('account_type') === 'brand' || this.props.profile.get('account_type') === 'salon')
-      return this.props.profile.get('business_name') || 'Business Name';
+
+    if (this.props.profile.get('account_type') == 'ambassador') {
+      return this.props.profile.get('brand').get('name');
+    }
+
+    if (this.props.profile.get('account_type') == 'owner') {
+      return this.props.profile.get('salon').get('name');
+    }
 
     return `${this.props.profile.get('first_name')} ${this.props.profile.get('last_name')}`;
   }
@@ -228,11 +234,6 @@ export default class Profile extends PureComponent {
                 }}>"Vestibulum id ligula porta felis euismod semper. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Sed posuere consectetur est at lobortis."</Text>
               </View>
               <View ref="headerContent" style={{position: 'relative', alignItems: 'center'}}>
-
-
-
-
-
 
                 <View style={{
                   position: 'relative'
@@ -410,9 +411,6 @@ export default class Profile extends PureComponent {
                   />
                 </TouchableOpacity>
               </View> : null}
-
-
-
         </BlurView>
       </View>
 

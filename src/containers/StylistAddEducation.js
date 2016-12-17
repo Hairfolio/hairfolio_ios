@@ -157,7 +157,7 @@ export default class StylistAddEducation extends PureComponent {
               <InlineTextInput
                 autoCorrect={false}
                 placeholder="School Name"
-                ref={(r) => this.addFormItem(r, 'school_name')}
+                ref={(r) => this.addFormItem(r, 'name')}
                 validation={(v) => !!v}
               />
               <View style={{height: StyleSheet.hairlineWidth}} />

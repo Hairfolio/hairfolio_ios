@@ -308,7 +308,7 @@ export default class UserAbout extends PureComponent {
 
     return this.profile.get('offerings').map((offer, i) =>
       <View
-        key={offer.get('id')}
+        key={offer.get('offering').get('id')}
         style={{
           backgroundColor: COLORS.WHITE,
           padding: SCALE.w(25),
@@ -322,7 +322,7 @@ export default class UserAbout extends PureComponent {
           fontFamily: FONTS.HEAVY,
           fontSize: SCALE.h(30),
           color: COLORS.DARK
-        }}>{offer.get('service').get('name')}<Text style={{fontFamily: FONTS.ROMAN}}> - {offer.get('category').get('name')}</Text></Text>
+        }}>{offer.get('offering').get('service').get('name')}<Text style={{fontFamily: FONTS.ROMAN}}> - {offer.get('offering').get('category').get('name')}</Text></Text>
         <Text style={{
           fontFamily: FONTS.ROMAN,
           fontSize: SCALE.h(30),

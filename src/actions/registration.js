@@ -150,10 +150,7 @@ export const registrationActions = {
           immediateAsyncResult: true
         },
         payload: {
-          promise: utils.isReady(getState().environment.certificatesState) ?
-            Promise.resolve(getState().environment.certificates.toJS())
-          :
-            fetch.fetch('/certificates')
+          promise: fetch.fetch('/certificates')
         }
       };
     };
@@ -513,9 +510,15 @@ export const registrationActions = {
 
   editUser(values = {}) {
     return ({services: {fetch}, getState}) => {
+
+      console.log('edit user', values);
+
+
       if (values.business) {
-        _.each(values.business, (v, key) => values[`business_${key}`] = v);
+        let salon = {};
+        _.each(values.business, (v, key) => salon[`${key}`] = v);
         delete values.business;
+        values.salon_attributes = salon;
       }
 
       values['salon_user_id'] = values['business_salon_user_id'];

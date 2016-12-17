@@ -70,11 +70,12 @@ export default class StylistPlaceOfWork extends PureComponent {
     if (!value)
       return this.setState({autocompleteList: []});
     this.setState({autocompleteState: LOADING});
-    this.context.services.fetch.fetch(`/users?account_type=salon&keyword=${value/*.toLowerCase()*/}`)
+    this.context.services.fetch.fetch(`/users?account_type=owner&q=${value/*.toLowerCase()*/}`)
       .then((autocompleteList) => {
+
         this.setState({
           autocompleteState: READY,
-          autocompleteList: this.lastValue ? autocompleteList : []
+          autocompleteList: this.lastValue ? autocompleteList.users : []
         });
       }, () => {
         this.setState({autocompleteState: LOADING_ERROR});
@@ -148,38 +149,45 @@ export default class StylistPlaceOfWork extends PureComponent {
               state={[this.state.autocompleteState]}
             >
               {() => <View>
-                {!this.state.selected ? _.map(this.state.autocompleteList, salon =>
-                  <TouchableOpacity
-                    key={salon.id}
-                    onPress={() => {
-                      this.setFormValue({
-                        name: salon.business_name,
-                        address: salon.business_address,
-                        city: salon.business_city,
-                        state: salon.business_state,
-                        zip: salon.business_zip,
-                        website: salon.business_website,
-                        phone: salon.business_phone,
-                        'salon_user_id': salon.id
-                      });
-                      this.setState({
-                        selected: salon.id,
-                        autocompleteList: []
-                      });
-                    }}
-                    style={{
-                      backgroundColor: COLORS.WHITE,
-                      padding: SCALE.w(25),
-                      flexDirection: 'row',
-                      justifyContent: 'space-between'
-                    }}
-                  >
-                    <Text style={{
-                      fontFamily: FONTS.HEAVY,
-                      fontSize: SCALE.h(30),
-                      color: COLORS.DARK
-                    }}>{salon.business_name}</Text>
+                {!this.state.selected ? _.map(this.state.autocompleteList, element=> {
+                  console.log('salon', element);
+
+                  let salon = element.salon;
+
+                  return (
+                    <TouchableOpacity
+                      key={salon.id}
+                      onPress={() => {
+                        this.setFormValue({
+                          name: salon.name,
+                          address: salon.address,
+                          city: salon.city,
+                          state: salon.state,
+                          zip: salon.zip,
+                          website: salon.website,
+                          phone: salon.phone,
+                          'salon_user_id': salon.id
+                        });
+                        this.setState({
+                          selected: salon.id,
+                          autocompleteList: []
+                        });
+                      }}
+                      style={{
+                        backgroundColor: COLORS.WHITE,
+                        padding: SCALE.w(25),
+                        flexDirection: 'row',
+                        justifyContent: 'space-between'
+                      }}
+                    >
+                      <Text style={{
+                        fontFamily: FONTS.HEAVY,
+                        fontSize: SCALE.h(30),
+                        color: COLORS.DARK
+                      }}>{salon.name}</Text>
                   </TouchableOpacity>
+                  );
+                }
                 ) : null}
               </View>
             }

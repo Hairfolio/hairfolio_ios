@@ -92,9 +92,10 @@ export default function userReducer(state = initialState, action) {
     }
 
     case educationTypes.DELETE_EDUCATION_SUCCESS.toString(): {
+      console.log('id: ', action.payload.id);
       education = state.get('data').get('education');
       education = education.filter(step => {
-        return step.get('id') !== action.payload.id;
+        return step.get('education').get('id') !== action.payload.id;
       });
       return state.setIn(['data', 'education'], education);
     }
@@ -116,7 +117,7 @@ export default function userReducer(state = initialState, action) {
     case offeringsTypes.DELETE_OFFERINGS_SUCCESS.toString(): {
       offerings = state.get('data').get('offerings');
       offerings = offerings.filter(offering => {
-        return offering.get('id') !== action.payload.id;
+        return offering.get('offering').get('id') !== action.payload.id;
       });
       return state.setIn(['data', 'offerings'], offerings);
     }

@@ -64,6 +64,10 @@ export default class StylistProductExperience extends PureComponent {
   }
 
   render() {
+
+    console.log('experiences', this.props.experiences);
+
+
     return (<NavigationSetting
       leftAction={() => {
         _.last(this.context.navigators).jumpTo(this.props.backTo);

@@ -39,9 +39,10 @@ export default class SalonSP extends PureComponent {
   }
 
   renderSP(sp) {
+    window.sp = sp;
     return (<TouchableOpacity
       onPress={() => {
-        this.props.addSP.scene().setEditing(sp);
+        this.props.addSP.scene().setEditing(sp.get('offering'));
         _.last(this.context.navigators).jumpTo(this.props.addSP);
       }}
       style={{
@@ -55,17 +56,17 @@ export default class SalonSP extends PureComponent {
         fontFamily: FONTS.HEAVY,
         fontSize: SCALE.h(30),
         color: COLORS.DARK
-      }}>{sp.get('service').get('name')}</Text>
+      }}>{sp.get('offering').get('service').get('name')}</Text>
       <Text style={{
         fontFamily: FONTS.ROMAN,
         fontSize: SCALE.h(30),
         color: COLORS.DARK2
-      }}>${sp.get('price')}</Text>
+      }}>${sp.get('offering').get('price')}</Text>
     </TouchableOpacity>);
   }
 
   renderContent() {
-    var offerings = new OrderedMap(this.props.user.get('offerings').map(offerings => [offerings.get('id'), offerings]));
+    var offerings = new OrderedMap(this.props.user.get('offerings').map(offerings => [offerings.get('offering').get('id'), offerings]));
 
     console.log(this.props.user.get('offerings').count());
     console.log('offerings', this.props.user.get('offerings'));
@@ -85,7 +86,6 @@ export default class SalonSP extends PureComponent {
       :
         <SafeList
           dataSource={{offerings: offerings.toObject()}}
-          dataSourceRowIdentities={[Array.from(offerings.keys())]}
           pageSize={10}
           renderRow={(sp) => this.renderSP(sp)}
           renderSeparator={(sId, rId) => <View key={`sep_${sId}_${rId}`} style={{height: StyleSheet.hairlineWidth, backgroundColor: 'transparent'}} />}

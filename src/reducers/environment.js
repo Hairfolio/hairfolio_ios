@@ -79,9 +79,10 @@ export default function registrationReducer(state = initialState, action) {
     }
 
     case offeringsTypes.GET_SERVICES_SUCCESS.toString(): {
+      console.log('service', action.payload);
       return state.mergeDeep({
         servicesState: READY,
-        services: action.payload
+        services: action.payload.services
       });
     }
 
@@ -98,7 +99,7 @@ export default function registrationReducer(state = initialState, action) {
     case offeringsTypes.GET_CATEGORIES_SUCCESS.toString(): {
       return state.mergeDeep({
         categoriesState: READY,
-        categories: action.payload
+        categories: action.categories
       });
     }
 
@@ -115,7 +116,7 @@ export default function registrationReducer(state = initialState, action) {
     case registrationTypes.GET_CERTIFICATES_SUCCESS.toString(): {
       return state.mergeDeep({
         certificatesState: READY,
-        certificates: action.payload
+        certificates: action.certificates
       });
     }
 

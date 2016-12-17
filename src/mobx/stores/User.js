@@ -49,8 +49,10 @@ export default class User {
 
     this.id = data.id;
 
-    if (data.account_type == 'salon' || data.account_type == 'brand') {
-      this.name = `${data.business_name}`;
+    if (data.account_type == 'owner' && data.salon) {
+      this.name = data.salon.name;
+    } else if (data.account_type == 'ambassador' && data.brand) {
+      this.name = data.brand.name;
     } else {
       this.name = `${data.first_name} ${data.last_name}`;
     }

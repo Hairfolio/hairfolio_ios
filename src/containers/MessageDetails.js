@@ -18,8 +18,6 @@ import {observer} from 'mobx-react/native';
 import autobind from 'autobind-decorator'
 import _ from 'lodash';
 
-
-
 import ImagePicker from 'react-native-image-picker'
 import MyImage from 'hairfolio/src/components/MyImage.js'
 
@@ -70,12 +68,15 @@ class MessageContent  extends React.Component {
       color: '#868686'
     };
 
+    console.log('render content');
+
 
     if (this.state.width) {
       textStyle['width'] = this.state.width;
     }
 
     if (this.props.store.type == 'text') {
+      console.log('render text');
       return (
         <View>
           <Text
@@ -94,6 +95,7 @@ class MessageContent  extends React.Component {
       );
     } else if (this.props.store.type == 'picture') {
 
+      console.log('render picture');
       console.log('imageType', this.props.store.picture.getSource(this.props.maxWidth));
 
       return (
@@ -103,6 +105,7 @@ class MessageContent  extends React.Component {
         />
       );
     } else {
+      console.log('render post');
       // post
       let store = this.props.store;
 
@@ -126,7 +129,7 @@ class MessageContent  extends React.Component {
           >
             <Image
               style={{height: h(32), width: h(32), borderRadius: h(16)}}
-              source={store.post.creator.profilePicture.getSource(h(32))}
+              source={store.post.creator.profilePicture.getSource(32)}
             />
 
           <Text
@@ -199,10 +202,12 @@ const Message = observer(({store}) => {
     userImage = (
       <Image
         style={{height: h(80), width: h(80), borderRadius: h(40), marginRight: h(15)}}
-        source={store.user.profilePicture.getSource(h(80))}
+        source={store.user.profilePicture.getSource(80)}
       />
     );
   }
+
+
 
   let leftSpace;
 

@@ -62,9 +62,8 @@ export default class Post {
     this.starNumber = data.likes_count;
     this.numberOfComments = data.comments_count;
 
-    // TODO
-    console.log('starData', data);
-    this.hasStarred = data.starred_by_me;
+    console.log('data', data);
+    this.hasStarred = data.liked_by_me;
 
     let user = new User();
 

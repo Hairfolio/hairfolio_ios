@@ -4,6 +4,8 @@ import Camera from 'react-native-camera';
 import Picture from 'stores/Picture.js'
 import ServiceBackend from 'backend/ServiceBackend.js'
 
+import Service from 'hairfolio/src/services/index.js'
+
 import {_, v4, moment, React, Text} from 'hairfolio/src/helpers';
 
 import User from 'stores/User.js'
@@ -127,7 +129,9 @@ class WriteMessageStore {
     this.inputText = '';
     this.users = [];
 
-    let res = (await ServiceBackend.get('users?account_type=stylist')).users;
+    let userId = Service.fetch.store.getState().user.data.get('id')
+
+    let res = (await ServiceBackend.get(`users/${userId}/follows?friends=true`)).users;
 
     let myUsers = await Promise.all(res.map(e => {
       let u = new SelectableUser();

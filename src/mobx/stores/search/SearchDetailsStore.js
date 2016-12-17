@@ -55,13 +55,13 @@ class SearchStylistStore extends SearchUserFollowStore {
 
 class SearchBrandStore extends SearchUserFollowStore {
   async backendSearch(name) {
-    return await ServiceBackend.get(`users?account_type=brand&q=${name}`);
+    return await ServiceBackend.get(`users?account_type=ambassador&q=${name}`);
   }
 }
 
 class SearchSalonStore extends SearchUserFollowStore {
   async backendSearch(name) {
-    return await ServiceBackend.get(`users?account_type=salon&q=${name}`);
+    return await ServiceBackend.get(`users?account_type=owner&q=${name}`);
   }
 }
 
@@ -88,9 +88,9 @@ class SearchHashStore {
     this.isLoading = true;
     console.log('testloading');
 
-    let searchString = `hashtags?name=${name}`;
+    let searchString = `tags?q=${name}`;
     console.log('hashtags SearchString', searchString);
-    let hashtags = await ServiceBackend.get(searchString);
+    let hashtags = (await ServiceBackend.get(searchString)).tags;
     console.log('hashtags', hashtags);
     this.tags = hashtags.map(e => new Tag(e));
 
@@ -113,9 +113,8 @@ class SearchDetailsStore {
     const name = this.searchString;
     this.stylistStore.search(name);
     this.brandStore.search(name);
-    // Salon Search
-    // this.salonStore.search(name);
-    // this.hashStore.search(name);
+    this.salonStore.search(name);
+    this.hashStore.search(name);
   }
 
   reset() {

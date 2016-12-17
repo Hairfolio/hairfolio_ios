@@ -7,6 +7,7 @@ import ServiceBackend from 'backend/ServiceBackend.js'
 import {_, v4, moment, React, Text} from 'hairfolio/src/helpers';
 
 import User from 'stores/User.js'
+import Service from 'hairfolio/src/services/index.js'
 
 import * as routes from 'hairfolio/src/routes.js'
 
@@ -22,18 +23,54 @@ class Message {
   }
 
   async init(obj) {
-      /* TODO
-    console.log('initComment', obj);
-    this.text = obj.comment;
-    this.user = new User();
+    console.log('initMessage', obj);
 
-    // TODO BACKEND INTEGRATION
-    this.createdTime = moment().subtract({hours: 2});
-    this.isNew  = obj.isNew;
+    this.id = obj.id;
 
-    await this.user.init(obj.user);
+
+
+    let lastMessage = obj.last_message;
+
+    this.createdTime = moment(obj.last_message.created_at);
+
+    this.isNew = !lastMessage.read;
+
+    let user = new User();
+    await user.init(lastMessage.user);
+    this.user = user;
+
+    if (lastMessage.post != null) {
+      this.text = 'shared a post';
+
+      let pic = {uri: lastMessage.post.photos[0].asset_url};
+
+      this.picture = new Picture(
+        pic,
+        pic,
+        null
+      );
+    } else if (lastMessage.url && lastMessage.url.length > 0) {
+      this.text = 'shared a picture';
+
+      let pic = {uri: lastMessage.url };
+
+      this.picture = new Picture(
+        pic,
+        pic,
+        null
+      );
+
+    } else {
+      this.text = lastMessage.body;
+    }
+
+    if (lastMessage.user.id == Service.fetch.store.getState().user.data.get('id')) {
+      this.text = 'You : ' + this.text;
+    }
+
+
+
     return this;
-    */
   }
 
   @computed get timeDifference() {
@@ -84,14 +121,22 @@ class MessagesStore {
 
     let res = (await ServiceBackend.get('conversations')).conversations;
 
-    this.messages = res.map(e => new Message(e));
+    this.messages = await Promise.all(res.map(e => {
+      let c = new Message();
+      return c.init(e);
+    }));
 
     this.isLoading = false;
   }
 
-  delete(message) {
-    // todo backend
+  async delete(message) {
+    console.log('delete');
+
     this.messages = this.messages.filter(e => e != message);
+
+    let res = await ServiceBackend.delete(`conversations/${message.id}`);
+    console.log('delete res', res);
+
   }
 
 }

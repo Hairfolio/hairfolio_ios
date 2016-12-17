@@ -28,17 +28,48 @@ class Message {
   }
 
   @computed get type() {
-    if (this.text != null) {
-      return 'text';
+    if (this.post != null) {
+      return 'post';
     } else if (this.picture != null) {
       return 'picture';
     } else {
-      return 'post';
+      return 'text';
     }
   }
 
   @computed get isMe() {
     return this.user == null;
+  }
+
+  async init(obj) {
+    console.log('obj', obj);
+
+    let isMe = obj.user.id == Service.fetch.store.getState().user.data.get('id');
+    console.log('isMe', isMe);
+
+    if (!isMe) {
+      let user = new User();
+      await user.init(obj.user);
+      this.user = user;
+    }
+
+    if (obj.post) {
+      let post = new Post();
+      await post.init(obj);
+      this.post = post;
+    } else if (obj.url) {
+      let pic = {uri: obj.url};
+
+      this.picture = new Picture(
+        pic,
+        pic,
+        null
+      );
+    } else {
+      this.text = obj.body;
+    }
+
+    return this;
   }
 
   sampleText(isMe, text) {
@@ -51,7 +82,6 @@ class Message {
 
     this.text = text;
   }
-
 
 
   samplePicture(isMe) {
@@ -109,7 +139,42 @@ class MessageDetailsStore {
   async createConversation(users) {
     this.isLoading = true;
     this.messages = [];
-    let ids = users.map(e => users.user.id);
+
+    console.log(users);
+    let ids = users.map(e => e.user.id);
+
+    ids.push(Service.fetch.store.getState().user.data.get('id'));
+
+    let postData = {
+      conversation: {
+        recipient_ids: ids
+      }
+    };
+
+    console.log('postData', postData);
+
+    let res = (await ServiceBackend.post('conversations', postData)).conversation;
+
+    this.loadMessages(res.id);
+  }
+
+  async loadMessages(id) {
+    this.isLoading = true;
+    this.id = id;
+
+    // read the conversations
+    ServiceBackend.post(`conversations/${this.id}/read`);
+
+    let res = (await ServiceBackend.get(`conversations/${this.id}/messages`)).messages;
+
+    console.log('messages');
+
+    this.messages = (await Promise.all(res.map(e => {
+      let c = new Message();
+      return c.init(e);
+    }))).reverse();
+
+    this.isLoading = false;
   }
 
   @computed get sendBtnOpacity() {
@@ -178,12 +243,22 @@ class MessageDetailsStore {
     }
   }
 
-  sendText() {
+  async sendText() {
     let msg = new Message();
     msg.text = this.inputText;
     this.inputText = '';
 
     this.messages.push(msg);
+
+
+    let postData = {
+      message: {
+        body: msg.text
+      }
+    };
+
+    await ServiceBackend.post(`conversations/${this.id}/messages`, postData);
+
   }
 
   async sendPicture(response) {
@@ -200,14 +275,13 @@ class MessageDetailsStore {
       null
     );
 
-
     // send to cloudinary
     let res = await msg.picture.toJSON();
 
     console.log('cloud 2', res);
 
 
-    pic = {uri: res.url, isStatic: true};
+    pic = {uri: res.asset_url, isStatic: true};
 
     msg.picture = new Picture(
       pic,
@@ -221,7 +295,14 @@ class MessageDetailsStore {
 
     setTimeout(() => this.scrollToBottom(), 100)
 
+    let postData = {
+      message: {
+        body: '',
+        url: res.asset_url
+      }
+    };
 
+    await ServiceBackend.post(`conversations/${this.id}/messages`, postData);
   }
 
   @observable text;

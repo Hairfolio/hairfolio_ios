@@ -58,7 +58,7 @@ export default class Backend {
 
 
   async post(url, data) {
-    console.log('post1');
+    console.log('post1', BASE_URL + url);
 
     window.head = this.getHeaders();
     window.data = data;

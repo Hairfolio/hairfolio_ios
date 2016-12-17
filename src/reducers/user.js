@@ -124,19 +124,19 @@ export default function userReducer(state = initialState, action) {
 
     case registrationTypes.HYDRATE_USER_EDUCATION_SUCCESS.toString(): {
       return state.mergeDeep({
-        data: {education: action.payload}
+        data: {education: action.educations}
       });
     }
 
     case registrationTypes.HYDRATE_USER_OFFERINGS_SUCCESS.toString(): {
       return state.mergeDeep({
-        data: {offerings: action.payload}
+        data: {offerings: action.offerings}
       });
     }
 
     case registrationTypes.HYDRATE_USER_FOLLOWING_SUCCESS.toString(): {
       return state.mergeDeep({
-        data: {following: action.payload}
+        data: {following: action.users}
       });
     }
 

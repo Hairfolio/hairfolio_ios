@@ -22,6 +22,9 @@ import {
 
 
 const ActivityItem = observer(({store, isMe}) => {
+
+  console.log('activityItem', store);
+  console.log('activityItem', store.type, store.user, store.user2);
   let postContent;
 
   if (store.post) {

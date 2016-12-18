@@ -335,6 +335,7 @@ class AddServiceStore {
 
     let unit = this.colorNameSelector.selectedData.unit;
     let res = await ServiceBackend.getColors(lineId);
+    alert(unit);
     this.colorGrid.setColors(res, unit);
 
 

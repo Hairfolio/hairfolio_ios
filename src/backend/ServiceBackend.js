@@ -17,19 +17,19 @@ let myfetch = function(input, opts) {
 
 class ServiceBackend extends Backend {
   async getServices() {
-    return await this.get('services');
+    return (await this.get('services')).services;
   }
 
   async getBrands(serviceId) {
-    return await this.get(`brands?service_id=${serviceId}`);
+    return (await this.get(`brands?service_id=${serviceId}`)).brands;
   }
 
   async getLines(brandId) {
-    return await this.get(`lines?brand_id=${brandId}`);
+    return (await this.get(`lines?brand_id=${brandId}`)).lines;
   }
 
   async getColors(lineId) {
-    return await this.get(`colors?line_id=${lineId}`);
+    return (await this.get(`harmonies?line_id=${lineId}`)).harmonies;
   }
 
   async getHashTags(name) {
@@ -65,8 +65,6 @@ class ServiceBackend extends Backend {
       }
 
       CreatePostStore.isLoading = false
-
-      // only reset after view is gone
     } catch(err) {
       CreatePostStore.isLoading = false;
       alert('An error occured ' + err.toString());

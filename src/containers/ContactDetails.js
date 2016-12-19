@@ -19,6 +19,7 @@ import {observer} from 'mobx-react/native';
 import autobind from 'autobind-decorator'
 import _ from 'lodash';
 import ImagePicker from 'react-native-image-picker'
+import PostDetailStore from 'stores/PostDetailStore.js'
 
 import FollowButton from 'components/FollowButton.js'
 
@@ -490,6 +491,59 @@ const AddressInfo = observer(({store}) => {
   );
 });
 
+const NoteItem = observer(({store}) => {
+
+  return (
+    <TouchableOpacity
+      onPress={
+        () => {
+          PostDetailStore.jump(
+            false,
+            store,
+            () => window.navigators[0].jumpTo(routes.contactDetails)
+          )
+        }
+      }
+    >
+      <Image
+        style={{height: h(120), width: h(120), marginRight: h(20)}}
+        source={store.pictures[0].getSource(120)}
+      />
+    </TouchableOpacity>
+  );
+});
+
+const NotesInfo = observer(({store}) => {
+
+  if (store.mode == 'view') {
+    let elements = [];
+
+    if (!store.hasNotes) {
+      return <View />;
+    }
+
+    return (
+      <ContactInfoRow title='Notes' >
+        <View
+          style={{
+            height: h(140),
+            marginRight: h(20),
+            marginTop: h(20)
+          }}
+        >
+          <ScrollView
+            horizontal
+          >
+            {store.notes.map((e, index) => <NoteItem key={index} store={e} />)}
+          </ScrollView>
+
+        </View>
+      </ContactInfoRow>
+    );
+  }
+
+  return <View />;
+});
 
 const ContactDetailsContent = observer(() => {
 
@@ -506,6 +560,7 @@ const ContactDetailsContent = observer(() => {
         <PhoneInfo store={store} />
         <EmailInfo store={store} />
         <AddressInfo store={store} />
+        <NotesInfo store={store} />
       </ScrollView>
       <KeyboardSpacer />
     </View>

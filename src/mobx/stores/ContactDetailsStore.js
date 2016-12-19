@@ -66,6 +66,10 @@ class ContactDetailsStore {
     return this.emailPrimary.length > 0;
   }
 
+  @computed get hasNotes() {
+    return this.notes.length > 0;
+  }
+
   @computed get hasAddress() {
     return this.addressStreet1.length > 0;
   }
@@ -142,13 +146,15 @@ class ContactDetailsStore {
     this.phoneHome = '';
     this.phoneWork = '';
 
+    console.log('phone2', data);
+
     for (let e of data.phones) {
       if (e.phone_type == 'mobile') {
-        this.phoneMobile = e;
+        this.phoneMobile = e.number;
       } else if (e.phone_type == 'home') {
-        this.phoneMobile = e;
+        this.phoneMobile = e.number;
       } else if (e.phone_type == 'work') {
-        this.phoneWork = e;
+        this.phoneWork = e.number;
       }
     }
 
@@ -171,12 +177,11 @@ class ContactDetailsStore {
 
 
     console.log('profile data', data);
-      /*
+
     this.notes = await Promise.all(data.posts.map(e => {
       let c = new Post();
       return c.init(e);
     }));
-    */
   }
 
   sample() {

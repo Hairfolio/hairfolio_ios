@@ -107,6 +107,7 @@ export default class Post {
       this.pictures.push(picture);
     }
 
+    return this;
   }
 
 

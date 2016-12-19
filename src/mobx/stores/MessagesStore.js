@@ -4,7 +4,7 @@ import Camera from 'react-native-camera';
 import Picture from 'stores/Picture.js'
 import ServiceBackend from 'backend/ServiceBackend.js'
 
-import {_, v4, moment, React, Text} from 'hairfolio/src/helpers';
+import {_, v4, getUserId,  moment, React, Text} from 'hairfolio/src/helpers';
 
 import User from 'stores/User.js'
 import Service from 'hairfolio/src/services/index.js'
@@ -27,16 +27,22 @@ class Message {
 
     this.id = obj.id;
 
-
-
     let lastMessage = obj.last_message;
 
     this.createdTime = moment(obj.last_message.created_at);
 
-    this.isNew = !lastMessage.read;
+    this.isNew = obj.unread_messages;
 
     let user = new User();
-    await user.init(lastMessage.user);
+
+
+    for (let recipient of obj.recipients) {
+      if (recipient.id != getUserId()) {
+        await user.init(recipient);
+        break;
+      }
+    }
+
     this.user = user;
 
     if (lastMessage.post != null) {
@@ -65,7 +71,7 @@ class Message {
     }
 
     if (lastMessage.user.id == Service.fetch.store.getState().user.data.get('id')) {
-      this.text = 'You : ' + this.text;
+      this.text = 'You: ' + this.text;
     }
 
 

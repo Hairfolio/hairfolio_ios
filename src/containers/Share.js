@@ -15,6 +15,9 @@ import ScrollableTabView from 'react-native-scrollable-tab-view'
 import ShareFollowers from 'components/ShareFollowers'
 import ShareMessage from 'components/ShareMessage'
 import AddBlackBookStore from 'stores/AddBlackBookStore'
+import ServiceBackend from 'backend/ServiceBackend.js'
+import LoadingScreen from 'components/LoadingScreen.js'
+import CreatePostStore from 'stores/CreatePostStore.js'
 
 import ShareStore from 'stores/ShareStore.js'
 import {
@@ -63,16 +66,15 @@ export default class Share extends PureComponent {
                 alignItems: 'center'
               }}
               onPress={() => {
-
-
-              }}
+               ServiceBackend.postPost();
+                  }}
             >
               <Text
                 style={{
                   flex: 1,
                   fontFamily: FONTS.Regular,
                   fontSize: h(34),
-                  color: 'white',
+                  color: '#393939',
                   textAlign: 'right'
                 }}
               >
@@ -85,10 +87,12 @@ export default class Share extends PureComponent {
         <ScrollableTabView
           renderTabBar={() => <LinkTabBar />}
           initialPage={0}
+          refs={e => ShareStore.tabView = e}
         >
           <ShareFollowers tabLabel="Followers" />
           <ShareMessage tabLabel='Send Direct' />
         </ScrollableTabView>
+        <LoadingScreen style={{opacity: 0.6}} store={CreatePostStore} />
       </View>
     </NavigationSetting>
     );

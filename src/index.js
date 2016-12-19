@@ -20,7 +20,7 @@ import Intro from './components/Intro';
 
 import {getHairfolios} from 'backend/HairfolioBackend';
 
-import {hello, comments, starGivers, oauthStack, loginStack, forgottenPasswordStack, signupConsumerStack, signupStylistStack, signupSalonStack, signupBrandStack, appStack, editCustomerStack, createPostStack, postDetails, share, addBlackBook,
+import {hello, comments, starGivers, oauthStack, loginStack, forgottenPasswordStack, signupConsumerStack, signupStylistStack, signupSalonStack, signupBrandStack, appStack, editCustomerStack, createPostStack, postDetails,
   searchDetails, tagPosts, hairfolioPosts, messagesRoute, writeMessageRoute, messageDetailsRoute, blackBook, contactDetails
 } from './routes';
 
@@ -94,11 +94,11 @@ export default class Root extends PureComponent {
         onStartShouldSetResponderCapture={(e, gestureState) => {
           var target = e.nativeEvent.target;
           setTimeout(() => {
-            if (this.keyboardScrollViewScrolling)
-              {return;}
+            if (this.keyboardScrollViewScrolling) {
+              return;
+            }
             const focusField = TextInput.State.currentlyFocusedField();
-            if (focusField != null && target !== focusField)
-              {dismissKeyboard();}
+            if (focusField != null && target !== focusField) {dismissKeyboard();}
           }, 150);
         }}
         style={{flex: 1, position: 'relative'}}
@@ -150,9 +150,7 @@ export default class Root extends PureComponent {
                   writeMessageRoute,
                   messageDetailsRoute,
                   blackBook,
-                  contactDetails,
-                  share,
-                  addBlackBook
+                  contactDetails
                 ]}
               />
             </Provider>

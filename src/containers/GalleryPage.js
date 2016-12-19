@@ -22,6 +22,8 @@ import CreatePostStore from 'stores/CreatePostStore.js'
 import AddTagStore from 'stores/AddTagStore.js'
 import AddServiceStore from 'stores/AddServiceStore.js'
 
+import ShareStore from 'stores/ShareStore.js'
+
 import ServiceBackend from 'backend/ServiceBackend.js'
 import LoadingScreen from 'components/LoadingScreen.js'
 
@@ -29,6 +31,8 @@ import LoadingScreen from 'components/LoadingScreen.js'
 import LinearGradient from 'react-native-linear-gradient';
 
 import {appStack, createPost, onPress, postFilter, albumPage, addServiceOne, filter, addLink, addServiceTwo, addServiceThree} from '../routes';
+
+import * as routes from '../routes.js'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 var RCTUIManager = require('NativeModules').UIManager;
@@ -385,15 +389,15 @@ export default class GalleryPage extends Component {
             }}
             title='Gallery'
             titleStyle={{fontFamily: FONTS.SF_MEDIUM}}
-            rightText='Post'
+            rightText='Next'
             onRight={() => {
-
-              console.log('gallery description', CreatePostStore.gallery.description);
-
               if (!CreatePostStore.gallery.description ||  CreatePostStore.gallery.description.length == 0) {
                 alert('Description cannot be blank');
               } else {
-                ServiceBackend.postPost();
+                ShareStore.reset();
+                _.last(this.context.navigators).jumpTo(routes.share)
+
+                ShareStore.myBack = () => _.last(this.context.navigators).jumpTo(routes.gallery);
               }
             }}
           />

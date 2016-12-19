@@ -56,8 +56,6 @@ class TagMenu {
   }
 }
 
-
-
 class ServiceBox {
   @observable show = false;
   @observable locY = 0;

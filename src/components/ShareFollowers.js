@@ -92,10 +92,18 @@ const Hairfolio  = observer(({store}) => {
 });
 
 const Hairfolios = observer(() => {
+
+  let store = ShareStore.hairfolioStore;
+
+  if (store.isLoading) {
+    return <View>
+      <ActivityIndicator size='large' />
+    </View>
+  }
   return (
     <View>
       {
-        ShareStore.hairfolios.map(
+        store.hairfolios.map(
           el => <Hairfolio key={el.key} store={el} />
         )
       }
@@ -150,7 +158,8 @@ const ShareBlackBook = observer(() => {
         onPress={
           () => {
             AddBlackBookStore.select(ShareStore.contacts);
-            window.navigators[0].jumpTo(routes.addBlackBook);
+            AddBlackBookStore.myBack = () => _.last(window.navigators).jumpTo(routes.share);
+            _.last(window.navigators).jumpTo(routes.addBlackBook);
           }
         }
         style = {{

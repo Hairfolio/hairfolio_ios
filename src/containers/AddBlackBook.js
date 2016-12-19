@@ -95,9 +95,9 @@ export default class AddBlackBook extends PureComponent {
           )}
 
           onLeft={
-           () => {
-             window.navigators[0].jumpTo(routes.share)
-           }
+            () => {
+              AddBlackBookStore.myBack();
+            }
           }
 
           title='Black Book'
@@ -106,7 +106,7 @@ export default class AddBlackBook extends PureComponent {
               onPress={
                 () => {
                   ShareStore.contacts = AddBlackBookStore.selectedItems.map(e => e);
-                  window.navigators[0].jumpTo(routes.share)
+                  AddBlackBookStore.myBack();
                 }
               }
             >

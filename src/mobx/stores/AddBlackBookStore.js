@@ -27,6 +27,31 @@ class SelectableUser {
     this.isSelected = !this.isSelected;
   }
 
+  async init(obj) {
+    console.log('contactObj', obj);
+
+    let user = new User();
+
+    user.sample(obj.first_name + ' ' + obj.last_name);
+
+    user.profilePicture = null;
+
+    user.id = obj.id;
+
+    if (obj.asset_url) {
+      let pic = {uri: obj.asset_url};
+      user.profilePicture = new Picture(
+        pic,
+        pic,
+        null
+      );
+    }
+
+    this.user = user;
+    this.isSelected = false;
+    return this;
+  }
+
 
   sample(name) {
     let user = new User();
@@ -111,30 +136,31 @@ class AddBlackBookStore {
   }
 
   constructor() {
-    this.load();
+    // this.load();
   }
 
   async load() {
+
     this.isLoading = true;
     this.inputText = '';
     this.users = [];
 
-    let arr = [];
+    let res = (await ServiceBackend.get('contacts')).contacts;
 
-    for (let name of ['Albert Williams',  'Emily Tailor', 'Jack Daniels', 'Norbert King']) {
-      let user = new SelectableUser();
-      user.sample(name);
-      arr.push(user);
-    }
+    let myUsers = await Promise.all(res.map(e => {
+      let u = new SelectableUser();
+      return u.init(e);
+    }));
 
-    this.users = arr;
+    this.users = myUsers;
+
     this.isLoading = false;
   }
 
   select(list) {
     for (let el of list) {
       for (let u of this.users) {
-        if (u.user.name == el.user.name) {
+        if (u.user.id == el.user.id) {
           u.isSelected = true;
         }
       }

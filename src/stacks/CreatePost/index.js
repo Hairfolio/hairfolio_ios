@@ -19,7 +19,9 @@ import {
   addServiceOne,
   addServiceTwo,
   addServiceThree,
-  filter
+  filter,
+  share,
+  addBlackBook
 } from '../../routes';
 
 export default class EditCustomerStack extends PureComponent {
@@ -56,8 +58,8 @@ export default class EditCustomerStack extends PureComponent {
         <Navigator
           initialRoute={
             // addLink
-            createPost
-            // gallery
+            // createPost
+            gallery
             // addServiceOne
             // addLink
             //filter
@@ -72,7 +74,9 @@ export default class EditCustomerStack extends PureComponent {
             gallery,
             addServiceOne,
             addServiceTwo,
-            addServiceThree
+            addServiceThree,
+            share,
+            addBlackBook
           ]}
           ref={(navigator) => this._nav = navigator && navigator.navigator()}
         />

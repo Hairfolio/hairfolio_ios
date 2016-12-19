@@ -227,7 +227,8 @@ export default class CreatePost extends PureComponent {
     let cancel = () => {
       if (!CreatePostStore.gallery.wasOpened) {
         CreatePostStore.reset();
-        _.first(this.context.navigators).jumpTo(appStack);
+        window.nav = this.context.navigators;
+        _.first(this.context.navigators).pop();
       } else {
         _.last(this.context.navigators).jumpTo(gallery)
         StatusBar.setHidden(false);

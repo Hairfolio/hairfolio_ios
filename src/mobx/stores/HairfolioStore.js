@@ -40,7 +40,7 @@ class Hairfolio {
   }
 }
 
-class HairfolioStore {
+export class HairfolioStore {
   @observable isLoading = false;
   @observable hairfolios = [];
 

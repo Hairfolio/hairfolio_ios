@@ -12,7 +12,7 @@ import User from 'stores/User.js'
 
 import * as routes from 'hairfolio/src/routes.js'
 
-class SelectableUser {
+export class SelectableUser {
   @observable user;
   @observable isSelected;
 
@@ -21,7 +21,6 @@ class SelectableUser {
   }
 
   async init(obj) {
-    console.log('user obj', obj);
     let user = new User();
     await user.init(obj);
     this.user = user;

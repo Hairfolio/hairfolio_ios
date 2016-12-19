@@ -6,6 +6,7 @@ import FeedStore from 'stores/FeedStore.js'
 import SearchStore from 'stores/SearchStore.js'
 
 import * as routes from 'hairfolio/src/routes.js'
+import ShareStore from 'stores/ShareStore.js'
 
 let myfetch = function(input, opts) {
   return new Promise((resolve, reject) => {
@@ -40,6 +41,23 @@ class ServiceBackend extends Backend {
     return await this.get(`catalog_items?product_name=${name}`);
   }
 
+  async pinHairfolio(hairfolio, post) {
+    console.log('pin hairfolio', hairfolio.id, post.id);
+
+    let res = await this.put('folios/' + hairfolio.id, {folio: {name: hairfolio.name}});
+
+    console.log('folios', res);
+
+    let postIds = res.folio.posts.map(e => e.id);
+    postIds.push(post.id);
+
+    console.log('postIds', post.ids);
+
+    let pinRes = await this.put(`folios/${hairfolio.id}`, {folio: {post_ids: postIds}});
+
+    console.log('pinRes', pinRes);
+  }
+
   async postPost() {
 
     try {
@@ -55,6 +73,19 @@ class ServiceBackend extends Backend {
       if (res.status != 201) {
         alert('An unknown error occured');
       } else {
+
+        for (let hairfolio of  ShareStore.selectedHairfolios) {
+          this.pinHairfolio(hairfolio, res.post);
+        }
+
+        // TODO send messages
+
+        // TODO add to contacts
+
+        console.log(ShareStore.selectedUsers);
+        console.log(ShareStore.contacts);
+
+
 
         FeedStore.load();
         SearchStore.refresh();

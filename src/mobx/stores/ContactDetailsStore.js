@@ -1,6 +1,7 @@
 import Picture from 'stores/Picture.js'
 
 import Communications from 'react-native-communications';
+import Post from 'stores/Post.js'
 
 import {
   _, // lodash
@@ -38,6 +39,7 @@ class ContactDetailsStore {
 
 
   @observable picture;
+  @observable notes = [];
 
   // general
   @observable firstName = 'Alan';
@@ -106,10 +108,11 @@ class ContactDetailsStore {
     this.addressPostCode = '';
     this.addressCity = '';
     this.addressCountry = '';
+    this.notes = [];
   }
 
 
-  init(store) {
+  async init(store) {
     let data = store.data;
     this.id = store.data.id;
     this.mode = 'view';
@@ -135,11 +138,19 @@ class ContactDetailsStore {
 
     this.companyName = conv(data.company);
 
-    // TODO phone
-    this.phoneMobile = '6156619954';
-    this.phoneHome = '1234567891';
-    this.phoneWork = '0123456789';
+    this.phoneMobile = '';
+    this.phoneHome = '';
+    this.phoneWork = '';
 
+    for (let e of data.phones) {
+      if (e.phone_type == 'mobile') {
+        this.phoneMobile = e;
+      } else if (e.phone_type == 'home') {
+        this.phoneMobile = e;
+      } else if (e.phone_type == 'work') {
+        this.phoneWork = e;
+      }
+    }
 
     this.emailPrimary = '';
     this.emailSecondary = '';
@@ -157,6 +168,15 @@ class ContactDetailsStore {
     this.addressPostCode = conv(data.zipcode);
     this.addressCity = conv(data.city);
     this.addressCountry = conv(data.country);
+
+
+    console.log('profile data', data);
+      /*
+    this.notes = await Promise.all(data.posts.map(e => {
+      let c = new Post();
+      return c.init(e);
+    }));
+    */
   }
 
   sample() {
@@ -300,7 +320,6 @@ class ContactDetailsStore {
       let data = this.createData();
 
       let res = await ServiceBackend.put(`contacts/${this.id}`, {contact: data});
-
 
     } else { //  created new contact
 

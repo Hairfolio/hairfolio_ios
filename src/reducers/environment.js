@@ -79,7 +79,6 @@ export default function registrationReducer(state = initialState, action) {
     }
 
     case offeringsTypes.GET_SERVICES_SUCCESS.toString(): {
-      console.log('service', action.payload);
       return state.mergeDeep({
         servicesState: READY,
         services: action.payload.services

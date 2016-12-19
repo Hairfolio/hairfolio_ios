@@ -55,7 +55,7 @@ class Message {
 
     if (obj.post) {
       let post = new Post();
-      await post.init(obj);
+      await post.init(obj.post);
       this.post = post;
     } else if (obj.url) {
       let pic = {uri: obj.url};
@@ -143,10 +143,13 @@ class MessageDetailsStore {
     console.log(users);
     let ids = users.map(e => e.user.id);
 
-    ids.push(Service.fetch.store.getState().user.data.get('id'));
+    let userId = Service.fetch.store.getState().user.data.get('id');
+    ids.push(userId);
 
     let postData = {
+      sender: Service.fetch.store.getState().user.data.get('id'),
       conversation: {
+        sender_id: userId,
         recipient_ids: ids
       }
     };

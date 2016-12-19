@@ -58,7 +58,7 @@ export default class Backend {
 
 
   async post(url, data) {
-    console.log('post1', BASE_URL + url);
+    console.log('post ', BASE_URL + url);
 
     window.head = this.getHeaders();
     window.data = data;
@@ -69,16 +69,15 @@ export default class Backend {
       body: JSON.stringify(data)
     });
 
-    console.log('headers', this.getHeaders());
-
-    console.log('post2', response);
+    console.log('post2 '  + BASE_URL + url, response);
     let json = await response.json();
 
     if (response.status) {
       json.status = response.status;
     }
 
-    console.log('post3');
+    console.log('post3 ' + BASE_URL + url, json);
+
     return json;
   }
 

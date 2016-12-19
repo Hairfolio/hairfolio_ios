@@ -7,6 +7,7 @@ import SearchStore from 'stores/SearchStore.js'
 
 import * as routes from 'hairfolio/src/routes.js'
 import ShareStore from 'stores/ShareStore.js'
+import Service from 'hairfolio/src/services/index.js'
 
 let myfetch = function(input, opts) {
   return new Promise((resolve, reject) => {
@@ -58,6 +59,47 @@ class ServiceBackend extends Backend {
     console.log('pinRes', pinRes);
   }
 
+  async sendPostMessage(user, post) {
+    console.log('sendPostMessage');
+    let userId = Service.fetch.store.getState().user.data.get('id')
+    let ids = [userId, user.id];
+
+    let postData = {
+      conversation: {
+        sender_id: userId,
+        recipient_ids: ids
+      }
+    };
+
+
+    let conversation = (await this.post('conversations', postData)).conversation;
+
+    postData = {
+      message: {
+        body: '',
+        post_id: post.id
+      }
+    };
+
+    await this.post(`conversations/${conversation.id}/messages`, postData);
+
+  }
+
+  async addPostToBlackBook(contact, post) {
+
+    let postIds = contact.posts.map(e => e.id);
+    postIds.push(post.id);
+
+    let postData = {
+      contact: {
+        post_ids: postIds
+      }
+    };
+
+    await this.put(`contacts/${contact.user.id}`, postData);
+
+  }
+
   async postPost() {
 
     try {
@@ -78,14 +120,14 @@ class ServiceBackend extends Backend {
           this.pinHairfolio(hairfolio, res.post);
         }
 
-        // TODO send messages
+        // console.log(ShareStore.selectedUsers);
+        for (let user of ShareStore.selectedUsers) {
+          this.sendPostMessage(user.user, res.post);
+        }
 
-        // TODO add to contacts
-
-        console.log(ShareStore.selectedUsers);
-        console.log(ShareStore.contacts);
-
-
+        for (let contact of ShareStore.contacts) {
+          this.addPostToBlackBook(contact, res.post);
+        }
 
         FeedStore.load();
         SearchStore.refresh();

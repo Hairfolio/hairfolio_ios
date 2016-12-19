@@ -37,6 +37,7 @@ class SelectableUser {
     user.profilePicture = null;
 
     user.id = obj.id;
+    this.posts = obj.posts;
 
     if (obj.asset_url) {
       let pic = {uri: obj.asset_url};

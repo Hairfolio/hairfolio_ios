@@ -41,11 +41,13 @@ export default class LoginNavigationbar extends PureComponent {
   }
 
   componentDidMount() {
+      /*
     setTimeout(() =>  {
       CreatePostStore.isOpen = true;
       CreatePostStore.gallery.addSamplePicture();
       _.first(this.context.navigators).jumpTo(createPostStack);
     });
+    */
   }
 
   updateProgress(progress, fromIndex, toIndex) {

@@ -17,6 +17,8 @@ import NavigationSetting from '../navigation/NavigationSetting';
 import {observer} from 'mobx-react/native';
 import autobind from 'autobind-decorator'
 import _ from 'lodash';
+import * as routes from '../routes'
+import PostDetailStore from 'stores/PostDetailStore.js'
 
 import ImagePicker from 'react-native-image-picker'
 import MyImage from 'hairfolio/src/components/MyImage.js'
@@ -29,7 +31,6 @@ import StarGiversStore from 'stores/StarGiversStore.js'
 
 import {appStack, gallery, postFilter, albumPage} from '../routes';
 
-import * as routes from 'hairfolio/src/routes.js'
 
 import {STATUSBAR_HEIGHT, POST_INPUT_MODE} from '../constants';
 
@@ -110,7 +111,7 @@ class MessageContent  extends React.Component {
       let store = this.props.store;
 
       return (
-        <View
+        <TouchableOpacity
           style = {{
             borderRadius: 8,
             borderWidth: h(1),
@@ -118,6 +119,15 @@ class MessageContent  extends React.Component {
             borderColor: '#E2DEDE',
             width: this.props.maxWidth
           }}
+          onPress={
+            () => {
+              PostDetailStore.jump(
+                false,
+                store.post,
+                () => window.navigators[0].jumpTo(routes.messageDetailsRoute)
+              )
+            }
+          }
         >
           <View
             style = {{
@@ -151,43 +161,43 @@ class MessageContent  extends React.Component {
           />
 
 
-          </View>
+      </View>
 
-          <MyImage
-            source={store.post.currentImage.getSource(this.props.maxWidth)}
-            width={this.props.maxWidth}
-          />
+      <MyImage
+        source={store.post.currentImage.getSource(2 * this.props.maxWidth)}
+        width={this.props.maxWidth}
+      />
 
-        <View
-          style = {{
-            paddingHorizontal: h(24),
+    <View
+      style = {{
+        paddingHorizontal: h(24),
 
-          }}
-        >
-          <Text
-            style = {{
-              fontSize: h(26),
-              fontFamily: FONTS.MEDIUM,
-              marginTop: h(18)
-            }}
-            numberOfLines={1}
-           >
-           {store.post.creator.name}
-         </Text>
-          <Text
-            style = {{
-              fontSize: h(24),
-              fontFamily: FONTS.ROMAN,
-              color: '#868686',
-              marginBottom: h(24)
-            }}
-            numberOfLines={1}
-           >
-           {store.post.description}
-          </Text>
-        </View>
+      }}
+    >
+      <Text
+        style = {{
+          fontSize: h(26),
+          fontFamily: FONTS.MEDIUM,
+          marginTop: h(18)
+        }}
+        numberOfLines={1}
+      >
+        {store.post.creator.name}
+      </Text>
+      <Text
+        style = {{
+          fontSize: h(24),
+          fontFamily: FONTS.ROMAN,
+          color: '#868686',
+          marginBottom: h(24)
+        }}
+        numberOfLines={1}
+      >
+        {store.post.description}
+      </Text>
+    </View>
 
-        </View>
+  </TouchableOpacity>
       );
 
     }

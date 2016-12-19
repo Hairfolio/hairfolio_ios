@@ -40,6 +40,7 @@ export default class Picture {
 
 
   async toJSON() {
+      /*
     let uri = await this.resizeImage(this.source.uri);
 
     var formdata = new FormData();
@@ -66,10 +67,24 @@ export default class Picture {
 
     let json = await res.json();
 
+      */
+
+    window.tag = this.tags;
+
+    let labels_attributes = await Promise.all(
+      this.tags.map(tag => {
+        console.log('tagjson', tag);
+        return tag.toJSON();
+      })
+    );
+
+    window.tags = labels_attributes;
+
+    console.log('label_attributes', labels_attributes);
 
     return {
-      asset_url: json.url,
-      // post_item_tags: this.tags.map(e => e.toJSON())
+      asset_url: 'http://res.cloudinary.com/dqtga0ts7/image/upload/vccoqwh80xzy74rv6hju.jpg', // json.url,
+      labels_attributes
     };
   }
 

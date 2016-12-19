@@ -16,6 +16,26 @@ import {_, moment, React, Text, StatusBar} from 'hairfolio/src/helpers';
 
 import Post from 'stores/Post.js'
 
+class TagItem {
+
+  @observable picture;
+  @observable name;
+
+  constructor() {
+    this.key = v4();
+  }
+
+  async init(obj) {
+    this.name = obj.name;
+    let picObj = {uri: obj.last_photo};
+    this.picture = new Picture(
+      picObj,
+      picObj,
+      null
+    );
+  }
+}
+
 class TopTags {
   @observable isLoading = false;
   @observable elements = [];
@@ -25,16 +45,18 @@ class TopTags {
 
     let myId = Service.fetch.store.getState().user.data.get('id')
 
-    let res = await ServiceBackend.get('posts?popular=true');
+    let res = (await ServiceBackend.get('tags?popular=true')).tags;
     this.elements = [];
 
+    let arr = [];
+
     for (let a = 0; a < res.length; a++)  {
-      let post = new Post();
-      await post.init(res[a]);
-      if (post.hashTags.length > 0) {
-        this.elements.push(post);
-      }
+      let tagItem = new TagItem();
+      await tagItem.init(res[a]);
+      arr.push(tagItem);
     }
+
+    this.elements = arr;
 
     this.isLoading = false;
   }

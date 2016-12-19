@@ -184,7 +184,7 @@ class Gallery {
     this.linkTagMenu.selected = true;
 
     // add hashtag
-    this.addHashToPicture(20, 100, 'test');
+    // this.addHashToPicture(20, 100, 'test');
   }
 
   @action updateFilterStore() {

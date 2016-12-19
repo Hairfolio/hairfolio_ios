@@ -90,7 +90,7 @@ const TagItem = observer(({store}) => {
     <TouchableWithoutFeedback
       onPress={
         () => {
-          let name = store.topHashTag.substring(1);
+          let name = store.name;
           TagPostStore.title = `#${name}`;
           TagPostStore.load(name);
           TagPostStore.back = () => {
@@ -108,7 +108,7 @@ const TagItem = observer(({store}) => {
       >
         <Image
           style={{height: h(188), width: h(188)}}
-          source={store.pictures[0].source} />
+          source={store.picture.getSource(188)} />
         <Text
           style = {{
             position: 'absolute',
@@ -120,7 +120,7 @@ const TagItem = observer(({store}) => {
             backgroundColor: 'transparent'
           }}
         >
-          {store.topHashTag}
+          {'#' + store.name}
         </Text>
       </View>
     </TouchableWithoutFeedback>

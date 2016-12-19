@@ -59,6 +59,6 @@ export {
   Linking,
   // react-native components
   ActionSheetIOS, PickerIOS, ActivityIndicator, WebView, Picker, Animated, Modal, StatusBar, ScrollView, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet, Dimensions,
-  getUserId
+  getUserId,
 };
 

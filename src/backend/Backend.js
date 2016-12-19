@@ -21,8 +21,11 @@ export default class Backend {
 
     let token = UserStore.token;
 
-    if (!token) {
-      token = Service.fetch.store.getState().user.data.get('auth_token')
+    let token2 = Service.fetch.store.getState().user.data.get('auth_token')
+
+    if (token2) {
+      token = token2;
+      UserStore.token = token2;
     }
 
     if (token) {

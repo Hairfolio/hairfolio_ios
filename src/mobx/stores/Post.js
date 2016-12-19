@@ -90,9 +90,21 @@ export default class Post {
         null
       );
 
-      /*
-      // TODO
-      for (let item of pic.post_item_tags) {
+      for (let item of pic.labels) {
+
+        if (item.formulas.length > 0) {
+          console.log('label service');
+
+        } else if (item.url != null) {
+          console.log('label link');
+
+        } else {
+          console.log('label tag');
+          picture.addHashTag(item.position_left, item.position_top, item.tag.name);
+
+        }
+
+          /*
         if (item.type == 'hashtag') {
           picture.addHashTag(item.left, item.top, item.hashtag);
         } else if (item.type == 'link') {
@@ -101,8 +113,8 @@ export default class Post {
         } else if (item.type == 'service') {
           picture.addServiceTag(item.left, item.top, item);
         }
+        */
       }
-      */
 
       this.pictures.push(picture);
     }

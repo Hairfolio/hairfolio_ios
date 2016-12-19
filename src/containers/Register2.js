@@ -7,6 +7,8 @@ import connect from '../lib/connect';
 import {app} from '../selectors/app';
 import {registration} from '../selectors/registration';
 import NavigationSetting from '../navigation/NavigationSetting';
+import Service from 'hairfolio/src/services/index.js'
+import ServiceBackend from 'backend/ServiceBackend.js'
 
 import Picker from '../components/Picker';
 
@@ -129,6 +131,20 @@ export default class Register2 extends PureComponent {
             login
               .then(
                 () => {
+
+
+                  let userId = Service.fetch.store.getState().user.data.get('id');
+
+                  // update type
+                  ServiceBackend.put('users/' + userId,
+                    {
+                      user: {
+                        account_type: type
+                      }
+                    }
+                  );
+
+
                   appEmitter.emit('login');
                   if (type === 'consumer')
                     return _.first(this.context.navigators).jumpTo(appStack);

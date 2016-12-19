@@ -260,13 +260,15 @@ export const registrationActions = {
           immediateAsyncResult: true
         },
         payload: {
-          promise: fetch.fetch('/users/facebook', {
+          promise: fetch.fetch('/sessions/facebook', {
             method: 'POST',
             body: {
               'facebook_token': token,
+              /*
               user: {
                 'account_type': type
               }
+              */
             }
           })
         }
@@ -284,8 +286,8 @@ export const registrationActions = {
         },
         payload: {
           promise: dispatch(registrationActions.signupWithFacebookBase(token, type))
-            .then(throwOnFail)
-            .then(() => getState().user.data)
+          .then(throwOnFail)
+          .then(() => getState().user.data)
         }
       };
     };
@@ -303,7 +305,7 @@ export const registrationActions = {
           promise: fetch.fetch('/sessions/instagram', {
             method: 'POST',
             body: {
-              'insta_token': token
+              'instagram_token': token
             }
           })
         }
@@ -342,10 +344,10 @@ export const registrationActions = {
           immediateAsyncResult: true
         },
         payload: {
-          promise: fetch.fetch('/users/instagram', {
+          promise: fetch.fetch('/session/instagram', {
             method: 'POST',
             body: {
-              'insta_token': token,
+              'instagram_token': token,
               user: {
                 'account_type': type
               }

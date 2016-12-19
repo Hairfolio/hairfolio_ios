@@ -10,7 +10,19 @@ class TagPostStore extends PostListStore  {
   @observable title = '#myTag'
 
   async backendCall(name) {
-    return await ServiceBackend.get(`posts?hashtag=${name}`);
+
+    let res = await ServiceBackend.get(`tags/exact?q=${name}`);
+
+    let tagId;
+
+    if (res == null) {
+      let tag = (await ServiceBackend.post('tags', {tag: {name: name}})).tag;
+      tagId = tag.id;
+    } else {
+      tagId = res.tag.id;
+    }
+
+    return await ServiceBackend.get(`tags/${tagId}/posts`);
   }
 }
 

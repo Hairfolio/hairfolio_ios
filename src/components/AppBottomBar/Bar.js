@@ -41,7 +41,7 @@ export default class LoginNavigationbar extends PureComponent {
   }
 
   componentDidMount() {
-      /*
+    /*
     setTimeout(() =>  {
       CreatePostStore.isOpen = true;
       CreatePostStore.gallery.addSamplePicture();

@@ -14,12 +14,11 @@ const INDEX = {
 }
 
 class CatalogItem {
-  constructor({product_name, hashtag, image_url, link_url }) {
-    this.name = product_name;
+  constructor({name, tag, image_url, link_url }) {
+    this.name = name;
     this.imageUrl = image_url;
-    console.log(this.imageUrl);
     this.linkUrl = link_url;
-    this.hashtag = hashtag;
+    this.hashtag = tag;
     this.key = v4();
   }
 };

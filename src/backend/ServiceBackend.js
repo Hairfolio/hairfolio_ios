@@ -39,7 +39,7 @@ class ServiceBackend extends Backend {
   }
 
   async getCatalogItems(name) {
-    return await this.get(`catalog_items?product_name=${name}`);
+    return (await this.get(`products?q=${name}`)).products;
   }
 
   async pinHairfolio(hairfolio, post) {

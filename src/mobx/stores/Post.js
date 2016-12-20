@@ -93,10 +93,11 @@ export default class Post {
       for (let item of pic.labels) {
 
         if (item.formulas.length > 0) {
-          console.log('label service');
-
+          console.log('label service', item.formulas[0]);
+          picture.addServiceTag(item.position_left, item.position_top, item.formulas[0]);
         } else if (item.url != null) {
-          console.log('label link');
+          console.log('label link', item.url);
+          picture.addLinkTag(item.position_left, item.position_top, item);
 
         } else {
           console.log('label tag');

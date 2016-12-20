@@ -58,7 +58,7 @@ const ColorInfo = observer(({store, unit, textStyle, style}) => {
           }}
 
         >
-          {store.amount}{unit}
+          {store.weight}{unit}
         </Text>
       </View>
       <LinearGradient
@@ -141,7 +141,7 @@ const ServiceInfo = observer(({store}) => {
           start_hex: 'ffffff',
           end_hex: 'ffffff',
         },
-        amount: store.developerAmount
+        weight: store.developerAmount
       }}
       />
       <DuratationInfo store={store}/>

@@ -40,7 +40,6 @@ export default class Picture {
 
 
   async toJSON() {
-      /*
     let uri = await this.resizeImage(this.source.uri);
 
     var formdata = new FormData();
@@ -67,7 +66,6 @@ export default class Picture {
 
     let json = await res.json();
 
-      */
 
     window.tag = this.tags;
 
@@ -80,10 +78,10 @@ export default class Picture {
 
     window.tags = labels_attributes;
 
-    console.log('label_attributes', labels_attributes);
+    // console.log('label_attributes', labels_attributes);
 
     return {
-      asset_url: 'http://res.cloudinary.com/dqtga0ts7/image/upload/vccoqwh80xzy74rv6hju.jpg', // json.url,
+      asset_url: json.url,
       labels_attributes
     };
   }

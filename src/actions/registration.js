@@ -511,15 +511,28 @@ export const registrationActions = {
       console.log('edit user', values, type);
 
       if (values.business) {
-        let salon = {};
-        _.each(values.business, (v, key) => salon[`${key}`] = v);
-        delete values.business;
-        values.salon_attributes = salon;
-      }
 
-      // delete salon attributes if they don't have a value
-      if (values.salon_attributes && (!values.salon_attributes.name || values.salon_attributes.name == '')) {
-        delete values.salon_attributes;
+        if (type == 'ambassador') {
+          let brand = {};
+          _.each(values.business, (v, key) => brand[`${key}`] = v);
+          delete values.business;
+          values.brand_attributes = brand;
+
+          // delete brand  attributes if they don't have a value
+          if (values.brand_attributes && (!values.brand_attributes.name || values.brand_attributes.name == '')) {
+            delete values.brand_attributes;
+          }
+        } else {
+          let salon = {};
+          _.each(values.business, (v, key) => salon[`${key}`] = v);
+          delete values.business;
+          values.salon_attributes = salon;
+
+          // delete salon attributes if they don't have a value
+          if (values.salon_attributes && (!values.salon_attributes.name || values.salon_attributes.name == '')) {
+            delete values.salon_attributes;
+          }
+        }
       }
 
       values['salon_user_id'] = values['business_salon_user_id'];

@@ -62,14 +62,14 @@ export default class UserAbout extends PureComponent {
 
   renderProfessionalDescription() {
     return (<CollapsableContainer label="PROFESSIONAL DESCRIPTION">
-      {!this.profile.get('business_info') ?
+      {!this.getBusiness().get('info') ?
         this.renderEmpty()
       :
         <Text style={{
           fontFamily: FONTS.ROMAN,
           fontSize: SCALE.h(28),
           color: COLORS.BOTTOMBAR_SELECTED
-        }}>{this.profile.get('business_info')}</Text>
+        }}>{this.getBusiness().get('info')}</Text>
       }
     </CollapsableContainer>);
   }
@@ -89,32 +89,71 @@ export default class UserAbout extends PureComponent {
   }
 
   hasAddress() {
-    return _.every(['business_address', 'business_city', 'business_state', 'business_zip'], (ppte) =>
-      !!this.profile.get(ppte)
-    );
+    let element;
+
+    if (this.profile.get('account_type') === 'ambassador') {
+      element = this.profile.get('brand');
+    } else {
+      element = this.profile.get('salon');
+    }
+
+    for (let key of ['address', 'city', 'state', 'zip']) {
+      let el = element.get(key);
+      if (!el || el.length == 0) {
+        console.log('hasAddress', key);
+        return false;
+      }
+    }
+
+    console.log('hasAddress');
+
+    return true;
+  }
+
+  getBusiness() {
+    if (this.profile.get('account_type') === 'ambassador') {
+      return this.profile.get('brand');
+    } else {
+      return this.profile.get('salon');
+    }
+  }
+
+  hasWebsite() {
+    let website;
+    if (this.profile.get('account_type') === 'ambassador') {
+      website = this.profile.get('brand').get('website');
+    } else {
+      website = this.profile.get('salon').get('website');
+    }
+
+    return website && website.length > 0;
   }
 
   renderAddressFooter() {
-    if (!this.profile.get('business_website') && !this.hasAddress()) {
+    if (!this.hasWebsite() && !this.hasAddress()) {
       return this.renderEmpty();
     }
 
     let seperator;
 
-    if (this.profile.get('business_website') && this.hasAddress()) {
+    let business = this.getBusiness();
+
+    if (business.get('website') && this.hasAddress()) {
       seperator = (
         <View
           style={{width: 1, backgroundColor: COLORS.ABOUT_SEPARATOR}} />
       );
     }
 
+
+
     return (<View style={{
       flexDirection: 'row'
     }}>
       <TouchableOpacity
         onPress={() => {
-          var url = this.profile.get('business_website');
-          if (this.profile.get('business_website').indexOf('http://') !== 0)
+          var url = business.get('website');
+          if (business.get('website').indexOf('http://') !== 0)
             url = 'http://' + url;
 
           Linking.openURL(url);
@@ -178,14 +217,20 @@ export default class UserAbout extends PureComponent {
   }
 
   getSinglelineAddress() {
-    return _.map(['business_address', 'business_city', 'business_state', 'business_zip'], (ppte) =>
-      this.profile.get(ppte)
+
+    let business = this.getBusiness();
+
+    return _.map(['address', 'city', 'state', 'zip'], (ppte) =>
+      business.get(ppte)
     ).join(' - ');
   }
 
   renderAddress() {
-    if (!this.hasAddress())
+    if (!this.hasAddress()) {
       return this.renderEmpty();
+    }
+
+    let business = this.getBusiness();
 
     return (<View style={{
       flexDirection: 'row',
@@ -197,21 +242,21 @@ export default class UserAbout extends PureComponent {
           fontFamily: FONTS.HEAVY,
           fontSize: SCALE.h(30),
           color: COLORS.BOTTOMBAR_SELECTED
-        }}>{this.profile.get('business_name')}</Text>
+        }}>{business.get('name')}</Text>
         <Text style={{
           color: COLORS.ADDRESS,
           fontFamily: FONTS.BOOK,
           fontSize: SCALE.h(30)
-        }}>{this.profile.get('business_address')}</Text>
+        }}>{business.get('address')}</Text>
         <Text style={{
           color: COLORS.ADDRESS,
           fontFamily: FONTS.BOOK,
           fontSize: SCALE.h(30)
-        }}>{this.profile.get('business_city')}, {this.profile.get('business_state')} {this.profile.get('business_zip')}</Text>
+        }}>{business.get('city')}, {business.get('state')} {business.get('zip')}</Text>
 
         <TouchableOpacity
           onPress={() => {
-            Communications.phonecall(this.profile.get('business_phone'), true);
+            Communications.phonecall(business.get('phone'), true);
           }}
           style={{
             alignSelf: 'flex-start',
@@ -223,7 +268,7 @@ export default class UserAbout extends PureComponent {
             color: 'blue',
             fontFamily: FONTS.BOOK,
             fontSize: SCALE.h(30)
-          }}>{this.profile.get('business_phone')}</Text>
+          }}>{business.get('phone')}</Text>
         </TouchableOpacity>
       </View>
 
@@ -291,6 +336,9 @@ export default class UserAbout extends PureComponent {
   }
 
   renderBrand() {
+
+    window.profile = this.profile;
+    console.log('renderBrand', this.hasAddress());
     return (<View>
       <CollapsableContainer
         label="ABOUT"
@@ -373,8 +421,8 @@ export default class UserAbout extends PureComponent {
         onLayout={this.props.onLayout}
       >
         {this.profile.get('account_type') === 'stylist' && this.renderStylist()}
-        {this.profile.get('account_type') === 'brand' && this.renderBrand()}
-        {this.profile.get('account_type') === 'salon' && this.renderSalon()}
+        {this.profile.get('account_type') === 'ambassador' && this.renderBrand()}
+        {this.profile.get('account_type') === 'owner' && this.renderSalon()}
       </View>
     </NavigationSetting>);
   }

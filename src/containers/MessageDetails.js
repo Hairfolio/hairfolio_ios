@@ -69,7 +69,6 @@ class MessageContent  extends React.Component {
       color: '#868686'
     };
 
-    console.log('render content');
 
 
     if (this.state.width) {
@@ -77,7 +76,6 @@ class MessageContent  extends React.Component {
     }
 
     if (this.props.store.type == 'text') {
-      console.log('render text');
       return (
         <View>
           <Text
@@ -96,8 +94,6 @@ class MessageContent  extends React.Component {
       );
     } else if (this.props.store.type == 'picture') {
 
-      console.log('render picture');
-      console.log('imageType', this.props.store.picture.getSource(this.props.maxWidth));
 
       return (
         <MyImage
@@ -106,7 +102,6 @@ class MessageContent  extends React.Component {
         />
       );
     } else {
-      console.log('render post');
       // post
       let store = this.props.store;
 
@@ -249,7 +244,6 @@ const Message = observer(({store}) => {
 });
 
 const MessagesContent = observer(({store}) => {
-  console.log('render message content');
   return (
     <View style={{flex: 1}}>
       <ScrollView
@@ -390,7 +384,6 @@ export default class MesageDetails extends PureComponent {
       store
     );
 
-    console.log('render messages');
 
     return (<NavigationSetting
       style={{

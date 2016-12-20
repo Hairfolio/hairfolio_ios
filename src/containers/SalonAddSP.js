@@ -80,7 +80,6 @@ export default class SalonAddSP extends PureComponent {
             }
           });
 
-        console.log('editing', sp);
 
         this.setState({
           editing: sp
@@ -107,8 +106,6 @@ export default class SalonAddSP extends PureComponent {
   render() {
 
     window.services = this.props.services;
-    console.log('services', this.props.services);
-    console.log('categories', this.props.categories);
     return (<NavigationSetting
       leftAction={() => {
         _.last(this.context.navigators).jumpBack();
@@ -181,7 +178,6 @@ export default class SalonAddSP extends PureComponent {
               <View style={{height: StyleSheet.hairlineWidth}} />
               <PickerInput
                 choices={this.props.services.map(service => {
-                  console.log('service', service);
                   return {
                     id: service.get('id'),
                     label: service.get('name')

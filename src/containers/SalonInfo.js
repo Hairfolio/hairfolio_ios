@@ -8,6 +8,7 @@ import connect from '../lib/connect';
 import {app} from '../selectors/app';
 import {COLORS, FONTS, SCALE} from '../style';
 import NavigationSetting from '../navigation/NavigationSetting';
+
 import Service from 'hairfolio/src/services/index.js'
 
 import MultilineTextInput from '../components/Form/MultilineTextInput';

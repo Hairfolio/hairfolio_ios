@@ -5,7 +5,7 @@ import PureComponent from '../components/PureComponent';
 import {View, Text, Image, TouchableOpacity, ScrollView, StatusBar} from 'react-native';
 import connect from '../lib/connect';
 import {app} from '../selectors/app';
-import {user} from '../selectors/user';
+import {user, users} from '../selectors/user';
 import {environment} from '../selectors/environment';
 import {COLORS, FONTS, SCALE} from '../style';
 import UserProfileNavigationBar from '../components/UserProfile/Bar';
@@ -35,7 +35,7 @@ import {editCustomerStack, appStack, blackBook, createPostStack} from '../routes
 
 import * as routes from '../routes.js'
 
-@connect(app, user, environment)
+@connect(app, user, users, environment)
 export default class Profile extends PureComponent {
   static propTypes = {
     appVersion: React.PropTypes.string.isRequired,
@@ -53,7 +53,6 @@ export default class Profile extends PureComponent {
   channel = new Channel();
 
   getName() {
-    window.profile = this.props.profile;
 
     if (this.props.profile.get('account_type') == 'ambassador') {
       return this.props.profile.get('brand').get('name');
@@ -74,12 +73,12 @@ export default class Profile extends PureComponent {
         iconColor = COLORS.STYLIST;
         iconSize = SCALE.h(32);
         break;
-      case 'salon':
+      case 'owner':
         icon = 'salon';
         iconColor = COLORS.SALON;
         iconSize = SCALE.h(18);
         break;
-      case 'brand':
+      case 'ambassador':
         icon = 'brand';
         iconColor = COLORS.BRAND;
         iconSize = SCALE.h(25);
@@ -109,6 +108,7 @@ export default class Profile extends PureComponent {
   }
 
   render() {
+
     this.height = (this.props.profile === this.props.user ? 183.5 : 223.5) + 40;
 
     return (<BannerErrorContainer ref="ebc" style={{

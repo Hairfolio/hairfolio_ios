@@ -132,7 +132,7 @@ export default function registrationReducer(state = initialState, action) {
     case registrationTypes.GET_EXPERIENCES_SUCCESS.toString(): {
       return state.mergeDeep({
         experiencesState: READY,
-        experiences: action.payload
+        experiences: action.experiences
       });
     }
 

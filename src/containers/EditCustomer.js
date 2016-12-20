@@ -336,7 +336,7 @@ export default class EditCustomer extends PureComponent {
           return;
 
         this.setState({'submitting': true});
-        this.props.dispatch(registrationActions.editUser(this.getFormValue()))
+        this.props.dispatch(registrationActions.editUser(this.getFormValue(), this.props.user.get('account_type')))
         .then((r) => {
           this.setState({submitting: false});
           return r;

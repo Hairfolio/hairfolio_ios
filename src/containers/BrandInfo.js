@@ -50,7 +50,7 @@ export default class BrandInfo extends PureComponent {
           return;
 
         this.setState({'submitting': true});
-        this.props.dispatch(registrationActions.editUser(this.getFormValue()))
+        this.props.dispatch(registrationActions.editUser(this.getFormValue(), 'ambassador'))
         .then((r) => {
           this.setState({submitting: false});
           return r;

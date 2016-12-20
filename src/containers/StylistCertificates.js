@@ -60,6 +60,12 @@ export default class StylistCertificates extends PureComponent {
   }
 
   render() {
+
+    // console.log('stylist certificates', this.props.certificates);
+
+    // window.certificates = this.props.certificates;
+
+
     return (<NavigationSetting
       leftAction={() => {
         _.last(this.context.navigators).jumpTo(this.props.backTo);
@@ -76,8 +82,9 @@ export default class StylistCertificates extends PureComponent {
     >
       <LoadingContainer state={[this.props.certificatesState]}>
         {() => <SearchList
-          items={new OrderedMap(this.props.certificates.map(certificate =>
-            [certificate.get('id'), certificate]
+          items={new OrderedMap(this.props.certificates.map(certificate => {
+            return [certificate.get('id'), certificate]
+          }
           ))}
           placeholder="Search for certificates"
           ref={sL => {

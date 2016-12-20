@@ -162,10 +162,7 @@ export const registrationActions = {
           immediateAsyncResult: true
         },
         payload: {
-          promise: utils.isReady(getState().environment.experiencesState) ?
-            Promise.resolve(getState().environment.experiences.toJS())
-          :
-            fetch.fetch('/experiences')
+          promise: fetch.fetch('/experiences')
         }
       };
     };
@@ -508,17 +505,21 @@ export const registrationActions = {
     };
   },
 
-  editUser(values = {}) {
+  editUser(values = {}, type) {
     return ({services: {fetch}, getState}) => {
 
-      console.log('edit user', values);
-
+      console.log('edit user', values, type);
 
       if (values.business) {
         let salon = {};
         _.each(values.business, (v, key) => salon[`${key}`] = v);
         delete values.business;
         values.salon_attributes = salon;
+      }
+
+      // delete salon attributes if they don't have a value
+      if (values.salon_attributes && (!values.salon_attributes.name || values.salon_attributes.name == '')) {
+        delete values.salon_attributes;
       }
 
       values['salon_user_id'] = values['business_salon_user_id'];

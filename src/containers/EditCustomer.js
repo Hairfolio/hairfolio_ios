@@ -86,33 +86,36 @@ export default class EditCustomer extends PureComponent {
       business = rawValues.brand;
     } else {
       business = rawValues.salon;
-      salonUserId = business.id;
+      if (business != null) {
+        salonUserId = business.id;
+      }
     }
-
 
     let salonUserId;
 
-    rawValues.business_info = business.info;
-    rawValues.business_name = business.name;
-    rawValues.business_address = business.address;
-    rawValues.business_city = business.city;
-    rawValues.business_state = business.state;
-    rawValues.business_zip = business.zip;
-    rawValues.business_website = business.website;
-    rawValues.business_phone = business.phone;
-    rawValues.salon_user_id = salonUserId;
+    if (business != null) {
+      rawValues.business_info = business.info;
+      rawValues.business_name = business.name;
+      rawValues.business_address = business.address;
+      rawValues.business_city = business.city;
+      rawValues.business_state = business.state;
+      rawValues.business_zip = business.zip;
+      rawValues.business_website = business.website;
+      rawValues.business_phone = business.phone;
+      rawValues.salon_user_id = salonUserId;
 
 
-    rawValues.business = {
-      name: business.name,
-      address: business.address,
-      city: business.city,
-      state: business.state,
-      zip: business.zip,
-      website: business.website,
-      phone: business.phone,
-      'salon_user_id': salonUserId
-    };
+      rawValues.business = {
+        name: business.name,
+        address: business.address,
+        city: business.city,
+        state: business.state,
+        zip: business.zip,
+        website: business.website,
+        phone: business.phone,
+        'salon_user_id': salonUserId
+      };
+    }
 
     rawValues['certificate_ids'] = _.map(rawValues.certificates, 'id');
     rawValues['experience_ids'] = _.map(rawValues.experiences, 'id');

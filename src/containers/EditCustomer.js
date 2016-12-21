@@ -117,6 +117,11 @@ export default class EditCustomer extends PureComponent {
       };
     }
 
+
+    if (this.props.user.get('account_type') === 'stylist') {
+      rawValues.business_info = rawValues.description;
+    }
+
     rawValues['certificate_ids'] = _.map(rawValues.certificates, 'id');
     rawValues['experience_ids'] = _.map(rawValues.experiences, 'id');
 
@@ -364,6 +369,11 @@ export default class EditCustomer extends PureComponent {
         let formData = this.getFormValue();
 
         let business = {};
+
+        if (this.props.user.get('account_type') == 'stylist') {
+          formData.description = formData.business_info;
+          delete formData.business_info;
+        }
 
         for (let key in formData) {
           // console.log('key', key);

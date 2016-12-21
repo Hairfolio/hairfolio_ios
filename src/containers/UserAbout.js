@@ -61,15 +61,24 @@ export default class UserAbout extends PureComponent {
   }
 
   renderProfessionalDescription() {
+
+    let description;
+    if (this.profile.get('account_type') === 'stylist') {
+      description = this.profile.get('description');
+    } else {
+      description = this.getBusiness().get('info');
+    }
+
+
     return (<CollapsableContainer label="PROFESSIONAL DESCRIPTION">
-      {!this.getBusiness().get('info') ?
+      {!description ?
         this.renderEmpty()
       :
         <Text style={{
           fontFamily: FONTS.ROMAN,
           fontSize: SCALE.h(28),
           color: COLORS.BOTTOMBAR_SELECTED
-        }}>{this.getBusiness().get('info')}</Text>
+        }}>{description}</Text>
       }
     </CollapsableContainer>);
   }
@@ -97,15 +106,16 @@ export default class UserAbout extends PureComponent {
       element = this.profile.get('salon');
     }
 
+    if (element == null) {
+      return false;
+    }
+
     for (let key of ['address', 'city', 'state', 'zip']) {
       let el = element.get(key);
       if (!el || el.length == 0) {
-        console.log('hasAddress', key);
         return false;
       }
     }
-
-    console.log('hasAddress');
 
     return true;
   }
@@ -120,11 +130,14 @@ export default class UserAbout extends PureComponent {
 
   hasWebsite() {
     let website;
-    if (this.profile.get('account_type') === 'ambassador') {
-      website = this.profile.get('brand').get('website');
-    } else {
-      website = this.profile.get('salon').get('website');
+
+    let business = this.getBusiness();
+
+    if (business == null) {
+      return false;
     }
+
+    website = business.get('website');
 
     return website && website.length > 0;
   }
@@ -226,6 +239,7 @@ export default class UserAbout extends PureComponent {
   }
 
   renderAddress() {
+
     if (!this.hasAddress()) {
       return this.renderEmpty();
     }
@@ -309,7 +323,6 @@ export default class UserAbout extends PureComponent {
   }
 
   renderStylist() {
-    console.log('renderStylist', this.profile);
     window.profile = this.profile;
 
     return (<View>
@@ -338,7 +351,6 @@ export default class UserAbout extends PureComponent {
   renderBrand() {
 
     window.profile = this.profile;
-    console.log('renderBrand', this.hasAddress());
     return (<View>
       <CollapsableContainer
         label="ABOUT"

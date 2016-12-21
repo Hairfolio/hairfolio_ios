@@ -51,6 +51,11 @@ export default class StylistPlaceOfWork extends PureComponent {
   }
 
   setValue(value = {}) {
+
+    if (value == null) {
+      value = {};
+    }
+
     this.setFormValue({
       ...value,
       'salon_user_id': value.salon_user_id || -1

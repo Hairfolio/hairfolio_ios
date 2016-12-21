@@ -510,6 +510,21 @@ export const registrationActions = {
 
       console.log('edit user', values, type);
 
+      if (values.experience_ids) {
+        values.experience_ids = values.experience_ids.split(',').map(e => Math.floor(e));
+      } else {
+        values.experience_ids = [];
+      }
+
+      console.log('ex ids', values.experience_ids);
+
+      if (values.certificate_ids) {
+        values.certificate_ids = values.certificate_ids.split(',').map(e => Math.floor(e));
+      } else {
+        values.certificate_ids = [];
+      }
+
+
       if (values.business) {
 
         if (type == 'ambassador') {
@@ -545,7 +560,7 @@ export const registrationActions = {
       if (_.isEmpty(values))
         promise = Promise.resolve(getState(getState().user.data.toJS()));
       else {
-        var user = _.omit(values, ['experience_ids', 'certificate_ids']);
+        var user = values;
 
         var body = _.pick(values, ['experience_ids', 'certificate_ids']);
 

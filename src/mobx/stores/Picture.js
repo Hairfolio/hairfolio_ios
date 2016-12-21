@@ -56,9 +56,7 @@ export default class Picture {
 
   async toJSON() {
     let uri = await this.resizeImage(this.source.uri);
-    uri = await this.cropImage(uri);
-
-
+    // uri = await this.cropImage(uri);
 
     var formdata = new FormData();
     formdata.append('file', {

@@ -173,7 +173,17 @@ CGImageRef CreateCGImageFromUIImageScaled( UIImage* image, float scaleFactor )
     CGImageRelease( cgImage );
   }
   
-  return scaledImg;
+  
+  CGFloat left = (scaledImg.size.width - toSize.width) / 2;
+  CGFloat top = (scaledImg.size.height - toSize.height) / 2;
+  
+  CGRect clippedRect  = CGRectMake(left, top, toSize.width, toSize.height);
+  CGImageRef imageRef = CGImageCreateWithImageInRect(scaledImg.CGImage, clippedRect);
+  UIImage *newImage   = [UIImage imageWithCGImage:imageRef];
+  CGImageRelease(imageRef);
+  
+
+  return newImage;
 }
 
 @end

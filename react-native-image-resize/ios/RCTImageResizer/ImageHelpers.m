@@ -164,11 +164,16 @@ CGImageRef CreateCGImageFromUIImageScaled( UIImage* image, float scaleFactor )
 
 -(UIImage*) scaleToSize:(CGSize)toSize
 {    
-    UIGraphicsBeginImageContextWithOptions(toSize, NO, 0.0);
-    [self drawInRect:CGRectMake(0, 0, toSize.width, toSize.height)];
-    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    return newImage;
+  UIImage	*scaledImg	= nil;
+  float	scale		= GetScaleForProportionalResize( self.size, toSize, false, true );
+  CGImageRef cgImage	= CreateCGImageFromUIImageScaled( self, scale );
+  
+  if(cgImage) {
+    scaledImg	= [UIImage imageWithCGImage:cgImage];	// autoreleased
+    CGImageRelease( cgImage );
+  }
+  
+  return scaledImg;
 }
 
 @end

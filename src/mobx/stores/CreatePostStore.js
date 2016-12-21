@@ -327,6 +327,9 @@ class CreatePostStore {
   }
 
   @action addTakenPictureToGallery() {
+
+
+
     this.gallery.addPicture(
       new Picture(
         {uri: this.lastTakenPicture.path},
@@ -334,6 +337,7 @@ class CreatePostStore {
         this.gallery
       )
     );
+
     this.gallery.wasOpened = true;
   }
 

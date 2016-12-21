@@ -4,6 +4,7 @@ import {
   CameraRoll,
   ScrollView,
   StatusBar,
+  ImageEditor,
   View, Text, Dimensions, TouchableOpacity, TouchableWithoutFeedback, Image} from 'react-native';
 import connect from '../lib/connect';
 import {app} from '../selectors/app';

@@ -90,13 +90,13 @@ class SendStore {
   async load() {
     this.isLoading = false;
 
-
-
     this.isLoading = true;
     this.inputText = '';
     this.users = [];
 
     let userId = Service.fetch.store.getState().user.data.get('id')
+
+    console.log('userId', userId);
 
     let res = (await ServiceBackend.get(`users/${userId}/follows?friends=true`)).users;
 

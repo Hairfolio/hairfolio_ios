@@ -22,7 +22,22 @@ export default class Picture {
   }
 
   async resizeImage(uri) {
-    return ImageResizer.createResizedImage(uri, 250, 250, 'JPEG', 90, 0, null);
+    return ImageResizer.createResizedImage(uri, 2 * 250, 2 * 250, 'JPEG', 90, 0, null);
+  }
+
+  async cropImage(uri) {
+    return new Promise((resolve, reject) => {
+      ImageEditor.cropImage(uri, {
+        offset: {
+          x: 0,
+          y: 0
+        },
+        size: {
+          width: 500,
+          height: 500
+        }
+      }, resolve,  () => reject('resize failed'));
+    });
   }
 
   getSource(width) {
@@ -41,6 +56,9 @@ export default class Picture {
 
   async toJSON() {
     let uri = await this.resizeImage(this.source.uri);
+    uri = await this.cropImage(uri);
+
+
 
     var formdata = new FormData();
     formdata.append('file', {

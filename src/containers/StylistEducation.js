@@ -69,7 +69,7 @@ export default class StylistEducation extends PureComponent {
   }
 
   renderContent() {
-    var education = new OrderedMap(this.props.user.get('education').map(education => [education.get('education').get('id'), education]));
+    var education = new OrderedMap(this.props.user.get('educations').map(education => [education.get('id'), education]));
 
     window.user = this.props.user;
     console.log('renderContent', education);
@@ -77,7 +77,7 @@ export default class StylistEducation extends PureComponent {
     return (<View style={{
       flex: 1
     }}>
-      {!this.props.user.get('education').count() ?
+      {!this.props.user.get('educations').count() ?
         <Text style={{
           marginTop: SCALE.h(35),
           marginLeft: SCALE.w(25),
@@ -90,7 +90,7 @@ export default class StylistEducation extends PureComponent {
         <SafeList
           dataSource={{education: education.toObject()}}
           pageSize={10}
-          renderRow={(education) => this.renderEducation(education.get('education'))}
+          renderRow={(education) => this.renderEducation(education)}
           renderSeparator={(sId, rId) => <View key={`sep_${sId}_${rId}`} style={{height: StyleSheet.hairlineWidth, backgroundColor: 'transparent'}} />}
           style={{
             flex: 1,

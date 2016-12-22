@@ -56,17 +56,18 @@ export default class SalonSP extends PureComponent {
         fontFamily: FONTS.HEAVY,
         fontSize: SCALE.h(30),
         color: COLORS.DARK
-      }}>{sp.get('offering').get('service').get('name')}</Text>
+      }}>{sp.get('service').get('name')}</Text>
       <Text style={{
         fontFamily: FONTS.ROMAN,
         fontSize: SCALE.h(30),
         color: COLORS.DARK2
-      }}>${sp.get('offering').get('price')}</Text>
+      }}>${sp.get('price')}</Text>
     </TouchableOpacity>);
   }
 
   renderContent() {
-    var offerings = new OrderedMap(this.props.user.get('offerings').map(offerings => [offerings.get('offering').get('id'), offerings]));
+    window.myuser = this.props.user;
+    var offerings = new OrderedMap(this.props.user.get('offerings').map(offerings => [offerings.get('id'), offerings]));
 
     console.log(this.props.user.get('offerings').count());
     console.log('offerings', this.props.user.get('offerings'));

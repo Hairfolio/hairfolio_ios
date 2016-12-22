@@ -9,7 +9,7 @@ import {EMPTY, LOADING, LOADING_ERROR, READY} from '../constants';
 const initialState = new (Record({
   state: EMPTY,
   data: new Map({
-    education: new List([]),
+    educations: new List([]),
     offerings: new List([])
   }),
   followingStates: new Map({})
@@ -22,7 +22,7 @@ const revive = user => initialState.mergeDeep({
 });
 
 export default function userReducer(state = initialState, action) {
-  var education, offerings;
+  var educations, offerings;
 
   switch (action.type) {
     case appTypes.REVIVE_STATE: {
@@ -72,58 +72,63 @@ export default function userReducer(state = initialState, action) {
 
     case registrationTypes.LOGIN_SUCCESS.toString(): {
       return state.mergeDeep({
-        data: Object.assign({}, {education: [], offerings: [], following: []}, action.payload.user)
+        data: Object.assign({}, {educations: [], offerings: [], following: []}, action.payload.user)
       });
     }
 
     case educationTypes.ADD_EDUCATION_SUCCESS.toString(): {
-      return state.setIn(['data', 'education'], state.get('data').get('education').push((new Map({})).mergeDeep(action.payload)));
+      console.log('ADD_EDUCATION_SUCCESS', action.payload);
+      return state.setIn(['data', 'educations'], state.get('data').get('educations').push((new Map({})).mergeDeep(action.payload.education)));
     }
 
     case educationTypes.EDIT_EDUCATION_SUCCESS.toString(): {
-      education = state.get('data').get('education');
-      education = education.map(step => {
-        if (step.get('id') !== action.payload.id)
+      console.log('EDIT_EDUCATION_SUCCESS', action.payload);
+      educations = state.get('data').get('educations');
+      educations = educations.map(step => {
+        if (step.get('id') !== action.payload.education.id)
           return step;
-        return (new Map({})).mergeDeep(action.payload);
+        return (new Map({})).mergeDeep(action.payload.education);
       });
-      return state.setIn(['data', 'education'], education);
+      return state.setIn(['data', 'educations'], educations);
     }
 
     case educationTypes.DELETE_EDUCATION_SUCCESS.toString(): {
-      console.log('id: ', action.payload.id);
-      education = state.get('data').get('education');
-      education = education.filter(step => {
-        return step.get('education').get('id') !== action.payload.id;
+      console.log('DELETE_EDUCATION_SUCCESS', action.payload);
+      educations = state.get('data').get('educations');
+      educations = educations.filter(step => {
+        return step.get('id') !== action.payload.education.id;
       });
-      return state.setIn(['data', 'education'], education);
+      return state.setIn(['data', 'educations'], educations);
     }
 
     case offeringsTypes.ADD_OFFERINGS_SUCCESS.toString(): {
-      return state.setIn(['data', 'offerings'], state.get('data').get('offerings').push((new Map({})).mergeDeep(action.payload)));
+      console.log('ADD_OFFERINGS_SUCCESS', action.payload);
+      return state.setIn(['data', 'offerings'], state.get('data').get('offerings').push((new Map({})).mergeDeep(action.payload.offering)));
     }
 
     case offeringsTypes.EDIT_OFFERINGS_SUCCESS.toString(): {
+      console.log('EDIT_OFFERINGS_SUCCESS', action.payload);
       offerings = state.get('data').get('offerings');
       offerings = offerings.map(offering => {
-        if (offering.get('id') !== action.payload.id)
+        if (offering.get('id') !== action.payload.offering.id)
           return offering;
-        return (new Map({})).mergeDeep(action.payload);
+        return (new Map({})).mergeDeep(action.payload.offering);
       });
       return state.setIn(['data', 'offerings'], offerings);
     }
 
     case offeringsTypes.DELETE_OFFERINGS_SUCCESS.toString(): {
+      console.log('DELETE_OFFERINGS_SUCCESS', action.payload);
       offerings = state.get('data').get('offerings');
       offerings = offerings.filter(offering => {
-        return offering.get('offering').get('id') !== action.payload.id;
+        return offering.get('offering').get('id') !== action.payload.offering.id;
       });
       return state.setIn(['data', 'offerings'], offerings);
     }
 
     case registrationTypes.HYDRATE_USER_EDUCATION_SUCCESS.toString(): {
       return state.mergeDeep({
-        data: {education: action.educations}
+        data: {educations: action.educations}
       });
     }
 

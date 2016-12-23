@@ -60,14 +60,14 @@ export default class Activity {
       this.type = 'follow';
 
       let user2 = new User();
-      await user2.init(obj.notifiable.following);
+      await user2.init(obj.user);
       this.user2 = user2;
 
     } else if (obj.notifiable_type  == 'Like') {
       this.type = 'star';
 
       let user2 = new User();
-      await user2.init(obj.notifiable.user);
+      await user2.init(obj.user);
       this.user2 = user2;
 
       this.post = new PostInfo();

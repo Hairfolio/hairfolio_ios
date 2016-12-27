@@ -229,7 +229,7 @@ export default class CreatePost extends PureComponent {
       if (!CreatePostStore.gallery.wasOpened) {
         CreatePostStore.reset();
         window.nav = this.context.navigators;
-        _.first(this.context.navigators).pop();
+        _.first(this.context.navigators).jumpTo(appStack);
       } else {
         _.last(this.context.navigators).jumpTo(gallery)
         StatusBar.setHidden(false);

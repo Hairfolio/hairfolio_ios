@@ -301,7 +301,9 @@ class AddLinkRoute extends Route {
 
 class CreatePostRoute extends Route {
   SceneComponent = CreatePost;
-
+  SceneConfig = {
+    ...CustomScenesConfig.FadeInOut
+  };
   icon = 'camera';
 }
 

@@ -27,16 +27,15 @@ import Camera from 'react-native-camera';
 import SlimHeader from '../components/SlimHeader.js'
 import LibraryListView from 'components/post/LibraryListView'
 
-const CameraView = observer(({store, isOpen, inputMethod}) => {
+const CameraView = observer(({store}) => {
 
-  if (!isOpen) {
+  if (!store.isOpen) {
     return (
       <View
-        style={{backgroundColor: 'black', height: Dimensions.get('window').width, width: Dimensions.get('window').width, }}
+        style={{backgroundColor: 'transparent', height: Dimensions.get('window').width, width: Dimensions.get('window').width, }}
       />
     );
   }
-
 
   return (
     <View>
@@ -243,7 +242,7 @@ export default class CreatePost extends PureComponent {
         title={CreatePostStore.title}/>
     );
 
-    let mainView = <CameraView store={CreatePostStore} isOpen={CreatePostStore.isOpen} inputMethod={CreatePostStore.inputMethod} />;
+    let mainView = <CameraView store={CreatePostStore} />;
 
     if (CreatePostStore.inputMethod === 'Library') {
       middleElement = (

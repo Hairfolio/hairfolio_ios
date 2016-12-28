@@ -46,6 +46,7 @@
 		FF7347611DD0A8D7005A7E47 /* RCTImageResizer.m in Sources */ = {isa = PBXBuildFile; fileRef = FF73475E1DD0A8D7005A7E47 /* RCTImageResizer.m */; };
 		FF7347621DD0A8D7005A7E47 /* ImageHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = FF7347601DD0A8D7005A7E47 /* ImageHelpers.m */; };
 		FF89C9F01DB7DF9700248CCA /* libBVLinearGradient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FF89C9DE1DB7DF8000248CCA /* libBVLinearGradient.a */; };
+		FF8CDF951E1415C100445BED /* libReactNativeCameraKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FF8CDF941E14159B00445BED /* libReactNativeCameraKit.a */; };
 		FF8CF22F1D99DEB100D2AD14 /* libRCTCameraRoll.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FF8CF2201D99DE8C00D2AD14 /* libRCTCameraRoll.a */; };
 		FF9AD50F1DAD4BA9001E1690 /* ImageFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = FF9AD50E1DAD4BA9001E1690 /* ImageFilter.m */; };
 		FFA032FD1DCB5080000158B7 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FFA032FC1DCB5080000158B7 /* Social.framework */; };
@@ -207,6 +208,13 @@
 			remoteGlobalIDString = 134814201AA4EA6300B7C361;
 			remoteInfo = BVLinearGradient;
 		};
+		FF8CDF931E14159B00445BED /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FF8CDF8F1E14159B00445BED /* ReactNativeCameraKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 2646934E1CFB2A6B00F3A740;
+			remoteInfo = ReactNativeCameraKit;
+		};
 		FF8CF21F1D99DE8C00D2AD14 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FF8CF2191D99DE8C00D2AD14 /* RCTCameraRoll.xcodeproj */;
@@ -284,6 +292,7 @@
 		FF73475F1DD0A8D7005A7E47 /* ImageHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ImageHelpers.h; path = "../react-native-image-resize/ios/RCTImageResizer/ImageHelpers.h"; sourceTree = "<group>"; };
 		FF7347601DD0A8D7005A7E47 /* ImageHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ImageHelpers.m; path = "../react-native-image-resize/ios/RCTImageResizer/ImageHelpers.m"; sourceTree = "<group>"; };
 		FF89C9D91DB7DF8000248CCA /* BVLinearGradient.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = BVLinearGradient.xcodeproj; path = "../node_modules/react-native-linear-gradient/BVLinearGradient.xcodeproj"; sourceTree = "<group>"; };
+		FF8CDF8F1E14159B00445BED /* ReactNativeCameraKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactNativeCameraKit.xcodeproj; path = "../node_modules/react-native-camera-kit/ios/lib/ReactNativeCameraKit.xcodeproj"; sourceTree = "<group>"; };
 		FF8CF2191D99DE8C00D2AD14 /* RCTCameraRoll.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTCameraRoll.xcodeproj; path = "../node_modules/react-native/Libraries/CameraRoll/RCTCameraRoll.xcodeproj"; sourceTree = "<group>"; };
 		FF9AD50D1DAD4BA9001E1690 /* ImageFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ImageFilter.h; path = hairfolio/ImageFilter.h; sourceTree = "<group>"; };
 		FF9AD50E1DAD4BA9001E1690 /* ImageFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ImageFilter.m; path = hairfolio/ImageFilter.m; sourceTree = "<group>"; };
@@ -316,6 +325,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FF8CDF951E1415C100445BED /* libReactNativeCameraKit.a in Frameworks */,
 				FFA032FD1DCB5080000158B7 /* Social.framework in Frameworks */,
 				FF89C9F01DB7DF9700248CCA /* libBVLinearGradient.a in Frameworks */,
 				FF8CF22F1D99DEB100D2AD14 /* libRCTCameraRoll.a in Frameworks */,
@@ -529,6 +539,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				FF8CDF8F1E14159B00445BED /* ReactNativeCameraKit.xcodeproj */,
 				FF73475D1DD0A8D7005A7E47 /* RCTImageResizer.h */,
 				FF73475E1DD0A8D7005A7E47 /* RCTImageResizer.m */,
 				FF73475F1DD0A8D7005A7E47 /* ImageHelpers.h */,
@@ -614,6 +625,14 @@
 			isa = PBXGroup;
 			children = (
 				FF89C9DE1DB7DF8000248CCA /* libBVLinearGradient.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		FF8CDF901E14159B00445BED /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FF8CDF941E14159B00445BED /* libReactNativeCameraKit.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -767,6 +786,10 @@
 					ProjectRef = 146833FF1AC3E56700842450 /* React.xcodeproj */;
 				},
 				{
+					ProductGroup = FF8CDF901E14159B00445BED /* Products */;
+					ProjectRef = FF8CDF8F1E14159B00445BED /* ReactNativeCameraKit.xcodeproj */;
+				},
+				{
 					ProductGroup = 042A06A01D6C9F2300EF5532 /* Products */;
 					ProjectRef = 042A069F1D6C9F2300EF5532 /* RNBlur.xcodeproj */;
 				},
@@ -909,6 +932,13 @@
 			fileType = archive.ar;
 			path = libBVLinearGradient.a;
 			remoteRef = FF89C9DD1DB7DF8000248CCA /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FF8CDF941E14159B00445BED /* libReactNativeCameraKit.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libReactNativeCameraKit.a;
+			remoteRef = FF8CDF931E14159B00445BED /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		FF8CF2201D99DE8C00D2AD14 /* libRCTCameraRoll.a */ = {

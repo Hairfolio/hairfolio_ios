@@ -363,7 +363,8 @@ class CreatePostStore {
 
   updateLibraryPictures() {
     PhotoAlbum.getPhotosFromAlbums(this.groupName, (data) => {
-      this.libraryPictures = data.map((el) => new LibraryPicture(el, this));
+      // TODO take more than 100 pictures
+      this.libraryPictures = data.reverse().slice(0, 100).map((el) => new LibraryPicture(el, this));
     });
   }
 

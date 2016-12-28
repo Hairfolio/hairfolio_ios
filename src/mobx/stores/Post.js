@@ -73,12 +73,8 @@ export default class Post {
 
     this.createdTime = moment(data.created_at);
 
-    console.log('post here');
 
     for (let pic of data.photos) {
-
-
-      console.log('post here 2');
 
       //let url = pic.url.split('upload');
       // let newUrl = `${url[0]}upload/h_${2 * windowWidth}${url[1]}`;

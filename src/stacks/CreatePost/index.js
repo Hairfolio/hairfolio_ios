@@ -24,12 +24,15 @@ import {
   addBlackBook
 } from '../../routes';
 
+import CreatePostStore from 'stores/CreatePostStore.js'
+
 export default class EditCustomerStack extends PureComponent {
   static propTypes = {};
 
   static contextTypes = {
     navigators: React.PropTypes.array.isRequired
   };
+
   @autobind
   onWillFocus() {
     // hide the status bar for this element
@@ -50,6 +53,10 @@ export default class EditCustomerStack extends PureComponent {
       <NavigationSetting
         onWillBlur={this.onWillBlur}
         onWillFocus={this.onWillFocus}
+        onFocus={
+          () => {
+          }
+        }
         style={{
           flex: 1,
           backgroundColor: COLORS.LIGHT

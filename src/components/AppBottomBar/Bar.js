@@ -131,7 +131,7 @@ export default class LoginNavigationbar extends PureComponent {
       },
         () => {
 
-          CreatePostStore.isOpen = true;
+          // CreatePostStore.isOpen = true;
 
           _.first(this.context.navigators).jumpTo(
             createPostStack

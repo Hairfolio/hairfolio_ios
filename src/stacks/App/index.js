@@ -63,8 +63,12 @@ export default class AppStack extends PureComponent {
   }
 
   goToProfile(id) {
-    if (this.props.user.get('id') === id)
+    if (this.props.user.get('id') === id) {
+      console.log('internal');
       return this._nav.jumpTo(profile);
+    }
+
+    console.log('profile external');
 
     profileExternal.scene().setUserId(id);
     this._nav.jumpTo(profileExternal);

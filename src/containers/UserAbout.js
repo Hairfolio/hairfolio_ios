@@ -334,7 +334,6 @@ export default class UserAbout extends PureComponent {
       </CollapsableContainer>
       <CollapsableContainer
         label="SERVICES"
-        noPadding
       >
         {this.renderServices()}
       </CollapsableContainer>

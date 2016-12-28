@@ -9,6 +9,7 @@ import {user, users} from '../selectors/user';
 import {environment} from '../selectors/environment';
 import {COLORS, FONTS, SCALE} from '../style';
 import UserProfileNavigationBar from '../components/UserProfile/Bar';
+import Service from 'hairfolio/src/services/index.js'
 
 import ProfileStack from '../stacks/Profile';
 
@@ -22,6 +23,9 @@ import ChannelResponder from '../components/Channel/ChannelResponder';
 import Channel from '../components/Channel/Channel';
 
 import {registrationActions} from '../actions/registration';
+import MessageDetailsStore from 'stores/MessageDetailsStore';
+
+import * as routes from 'hairfolio/src/routes.js'
 
 import {
   h
@@ -32,8 +36,6 @@ import {STATUSBAR_HEIGHT} from '../constants';
 import BlackBookStore from 'stores/BlackBookStore'
 
 import {editCustomerStack, appStack, blackBook, createPostStack} from '../routes';
-
-import * as routes from '../routes.js'
 
 @connect(app, user, users, environment)
 export default class Profile extends PureComponent {
@@ -49,6 +51,13 @@ export default class Profile extends PureComponent {
   static contextTypes = {
     navigators: React.PropTypes.array.isRequired
   };
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      followed: this.props.profile.get('is_followed_by_me')
+    }
+  }
 
   channel = new Channel();
 
@@ -110,6 +119,14 @@ export default class Profile extends PureComponent {
   render() {
 
     this.height = (this.props.profile === this.props.user ? 183.5 : 223.5) + 40;
+
+    window.profile = this.props.profile;
+    window.user2 = this.props.user;
+
+    window.profileState = this;
+
+
+    console.log('rerender profile');
 
     return (<BannerErrorContainer ref="ebc" style={{
       flex: 1
@@ -299,7 +316,7 @@ export default class Profile extends PureComponent {
                     marginTop: SCALE.h(20)
                   }}>
                     <View>
-                      {!utils.isFollowing(this.props.user, this.props.profile) ?
+                      {!this.state.followed ?
                         <ProfileButton
                           disabled={utils.isLoading(this.props.followingStates.get(this.props.profile.get('id')))}
                           label="FOLLOW"
@@ -324,7 +341,29 @@ export default class Profile extends PureComponent {
 
                     <View style={{width: SCALE.w(25)}} />
                     <View>
-                      <ProfileButton label="MESSAGE" />
+                      <ProfileButton
+                        label="MESSAGE"
+                        onPress={
+                          () => {
+                            MessageDetailsStore.myBack = () => window.navigators[0].jumpTo(routes.messagesRoute);
+
+                            let userObjects = [
+                              {
+                                user : {
+                                  id: this.props.profile.get('id')
+                                }
+                              }
+                            ];
+
+                            console.log('userObjects', userObjects);
+
+
+                            MessageDetailsStore.createConversation(userObjects);
+                            MessageDetailsStore.title = this.getName();
+                            window.navigators[0].jumpTo(routes.messageDetailsRoute);
+                          }
+                        }
+                      />
                     </View>
                   </View> : null}
 

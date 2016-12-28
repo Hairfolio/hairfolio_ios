@@ -47,7 +47,7 @@ const utils = {
       return `http://res.cloudinary.com/${environment.get('cloud_name')}/image/instagram_name/${user.get('insta_username')}.jpg`;
   },
   isFollowing(me, profile) {
-    return me.get('following') && !!me.get('following').find((user) => user.get('id') === profile.get('id'));
+    return me.get('is_following_me') && !!me.get('following').find((user) => user.get('id') === profile.get('id'));
   }
 };
 

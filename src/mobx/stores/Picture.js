@@ -46,7 +46,6 @@ export default class Picture {
     if (uri && uri.indexOf('cloudinary') > -1) {
       let splitUrl = uri.split('upload');
       let newUrl = `${splitUrl[0]}upload/w_${width}${splitUrl[1]}`;
-      console.log(newUrl);
       return {uri: newUrl};
     }
 

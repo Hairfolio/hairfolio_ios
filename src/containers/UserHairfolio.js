@@ -24,16 +24,16 @@ const HairfolioItem = observer(({store}) => {
 
   var swipeoutBtns = [
     {
-      height: h(172),
-      width: h(172),
+      height: h(220),
+      width: h(220),
       onPress: () => HairfolioStore.delete(store),
       component:
       <View style={{
         backgroundColor: '#E62727',
         alignItems: 'center',
         justifyContent: 'center',
-        width: h(172),
-        height: h(172),
+        width: h(220),
+        height: h(220),
       }}
     >
       <Image
@@ -51,8 +51,8 @@ const HairfolioItem = observer(({store}) => {
 
   let previewPicture = <View
     style = {{
-      height: h(142),
-      width: h(142),
+      height: h(195),
+      width: h(195),
       marginLeft: h(18),
       backgroundColor: '#D8D8D8'
     }} />;
@@ -61,18 +61,18 @@ const HairfolioItem = observer(({store}) => {
     previewPicture = (
       <Image
         style = {{
-          height: h(142),
-          width: h(142),
+          height: h(195),
+          width: h(195),
           marginLeft: h(18),
         }}
-        source={store.picture.getSource(110)}
+        source={store.picture.getSource(195)}
       />
     );
   }
 
   return (
     <Swipeout
-      btnWidth={172 / 2}
+      btnWidth={220 / 2}
 
       right={swipeoutBtns}>
 
@@ -92,7 +92,7 @@ const HairfolioItem = observer(({store}) => {
 
       <View
         style={{
-          height: h(172),
+          height: h(220),
           flexDirection: 'row',
           alignItems: 'center',
           backgroundColor: 'white',

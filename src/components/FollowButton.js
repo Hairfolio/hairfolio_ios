@@ -36,6 +36,7 @@ const FollowButton = observer(({store, style = {}}) => {
           borderColor: '#9B9B9B',
           paddingLeft: h(15),
           flexDirection: 'row',
+          backgroundColor: 'white',
           ...style
         }}
       >
@@ -67,6 +68,7 @@ const FollowButton = observer(({store, style = {}}) => {
           borderColor: '#B5B5B5',
           alignItems: 'center',
           justifyContent: 'center',
+          backgroundColor: 'white',
           ...style
         }}
       >

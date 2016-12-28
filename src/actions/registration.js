@@ -595,12 +595,12 @@ export const registrationActions = {
           immediateAsyncResult: true
         },
         payload: {
-          promise: fetch.fetch(`/users/${getState().user.data.get('id')}/follow`, {
+          promise: fetch.fetch(`/users/${id}/follows`, {
             method: 'POST',
             body: {
               user: {id}
             }
-          }).then(({follow_count}) => ({id, follow_count}), (e) => {
+          }).then(({followers_count}) => ({id, followers_count}), (e) => {
             e.id = id;
             throw e;
           }),
@@ -616,18 +616,17 @@ export const registrationActions = {
         type: registrationTypes.UNFOLLOW_USER,
         meta: {
           immediate: true,
-          immediateAsyncResult: true
+          immediateAsyncResult: true,
+          userId: id
         },
         payload: {
-          promise: fetch.fetch(`/users/${getState().user.data.get('id')}/unfollow`, {
-            method: 'POST',
-            body: {
-              user: {id}
-            }
-          }).then(({follow_count}) => ({id, follow_count}), (e) => {
+          promise: fetch.fetch(`/users/${id}/follows`, {
+            method: 'DELETE'
+          }),
+          /* .then(({followers_count}) => ({id, followers_count}), (e) => {
             e.id = id;
             throw e;
-          }),
+          })*/
           data: {id}
         }
       };

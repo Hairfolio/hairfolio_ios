@@ -48,6 +48,11 @@ export default function userReducer(state = initialState, action) {
       return state.setIn(['followingStates', action.payload.id], LOADING);
     }
     case registrationTypes.FOLLOW_USER_SUCCESS.toString(): {
+
+      setTimeout(() => {
+        window.profileState.setState({followed: true});
+      });
+
       return state
         .setIn(['followingStates', action.payload.id], READY)
         .setIn(['data', 'follow_count'], action.payload.follow_count)
@@ -61,10 +66,17 @@ export default function userReducer(state = initialState, action) {
       return state.setIn(['followingStates', action.payload.id], LOADING);
     }
     case registrationTypes.UNFOLLOW_USER_SUCCESS.toString(): {
+      window.state = state;
+      console.log('state', state);
+
+      setTimeout(() => {
+        window.profileState.setState({followed: false});
+      });
+
       return state
-        .setIn(['followingStates', action.payload.id], READY)
-        .setIn(['data', 'follow_count'], action.payload.follow_count)
-        .setIn(['data', 'following'], state.data.get('following').filter(f => f.get('id') !== action.payload.id));
+        .setIn(['followingStates', action.meta.userId], READY)
+        .setIn(['data', 'follow_count'], action.payload.following)
+        .setIn(['data', 'following'], state.data.get('following').filter(f => f.get('id') !== action.meta.userId));
     }
     case registrationTypes.UNFOLLOW_USER_ERROR.toString(): {
       return state.setIn(['followingStates', action.payload.id], LOADING_ERROR);

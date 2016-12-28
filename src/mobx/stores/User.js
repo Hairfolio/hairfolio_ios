@@ -52,14 +52,18 @@ export default class User {
     if (data.account_type == 'owner' && data.salon) {
       if (data.solon_name) {
         this.name = data.salon_name;
-      } else {
+      } else if (data.salon) {
         this.name = data.salon.name;
+      } else {
+        this.name = '????';
       }
     } else if (data.account_type == 'ambassador') {
       if (data.brand_name) {
         this.name = data.brand_name;
-      } else {
+      } else if (data.brand) {
         this.name = data.brand.name;
+      } else {
+        this.name = '????';
       }
     } else {
       this.name = `${data.first_name} ${data.last_name}`;

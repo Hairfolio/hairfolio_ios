@@ -130,10 +130,7 @@ export const registrationActions = {
           immediateAsyncResult: true
         },
         payload: {
-          promise: utils.isReady(getState().environment.state) ?
-            Promise.resolve(getState().environment.environment.toJS())
-          :
-            fetch.fetch('/sessions/environment')
+          promise: fetch.fetch('/sessions/environment')
         }
       };
     };
@@ -341,7 +338,7 @@ export const registrationActions = {
           immediateAsyncResult: true
         },
         payload: {
-          promise: fetch.fetch('/session/instagram', {
+          promise: fetch.fetch('/sessions/instagram', {
             method: 'POST',
             body: {
               'instagram_token': token,

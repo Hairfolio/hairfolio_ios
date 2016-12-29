@@ -8,6 +8,8 @@ import Picture from 'stores/Picture.js'
 
 let PhotoAlbum = NativeModules.PhotoAlbum;
 
+import AlbumStore from 'stores/AlbumStore.js';
+
 import {v4} from 'uuid';
 
 import {_, React, Text} from 'hairfolio/src/helpers';
@@ -364,6 +366,8 @@ class CreatePostStore {
       // TODO take more than 100 pictures
       this.libraryPictures = data.reverse().slice(0, 100).map((el) => new LibraryPicture(el, this));
     });
+
+    AlbumStore.load();
   }
 
   @computed get libraryTitle() {

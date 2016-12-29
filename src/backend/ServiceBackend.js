@@ -113,7 +113,8 @@ class ServiceBackend extends Backend {
       let res = await this.post('posts', data);
 
       if (res.status != 201) {
-        alert('An unknown error occured');
+        alert('A backend error occured: ' + JSON.stringify(res));
+        alert('The data was : ' + JSON.stringify(data));
       } else {
 
         for (let hairfolio of  ShareStore.selectedHairfolios) {

@@ -10,6 +10,7 @@ import {v4} from 'uuid';
 
 
 import ServiceBackend from 'backend/ServiceBackend.js'
+import Service from 'hairfolio/src/services/index.js'
 
 import {_, moment, React, Text} from 'hairfolio/src/helpers';
 
@@ -43,6 +44,7 @@ class Hairfolio {
 export class HairfolioStore {
   @observable isLoading = false;
   @observable hairfolios = [];
+  @observable isEditable;
 
   constructor() {
   }
@@ -65,10 +67,21 @@ export class HairfolioStore {
     console.log('delete', results);
   }
 
-  async load() {
+  async load(id) {
     this.isLoading = true;
 
-    let results = await ServiceBackend.get('folios');
+    let results;
+
+    let currentUserId = Service.fetch.store.getState().user.data.get('id')
+
+    if (!id || id == currentUserId) {
+      results = await ServiceBackend.get('folios');
+      this.isEditable = true;
+    } else {
+      this.isEditable = false;
+      results = await ServiceBackend.get(`/users/${id}/folios`);
+    }
+
     results = results.folios;
 
     console.log('folios', results);

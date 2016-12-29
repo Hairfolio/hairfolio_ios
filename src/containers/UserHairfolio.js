@@ -12,6 +12,7 @@ import {
   Image,
   TextInput,
   h,
+  getUserId,
   v4
 } from 'hairfolio/src/helpers.js';
 
@@ -20,7 +21,7 @@ import Swipeout from 'hairfolio/react-native-swipeout/index.js';
 import * as routes from 'hairfolio/src/routes.js'
 import HairfolioPostStore from 'stores/HairfolioPostStore'
 
-const HairfolioItem = observer(({store}) => {
+const HairfolioItem = observer(({store, isEditable}) => {
 
   var swipeoutBtns = [
     {
@@ -45,7 +46,7 @@ const HairfolioItem = observer(({store}) => {
   ];
 
   // you cannot delete Inspiration
-  if (store.name == 'Inspiration') {
+  if (store.name == 'Inspiration' || !isEditable) {
     swipeoutBtns = [];
   }
 
@@ -181,8 +182,8 @@ const HairfolioList = observer(() => {
   } else {
     return (
       <View style={{flex: 1}}>
-        {store.hairfolios.map(e => <HairfolioItem key={e.id} store={e} />)}
-        <HairfolioEdit />
+        {store.hairfolios.map(e => <HairfolioItem isEditable={store.isEditable} key={e.id} store={e} />)}
+        {store.isEditable ? <HairfolioEdit /> : <View />}
       </View>
     );
   }
@@ -205,14 +206,15 @@ export default class UserHairfolio extends PureComponent {
         flex: 1,
         backgroundColor: COLORS.WHITE,
       }}
-      onWillFocus={() => HairfolioStore.load()}
+      onWillFocus={() => {
+        HairfolioStore.load(this.props.profile.get('id'));
+      }}
     >
       <View
         onLayout={this.props.onLayout}
       >
         <HairfolioList />
       </View>
-
     </NavigationSetting>);
   }
 };

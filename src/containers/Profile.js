@@ -345,7 +345,7 @@ export default class Profile extends PureComponent {
                         label="MESSAGE"
                         onPress={
                           () => {
-                            MessageDetailsStore.myBack = () => window.navigators[0].jumpTo(routes.messagesRoute);
+                            MessageDetailsStore.myBack = () => window.navigators[0].jumpTo(routes.appStack);
 
                             let userObjects = [
                               {

@@ -24,12 +24,14 @@ import CreatePostStore from '../mobx/stores/CreatePostStore.js';
 
 import Camera from 'react-native-camera';
 
+import {CameraKitCamera} from 'react-native-camera-kit'
+
 import SlimHeader from '../components/SlimHeader.js'
 import LibraryListView from 'components/post/LibraryListView'
 
-const CameraView = observer(({store}) => {
+const CameraView = observer(({isOpen}) => {
 
-  if (!store.isOpen) {
+  if (!isOpen) {
     return (
       <View
         style={{backgroundColor: 'transparent', height: Dimensions.get('window').width, width: Dimensions.get('window').width, }}
@@ -37,8 +39,28 @@ const CameraView = observer(({store}) => {
     );
   }
 
+  console.log('render camera view', isOpen);
+
   return (
     <View>
+
+    <CameraKitCamera
+      ref={(cam) => {
+        window.camera = cam;
+      }}
+      style={{
+        width: Dimensions.get('window').width,
+        height: Dimensions.get('window').width
+      }}
+      cameraOptions={{
+        flashMode: 'auto',             // on/off/auto(default)
+        focusMode: 'on',               // off/on(default)
+        zoomMode: 'on',                // off/on(default)
+        ratioOverlay: '1:1',            // optional, ratio overlay on the camera and crop the image seamlessly
+        ratioOverlayColor: '#00000077' // optional
+      }}
+    />
+    {/*
       <Camera
         ref={(cam) => {
           window.camera = cam;
@@ -62,13 +84,14 @@ const CameraView = observer(({store}) => {
             source={require('img/post_camera_swift.png')} />
         </TouchableOpacity>
       </Camera>
+      */}
     </View>
   );
 });
 
 const LibraryPreview = observer(({store}) => {
 
-  let windowWidth =  Dimensions.get('window').width;
+  let windowWidth = Dimensions.get('window').width;
 
   if (store.selectedLibraryPicture != null) {
     return (
@@ -133,7 +156,6 @@ const Footer = ({selectedMode, onSelect}) => {
   </View>
   );
 };
-
 
 
 const LibraryHeader = observer(({onLeft, onRight, onTitle, store}) => {
@@ -242,7 +264,7 @@ export default class CreatePost extends PureComponent {
         title={CreatePostStore.title}/>
     );
 
-    let mainView = <CameraView store={CreatePostStore} />;
+    let mainView = <CameraView isOpen={CreatePostStore.isOpen} />;
 
     if (CreatePostStore.inputMethod === 'Library') {
       middleElement = (
@@ -253,7 +275,7 @@ export default class CreatePost extends PureComponent {
 
       header = (
         <LibraryHeader
-          onTitle={() => { window.navigators =  this.context.navigators; _.last(this.context.navigators).jumpTo(albumPage) }}
+          onTitle={() => { window.navigators = this.context.navigators; _.last(this.context.navigators).jumpTo(albumPage) }}
           store={CreatePostStore}
           onLeft={cancel}
           onRight={() => {

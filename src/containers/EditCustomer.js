@@ -463,7 +463,7 @@ export default class EditCustomer extends PureComponent {
           <ProfileTextInput
             autoCapitalize="none"
             autoCorrect={false}
-            editable={!this.props.user.get('facebook_id') && !this.props.user.get('insta_id')}
+            editable={!this.props.user.get('facebook_id') && !this.props.user.get('instagram_id')}
             keyboardType="email-address"
             placeholder="Email"
             ref={(r) => this.addFormItem(r, 'email')}

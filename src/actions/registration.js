@@ -345,9 +345,11 @@ export const registrationActions = {
             method: 'POST',
             body: {
               'instagram_token': token,
+              /*
               user: {
                 'account_type': type
               }
+              */
             }
           })
         }

@@ -225,14 +225,19 @@ export default class CreatePost extends PureComponent {
   }
 
   capture() {
+
+    _.last(this.context.navigators).jumpTo(gallery)
+    StatusBar.setHidden(false);
+
+    CreatePostStore.loadGallery = true;
+
     window.camera.capture()
       .then((data) => {
+        CreatePostStore.loadGallery = false;
         CreatePostStore.lastTakenPicture = data;
         CreatePostStore.addTakenPictureToGallery()
-        _.last(this.context.navigators).jumpTo(gallery)
-        StatusBar.setHidden(false);
       })
-      .catch(err => { alert('error'); console.error(err) });
+      .catch(err => { alert('error'); console.error(err); CreatePostStore.loadGallery = false; });
   }
 
   render() {

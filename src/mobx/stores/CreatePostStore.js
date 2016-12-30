@@ -254,6 +254,7 @@ class Gallery {
 }
 
 class CreatePostStore {
+  @observable loadGallery = false;
   @observable inputMethod = 'Photo';
   @observable isOpen = false;
   @observable lastTakenPicture = {};

@@ -78,10 +78,19 @@ const ActivityItem = observer(({store, isMe}) => {
         }}
       >
 
+      {
+        store.user.profilePicture
+        ?
         <Image
           style={{height: h(80), width:h(80), borderRadius:h(40)}}
           source={store.user.profilePicture.source}
         />
+        :
+        <View
+          style={{height: h(80), width:h(80), borderRadius:h(40)}}
+        />
+
+      }
 
       <Text
         style = {{

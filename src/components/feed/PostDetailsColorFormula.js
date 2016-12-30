@@ -130,6 +130,8 @@ const ServiceInfo = observer(({store}) => {
 
     {store.colors.map(c => <ColorInfo unit={store.unit} key={c.color.id} store={c} />)}
 
+    {
+      store.developerVolume ?
     <ColorInfo
       key='vl'
       unit={store.unit}
@@ -143,7 +145,9 @@ const ServiceInfo = observer(({store}) => {
         },
         weight: store.developerAmount
       }}
-      />
+    />
+        : <View />
+    }
       <DuratationInfo store={store}/>
     </View>
   );

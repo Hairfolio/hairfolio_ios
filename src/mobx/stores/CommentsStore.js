@@ -112,12 +112,14 @@ class CommentsModel {
   }
 
   scrollToBottom() {
-    console.log('scroll bottom');
-    const scrollHeight = this.contentHeight - this.scrollViewHeight;
-    console.log('scrollHeight', scrollHeight);
-    if (scrollHeight > 0) {
-      const scrollResponder = this.scrollView.getScrollResponder();
-      scrollResponder.scrollResponderScrollTo({x: 0, y: scrollHeight});
+    if (this.scrollView) {
+      console.log('scroll bottom');
+      const scrollHeight = this.contentHeight - this.scrollViewHeight;
+      console.log('scrollHeight', scrollHeight);
+      if (scrollHeight > 0) {
+        const scrollResponder = this.scrollView.getScrollResponder();
+        scrollResponder.scrollResponderScrollTo({x: 0, y: scrollHeight});
+      }
     }
   }
 

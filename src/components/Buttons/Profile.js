@@ -21,7 +21,8 @@ export default class ProfileButton extends PureComponent {
 
   render() {
     return (<View style={{
-      opacity: this.props.disabled ? 0.7 : 1
+      opacity: this.props.disabled ? 0.7 : 1,
+      width: 120
     }}>
       <TouchableOpacity
         disabled={this.props.disabled}

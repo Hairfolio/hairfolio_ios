@@ -239,10 +239,12 @@ class MessageDetailsStore {
   }
 
   scrollToBottom() {
-    const scrollHeight = this.contentHeight - this.scrollViewHeight;
-    if (scrollHeight > 0) {
-      const scrollResponder = this.scrollView.getScrollResponder();
-      scrollResponder.scrollResponderScrollTo({x: 0, y: scrollHeight});
+    if (this.scrollView) {
+      const scrollHeight = this.contentHeight - this.scrollViewHeight;
+      if (scrollHeight > 0) {
+        const scrollResponder = this.scrollView.getScrollResponder();
+        scrollResponder.scrollResponderScrollTo({x: 0, y: scrollHeight});
+      }
     }
   }
 

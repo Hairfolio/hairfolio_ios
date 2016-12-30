@@ -13,6 +13,7 @@ import {
   AlertIOS,
   Modal,
   ScrollView,
+  ActivityIndicator,
   PickerIOS, Picker, StatusBar, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet
 } from 'hairfolio/src/helpers.js';
 
@@ -50,6 +51,25 @@ import AddTagModal from 'components/post/AddTagModal.js'
 
 
 const ImagePreview = observer(({gallery, navigators}) => {
+
+
+  if (CreatePostStore.loadGallery) {
+    return (
+      <View
+        style={{
+          width: windowWidth,
+          height: windowWidth,
+          backgroundColor: 'white',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <ActivityIndicator size='large' />
+      </View>
+    );
+  }
+
+
 
   if (gallery.selectedPicture == null) {
     return (
@@ -362,7 +382,6 @@ export default class GalleryPage extends Component {
   }
 
   render() {
-
 
     let gal = CreatePostStore.gallery;
 

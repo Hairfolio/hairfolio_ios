@@ -329,7 +329,7 @@ export default class Profile extends PureComponent {
                           color={COLORS.FOLLOWING}
                           disabled={utils.isLoading(this.props.followingStates.get(this.props.profile.get('id')))}
                           icon="check"
-                          label="FOLLOWED"
+                          label="FOLLOWING"
                           onPress={() => {
                             this.props.dispatch(registrationActions.unfollowUser(this.props.profile.get('id')));
                           }}

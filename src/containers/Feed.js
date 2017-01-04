@@ -19,6 +19,8 @@ import * as routes from '../routes'
 import Post from 'components/feed/Post.js'
 import WhiteHeader from 'components/WhiteHeader.js'
 
+import CreatePostStore from 'stores/CreatePostStore.js'
+
 import {
   _, // lodash
   v4,
@@ -135,6 +137,7 @@ export default class Feed extends PureComponent {
 
     let store = FeedStore;
 
+
     let content = (
       <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
         <ActivityIndicator size='large' />
@@ -174,11 +177,8 @@ export default class Feed extends PureComponent {
       onFocus={() => {
         NewMessageStore.load();
         // initial loading
-        if (!FeedStore.initLoad) {
-          FeedStore.initLoad = true;
-          FeedStore.load();
-          FavoriteStore.load();
-        }
+        FeedStore.load();
+        FavoriteStore.load();
       }}
       style={{
         flex: 1,

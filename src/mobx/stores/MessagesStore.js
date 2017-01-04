@@ -4,9 +4,10 @@ import Camera from 'react-native-camera';
 import Picture from 'stores/Picture.js'
 import ServiceBackend from 'backend/ServiceBackend.js'
 
-import {_, v4, moment, React, Text} from 'hairfolio/src/helpers';
+import {_, v4, getUserId,  moment, React, Text} from 'hairfolio/src/helpers';
 
 import User from 'stores/User.js'
+import Service from 'hairfolio/src/services/index.js'
 
 import * as routes from 'hairfolio/src/routes.js'
 
@@ -22,18 +23,60 @@ class Message {
   }
 
   async init(obj) {
-      /* TODO
-    console.log('initComment', obj);
-    this.text = obj.comment;
-    this.user = new User();
+    console.log('initMessage', obj);
 
-    // TODO BACKEND INTEGRATION
-    this.createdTime = moment().subtract({hours: 2});
-    this.isNew  = obj.isNew;
+    this.id = obj.id;
 
-    await this.user.init(obj.user);
+    let lastMessage = obj.last_message;
+
+    this.createdTime = moment(obj.last_message.created_at);
+
+    this.isNew = obj.unread_messages;
+
+    let user = new User();
+
+
+    for (let recipient of obj.recipients) {
+      if (recipient.id != getUserId()) {
+        await user.init(recipient);
+        break;
+      }
+    }
+
+    this.user = user;
+
+    if (lastMessage.post != null) {
+      this.text = 'shared a post';
+
+      let pic = {uri: lastMessage.post.photos[0].asset_url};
+
+      this.picture = new Picture(
+        pic,
+        pic,
+        null
+      );
+    } else if (lastMessage.url && lastMessage.url.length > 0) {
+      this.text = 'shared a picture';
+
+      let pic = {uri: lastMessage.url };
+
+      this.picture = new Picture(
+        pic,
+        pic,
+        null
+      );
+
+    } else {
+      this.text = lastMessage.body;
+    }
+
+    if (lastMessage.user.id == Service.fetch.store.getState().user.data.get('id')) {
+      this.text = 'You: ' + this.text;
+    }
+
+
+
     return this;
-    */
   }
 
   @computed get timeDifference() {
@@ -75,52 +118,31 @@ class MessagesStore {
   }
 
   constructor() {
-    this.load();
+    // this.load();
   }
 
   async load() {
     this.isLoading = true;
     this.messages = [];
 
-    let arr = [];
+    let res = (await ServiceBackend.get('conversations')).conversations;
 
-    let message = new Message();
-    message.sample('Fringilla Condimentum Pharetra Tortor Lorem', true, true);
-    arr.push(message);
-
-    let msg2 = new Message();
-    msg2.sample('Fringilla Condimentum Pharetra Tortor Lorem', false, false);
-    arr.push(msg2);
-
-
-    let msg3 = new Message();
-    msg3.sample('Fringilla Condimentum Pharetra Tortor Lorem', false, true);
-    arr.push(msg3);
-
-
-    this.messages = arr;
-
-
-
-    /* TODO BACKEND INTEGRATION
-    let res = await ServiceBackend.get(`/posts/${this.postId}/comments`);
-
-    let myComments = await Promise.all(res.map(e => {
-      let c = new Comment();
+    this.messages = await Promise.all(res.map(e => {
+      let c = new Message();
       return c.init(e);
     }));
-
-    console.log('myComments', myComments);
-
-    this.comments = myComments;
-    */
 
     this.isLoading = false;
   }
 
-  delete(message) {
-    // todo backend
+  async delete(message) {
+    console.log('delete');
+
     this.messages = this.messages.filter(e => e != message);
+
+    let res = await ServiceBackend.delete(`conversations/${message.id}`);
+    console.log('delete res', res);
+
   }
 
 }

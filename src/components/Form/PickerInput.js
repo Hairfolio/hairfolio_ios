@@ -13,6 +13,10 @@ import PureComponent from '../PureComponent';
 import Icon from '../Icon';
 import dismissKeyboard from 'react-native/Libraries/Utilities/dismissKeyboard';
 
+import {
+  windowWidth,
+} from 'hairfolio/src/helpers.js';
+
 export default class Picker extends PureComponent {
   static propTypes = {
     blocked: PropTypes.bool,
@@ -159,7 +163,7 @@ export default class Picker extends PureComponent {
               }}
               selectedValue={this.state.selected}
               style={{
-                width: 320
+                width: windowWidth
               }}
             >
               {_.map(this.props.choices, ({label, value}, i) =>

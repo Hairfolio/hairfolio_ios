@@ -19,7 +19,7 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>51</string>
+	<string>77</string>
 	<key>Fabric</key>
 	<dict>
 		<key>APIKey</key>
@@ -45,8 +45,10 @@
 	</dict>
 	<key>NSCameraUsageDescription</key>
 	<string>Hairfolio uses the camera to record your profile picture</string>
+	<key>NSContactsUsageDescription</key>
+	<string>Hairfolio uses contacts to invite your friends.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string>Hairfolio uses your location to find users near you</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Hairfolio uses the microphone let you choose you use videos</string>
 	<key>NSPhotoLibraryUsageDescription</key>

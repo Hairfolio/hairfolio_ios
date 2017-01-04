@@ -44,6 +44,7 @@ export default function registrationReducer(state = initialState, action) {
     }
 
     case registrationTypes.GET_ENVIRONMENT_SUCCESS.toString(): {
+      console.log('environment', action.payload);
       return state.merge({
         state: READY,
         environment: action.payload
@@ -63,7 +64,7 @@ export default function registrationReducer(state = initialState, action) {
     case educationTypes.GET_DEGREES_SUCCESS.toString(): {
       return state.mergeDeep({
         degreesState: READY,
-        degrees: action.payload
+        degrees: action.degrees
       });
     }
 
@@ -80,7 +81,7 @@ export default function registrationReducer(state = initialState, action) {
     case offeringsTypes.GET_SERVICES_SUCCESS.toString(): {
       return state.mergeDeep({
         servicesState: READY,
-        services: action.payload
+        services: action.payload.services
       });
     }
 
@@ -97,7 +98,7 @@ export default function registrationReducer(state = initialState, action) {
     case offeringsTypes.GET_CATEGORIES_SUCCESS.toString(): {
       return state.mergeDeep({
         categoriesState: READY,
-        categories: action.payload
+        categories: action.categories
       });
     }
 
@@ -114,7 +115,7 @@ export default function registrationReducer(state = initialState, action) {
     case registrationTypes.GET_CERTIFICATES_SUCCESS.toString(): {
       return state.mergeDeep({
         certificatesState: READY,
-        certificates: action.payload
+        certificates: action.certificates
       });
     }
 
@@ -131,7 +132,7 @@ export default function registrationReducer(state = initialState, action) {
     case registrationTypes.GET_EXPERIENCES_SUCCESS.toString(): {
       return state.mergeDeep({
         experiencesState: READY,
-        experiences: action.payload
+        experiences: action.experiences
       });
     }
 

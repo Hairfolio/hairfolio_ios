@@ -32,6 +32,7 @@ export default class SalonStylist extends PureComponent {
   state = {};
 
   loadContacts() {
+    console.log('load Contacts');
     Contacts.getAll((err, contacts) => {
       if (err)
         return this.loadContactsError();

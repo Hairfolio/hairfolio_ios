@@ -8,6 +8,8 @@ import Picture from 'stores/Picture.js'
 
 let PhotoAlbum = NativeModules.PhotoAlbum;
 
+import AlbumStore from 'stores/AlbumStore.js';
+
 import {v4} from 'uuid';
 
 import {_, React, Text} from 'hairfolio/src/helpers';
@@ -55,8 +57,6 @@ class TagMenu {
     }
   }
 }
-
-
 
 class ServiceBox {
   @observable show = false;
@@ -186,7 +186,7 @@ class Gallery {
     this.linkTagMenu.selected = true;
 
     // add hashtag
-    this.addHashToPicture(20, 100, 'test');
+    // this.addHashToPicture(20, 100, 'test');
   }
 
   @action updateFilterStore() {
@@ -247,14 +247,14 @@ class Gallery {
     return {
       post: {
         description: this.description,
-        post_items: items
+        photos_attributes: items
       }
     };
   }
-
 }
 
 class CreatePostStore {
+  @observable loadGallery = false;
   @observable inputMethod = 'Photo';
   @observable isOpen = false;
   @observable lastTakenPicture = {};
@@ -288,15 +288,21 @@ class CreatePostStore {
     } else {
       this.cameraType = Camera.constants.Type.front;
     }
+
+    window.camera.changeCamera();
   }
 
   @action switchCameraFlashMode() {
+    console.log('set flash mode');
     if (this.cameraFlashMode == Camera.constants.FlashMode.off) {
       this.cameraFlashMode = Camera.constants.FlashMode.auto;
+      window.camera.setFlashMode('auto');
     } else if (this.cameraFlashMode == Camera.constants.FlashMode.auto) {
       this.cameraFlashMode = Camera.constants.FlashMode.on;
+      window.camera.setFlashMode('on');
     } else {
       this.cameraFlashMode = Camera.constants.FlashMode.off;
+      window.camera.setFlashMode('off');
     }
   }
 
@@ -330,13 +336,15 @@ class CreatePostStore {
   }
 
   @action addTakenPictureToGallery() {
+
     this.gallery.addPicture(
       new Picture(
-        {uri: this.lastTakenPicture.path},
-        {uri: this.lastTakenPicture.path},
+        {uri: this.lastTakenPicture.uri},
+        {uri: this.lastTakenPicture.uri},
         this.gallery
       )
     );
+
     this.gallery.wasOpened = true;
   }
 
@@ -360,10 +368,26 @@ class CreatePostStore {
     }
   }
 
+  imageLoaded() {
+    this.loadedImages++;
+    // console.log('imageLoaded ', this.loadedImages);
+
+    if (this.loadedImages % 50 == 0 && this.imageData.length > 0) {
+      let newImages = this.imageData.splice(0, 50).map((el) => new LibraryPicture(el, this));
+      this.libraryPictures = this.libraryPictures.concat(newImages);
+    }
+  }
+
   updateLibraryPictures() {
+    this.loadedImages = 0;
+    this.libraryPictures;
     PhotoAlbum.getPhotosFromAlbums(this.groupName, (data) => {
-      this.libraryPictures = data.map((el) => new LibraryPicture(el, this));
+      this.imageData = data.reverse();
+      // load first 50 images and then continue ones they are loaded
+      this.libraryPictures = this.imageData.splice(0, 50).map((el) => new LibraryPicture(el, this));
     });
+
+    AlbumStore.load();
   }
 
   @computed get libraryTitle() {

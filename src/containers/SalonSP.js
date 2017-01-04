@@ -39,9 +39,10 @@ export default class SalonSP extends PureComponent {
   }
 
   renderSP(sp) {
+    window.sp = sp;
     return (<TouchableOpacity
       onPress={() => {
-        this.props.addSP.scene().setEditing(sp);
+        this.props.addSP.scene().setEditing(sp.get('offering'));
         _.last(this.context.navigators).jumpTo(this.props.addSP);
       }}
       style={{
@@ -65,6 +66,7 @@ export default class SalonSP extends PureComponent {
   }
 
   renderContent() {
+    window.myuser = this.props.user;
     var offerings = new OrderedMap(this.props.user.get('offerings').map(offerings => [offerings.get('id'), offerings]));
 
     console.log(this.props.user.get('offerings').count());
@@ -85,7 +87,6 @@ export default class SalonSP extends PureComponent {
       :
         <SafeList
           dataSource={{offerings: offerings.toObject()}}
-          dataSourceRowIdentities={[Array.from(offerings.keys())]}
           pageSize={10}
           renderRow={(sp) => this.renderSP(sp)}
           renderSeparator={(sId, rId) => <View key={`sep_${sId}_${rId}`} style={{height: StyleSheet.hairlineWidth, backgroundColor: 'transparent'}} />}

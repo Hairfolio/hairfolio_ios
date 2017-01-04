@@ -58,6 +58,10 @@ export default {
       if (!this.fields[key])
         return;
 
+      if (key == 'price') {
+        value = '' + value;
+      }
+
       this.fields[key].setValue(value);
     });
 

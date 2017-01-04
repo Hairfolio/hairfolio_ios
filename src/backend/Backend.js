@@ -1,4 +1,4 @@
-const BASE_URL = 'http://hairfolio.herokuapp.com/';
+const BASE_URL = 'http://api.hairfolio.tech/';
 
 import Service from 'hairfolio/src/services/index.js'
 import UserStore from 'stores/UserStore.js';
@@ -21,8 +21,11 @@ export default class Backend {
 
     let token = UserStore.token;
 
-    if (!token) {
-      token = Service.fetch.store.getState().user.data.get('auth_token')
+    let token2 = Service.fetch.store.getState().user.data.get('auth_token')
+
+    if (token2) {
+      token = token2;
+      UserStore.token = token2;
     }
 
     if (token) {
@@ -35,9 +38,33 @@ export default class Backend {
     return headers;
   }
 
+  async put(url, data) {
+    window.head = this.getHeaders();
+    window.data = data;
+    let response = await myfetch(BASE_URL + url, {
+      method: 'PUT',
+      headers: this.getHeaders(),
+      timeout: 20000, // req/res timeout in ms, 0 to disable, timeout reset on redirect
+      body: JSON.stringify(data)
+    });
+
+    console.log('response', data);
+
+    console.log('put2', response);
+    let json = await response.json();
+
+    if (response.status) {
+      json.status = response.status;
+    }
+    return json;
+  }
+
 
   async post(url, data) {
-    console.log('post1');
+    console.log('post ', BASE_URL + url);
+
+    window.head = this.getHeaders();
+    window.data = data;
     let response = await myfetch(BASE_URL + url, {
       method: 'POST',
       headers: this.getHeaders(),
@@ -45,14 +72,15 @@ export default class Backend {
       body: JSON.stringify(data)
     });
 
-    console.log('post2', response);
+    console.log('post2 '  + BASE_URL + url, response);
     let json = await response.json();
 
     if (response.status) {
       json.status = response.status;
     }
 
-    console.log('post3');
+    console.log('post3 ' + BASE_URL + url, json);
+
     return json;
   }
 
@@ -68,10 +96,9 @@ export default class Backend {
 
   async get(url) {
 
+    let queryUrl = BASE_URL + url;
 
-
-
-    let response = await myfetch(BASE_URL + url, {
+    let response = await myfetch(queryUrl, {
       method: 'GET',
       timeout: 20000, // req/res timeout in ms, 0 to disable, timeout reset on redirect
       headers: this.getHeaders()

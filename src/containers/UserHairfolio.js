@@ -12,6 +12,7 @@ import {
   Image,
   TextInput,
   h,
+  getUserId,
   v4
 } from 'hairfolio/src/helpers.js';
 
@@ -20,20 +21,20 @@ import Swipeout from 'hairfolio/react-native-swipeout/index.js';
 import * as routes from 'hairfolio/src/routes.js'
 import HairfolioPostStore from 'stores/HairfolioPostStore'
 
-const HairfolioItem = observer(({store}) => {
+const HairfolioItem = observer(({store, isEditable}) => {
 
   var swipeoutBtns = [
     {
-      height: h(172),
-      width: h(172),
+      height: h(220),
+      width: h(220),
       onPress: () => HairfolioStore.delete(store),
       component:
       <View style={{
         backgroundColor: '#E62727',
         alignItems: 'center',
         justifyContent: 'center',
-        width: h(172),
-        height: h(172),
+        width: h(220),
+        height: h(220),
       }}
     >
       <Image
@@ -45,14 +46,14 @@ const HairfolioItem = observer(({store}) => {
   ];
 
   // you cannot delete Inspiration
-  if (store.name == 'Inspiration') {
+  if (store.name == 'Inspiration' || !isEditable) {
     swipeoutBtns = [];
   }
 
   let previewPicture = <View
     style = {{
-      height: h(142),
-      width: h(142),
+      height: h(195),
+      width: h(195),
       marginLeft: h(18),
       backgroundColor: '#D8D8D8'
     }} />;
@@ -61,18 +62,18 @@ const HairfolioItem = observer(({store}) => {
     previewPicture = (
       <Image
         style = {{
-          height: h(142),
-          width: h(142),
+          height: h(195),
+          width: h(195),
           marginLeft: h(18),
         }}
-        source={store.picture.getSource(110)}
+        source={store.picture.getSource(195)}
       />
     );
   }
 
   return (
     <Swipeout
-      btnWidth={172 / 2}
+      btnWidth={220 / 2}
 
       right={swipeoutBtns}>
 
@@ -81,7 +82,7 @@ const HairfolioItem = observer(({store}) => {
         onPress= {
           () => {
             HairfolioPostStore.title = `${store.name}`;
-            HairfolioPostStore.load(store.id);
+            HairfolioPostStore.load(store);
             HairfolioPostStore.back = () => {
               window.navigators[0].jumpTo(routes.appStack);
             }
@@ -92,7 +93,7 @@ const HairfolioItem = observer(({store}) => {
 
       <View
         style={{
-          height: h(172),
+          height: h(220),
           flexDirection: 'row',
           alignItems: 'center',
           backgroundColor: 'white',
@@ -181,8 +182,8 @@ const HairfolioList = observer(() => {
   } else {
     return (
       <View style={{flex: 1}}>
-        {store.hairfolios.map(e => <HairfolioItem key={e.id} store={e} />)}
-        <HairfolioEdit />
+        {store.hairfolios.map(e => <HairfolioItem isEditable={store.isEditable} key={e.id} store={e} />)}
+        {store.isEditable ? <HairfolioEdit /> : <View />}
       </View>
     );
   }
@@ -205,14 +206,15 @@ export default class UserHairfolio extends PureComponent {
         flex: 1,
         backgroundColor: COLORS.WHITE,
       }}
-      onWillFocus={() => HairfolioStore.load()}
+      onWillFocus={() => {
+        HairfolioStore.load(this.props.profile.get('id'));
+      }}
     >
       <View
         onLayout={this.props.onLayout}
       >
         <HairfolioList />
       </View>
-
     </NavigationSetting>);
   }
 };

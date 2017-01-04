@@ -38,6 +38,10 @@ class AlbumStore {
   @observable albums = [];
 
   constructor() {
+    this.load();
+  }
+
+  load() {
     PhotoAlbum.getAlbumNames((results) => {
       this.albums = results.map((el) => new Album(el.title, el.count, el.uri));
       console.log(results);

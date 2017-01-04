@@ -1,6 +1,7 @@
 import Picture from 'stores/Picture.js'
 
 import Communications from 'react-native-communications';
+import Post from 'stores/Post.js'
 
 import {
   _, // lodash
@@ -38,6 +39,7 @@ class ContactDetailsStore {
 
 
   @observable picture;
+  @observable notes = [];
 
   // general
   @observable firstName = 'Alan';
@@ -55,13 +57,17 @@ class ContactDetailsStore {
 
   // address
   @observable addressStreet1 = '214 Overlook Circle';
-  @observable addressStreet2 = 'Suite 220';
+  @observable addressState = 'California';
   @observable addressPostCode = '37027';
   @observable addressCity = 'Brentwood' ;
   @observable addressCountry = 'United States';
 
   @computed get hasPrimaryEmail() {
     return this.emailPrimary.length > 0;
+  }
+
+  @computed get hasNotes() {
+    return this.notes.length > 0;
   }
 
   @computed get hasAddress() {
@@ -102,10 +108,80 @@ class ContactDetailsStore {
     this.emailPrimary = '';
     this.emailSecondary = '';
     this.addressStreet1 = '';
-    this.addressStreet2 = '';
+    this.addressState = '';
     this.addressPostCode = '';
     this.addressCity = '';
     this.addressCountry = '';
+    this.notes = [];
+  }
+
+
+  async init(store) {
+    let data = store.data;
+    this.id = store.data.id;
+    this.mode = 'view';
+
+    let conv = (el) => {
+      return el ? el : '';
+    }
+
+    this.firstName = data.first_name;
+    this.lastName = data.last_name;
+
+    if (data.asset_url) {
+      let pic = {uri: data.asset_url, isStatic: true};
+      this.picture = new Picture(
+        pic,
+        pic,
+        null
+      );
+
+    } else {
+      this.picture = null;
+    }
+
+    this.companyName = conv(data.company);
+
+    this.phoneMobile = '';
+    this.phoneHome = '';
+    this.phoneWork = '';
+
+    console.log('phone2', data);
+
+    for (let e of data.phones) {
+      if (e.phone_type == 'mobile') {
+        this.phoneMobile = e.number;
+      } else if (e.phone_type == 'home') {
+        this.phoneMobile = e.number;
+      } else if (e.phone_type == 'work') {
+        this.phoneWork = e.number;
+      }
+    }
+
+    this.emailPrimary = '';
+    this.emailSecondary = '';
+
+    for (let e of data.emails) {
+      if (e.email_type == 'primary') {
+        this.emailPrimary = e.email;
+      } else if (e.email_type == 'secondary') {
+        this.emailSecondary = e.email;
+      }
+    }
+
+    this.addressStreet1 = conv(data.address);
+    this.addressState = conv(data.state);
+    this.addressPostCode = conv(data.zipcode);
+    this.addressCity = conv(data.city);
+    this.addressCountry = conv(data.country);
+
+
+    console.log('profile data', data);
+
+    this.notes = await Promise.all(data.posts.map(e => {
+      let c = new Post();
+      return c.init(e);
+    }));
   }
 
   sample() {
@@ -125,7 +201,7 @@ class ContactDetailsStore {
     this.emailPrimary = 'test@gmail.com';
     this.emailSecondary = 'test2@gmail.com';
     this.addressStreet1 = '214 Overlook Circle';
-    this.addressStreet2 = 'Suite 220';
+    this.addressState = 'Suite 220';
     this.addressPostCode = '37027';
     this.addressCity = 'Brentwood';
     this.addressCountry = 'United States';
@@ -133,7 +209,7 @@ class ContactDetailsStore {
 
 
   call(number) {
-    Communications.phonecall(number);
+    Communications.phonecall(number, true);
   }
 
   message(number) {
@@ -149,7 +225,74 @@ class ContactDetailsStore {
     return '(' + str.substr(0, 3) + ') ' + str.substr(3, 3) + '-' + str.substr(6, 4);
   }
 
-  rightHeaderClick() {
+  createData() {
+    let data = {};
+
+    let add = (a, b) => {
+      if (this[a] != null && this[a].length > 0) { data[b] = this[a]};
+    }
+
+    add('firstName', 'first_name');
+    add('lastName', 'last_name');
+    add('companyName', 'company');
+    add('addressStreet1', 'address');
+    add('addressCity', 'city');
+    add('addressPostCode', 'zipcode');
+    add('addressState', 'state');
+    add('addressCountry', 'country');
+
+
+    let emails_attributes = [];
+
+    if (this.emailPrimary && this.emailPrimary.length > 0) {
+      emails_attributes.push({
+        email_type: 'primary',
+        email: this.emailPrimary
+      });
+    }
+
+    if (this.emailSecondary && this.emailSecondary.length > 0) {
+      emails_attributes.push({
+        email_type: 'secondary',
+        email: this.emailSecondary
+      });
+    }
+
+    data.emails_attributes = emails_attributes;
+
+    console.log('data', data);
+
+    data.phones_attributes = [];
+
+    if (this.phoneHome && this.phoneHome.length > 0) {
+      data.phones_attributes.push({
+        phone_type: 'home',
+        number: this.phoneHome
+      });
+    }
+
+    if (this.phoneMobile && this.phoneMobile.length > 0) {
+      data.phones_attributes.push({
+        phone_type: 'mobile',
+        number: this.phoneMobile
+      });
+    }
+
+    if (this.phoneWork && this.phoneWork.length > 0) {
+      data.phones_attributes.push({
+        phone_type: 'work',
+        number: this.phoneWork
+      });
+    }
+
+    if (this.picture != null) {
+      data.asset_url = this.picture.source.uri;
+    }
+
+    return data;
+  }
+
+  async rightHeaderClick() {
     if (this.mode == 'view') {
       this.mode = 'edit';
 
@@ -164,7 +307,7 @@ class ContactDetailsStore {
         emailPrimary: this.emailPrimary,
         emailSecondary: this.emailSecondary,
         addressStreet1: this.addressStreet1,
-        addressStreet2: this.addressStreet2,
+        addressState: this.addressState,
         addressPostCode: this.addressPostCode,
         addressCity: this.addressCity,
         addressCountry: this.addressCountry
@@ -173,7 +316,29 @@ class ContactDetailsStore {
     } else if (this.mode == 'edit') {
       this.mode = 'view';
       // TODO save in backend
+
+      if (this.firstName.length == 0 || this.lastName.length == 0) {
+        alert('Please Fill in a first and lastName');
+        return;
+      }
+
+      let data = this.createData();
+
+      let res = await ServiceBackend.put(`contacts/${this.id}`, {contact: data});
+
     } else { //  created new contact
+
+      if (this.firstName.length == 0 || this.lastName.length == 0) {
+        alert('Please Fill in a first and lastName');
+        return;
+      }
+
+      let data = this.createData();
+
+      let res = await ServiceBackend.post('contacts', {contact: data});
+
+      console.log('contact', res);
+
       this.myBack();
     }
   }
@@ -190,7 +355,7 @@ class ContactDetailsStore {
       this.emailPrimary = this.oldValues.emailPrimary;
       this.emailSecondary = this.oldValues.emailSecondary;
       this.addressStreet1 = this.oldValues.addressStreet1;
-      this.addressStreet2 = this.oldValues.addressStreet2;
+      this.addressState = this.oldValues.addressState;
       this.addressPostCode = this.oldValues.addressPostCode;
       this.addressCity = this.oldValues.addressCity;
       this.addressCountry = this.oldValues.addressCountr;
@@ -220,6 +385,7 @@ class ContactDetailsStore {
     if (this.picture == null) {
       return require('img/contact_camera.png');
     } else {
+      console.log('source', this.picture.getSource(120));
       return this.picture.getSource(120);
     }
   }
@@ -240,7 +406,7 @@ class ContactDetailsStore {
 
     console.log('cloud 2', res);
 
-    pic = {uri: res.url, isStatic: true};
+    pic = {uri: res.asset_url, isStatic: true};
 
     this.picture = new Picture(
       pic,

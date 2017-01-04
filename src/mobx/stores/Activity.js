@@ -17,7 +17,7 @@ class PostInfo {
 
   init(obj) {
     this.id = obj.id;
-    let picObj =  {uri: obj.post_items[0].url};
+    let picObj =  {uri: obj.photos[0].asset_url};
     this.picture = new Picture(
       picObj,
       picObj,
@@ -48,30 +48,35 @@ export default class Activity {
   }
 
   async init(obj) {
+
+    console.log('activity', obj);
     this.createdTime = moment(obj.created_at);
 
     let user = new User();
-    await user.init(obj.user);
+    await user.init(obj.initiator);
     this.user = user;
 
-    if (obj.activity_type == 'follow_user') {
+    if (obj.notifiable_type  == 'Follow') {
       this.type = 'follow';
 
       let user2 = new User();
-      user2.init(obj.subject);
+      await user2.init(obj.user);
       this.user2 = user2;
 
-    } else {
+    } else if (obj.notifiable_type  == 'Like') {
       this.type = 'star';
 
       let user2 = new User();
-      user2.init(obj.subject.user);
+      await user2.init(obj.user);
       this.user2 = user2;
 
       this.post = new PostInfo();
-      this.post.init(obj.subject);
+      this.post.init(obj.notifiable.post);
+    } else {
+      console.log('Unknown Notification type', obj.notifiable_type);
     }
 
+    return this;
   }
 
 

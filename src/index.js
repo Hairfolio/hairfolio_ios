@@ -45,8 +45,8 @@ export default class Root extends PureComponent {
 
   static childContextTypes = {
     intl: React.PropTypes.object.isRequired,
-    scrolling:  React.PropTypes.func.isRequired,
-    services:  React.PropTypes.object.isRequired
+    scrolling: React.PropTypes.func.isRequired,
+    services: React.PropTypes.object.isRequired
   };
 
   state = {};
@@ -65,7 +65,7 @@ export default class Root extends PureComponent {
     StatusBar.setHidden(true);
   }
 
-  appOpacity = new Animated.Value(/*Platform.OS === 'ios' ? 1 : */0);
+  appOpacity = new Animated.Value(/* Platform.OS === 'ios' ? 1 : */0);
 
   @autobind
   onReady() {
@@ -81,14 +81,8 @@ export default class Root extends PureComponent {
         this.initialRoute = appStack;
       }
 
-      // this.initialRoute = blackBook;
+      // this.initialRoute = hello;
 
-
-      // android need workaround because of https://github.com/facebook/react-native/issues/7367
-      // and because of the big background image and offthread decoding
-      // layoutAnimation is not an option on iOS neither for this app!
-      //if (Platform.OS === 'ios')
-      //  LayoutAnimation.easeInEaseOut();
       this.setState({ready: true});
     });
   }
@@ -100,11 +94,11 @@ export default class Root extends PureComponent {
         onStartShouldSetResponderCapture={(e, gestureState) => {
           var target = e.nativeEvent.target;
           setTimeout(() => {
-            if (this.keyboardScrollViewScrolling)
+            if (this.keyboardScrollViewScrolling) {
               return;
+            }
             const focusField = TextInput.State.currentlyFocusedField();
-            if (focusField != null && target !== focusField)
-              dismissKeyboard();
+            if (focusField != null && target !== focusField) {dismissKeyboard();}
           }, 150);
         }}
         style={{flex: 1, position: 'relative'}}
@@ -114,9 +108,6 @@ export default class Root extends PureComponent {
         }
         {this.state.ready && <Animated.View
             onLayout={() => setTimeout(() => requestAnimationFrame(() => {
-              /*if (Platform.OS === 'ios')
-                return;
-              */
               Animated.spring(this.appOpacity, {
                 toValue: 1,
                 duration: 300

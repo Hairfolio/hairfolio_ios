@@ -64,13 +64,13 @@ export default class BlackBook extends PureComponent {
       store
     );
 
-
     return (<NavigationSetting
       style={{
         flex: 1,
       }}
       onWillFocus={() => {
         StatusBar.setBarStyle('light-content');
+        BlackBookStore.reset();
       }}
     >
        <View style={{flex: 1}}>

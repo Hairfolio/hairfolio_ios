@@ -23,8 +23,8 @@ export default function usersReducer(state = initialState, action) {
 
     case usersTypes.GET_USER_SUCCESS.toString(): {
       return state
-        .setIn(['states', action.payload.id], READY)
-        .setIn(['users', action.payload.id], (new Map({})).mergeDeep(action.payload));
+        .setIn(['states', action.payload.user.id], READY)
+        .setIn(['users', action.payload.user.id], (new Map({})).mergeDeep(action.payload.user));
     }
 
     case usersTypes.GET_USER_ERROR.toString(): {

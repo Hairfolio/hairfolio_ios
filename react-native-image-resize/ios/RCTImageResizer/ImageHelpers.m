@@ -164,11 +164,26 @@ CGImageRef CreateCGImageFromUIImageScaled( UIImage* image, float scaleFactor )
 
 -(UIImage*) scaleToSize:(CGSize)toSize
 {    
-    UIGraphicsBeginImageContextWithOptions(toSize, NO, 0.0);
-    [self drawInRect:CGRectMake(0, 0, toSize.width, toSize.height)];
-    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    return newImage;
+  UIImage	*scaledImg	= nil;
+  float	scale		= GetScaleForProportionalResize( self.size, toSize, false, true );
+  CGImageRef cgImage	= CreateCGImageFromUIImageScaled( self, scale );
+  
+  if(cgImage) {
+    scaledImg	= [UIImage imageWithCGImage:cgImage];	// autoreleased
+    CGImageRelease( cgImage );
+  }
+  
+  
+  CGFloat left = (scaledImg.size.width - toSize.width) / 2;
+  CGFloat top = (scaledImg.size.height - toSize.height) / 2;
+  
+  CGRect clippedRect  = CGRectMake(left, top, toSize.width, toSize.height);
+  CGImageRef imageRef = CGImageCreateWithImageInRect(scaledImg.CGImage, clippedRect);
+  UIImage *newImage   = [UIImage imageWithCGImage:imageRef];
+  CGImageRelease(imageRef);
+  
+
+  return newImage;
 }
 
 @end

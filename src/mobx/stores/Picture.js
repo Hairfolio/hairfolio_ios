@@ -22,7 +22,22 @@ export default class Picture {
   }
 
   async resizeImage(uri) {
-    return ImageResizer.createResizedImage(uri, 250, 250, 'JPEG', 90, 0, null);
+    return ImageResizer.createResizedImage(uri, 2 * 250, 2 * 250, 'JPEG', 90, 0, null);
+  }
+
+  async cropImage(uri) {
+    return new Promise((resolve, reject) => {
+      ImageEditor.cropImage(uri, {
+        offset: {
+          x: 0,
+          y: 0
+        },
+        size: {
+          width: 500,
+          height: 500
+        }
+      }, resolve,  () => reject('resize failed'));
+    });
   }
 
   getSource(width) {
@@ -31,7 +46,6 @@ export default class Picture {
     if (uri && uri.indexOf('cloudinary') > -1) {
       let splitUrl = uri.split('upload');
       let newUrl = `${splitUrl[0]}upload/w_${width}${splitUrl[1]}`;
-      console.log(newUrl);
       return {uri: newUrl};
     }
 
@@ -41,6 +55,7 @@ export default class Picture {
 
   async toJSON() {
     let uri = await this.resizeImage(this.source.uri);
+    // uri = await this.cropImage(uri);
 
     var formdata = new FormData();
     formdata.append('file', {
@@ -67,9 +82,22 @@ export default class Picture {
     let json = await res.json();
 
 
+    window.tag = this.tags;
+
+    let labels_attributes = await Promise.all(
+      this.tags.map(tag => {
+        console.log('tagjson', tag);
+        return tag.toJSON();
+      })
+    );
+
+    window.tags = labels_attributes;
+
+    // console.log('label_attributes', labels_attributes);
+
     return {
-      url: json.url,
-      post_item_tags: this.tags.map(e => e.toJSON())
+      asset_url: json.url,
+      labels_attributes
     };
   }
 

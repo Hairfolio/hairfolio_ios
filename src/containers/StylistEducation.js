@@ -39,6 +39,7 @@ export default class StylistEducation extends PureComponent {
   }
 
   renderEducation(education) {
+
     return (<TouchableOpacity
       onPress={() => {
         this.props.addEducation.scene().setEditing(education);
@@ -53,7 +54,7 @@ export default class StylistEducation extends PureComponent {
         fontFamily: FONTS.HEAVY,
         fontSize: SCALE.h(30),
         color: COLORS.DARK
-      }}>{education.get('school_name')}</Text>
+      }}>{education.get('name')}</Text>
       <Text style={{
         fontFamily: FONTS.ROMAN,
         fontSize: SCALE.h(30),
@@ -68,12 +69,15 @@ export default class StylistEducation extends PureComponent {
   }
 
   renderContent() {
-    var education = new OrderedMap(this.props.user.get('education').map(education => [education.get('id'), education]));
+    var education = new OrderedMap(this.props.user.get('educations').map(education => [education.get('id'), education]));
+
+    window.user = this.props.user;
+    console.log('renderContent', education);
 
     return (<View style={{
       flex: 1
     }}>
-      {!this.props.user.get('education').count() ?
+      {!this.props.user.get('educations').count() ?
         <Text style={{
           marginTop: SCALE.h(35),
           marginLeft: SCALE.w(25),
@@ -85,7 +89,6 @@ export default class StylistEducation extends PureComponent {
       :
         <SafeList
           dataSource={{education: education.toObject()}}
-          dataSourceRowIdentities={[Array.from(education.keys())]}
           pageSize={10}
           renderRow={(education) => this.renderEducation(education)}
           renderSeparator={(sId, rId) => <View key={`sep_${sId}_${rId}`} style={{height: StyleSheet.hairlineWidth, backgroundColor: 'transparent'}} />}

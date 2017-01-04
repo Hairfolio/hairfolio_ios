@@ -4,6 +4,7 @@ import {
   CameraRoll,
   ScrollView,
   StatusBar,
+  ImageEditor,
   View, Text, Dimensions, TouchableOpacity, TouchableWithoutFeedback, Image} from 'react-native';
 import connect from '../lib/connect';
 import {app} from '../selectors/app';
@@ -23,15 +24,17 @@ import CreatePostStore from '../mobx/stores/CreatePostStore.js';
 
 import Camera from 'react-native-camera';
 
+import {CameraKitCamera} from 'react-native-camera-kit'
+
 import SlimHeader from '../components/SlimHeader.js'
 import LibraryListView from 'components/post/LibraryListView'
 
-const CameraView = observer(({store, isOpen, inputMethod}) => {
+const CameraView = observer(({isOpen}) => {
 
   if (!isOpen) {
     return (
       <View
-        style={{backgroundColor: 'black', height: Dimensions.get('window').width, width: Dimensions.get('window').width, }}
+        style={{backgroundColor: 'transparent', height: Dimensions.get('window').width, width: Dimensions.get('window').width, }}
       />
     );
   }
@@ -39,6 +42,24 @@ const CameraView = observer(({store, isOpen, inputMethod}) => {
 
   return (
     <View>
+    <CameraKitCamera
+      ref={(cam) => {
+        window.camera = cam;
+      }}
+      style={{
+        width: Dimensions.get('window').width,
+        height: Dimensions.get('window').width
+      }}
+      cameraOptions={{
+        flashMode: 'off',             // on/off/auto(default)
+        focusMode: 'on',               // off/on(default)
+        zoomMode: 'on',                // off/on(default)
+        ratioOverlay: '1:1',            // optional, ratio overlay on the camera and crop the image seamlessly
+        ratioOverlayColor: '#00000077' // optional
+      }}
+    />
+
+      {/*
       <Camera
         ref={(cam) => {
           window.camera = cam;
@@ -52,23 +73,15 @@ const CameraView = observer(({store, isOpen, inputMethod}) => {
         captureMode={Camera.constants.CaptureMode.photos}
         aspect={Camera.constants.Aspect.fill}>
 
-        <TouchableOpacity onPress={() => CreatePostStore.switchCameraFlashMode()} style={{ position: 'absolute', right: 0, bottom: 0, padding: SCALE.h(40)}}>
-          <Image
-            style={{height: 35, width: 35}}
-            source={store.flashIconSource} />
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => CreatePostStore.switchCameraType()} style={{ position: 'absolute', left: 0, bottom: 0, padding: SCALE.h(40)}}>
-          <Image
-            source={require('img/post_camera_swift.png')} />
-        </TouchableOpacity>
-      </Camera>
+          </Camera>
+      */}
     </View>
   );
 });
 
 const LibraryPreview = observer(({store}) => {
 
-  let windowWidth =  Dimensions.get('window').width;
+  let windowWidth = Dimensions.get('window').width;
 
   if (store.selectedLibraryPicture != null) {
     return (
@@ -133,7 +146,6 @@ const Footer = ({selectedMode, onSelect}) => {
   </View>
   );
 };
-
 
 
 const LibraryHeader = observer(({onLeft, onRight, onTitle, store}) => {
@@ -203,14 +215,19 @@ export default class CreatePost extends PureComponent {
   }
 
   capture() {
+
+    _.last(this.context.navigators).jumpTo(gallery)
+    StatusBar.setHidden(false);
+
+    CreatePostStore.loadGallery = true;
+
     window.camera.capture()
       .then((data) => {
+        CreatePostStore.loadGallery = false;
         CreatePostStore.lastTakenPicture = data;
         CreatePostStore.addTakenPictureToGallery()
-        _.last(this.context.navigators).jumpTo(gallery)
-        StatusBar.setHidden(false);
       })
-      .catch(err => { alert('error'); console.error(err) });
+      .catch(err => { alert('error'); console.error(err); CreatePostStore.loadGallery = false; });
   }
 
   render() {
@@ -227,6 +244,7 @@ export default class CreatePost extends PureComponent {
     let cancel = () => {
       if (!CreatePostStore.gallery.wasOpened) {
         CreatePostStore.reset();
+        window.nav = this.context.navigators;
         _.first(this.context.navigators).jumpTo(appStack);
       } else {
         _.last(this.context.navigators).jumpTo(gallery)
@@ -241,7 +259,21 @@ export default class CreatePost extends PureComponent {
         title={CreatePostStore.title}/>
     );
 
-    let mainView = <CameraView store={CreatePostStore} isOpen={CreatePostStore.isOpen} inputMethod={CreatePostStore.inputMethod} />;
+    let mainView =
+      <View>
+        <CameraView isOpen={CreatePostStore.isOpen} />
+        <TouchableOpacity onPress={() => CreatePostStore.switchCameraFlashMode()} style={{ position: 'absolute', right: 0, bottom: 0, padding: SCALE.h(40)}}>
+          <Image
+            style={{height: 35, width: 35}}
+            source={CreatePostStore.flashIconSource} />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => CreatePostStore.switchCameraType()} style={{ position: 'absolute', left: 0, bottom: 0, padding: SCALE.h(40)}}>
+          <Image
+      source={require('img/post_camera_swift.png')} />
+  </TouchableOpacity>
+
+
+      </View>;
 
     if (CreatePostStore.inputMethod === 'Library') {
       middleElement = (
@@ -252,7 +284,7 @@ export default class CreatePost extends PureComponent {
 
       header = (
         <LibraryHeader
-          onTitle={() => { window.navigators =  this.context.navigators; _.last(this.context.navigators).jumpTo(albumPage) }}
+          onTitle={() => { window.navigators = this.context.navigators; _.last(this.context.navigators).jumpTo(albumPage) }}
           store={CreatePostStore}
           onLeft={cancel}
           onRight={() => {

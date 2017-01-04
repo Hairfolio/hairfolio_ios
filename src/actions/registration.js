@@ -116,7 +116,7 @@ export const registrationActions = {
           immediateAsyncResult: true
         },
         payload: {
-          promise: fetch.fetch(`/users/${getState().user.data.get('id')}/following`)
+          promise: fetch.fetch(`/users/${getState().user.data.get('id')}/follows`)
         }
       });
   },
@@ -130,10 +130,7 @@ export const registrationActions = {
           immediateAsyncResult: true
         },
         payload: {
-          promise: utils.isReady(getState().environment.state) ?
-            Promise.resolve(getState().environment.environment.toJS())
-          :
-            fetch.fetch('/sessions/environment')
+          promise: fetch.fetch('/sessions/environment')
         }
       };
     };
@@ -148,10 +145,7 @@ export const registrationActions = {
           immediateAsyncResult: true
         },
         payload: {
-          promise: utils.isReady(getState().environment.certificatesState) ?
-            Promise.resolve(getState().environment.certificates.toJS())
-          :
-            fetch.fetch('/certificates')
+          promise: fetch.fetch('/certificates')
         }
       };
     };
@@ -165,10 +159,7 @@ export const registrationActions = {
           immediateAsyncResult: true
         },
         payload: {
-          promise: utils.isReady(getState().environment.experiencesState) ?
-            Promise.resolve(getState().environment.experiences.toJS())
-          :
-            fetch.fetch('/experiences')
+          promise: fetch.fetch('/experiences')
         }
       };
     };
@@ -183,7 +174,7 @@ export const registrationActions = {
           immediateAsyncResult: true
         },
         payload: {
-          promise: fetch.fetch('/sessions/forgot_pwd', {
+          promise: fetch.fetch('/sessions/recover', {
             method: 'POST',
             body: {email}
           })
@@ -263,13 +254,15 @@ export const registrationActions = {
           immediateAsyncResult: true
         },
         payload: {
-          promise: fetch.fetch('/users/facebook', {
+          promise: fetch.fetch('/sessions/facebook', {
             method: 'POST',
             body: {
               'facebook_token': token,
+              /*
               user: {
                 'account_type': type
               }
+              */
             }
           })
         }
@@ -287,8 +280,8 @@ export const registrationActions = {
         },
         payload: {
           promise: dispatch(registrationActions.signupWithFacebookBase(token, type))
-            .then(throwOnFail)
-            .then(() => getState().user.data)
+          .then(throwOnFail)
+          .then(() => getState().user.data)
         }
       };
     };
@@ -306,7 +299,7 @@ export const registrationActions = {
           promise: fetch.fetch('/sessions/instagram', {
             method: 'POST',
             body: {
-              'insta_token': token
+              'instagram_token': token
             }
           })
         }
@@ -345,13 +338,15 @@ export const registrationActions = {
           immediateAsyncResult: true
         },
         payload: {
-          promise: fetch.fetch('/users/instagram', {
+          promise: fetch.fetch('/sessions/instagram', {
             method: 'POST',
             body: {
-              'insta_token': token,
+              'instagram_token': token,
+              /*
               user: {
                 'account_type': type
               }
+              */
             }
           })
         }
@@ -378,9 +373,30 @@ export const registrationActions = {
 
   signupWithEmailBase(value = {}, type) {
     return ({services: {fetch}}) => {
+
+
+      console.log('email signup value', value);
       if (value.business) {
         _.each(value.business, (v, key) => value[`business_${key}`] = v);
         delete value.business;
+      }
+
+      if (type == 'brand') {
+        let name = value['business_name'];
+        delete value.business_name;
+        value.brand_attributes = {
+          name: name
+        };
+
+        type = 'ambassador'
+      } else if (type == 'salon') {
+        let name = value['business_name'];
+        delete value.business_name;
+        value.salon_attributes = {
+          name: name
+        };
+
+        type = 'owner'
       }
 
       return {
@@ -488,11 +504,49 @@ export const registrationActions = {
     };
   },
 
-  editUser(values = {}) {
+  editUser(values = {}, type) {
     return ({services: {fetch}, getState}) => {
+
+      console.log('edit user', values, type);
+
+      if (values.experience_ids) {
+        values.experience_ids = values.experience_ids.split(',').map(e => Math.floor(e));
+      } else {
+        values.experience_ids = [];
+      }
+
+      console.log('ex ids', values.experience_ids);
+
+      if (values.certificate_ids) {
+        values.certificate_ids = values.certificate_ids.split(',').map(e => Math.floor(e));
+      } else {
+        values.certificate_ids = [];
+      }
+
+
       if (values.business) {
-        _.each(values.business, (v, key) => values[`business_${key}`] = v);
-        delete values.business;
+
+        if (type == 'ambassador') {
+          let brand = {};
+          _.each(values.business, (v, key) => brand[`${key}`] = v);
+          delete values.business;
+          values.brand_attributes = brand;
+
+          // delete brand  attributes if they don't have a value
+          if (values.brand_attributes && (!values.brand_attributes.name || values.brand_attributes.name == '')) {
+            delete values.brand_attributes;
+          }
+        } else {
+          let salon = {};
+          _.each(values.business, (v, key) => salon[`${key}`] = v);
+          delete values.business;
+          values.salon_attributes = salon;
+
+          // delete salon attributes if they don't have a value
+          if (values.salon_attributes && (!values.salon_attributes.name || values.salon_attributes.name == '')) {
+            delete values.salon_attributes;
+          }
+        }
       }
 
       values['salon_user_id'] = values['business_salon_user_id'];
@@ -505,7 +559,7 @@ export const registrationActions = {
       if (_.isEmpty(values))
         promise = Promise.resolve(getState(getState().user.data.toJS()));
       else {
-        var user = _.omit(values, ['experience_ids', 'certificate_ids']);
+        var user = values;
 
         var body = _.pick(values, ['experience_ids', 'certificate_ids']);
 
@@ -540,12 +594,12 @@ export const registrationActions = {
           immediateAsyncResult: true
         },
         payload: {
-          promise: fetch.fetch(`/users/${getState().user.data.get('id')}/follow`, {
+          promise: fetch.fetch(`/users/${id}/follows`, {
             method: 'POST',
             body: {
               user: {id}
             }
-          }).then(({follow_count}) => ({id, follow_count}), (e) => {
+          }).then(({followers_count}) => ({id, followers_count}), (e) => {
             e.id = id;
             throw e;
           }),
@@ -561,18 +615,17 @@ export const registrationActions = {
         type: registrationTypes.UNFOLLOW_USER,
         meta: {
           immediate: true,
-          immediateAsyncResult: true
+          immediateAsyncResult: true,
+          userId: id
         },
         payload: {
-          promise: fetch.fetch(`/users/${getState().user.data.get('id')}/unfollow`, {
-            method: 'POST',
-            body: {
-              user: {id}
-            }
-          }).then(({follow_count}) => ({id, follow_count}), (e) => {
+          promise: fetch.fetch(`/users/${id}/follows`, {
+            method: 'DELETE'
+          }),
+          /* .then(({followers_count}) => ({id, followers_count}), (e) => {
             e.id = id;
             throw e;
-          }),
+          })*/
           data: {id}
         }
       };

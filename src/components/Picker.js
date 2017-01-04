@@ -13,6 +13,10 @@ import PureComponent from './PureComponent';
 import CustomTouchableOpacity from './CustomTouchableOpacity';
 import Icon from './Icon';
 
+import {
+  windowWidth
+} from 'hairfolio/src/helpers.js';
+
 export default class Picker extends PureComponent {
   static propTypes = {
     choices: PropTypes.array.isRequired,
@@ -120,7 +124,7 @@ export default class Picker extends PureComponent {
               onValueChange={(selected) => this.setState({selected})}
               selectedValue={this.state.selected}
               style={{
-                width: 320
+                width: windowWidth
               }}
             >
               {_.map(this.props.choices, ({label, value}, i) =>

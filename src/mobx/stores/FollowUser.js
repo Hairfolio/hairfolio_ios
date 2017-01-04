@@ -22,7 +22,8 @@ export default class FollowUser {
 
   async init(data) {
     this.user = new User();
-    this.isFollowing = data.followed_by_me;
+    console.log('followUser', data);
+    this.isFollowing = data.is_followed_by_me;
     await this.user.init(data);
     return this;
   }
@@ -48,11 +49,7 @@ export default class FollowUser {
     console.log('myId', myId);
     console.log('toId', this.user.id);
 
-    let res = await ServiceBackend.post(`users/${myId}/follow`, {
-      user: {
-        id: this.user.id
-      }
-    });
+    let res = await ServiceBackend.post(`users/${this.user.id}/follows`, { });
 
     console.log('followResults', res);
     this.followLoading = false;
@@ -65,11 +62,7 @@ export default class FollowUser {
 
     let myId = globalStore.getState().user.data.get('id')
 
-    let res = await ServiceBackend.post(`users/${myId}/unfollow`, {
-      user: {
-        id: this.user.id
-      }
-    });
+    let res = await ServiceBackend.delete(`users/${this.user.id}/follows`);
 
     this.followLoading = false;
     this.isFollowing = false

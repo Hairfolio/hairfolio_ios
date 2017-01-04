@@ -1,3 +1,4 @@
+
 import React from 'React';
 import _ from 'lodash';
 import {View} from 'react-native';
@@ -34,10 +35,10 @@ export default class BrandProfileStack extends PureComponent {
       case 'stylist':
         RoutesCtrs = [UserAboutRoute, UserPostsRoute, UserHairfolioRoute];
         break;
-      case 'brand':
+      case 'ambassador':
         RoutesCtrs = [UserAboutRoute, UserPostsRoute, UserHairfolioRoute];
         break;
-      case 'salon':
+      case 'owner':
         RoutesCtrs = [UserAboutRoute, UserPostsRoute, UserHairfolioRoute, UserStylistsRoute];
         break;
     }

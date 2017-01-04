@@ -4,18 +4,32 @@ import Camera from 'react-native-camera';
 import Picture from 'stores/Picture.js'
 import ServiceBackend from 'backend/ServiceBackend.js'
 
+import Service from 'hairfolio/src/services/index.js'
+
 import {_, v4, moment, React, Text} from 'hairfolio/src/helpers';
 
 import User from 'stores/User.js'
 
 import * as routes from 'hairfolio/src/routes.js'
 
-class SelectableUser {
+export class SelectableUser {
   @observable user;
   @observable isSelected;
 
   constructor(obj) {
     this.key = v4();
+  }
+
+  async init(obj) {
+    let user = new User();
+    await user.init(obj);
+    this.user = user;
+    return this;
+  }
+
+
+  background() {
+    return 'white';
   }
 
   flip() {
@@ -59,6 +73,18 @@ class WriteMessageStore {
     return title;
   }
 
+
+  @computed get selectedItems() {
+    let users = [];
+    for (let u of this.users) {
+      if (u.isSelected) {
+        users.push(u);
+      }
+    }
+
+    return users;
+  }
+
   @computed get items() {
     if (this.inputText.length == 0) {
       return this.users;
@@ -76,8 +102,9 @@ class WriteMessageStore {
         users.push(u);
       }
 
-      return users;
     }
+
+    return users;
   }
 
   @computed get isEmpty() {
@@ -93,7 +120,7 @@ class WriteMessageStore {
   }
 
   constructor() {
-    this.load();
+    // this.load();
   }
 
   async load() {
@@ -101,15 +128,21 @@ class WriteMessageStore {
     this.inputText = '';
     this.users = [];
 
-    let arr = [];
+    let userId = Service.fetch.store.getState().user.data.get('id')
 
-    for (let name of ['Albert Williams',  'Emily Tailor', 'Jack Daniels', 'Norbert King']) {
-      let user = new SelectableUser();
-      user.sample(name);
-      arr.push(user);
-    }
+    let res = (await ServiceBackend.get(`users/${userId}/follows?friends=true`)).users;
 
-    this.users = arr;
+    let myUsers = await Promise.all(res.map(e => {
+      let u = new SelectableUser();
+      return u.init(e);
+    }));
+
+    console.log('myUsers', myUsers);
+
+    this.users = myUsers;
+
+    console.log('start render');
+
     this.isLoading = false;
   }
 }

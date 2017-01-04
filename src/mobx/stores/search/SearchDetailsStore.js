@@ -23,7 +23,7 @@ class SearchUserFollowStore {
 
     this.isLoading = true;
 
-    let users = await this.backendSearch(param);
+    let users = (await this.backendSearch(param)).users;
     console.log('backend res', users);
 
     let userList = users.map(e => {
@@ -34,8 +34,6 @@ class SearchUserFollowStore {
     console.log('userList', userList);
 
     this.users = await Promise.all(userList);
-
-    console.log('stylists ', this.StylistSearchStore);
 
     this.wasLoaded = true;
 
@@ -50,20 +48,20 @@ class SearchUserFollowStore {
 
 class SearchStylistStore extends SearchUserFollowStore {
   async backendSearch(name) {
-    let searchString =  `users?account_type=stylist&keyword=${name}`;
+    let searchString =  `users?account_type=stylist&q=${name}`;
     return await ServiceBackend.get(searchString);
   }
 }
 
 class SearchBrandStore extends SearchUserFollowStore {
   async backendSearch(name) {
-    return await ServiceBackend.get(`users?account_type=brand&keyword=${name}`);
+    return await ServiceBackend.get(`users?account_type=ambassador&q=${name}`);
   }
 }
 
 class SearchSalonStore extends SearchUserFollowStore {
   async backendSearch(name) {
-    return await ServiceBackend.get(`users?account_type=salon&keyword=${name}`);
+    return await ServiceBackend.get(`users?account_type=owner&q=${name}`);
   }
 }
 
@@ -90,9 +88,9 @@ class SearchHashStore {
     this.isLoading = true;
     console.log('testloading');
 
-    let searchString = `hashtags?name=${name}`;
+    let searchString = `tags?q=${name}`;
     console.log('hashtags SearchString', searchString);
-    let hashtags = await ServiceBackend.get(searchString);
+    let hashtags = (await ServiceBackend.get(searchString)).tags;
     console.log('hashtags', hashtags);
     this.tags = hashtags.map(e => new Tag(e));
 

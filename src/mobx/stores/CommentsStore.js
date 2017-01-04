@@ -21,11 +21,10 @@ class Comment {
 
   async init(obj) {
     console.log('initComment', obj);
-    this.text = obj.comment;
+    this.text = obj.body;
     this.user = new User();
 
-    // TODO BACKEND INTEGRATION
-    this.createdTime = moment().subtract({hours: 2});
+    this.createdTime = moment(obj.created_at);
 
     await this.user.init(obj.user);
     return this;
@@ -76,14 +75,12 @@ class CommentsModel {
   async load() {
     this.isLoading = true;
     this.comments = [];
-    let res = await ServiceBackend.get(`/posts/${this.postId}/comments`);
+    let res = (await ServiceBackend.get(`/posts/${this.postId}/comments`)).comments;
 
     let myComments = await Promise.all(res.map(e => {
       let c = new Comment();
       return c.init(e);
     }));
-
-    console.log('myComments', myComments);
 
     this.comments = myComments;
 
@@ -97,11 +94,11 @@ class CommentsModel {
 
     let postData = {
       comment: {
-        text
+        body: text
       }
     };
 
-    let res = await ServiceBackend.post(`/posts/${this.postId}/comments`, postData);
+    let res = (await ServiceBackend.post(`/posts/${this.postId}/comments`, postData)).comment;
 
     console.log('postRes', res);
 
@@ -115,12 +112,14 @@ class CommentsModel {
   }
 
   scrollToBottom() {
-    console.log('scroll bottom');
-    const scrollHeight = this.contentHeight - this.scrollViewHeight;
-    console.log('scrollHeight', scrollHeight);
-    if (scrollHeight > 0) {
-      const scrollResponder = this.scrollView.getScrollResponder();
-      scrollResponder.scrollResponderScrollTo({x: 0, y: scrollHeight});
+    if (this.scrollView) {
+      console.log('scroll bottom');
+      const scrollHeight = this.contentHeight - this.scrollViewHeight;
+      console.log('scrollHeight', scrollHeight);
+      if (scrollHeight > 0) {
+        const scrollResponder = this.scrollView.getScrollResponder();
+        scrollResponder.scrollResponderScrollTo({x: 0, y: scrollHeight});
+      }
     }
   }
 

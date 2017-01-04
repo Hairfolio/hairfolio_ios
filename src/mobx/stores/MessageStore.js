@@ -7,6 +7,7 @@ import Picture from 'stores/Picture.js'
 
 import ServiceBackend from 'backend/ServiceBackend.js'
 
+
 let PhotoAlbum = NativeModules.PhotoAlbum;
 
 import {v4} from 'uuid';
@@ -39,7 +40,6 @@ class FeedStore {
 
 
     this.isLoading = false;
-
   }
 
 }

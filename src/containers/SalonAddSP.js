@@ -80,6 +80,7 @@ export default class SalonAddSP extends PureComponent {
             }
           });
 
+
         this.setState({
           editing: sp
         });
@@ -103,6 +104,8 @@ export default class SalonAddSP extends PureComponent {
   }
 
   render() {
+
+    window.services = this.props.services;
     return (<NavigationSetting
       leftAction={() => {
         _.last(this.context.navigators).jumpBack();
@@ -174,10 +177,12 @@ export default class SalonAddSP extends PureComponent {
               />
               <View style={{height: StyleSheet.hairlineWidth}} />
               <PickerInput
-                choices={this.props.services.map(service => ({
-                  id: service.get('id'),
-                  label: service.get('name')}
-                )).toJS()}
+                choices={this.props.services.map(service => {
+                  return {
+                    id: service.get('id'),
+                    label: service.get('name')
+                  };
+                }).toJS()}
                 placeholder="Service"
                 ref={(r) => this.addFormItem(r, 'service_id')}
                 validation={(v) => !!v}

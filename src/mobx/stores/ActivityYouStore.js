@@ -1,7 +1,7 @@
 import {observable, computed, action} from 'mobx';
 import {CameraRoll, NativeModules} from 'react-native';
 import Camera from 'react-native-camera';
-
+import ServiceBackend from 'backend/ServiceBackend.js'
 
 import {v4} from 'uuid';
 
@@ -21,13 +21,21 @@ class ActivityYouStore {
 
     this.elements = [];
 
-    let a1 = new Activity();
-    a1.sample();
-    this.elements.push(a1);
+    let arr = (await ServiceBackend.get('notifications'));
 
-    let a2 = new Activity();
-    a2.sample2();
-    this.elements.push(a2);
+    arr = arr.notifications;
+    arr = arr.filter(e => e.notifiable_type != 'NilClass');
+
+    let res = await Promise.all(
+      arr.map(
+        async e => {
+          let a = new Activity();
+          return await a.init(e);
+        }
+      )
+    )
+
+    this.elements = res;
 
     this.isLoading = false;
   }

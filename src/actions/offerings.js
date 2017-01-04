@@ -43,10 +43,7 @@ export const offeringsActions = {
           immediateAsyncResult: true
         },
         payload: {
-          promise: utils.isReady(getState().environment.servicesState) ?
-            Promise.resolve(getState().environment.services.toJS())
-          :
-            fetch.fetch('/services')
+          promise: fetch.fetch('/services')
         }
       };
     };
@@ -61,10 +58,7 @@ export const offeringsActions = {
           immediateAsyncResult: true
         },
         payload: {
-          promise: utils.isReady(getState().environment.categoriesState) ?
-            Promise.resolve(getState().environment.categories.toJS())
-          :
-            fetch.fetch('/categories')
+          promise: fetch.fetch('/categories')
         }
       };
     };

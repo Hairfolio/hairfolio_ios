@@ -9,9 +9,10 @@ import PostListStore from 'stores/PostListStore'
 class HairfolioPostStore extends PostListStore  {
   @observable title = 'Inspiration'
 
-  async backendCall(id) {
-    return await ServiceBackend.get(`hairfolios/${id}/posts`);
-
+  async backendCall(posts) {
+    // console.log('backend :', posts);
+    // don't need backend anymore with new api
+    return posts;
   }
 }
 

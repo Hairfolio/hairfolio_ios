@@ -19,8 +19,12 @@ import {
   addServiceOne,
   addServiceTwo,
   addServiceThree,
-  filter
+  filter,
+  share,
+  addBlackBook
 } from '../../routes';
+
+import CreatePostStore from 'stores/CreatePostStore.js'
 
 export default class EditCustomerStack extends PureComponent {
   static propTypes = {};
@@ -28,6 +32,7 @@ export default class EditCustomerStack extends PureComponent {
   static contextTypes = {
     navigators: React.PropTypes.array.isRequired
   };
+
   @autobind
   onWillFocus() {
     // hide the status bar for this element
@@ -48,6 +53,10 @@ export default class EditCustomerStack extends PureComponent {
       <NavigationSetting
         onWillBlur={this.onWillBlur}
         onWillFocus={this.onWillFocus}
+        onFocus={
+          () => {
+          }
+        }
         style={{
           flex: 1,
           backgroundColor: COLORS.LIGHT
@@ -62,7 +71,6 @@ export default class EditCustomerStack extends PureComponent {
             // addLink
             //filter
             // addServiceThree
-            // TODO CHANGE BEFORE RELEASE
           }
           initialRouteStack={[
             createPost,
@@ -73,7 +81,9 @@ export default class EditCustomerStack extends PureComponent {
             gallery,
             addServiceOne,
             addServiceTwo,
-            addServiceThree
+            addServiceThree,
+            share,
+            addBlackBook
           ]}
           ref={(navigator) => this._nav = navigator && navigator.navigator()}
         />

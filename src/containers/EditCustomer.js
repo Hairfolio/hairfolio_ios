@@ -80,16 +80,47 @@ export default class EditCustomer extends PureComponent {
   initValues() {
     var rawValues = {...this.props.user.toJS()};
 
-    rawValues.business = {
-      name: rawValues.business_name,
-      address: rawValues.business_address,
-      city: rawValues.business_city,
-      state: rawValues.business_state,
-      zip: rawValues.business_zip,
-      website: rawValues.business_website,
-      phone: rawValues.business_phone,
-      'salon_user_id': rawValues.salon_user_id
-    };
+
+    let business;
+    if (this.props.user.get('account_type') === 'ambassador') {
+      business = rawValues.brand;
+    } else {
+      business = rawValues.salon;
+      if (business != null) {
+        salonUserId = business.id;
+      }
+    }
+
+    let salonUserId;
+
+    if (business != null) {
+      rawValues.business_info = business.info;
+      rawValues.business_name = business.name;
+      rawValues.business_address = business.address;
+      rawValues.business_city = business.city;
+      rawValues.business_state = business.state;
+      rawValues.business_zip = business.zip;
+      rawValues.business_website = business.website;
+      rawValues.business_phone = business.phone;
+      rawValues.salon_user_id = salonUserId;
+
+
+      rawValues.business = {
+        name: business.name,
+        address: business.address,
+        city: business.city,
+        state: business.state,
+        zip: business.zip,
+        website: business.website,
+        phone: business.phone,
+        'salon_user_id': salonUserId
+      };
+    }
+
+
+    if (this.props.user.get('account_type') === 'stylist') {
+      rawValues.business_info = rawValues.description;
+    }
 
     rawValues['certificate_ids'] = _.map(rawValues.certificates, 'id');
     rawValues['experience_ids'] = _.map(rawValues.experiences, 'id');
@@ -312,7 +343,7 @@ export default class EditCustomer extends PureComponent {
     return (<View>
       <ProfileTextInput
         autoCorrect={false}
-        placeholder={(this.props.user.get('account_type' === 'brand') ? 'Brand' : 'Salon') + ' name'}
+        placeholder={(this.props.user.get('account_type' === 'ambassador') ? 'Brand' : 'Salon') + ' name'}
         ref={(r) => this.addFormItem(r, 'business_name')}
         validation={(v) => !!v}
       />
@@ -335,8 +366,33 @@ export default class EditCustomer extends PureComponent {
         if (this.checkErrors())
           return;
 
+        let formData = this.getFormValue();
+
+        let business = {};
+
+        if (this.props.user.get('account_type') == 'stylist') {
+          formData.description = formData.business_info;
+          delete formData.business_info;
+        }
+
+        for (let key in formData) {
+          // console.log('key', key);
+
+          if (key == 'business') {
+            for (let key2 in formData[key]) {
+              business[key2] = formData[key][key2];
+            }
+          } else if (key.startsWith('business')) {
+            // console.log('key set', key);
+            business[key.substr(9)] = formData[key];
+          }
+        }
+
+        // console.log('business', business);
+        formData['business'] = business;
+
         this.setState({'submitting': true});
-        this.props.dispatch(registrationActions.editUser(this.getFormValue()))
+        this.props.dispatch(registrationActions.editUser(formData, this.props.user.get('account_type')))
         .then((r) => {
           this.setState({submitting: false});
           return r;
@@ -390,7 +446,7 @@ export default class EditCustomer extends PureComponent {
                   .then(throwOnFail)
                   .then(({public_id}) => public_id)
               }
-              validation={(v) => !!v || this.props.user.get('insta_id') || this.props.user.get('facebook_id')}
+              validation={(v) => !!v || this.props.user.get('instagram_id') || this.props.user.get('facebook_id')}
             />
           </View>
 
@@ -399,7 +455,7 @@ export default class EditCustomer extends PureComponent {
           {(this.props.user.get('account_type') === 'consumer' || this.props.user.get('account_type') === 'stylist') ?
             this.renderIndividualBasics() : null
           }
-          {(this.props.user.get('account_type') === 'salon' || this.props.user.get('account_type') === 'brand') ?
+          {(this.props.user.get('account_type') === 'owner' || this.props.user.get('account_type') === 'ambassador') ?
             this.renderBusinessBasics() : null
           }
 
@@ -407,7 +463,7 @@ export default class EditCustomer extends PureComponent {
           <ProfileTextInput
             autoCapitalize="none"
             autoCorrect={false}
-            editable={!this.props.user.get('facebook_id') && !this.props.user.get('insta_id')}
+            editable={!this.props.user.get('facebook_id') && !this.props.user.get('instagram_id')}
             keyboardType="email-address"
             placeholder="Email"
             ref={(r) => this.addFormItem(r, 'email')}
@@ -419,11 +475,11 @@ export default class EditCustomer extends PureComponent {
             placeholder="Change Password"
           />
 
-          {this.props.user.get('account_type') === 'salon' ?
+          {this.props.user.get('account_type') === 'owner' ?
             this.renderSalonSpecifics() : null
           }
 
-          {this.props.user.get('account_type') === 'brand' ?
+          {this.props.user.get('account_type') === 'ambassador' ?
             this.renderBrandSpecifics() : null
           }
 

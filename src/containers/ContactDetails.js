@@ -19,9 +19,9 @@ import {observer} from 'mobx-react/native';
 import autobind from 'autobind-decorator'
 import _ from 'lodash';
 import ImagePicker from 'react-native-image-picker'
+import PostDetailStore from 'stores/PostDetailStore.js'
 
 import FollowButton from 'components/FollowButton.js'
-
 
 import {appStack, gallery, postFilter, albumPage} from '../routes';
 
@@ -98,13 +98,14 @@ const ContactsDetailsHeader = observer(({store}) => {
   );
 });
 
-const Input = observer(({placeholder, keyboardType = 'default', value}) => {
+const Input = observer(({placeholder, keyboardType = 'default', autoCapitalize = 'words', value}) => {
   let store = ContactDetailsStore;
   return (
     <View>
       <TextInput
         value={store[value]}
         onChangeText={t => store[value] = t}
+        autoCapitalize={autoCapitalize}
         keyboardType={keyboardType}
         placeholder={placeholder}
         onFocus={(element) => ContactDetailsStore.scrollToElement(element.target)}
@@ -441,8 +442,8 @@ const EmailInfo = observer(({store}) => {
       >
         Email
       </Text>
-      <Input value='emailPrimary' keyboardType='email-address' placeholder='primary' />
-      <Input value='emailSecondary' keyboardType='email-address' placeholder='secondary' />
+      <Input value='emailPrimary' autoCapitalize='none' keyboardType='email-address' placeholder='primary' />
+      <Input value='emailSecondary' autoCapitalize='none' keyboardType='email-address' placeholder='secondary' />
     </View>
   );
 });
@@ -462,8 +463,8 @@ const AddressInfo = observer(({store}) => {
         title='address'
       >
         <InfoText value={store.addressStreet1} />
-        <InfoText value={store.addressStreet2} />
-        <InfoText value={store.addressCity + ' ' + store.addressPostCode} />
+        <InfoText value={store.addressCity} />
+        <InfoText value={store.addressState + ' ' + store.addressPostCode} />
         <InfoText value={store.addressCountry} />
       </ContactInfoRow>
         );
@@ -481,15 +482,68 @@ const AddressInfo = observer(({store}) => {
       >
        Address
       </Text>
-      <Input value='addressStreet1' placeholder='Street Line 1' />
-      <Input value='addressStreet2' placeholder='Street Line 2' />
-      <Input value='addressPostCode' keyboardType='numeric' placeholder='Postal Code' />
+      <Input value='addressStreet1' placeholder='Street' />
       <Input value='addressCity' placeholder='City' />
+      <Input value='addressState' placeholder='State' />
+      <Input value='addressPostCode' keyboardType='numeric' placeholder='Postal Code' />
       <Input value='addressCountry' placeholder='Country' />
     </View>
   );
 });
 
+const NoteItem = observer(({store}) => {
+
+  return (
+    <TouchableOpacity
+      onPress={
+        () => {
+          PostDetailStore.jump(
+            false,
+            store,
+            () => window.navigators[0].jumpTo(routes.contactDetails)
+          )
+        }
+      }
+    >
+      <Image
+        style={{height: h(120), width: h(120), marginRight: h(20)}}
+        source={store.pictures[0].getSource(120)}
+      />
+    </TouchableOpacity>
+  );
+});
+
+const NotesInfo = observer(({store}) => {
+
+  if (store.mode == 'view') {
+    let elements = [];
+
+    if (!store.hasNotes) {
+      return <View />;
+    }
+
+    return (
+      <ContactInfoRow title='Notes' >
+        <View
+          style={{
+            height: h(140),
+            marginRight: h(20),
+            marginTop: h(20)
+          }}
+        >
+          <ScrollView
+            horizontal
+          >
+            {store.notes.map((e, index) => <NoteItem key={index} store={e} />)}
+          </ScrollView>
+
+        </View>
+      </ContactInfoRow>
+    );
+  }
+
+  return <View />;
+});
 
 const ContactDetailsContent = observer(() => {
 
@@ -499,12 +553,14 @@ const ContactDetailsContent = observer(() => {
     <View style={{flex: 1}}>
       <ContactsDetailsHeader store={store} />
       <ScrollView
+        keyboardShouldPersistTaps={true}
         ref={e => store.scrollView = e}
       >
         <GeneralInfo store={store} />
         <PhoneInfo store={store} />
         <EmailInfo store={store} />
         <AddressInfo store={store} />
+        <NotesInfo store={store} />
       </ScrollView>
       <KeyboardSpacer />
     </View>
@@ -520,10 +576,7 @@ export default class ContactDetails extends PureComponent {
     navigators: React.PropTypes.array.isRequired
   };
 
-
   render() {
-
-
     return (<NavigationSetting
       style={{
         flex: 1,

@@ -9,6 +9,8 @@ import {app} from '../selectors/app';
 import {COLORS, FONTS, SCALE} from '../style';
 import NavigationSetting from '../navigation/NavigationSetting';
 
+import Service from 'hairfolio/src/services/index.js'
+
 import MultilineTextInput from '../components/Form/MultilineTextInput';
 import InlineTextInput from '../components/Form/InlineTextInput';
 import PickerInput from '../components/Form/PickerInput';
@@ -52,8 +54,11 @@ export default class SalonInfo extends PureComponent {
         if (this.checkErrors())
           return;
 
+        let formData = this.getFormValue();
+        formData.business.name = Service.fetch.store.getState().user.data.get('salon').get('name');
+
         this.setState({'submitting': true});
-        this.props.dispatch(registrationActions.editUser(this.getFormValue()))
+        this.props.dispatch(registrationActions.editUser(formData))
         .then((r) => {
           this.setState({submitting: false});
           return r;

@@ -21,19 +21,21 @@ class ActivityFollowingStore {
 
     this.elements = [];
 
-    let arr = await ServiceBackend.get('/activities?per_page=20');
+    let arr = (await ServiceBackend.get('notifications?following=true'));
 
-    console.log('act', arr);
+    arr = arr.notifications;
+    arr = arr.filter(e => e.notifiable_type != 'NilClass');
 
-    this.elements = await Promise.all(
+    let res = await Promise.all(
       arr.map(
         async e => {
           let a = new Activity();
-          await a.init(e);
-          return a;
+          return await a.init(e);
         }
       )
     )
+
+    this.elements = res;
 
     this.isLoading = false;
   }

@@ -4,6 +4,7 @@ import Camera from 'react-native-camera';
 
 import FilterStore from 'stores/FilterStore.js'
 import Picture from 'stores/Picture.js'
+import Service from 'hairfolio/src/services/index.js'
 
 import ServiceBackend from 'backend/ServiceBackend.js'
 
@@ -24,7 +25,11 @@ class NewMessageStore {
 
   async load() {
     // TODO backend integration
-    this.newMessageNumber = 1;
+    let userId = Service.fetch.store.getState().user.data.get('id');
+
+    let res = (await ServiceBackend.get(`users/${userId}`)).user;
+
+    this.newMessageNumber = res.unread_messages_count;
   }
 
 }

@@ -40,6 +40,7 @@ export default class ProfileWrapper extends PureComponent {
     if (this.refs.profile)
       style = this.refs.profile.getStyle();
 
+
     StatusBar.setHidden(false, 'fade');
     StatusBar.setBarStyle(style, true);
   }
@@ -48,11 +49,15 @@ export default class ProfileWrapper extends PureComponent {
     this.setState({userId}, () => {
       this.refs.ns.forceUpdateContent();
     });
-    if (!utils.isLoading(this.props.usersStates.get(userId)))
-      this.props.dispatch(usersActions.getUser(userId));
+    //if (!utils.isLoading(this.props.usersStates.get(userId)))
+    this.props.dispatch(usersActions.getUser(userId));
   }
 
   render() {
+
+    window.p = this.props.users;
+
+
     return (<NavigationSetting
       forceUpdateEvents={!this.state.userId ? ['login', 'user-edited'] : null}
       onWillFocus={this.onWillFocus}

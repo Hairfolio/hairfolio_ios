@@ -5,10 +5,11 @@ import PureComponent from '../components/PureComponent';
 import {View, Text, Image, TouchableOpacity, ScrollView, StatusBar} from 'react-native';
 import connect from '../lib/connect';
 import {app} from '../selectors/app';
-import {user} from '../selectors/user';
+import {user, users} from '../selectors/user';
 import {environment} from '../selectors/environment';
 import {COLORS, FONTS, SCALE} from '../style';
 import UserProfileNavigationBar from '../components/UserProfile/Bar';
+import Service from 'hairfolio/src/services/index.js'
 
 import ProfileStack from '../stacks/Profile';
 
@@ -22,6 +23,9 @@ import ChannelResponder from '../components/Channel/ChannelResponder';
 import Channel from '../components/Channel/Channel';
 
 import {registrationActions} from '../actions/registration';
+import MessageDetailsStore from 'stores/MessageDetailsStore';
+
+import * as routes from 'hairfolio/src/routes.js'
 
 import {
   h
@@ -33,9 +37,7 @@ import BlackBookStore from 'stores/BlackBookStore'
 
 import {editCustomerStack, appStack, blackBook, createPostStack} from '../routes';
 
-import * as routes from '../routes.js'
-
-@connect(app, user, environment)
+@connect(app, user, users, environment)
 export default class Profile extends PureComponent {
   static propTypes = {
     appVersion: React.PropTypes.string.isRequired,
@@ -50,11 +52,24 @@ export default class Profile extends PureComponent {
     navigators: React.PropTypes.array.isRequired
   };
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      followed: this.props.profile.get('is_followed_by_me')
+    }
+  }
+
   channel = new Channel();
 
   getName() {
-    if (this.props.profile.get('account_type') === 'brand' || this.props.profile.get('account_type') === 'salon')
-      return this.props.profile.get('business_name') || 'Business Name';
+
+    if (this.props.profile.get('account_type') == 'ambassador') {
+      return this.props.profile.get('brand').get('name');
+    }
+
+    if (this.props.profile.get('account_type') == 'owner') {
+      return this.props.profile.get('salon').get('name');
+    }
 
     return `${this.props.profile.get('first_name')} ${this.props.profile.get('last_name')}`;
   }
@@ -67,12 +82,12 @@ export default class Profile extends PureComponent {
         iconColor = COLORS.STYLIST;
         iconSize = SCALE.h(32);
         break;
-      case 'salon':
+      case 'owner':
         icon = 'salon';
         iconColor = COLORS.SALON;
         iconSize = SCALE.h(18);
         break;
-      case 'brand':
+      case 'ambassador':
         icon = 'brand';
         iconColor = COLORS.BRAND;
         iconSize = SCALE.h(25);
@@ -102,7 +117,16 @@ export default class Profile extends PureComponent {
   }
 
   render() {
+
     this.height = (this.props.profile === this.props.user ? 183.5 : 223.5) + 40;
+
+    window.profile = this.props.profile;
+    window.user2 = this.props.user;
+
+    window.profileState = this;
+
+
+    console.log('rerender profile');
 
     return (<BannerErrorContainer ref="ebc" style={{
       flex: 1
@@ -149,19 +173,36 @@ export default class Profile extends PureComponent {
               if (e.nativeEvent.contentOffset.y > 60)
                 opacityContent = 1 - Math.min((e.nativeEvent.contentOffset.y - 60) / 30, 1);
 
+
+              let opacityContent2 = opacityContent;
+              if (e.nativeEvent.contentOffset.y > 50) {
+                opacityContent2 = 0;
+              }
+
+
               this.refs.headerContent.setNativeProps({
                 style: {
                   opacity: opacityContent
                 }
               });
 
-              if (this.refs.settings)
+              if (this.refs.settings) {
                 this.refs.settings.setNativeProps({
                   style: {
                     opacity: opacityContent
                   },
                   pointerEvents: opacityContent === 1 ? 'auto' : 'none'
                 });
+              }
+
+              if (this.refs.blackbook) {
+                this.refs.blackbook.setNativeProps({
+                  style: {
+                    opacity: opacityContent2
+                  },
+                  pointerEvents: opacityContent2 === 1 ? 'auto' : 'none'
+                });
+              }
 
               this.refs.statusBarCache.setNativeProps({
                 style: {
@@ -211,49 +252,6 @@ export default class Profile extends PureComponent {
               </View>
               <View ref="headerContent" style={{position: 'relative', alignItems: 'center'}}>
 
-
-                {this.props.profile === this.props.user ?
-                    <View
-                      style = {{
-                        position: 'absolute',
-                        right: -85,
-                        top: 90
-                      }}
-                      ref="blackbook">
-                  <TouchableOpacity
-                    style={{
-                      width: 60,
-                      flexDirection: 'row'
-                    }}
-                    onPress={() => {
-                      BlackBookStore.reset();
-                      BlackBookStore.show = true;
-                      BlackBookStore.myBack = () => {
-                        window.navigators[0].jumpTo(routes.appStack);
-                        BlackBookStore.show = false;
-                      };
-                      window.navigators[0].jumpTo(routes.blackBook);
-                    }}
-                  >
-                    <Image
-                      style={{height: h(64), width: h(48)}}
-                      source={require('img/black_book.png')}
-                    />
-                    <Text
-                      style = {{
-                        fontSize: h(28),
-                        color: 'white',
-                        marginLeft: h(15),
-                        marginTop: h(30)
-                      }}
-                    >
-                      12
-                    </Text>
-                  </TouchableOpacity>
-                </View> : null}
-
-
-
                 <View style={{
                   position: 'relative'
                 }}>
@@ -299,7 +297,7 @@ export default class Profile extends PureComponent {
                       fontSize: SCALE.h(28),
                       textAlign: 'center',
                       backgroundColor: 'transparent'
-                    }}>2 Stars</Text>
+                    }}>{this.props.profile.get('likes_count')} Stars</Text>
                     <View style={{width: 10}} />
                     <Text style={{
                       color: COLORS.WHITE,
@@ -318,7 +316,7 @@ export default class Profile extends PureComponent {
                     marginTop: SCALE.h(20)
                   }}>
                     <View>
-                      {!utils.isFollowing(this.props.user, this.props.profile) ?
+                      {!this.state.followed ?
                         <ProfileButton
                           disabled={utils.isLoading(this.props.followingStates.get(this.props.profile.get('id')))}
                           label="FOLLOW"
@@ -331,21 +329,52 @@ export default class Profile extends PureComponent {
                           color={COLORS.FOLLOWING}
                           disabled={utils.isLoading(this.props.followingStates.get(this.props.profile.get('id')))}
                           icon="check"
-                          label="FOLLOWED"
+                          label="FOLLOWING"
                           onPress={() => {
                             this.props.dispatch(registrationActions.unfollowUser(this.props.profile.get('id')));
                           }}
                         />
                       }
                     </View>
+
+
+
                     <View style={{width: SCALE.w(25)}} />
                     <View>
-                      <ProfileButton label="MESSAGE" />
+                      <ProfileButton
+                        label="MESSAGE"
+                        onPress={
+                          () => {
+                            MessageDetailsStore.myBack = () => window.navigators[0].jumpTo(routes.appStack);
+
+                            let userObjects = [
+                              {
+                                user : {
+                                  id: this.props.profile.get('id')
+                                }
+                              }
+                            ];
+
+                            console.log('userObjects', userObjects);
+
+
+                            MessageDetailsStore.createConversation(userObjects);
+                            MessageDetailsStore.title = this.getName();
+                            window.navigators[0].jumpTo(routes.messageDetailsRoute);
+                          }
+                        }
+                      />
                     </View>
                   </View> : null}
+
+
                 </View>
               </View>
+
             </View>
+
+
+
             <View>
               <View ref="statusBarCache" style={{
                 height: 10,
@@ -392,6 +421,35 @@ export default class Profile extends PureComponent {
               />
             </TouchableOpacity>
           </View> : null}
+
+          {this.props.profile === this.props.user ?
+              <View
+                style = {{
+                  position: 'absolute',
+                  right: 15,
+                  top: 140
+                }}
+                ref="blackbook">
+                <TouchableOpacity
+                  style={{
+                    flexDirection: 'row'
+                  }}
+                  onPress={() => {
+                    BlackBookStore.reset();
+                    BlackBookStore.show = true;
+                    BlackBookStore.myBack = () => {
+                      window.navigators[0].jumpTo(routes.appStack);
+                      BlackBookStore.show = false;
+                    };
+                    window.navigators[0].jumpTo(routes.blackBook);
+                  }}
+                >
+                  <Image
+                    style={{height: h(64), width: h(48)}}
+                    source={require('img/black_book.png')}
+                  />
+                </TouchableOpacity>
+              </View> : null}
         </BlurView>
       </View>
 

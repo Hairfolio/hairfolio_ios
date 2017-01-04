@@ -48,7 +48,7 @@ export default class StylistInfo extends PureComponent {
           return;
 
         this.setState({'submitting': true});
-        this.props.dispatch(registrationActions.editUser(this.getFormValue()))
+        this.props.dispatch(registrationActions.editUser(this.getFormValue(), 'stylist'))
         .then((r) => {
           this.setState({submitting: false});
           return r;
@@ -84,7 +84,7 @@ export default class StylistInfo extends PureComponent {
         <MultilineTextInput
           max={300}
           placeholder="Short professional description…"
-          ref={(r) => this.addFormItem(r, 'business.info')}
+          ref={(r) => this.addFormItem(r, 'description')}
           validation={(v) => !v || validator.isLength(v, {max: 300})}
         />
 

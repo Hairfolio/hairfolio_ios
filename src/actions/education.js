@@ -39,16 +39,17 @@ export const educationActions = {
           immediateAsyncResult: true
         },
         payload: {
-          promise: utils.isReady(getState().environment.degreesState) ?
-            Promise.resolve(getState().environment.degrees.toJS())
-          :
-            fetch.fetch('/degrees')
+          promise: fetch.fetch('/degrees')
         }
       };
     };
   },
 
   addEducation(education) {
+
+    console.log('education', education);
+
+
     return ({services: {fetch}, getState}) => {
       return {
         type: educationTypes.ADD_EDUCATION,

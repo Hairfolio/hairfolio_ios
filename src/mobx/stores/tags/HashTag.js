@@ -1,5 +1,6 @@
 import {observable, computed, action} from 'mobx';
 import {_, v4, Text} from 'hairfolio/src/helpers';
+import ServiceBackend from 'backend/ServiceBackend.js'
 
 export default class HashTag {
   constructor(x, y, hashtag) {
@@ -11,12 +12,23 @@ export default class HashTag {
     this.type = 'hashtag';
   }
 
-  toJSON() {
+  async toJSON() {
+    let tagName = this.hashtag.substr(1);
+
+    let res = await ServiceBackend.get(`tags/exact?q=${tagName}`);
+    let tagId;
+
+    if (res == null) {
+      let tag = (await ServiceBackend.post('tags', {tag: {name: tagName}})).tag;
+      tagId = tag.id;
+    } else {
+      tagId = res.tag.id;
+    }
+
     return _.pickBy({
-      type: this.type,
-      hashtag: this.hashtag,
-      left: this.x,
-      top: this.y
+      position_left: Math.floor(this.x),
+      position_top: Math.floor(this.y),
+      tag_id: tagId
     });
   }
 }

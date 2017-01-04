@@ -24,10 +24,7 @@ import utils from 'hairfolio/src/utils.js'
 import EnvironmentStore from 'stores/EnvironmentStore.js'
 
 
-import Service from 'hairfolio/src/services/index.js'
 import FavoriteStore from 'stores/FavoriteStore.js'
-
-import ServiceBackend from 'backend/ServiceBackend.js'
 
 import Picture from 'stores/Picture.js'
 
@@ -52,8 +49,22 @@ export default class User {
 
     this.id = data.id;
 
-    if (data.account_type == 'salon' || data.account_type == 'brand') {
-      this.name = `${data.business_name}`;
+    if (data.account_type == 'owner' && data.salon) {
+      if (data.solon_name) {
+        this.name = data.salon_name;
+      } else if (data.salon) {
+        this.name = data.salon.name;
+      } else {
+        this.name = '????';
+      }
+    } else if (data.account_type == 'ambassador') {
+      if (data.brand_name) {
+        this.name = data.brand_name;
+      } else if (data.brand) {
+        this.name = data.brand.name;
+      } else {
+        this.name = '????';
+      }
     } else {
       this.name = `${data.first_name} ${data.last_name}`;
     }

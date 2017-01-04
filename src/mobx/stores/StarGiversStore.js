@@ -22,11 +22,11 @@ class StarGiversStore {
   async load(postId) {
     this.isLoading = true;
     console.log('postId');
-    let users = await ServiceBackend.get(`posts/${postId}/starred`);
+    let users = (await ServiceBackend.get(`posts/${postId}/likes`)).likes;
     console.log('users', users);
     let userList = users.map(e => {
       let user = new FollowUser();
-      return user.init(e);
+      return user.init(e.user);
     });
 
     console.log('userList', userList);
@@ -47,4 +47,3 @@ class StarGiversStore {
 const store = new StarGiversStore();
 
 export default store;
-

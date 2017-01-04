@@ -26,7 +26,7 @@ export default class PostListStore {
   async load(data) {
     this.isLoading = true;
 
-    let res = await this.backendCall(data);
+    let res = (await this.backendCall(data)).posts;
     this.elements = [];
 
 

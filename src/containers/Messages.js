@@ -85,6 +85,8 @@ const MessageRow = observer(({store}) => {
         onPress={
           () => {
             MessageDetailsStore.myBack = () => window.navigators[0].jumpTo(routes.messagesRoute);
+            MessageDetailsStore.loadMessages(store.id);
+            MessageDetailsStore.title = store.user.name;
             window.navigators[0].jumpTo(routes.messageDetailsRoute);
           }
         }
@@ -216,6 +218,7 @@ export default class Messages extends PureComponent {
       }}
       onWillFocus={() => {
         StatusBar.setBarStyle('light-content');
+        MessagesStore.load();
       }}
     >
        <View style={{flex: 1}}>

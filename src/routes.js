@@ -40,6 +40,7 @@ import CreatePost from './containers/CreatePost';
 import AddLink from './containers/AddLink';
 import AlbumPage from './containers/AlbumPage';
 import Favourites from './containers/Favourites';
+import Share from './containers/Share';
 import Profile from './containers/ProfileWrapper';
 import Comments from './containers/Comments';
 import BlackBook from './containers/BlackBook';
@@ -47,6 +48,7 @@ import ContactDetails from './containers/ContactDetails';
 import Messages from './containers/Messages';
 import MessageDetails from './containers/MessageDetails';
 import WriteMessage from './containers/WriteMessage';
+import AddBlackBook from './containers/AddBlackBook.js';
 import OnboardingStack from './stacks/Onboarding';
 import ForgottenPasswordStack from './stacks/ForgottenPassword';
 import CreatePostStack from './stacks/CreatePost';
@@ -302,7 +304,6 @@ class CreatePostRoute extends Route {
   SceneConfig = {
     ...CustomScenesConfig.FadeInOut
   };
-
   icon = 'camera';
 }
 
@@ -313,6 +314,12 @@ class AlbumPageRoute extends Route {
   };
 }
 
+class ShareRoute extends Route {
+  SceneComponent = Share;
+  SceneConfig = {
+    ...CustomScenesConfig.FadeInOut
+  };
+}
 
 class FavouritesRoute extends Route {
   SceneComponent = Favourites;
@@ -361,6 +368,15 @@ class MessagesRoute extends Route {
 
 class MessageDetailsRoute extends Route {
   SceneComponent = MessageDetails;
+  SceneConfig = {
+    ...CustomScenesConfig.FadeInOut
+  };
+}
+
+
+
+class AddBlackBookRoute extends Route {
+  SceneComponent = AddBlackBook;
   SceneConfig = {
     ...CustomScenesConfig.FadeInOut
   };
@@ -569,6 +585,7 @@ export const stylistPlaceOfWorkEU = new StylistPlaceOfWorkRoute({
 export const feed = new FeedRoute();
 export const search = new SearchRoute();
 export const favourites = new FavouritesRoute();
+export const share = new ShareRoute();
 export const profile = new ProfileRoute();
 export const profileExternal = new ProfileRoute();
 export const loginStack = new OnboardingStackRoute();
@@ -603,6 +620,7 @@ export const contactDetails = new ContactDetailsRoute();
 export const messagesRoute = new MessagesRoute();
 export const messageDetailsRoute = new MessageDetailsRoute();
 export const writeMessageRoute = new WriteMessageRoute();
+export const addBlackBook = new AddBlackBookRoute();
 export const postDetails = new PostDetailsRoute();
 export const tagPosts = new TagPostsRoute();
 export const hairfolioPosts = new HairfolioPostsRoute();

@@ -6,6 +6,7 @@ import {COLORS, FONTS, h, SCALE} from 'hairfolio/src/style';
 
 import {observer} from 'mobx-react/native'
 import autobind from 'autobind-decorator'
+import CreatePostStore from 'stores/CreatePostStore.js'
 
 const SelectedBorder = observer(({width, picture}) => {
   if (picture.selectedNumber == null) {
@@ -73,6 +74,7 @@ const LibraryPicture = observer(({picture}) => {
             height: width,
             width: width}}
             source={{uri: picture.uri}}
+            onLoadEnd={() => CreatePostStore.imageLoaded()}
           />
           <SelectedBorder
             picture={picture}
@@ -83,7 +85,6 @@ const LibraryPicture = observer(({picture}) => {
     );
     // }
 });
-
 
 const LibraryListView = observer(({store}) => {
   return (

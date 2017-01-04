@@ -39,11 +39,9 @@ const CameraView = observer(({isOpen}) => {
     );
   }
 
-  console.log('render camera view', isOpen);
 
   return (
     <View>
-
     <CameraKitCamera
       ref={(cam) => {
         window.camera = cam;
@@ -53,14 +51,15 @@ const CameraView = observer(({isOpen}) => {
         height: Dimensions.get('window').width
       }}
       cameraOptions={{
-        flashMode: 'auto',             // on/off/auto(default)
+        flashMode: 'off',             // on/off/auto(default)
         focusMode: 'on',               // off/on(default)
         zoomMode: 'on',                // off/on(default)
         ratioOverlay: '1:1',            // optional, ratio overlay on the camera and crop the image seamlessly
         ratioOverlayColor: '#00000077' // optional
       }}
     />
-    {/*
+
+      {/*
       <Camera
         ref={(cam) => {
           window.camera = cam;
@@ -74,16 +73,7 @@ const CameraView = observer(({isOpen}) => {
         captureMode={Camera.constants.CaptureMode.photos}
         aspect={Camera.constants.Aspect.fill}>
 
-        <TouchableOpacity onPress={() => CreatePostStore.switchCameraFlashMode()} style={{ position: 'absolute', right: 0, bottom: 0, padding: SCALE.h(40)}}>
-          <Image
-            style={{height: 35, width: 35}}
-            source={store.flashIconSource} />
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => CreatePostStore.switchCameraType()} style={{ position: 'absolute', left: 0, bottom: 0, padding: SCALE.h(40)}}>
-          <Image
-            source={require('img/post_camera_swift.png')} />
-        </TouchableOpacity>
-      </Camera>
+          </Camera>
       */}
     </View>
   );
@@ -269,7 +259,21 @@ export default class CreatePost extends PureComponent {
         title={CreatePostStore.title}/>
     );
 
-    let mainView = <CameraView isOpen={CreatePostStore.isOpen} />;
+    let mainView =
+      <View>
+        <CameraView isOpen={CreatePostStore.isOpen} />
+        <TouchableOpacity onPress={() => CreatePostStore.switchCameraFlashMode()} style={{ position: 'absolute', right: 0, bottom: 0, padding: SCALE.h(40)}}>
+          <Image
+            style={{height: 35, width: 35}}
+            source={CreatePostStore.flashIconSource} />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => CreatePostStore.switchCameraType()} style={{ position: 'absolute', left: 0, bottom: 0, padding: SCALE.h(40)}}>
+          <Image
+      source={require('img/post_camera_swift.png')} />
+  </TouchableOpacity>
+
+
+      </View>;
 
     if (CreatePostStore.inputMethod === 'Library') {
       middleElement = (

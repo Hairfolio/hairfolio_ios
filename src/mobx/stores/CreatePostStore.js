@@ -288,15 +288,21 @@ class CreatePostStore {
     } else {
       this.cameraType = Camera.constants.Type.front;
     }
+
+    window.camera.changeCamera();
   }
 
   @action switchCameraFlashMode() {
+    console.log('set flash mode');
     if (this.cameraFlashMode == Camera.constants.FlashMode.off) {
       this.cameraFlashMode = Camera.constants.FlashMode.auto;
+      window.camera.setFlashMode('auto');
     } else if (this.cameraFlashMode == Camera.constants.FlashMode.auto) {
       this.cameraFlashMode = Camera.constants.FlashMode.on;
+      window.camera.setFlashMode('on');
     } else {
       this.cameraFlashMode = Camera.constants.FlashMode.off;
+      window.camera.setFlashMode('off');
     }
   }
 
@@ -362,10 +368,23 @@ class CreatePostStore {
     }
   }
 
+  imageLoaded() {
+    this.loadedImages++;
+    // console.log('imageLoaded ', this.loadedImages);
+
+    if (this.loadedImages % 50 == 0 && this.imageData.length > 0) {
+      let newImages = this.imageData.splice(0, 50).map((el) => new LibraryPicture(el, this));
+      this.libraryPictures = this.libraryPictures.concat(newImages);
+    }
+  }
+
   updateLibraryPictures() {
+    this.loadedImages = 0;
+    this.libraryPictures;
     PhotoAlbum.getPhotosFromAlbums(this.groupName, (data) => {
-      // TODO take more than 100 pictures
-      this.libraryPictures = data.reverse().slice(0, 100).map((el) => new LibraryPicture(el, this));
+      this.imageData = data.reverse();
+      // load first 50 images and then continue ones they are loaded
+      this.libraryPictures = this.imageData.splice(0, 50).map((el) => new LibraryPicture(el, this));
     });
 
     AlbumStore.load();

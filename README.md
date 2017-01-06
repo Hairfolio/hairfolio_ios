@@ -17,7 +17,7 @@ make the modifications, then download json config file and paste content in font
 `gulp setup-fontello`
 
 
-I did not want to make a fork of RN, so be sure in react-native/Navigator.js to do that
+I did not want to make a fork of RN, so be sure in node_modules/react-native/Libraries/CustomComponents/Navigator/Navigator.js to do that
 
 
 `disabledScene: {
@@ -40,6 +40,13 @@ This fix an issue when tabs are too long. Facebook did know that their method co
 `// TODO: this is not ideal because there is no guarantee that the navigator
 // is full screen, however we don't have a good way to measure the actual
 // size of the navigator right now, so this is the next best thing.`
+
+Furthermore, replace  ./node_modules/react-native-camera-kit/ios/lib/ReactNativeCameraKit/CKCamera.m with ./CKCamera.m (same reason as above)
+
+For the property 'persistent' I also modified the core of text.
+
+cp RCTTextField* ./node_modules/react-native/Libraries/Text/
+
 
 Project structure :
 

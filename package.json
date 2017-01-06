@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "NODE_PATH=~/hairfolio/src react-native start --reset-cache"
+    "start": "NODE_PATH=~/hairfolio_ios/src react-native start --reset-cache"
   },
   "dependencies": {
     "autobind-decorator": "^1.3.4",

@@ -248,7 +248,7 @@ export default class Profile extends PureComponent {
                   fontSize: SCALE.h(32),
                   color: COLORS.WHITE,
                   textAlign: 'center'
-                }}>"Vestibulum id ligula porta felis euismod semper. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Sed posuere consectetur est at lobortis."</Text>
+                }}></Text>
               </View>
               <View ref="headerContent" style={{position: 'relative', alignItems: 'center'}}>
 

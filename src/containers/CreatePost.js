@@ -29,6 +29,35 @@ import {CameraKitCamera} from 'react-native-camera-kit'
 import SlimHeader from '../components/SlimHeader.js'
 import LibraryListView from 'components/post/LibraryListView'
 
+const VideoRecorder = observer(({isOpen}) => {
+
+  if (!isOpen) {
+    return (
+      <View
+        style={{backgroundColor: 'transparent', height: Dimensions.get('window').width, width: Dimensions.get('window').width, }}
+      />
+    );
+  }
+
+
+  return (
+    <View>
+      <Camera
+        ref={(cam) => {
+          window.video = cam;
+        }}
+        style={{
+          width: Dimensions.get('window').width,
+          height: Dimensions.get('window').width
+        }}
+        captureMode={Camera.constants.CaptureMode.video}
+        aspect={Camera.constants.Aspect.fill}
+      >
+      </Camera>
+    </View>
+  );
+});
+
 const CameraView = observer(({isOpen}) => {
 
   if (!isOpen) {
@@ -42,39 +71,22 @@ const CameraView = observer(({isOpen}) => {
 
   return (
     <View>
-    <CameraKitCamera
-      ref={(cam) => {
-        window.camera = cam;
-      }}
-      style={{
-        width: Dimensions.get('window').width,
-        height: Dimensions.get('window').width
-      }}
-      cameraOptions={{
-        flashMode: 'off',             // on/off/auto(default)
-        focusMode: 'on',               // off/on(default)
-        zoomMode: 'on',                // off/on(default)
-        ratioOverlay: '1:1',            // optional, ratio overlay on the camera and crop the image seamlessly
-        ratioOverlayColor: '#00000077' // optional
-      }}
-    />
-
-      {/*
-      <Camera
+      <CameraKitCamera
         ref={(cam) => {
           window.camera = cam;
         }}
-        type={store.cameraType}
         style={{
           width: Dimensions.get('window').width,
           height: Dimensions.get('window').width
         }}
-        flashMode={store.cameraFlashMode}
-        captureMode={Camera.constants.CaptureMode.photos}
-        aspect={Camera.constants.Aspect.fill}>
-
-          </Camera>
-      */}
+        cameraOptions={{
+          flashMode: 'off',             // on/off/auto(default)
+          focusMode: 'on',               // off/on(default)
+          zoomMode: 'on',                // off/on(default)
+          ratioOverlay: '1:1',            // optional, ratio overlay on the camera and crop the image seamlessly
+          ratioOverlayColor: '#00000077' // optional
+        }}
+      />
     </View>
   );
 });
@@ -133,14 +145,14 @@ const Footer = ({selectedMode, onSelect}) => {
         </View>
       </TouchableWithoutFeedback>
       <TouchableWithoutFeedback
-        onPress={() => { /* onSelect('Video')*/ }}>
+        onPress={() => { onSelect('Video')}}>
         <View style={{flex: 1}}>
-          {/* <Text style={{
+          <Text style={{
             fontSize: SCALE.h(34),
             fontFamily: selectedMode === 'Video' ? FONTS.SF_BOLD : FONTS.SF_REGULAR,
             textAlign: 'right',
             flex: 1
-          }}>Video</Text>*/}
+          }}>Video</Text>
       </View>
     </TouchableWithoutFeedback>
   </View>
@@ -230,11 +242,35 @@ export default class CreatePost extends PureComponent {
       .catch(err => { alert('error'); console.error(err); CreatePostStore.loadGallery = false; });
   }
 
+  startRecording() {
+    CreatePostStore.isRecording = true;
+
+    window.video.capture(
+      {mode: Camera.constants.CaptureMode.video}
+    )
+      .then((data) => {
+        alert('recoding finished');
+        _.last(this.context.navigators).jumpTo(gallery)
+
+        console.log('data', data);
+        CreatePostStore.loadGallery = false;
+        CreatePostStore.lastTakenPicture = data;
+        CreatePostStore.addTakenVideoToGallery()
+      })
+    .catch(err => console.error(err));
+
+  }
+
+  stopRecording() {
+    CreatePostStore.isRecording = false;
+    window.video.stopCapture();
+  }
+
   render() {
     window.createPost = this;
 
     let middleElement = (
-      <TouchableOpacity onPress={() => this.capture()}>
+      <TouchableOpacity key='photo' onPress={() => this.capture()}>
         <Image
           source={require('../../resources/img/post_capture.png')}
         />
@@ -259,7 +295,7 @@ export default class CreatePost extends PureComponent {
         title={CreatePostStore.title}/>
     );
 
-    let mainView =
+    let mainView = (
       <View>
         <CameraView isOpen={CreatePostStore.isOpen} />
         <TouchableOpacity onPress={() => CreatePostStore.switchCameraFlashMode()} style={{ position: 'absolute', right: 0, bottom: 0, padding: SCALE.h(40)}}>
@@ -269,11 +305,10 @@ export default class CreatePost extends PureComponent {
         </TouchableOpacity>
         <TouchableOpacity onPress={() => CreatePostStore.switchCameraType()} style={{ position: 'absolute', left: 0, bottom: 0, padding: SCALE.h(40)}}>
           <Image
-      source={require('img/post_camera_swift.png')} />
-  </TouchableOpacity>
-
-
-      </View>;
+            source={require('img/post_camera_swift.png')} />
+        </TouchableOpacity>
+      </View>
+    );
 
     if (CreatePostStore.inputMethod === 'Library') {
       middleElement = (
@@ -298,6 +333,44 @@ export default class CreatePost extends PureComponent {
           }}
        />
       );
+    } else if (CreatePostStore.inputMethod == 'Video') {
+      mainView = (
+        <View>
+          <VideoRecorder isOpen={CreatePostStore.isOpen} />
+          {/*
+          <TouchableOpacity onPress={() => CreatePostStore.switchCameraFlashMode()} style={{ position: 'absolute', right: 0, bottom: 0, padding: SCALE.h(40)}}>
+            <Image
+              style={{height: 35, width: 35}}
+              source={CreatePostStore.flashIconSource} />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => CreatePostStore.switchCameraType()} style={{ position: 'absolute', left: 0, bottom: 0, padding: SCALE.h(40)}}>
+            <Image
+              source={require('img/post_camera_swift.png')} />
+          </TouchableOpacity>
+          */
+          }
+        </View>
+      );
+
+      if (CreatePostStore.isRecording) {
+        middleElement = (
+          <TouchableOpacity key='video-record-on' onPress={() => this.stopRecording()}>
+            <Image
+              source={require('img/record_on.png')}
+            />
+          </TouchableOpacity>
+        );
+      } else {
+        middleElement = (
+          <TouchableOpacity  key='video-record-off' onPress={() => this.startRecording()}>
+            <Image
+              source={require('img/record_off.png')}
+            />
+          </TouchableOpacity>
+        );
+      }
+
+
     }
 
     return (<NavigationSetting

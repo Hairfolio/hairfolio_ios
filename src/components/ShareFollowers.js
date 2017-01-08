@@ -83,7 +83,7 @@ const Hairfolio  = observer(({store}) => {
             flex: 1
           }}
         >
-          {store.name}
+          {store.name == 'Inspiration' ? 'Inspo' : store.name}
         </Text>
         {checkImage}
       </View>

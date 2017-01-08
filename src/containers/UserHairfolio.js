@@ -50,13 +50,15 @@ const HairfolioItem = observer(({store, isEditable}) => {
     swipeoutBtns = [];
   }
 
-  let previewPicture = <View
+  let previewPicture = (
+    <View
     style = {{
       height: h(195),
       width: h(195),
       marginLeft: h(18),
       backgroundColor: '#D8D8D8'
-    }} />;
+    }} />
+  );
 
   if (store.picture) {
     previewPicture = (
@@ -81,7 +83,12 @@ const HairfolioItem = observer(({store, isEditable}) => {
         underlayColor='#ccc'
         onPress= {
           () => {
-            HairfolioPostStore.title = `${store.name}`;
+
+            if (store.name != 'Inspiration') {
+              HairfolioPostStore.title = `${store.name}`;
+            } else {
+              HairfolioPostStore.title = 'Inspo';
+            }
             HairfolioPostStore.load(store);
             HairfolioPostStore.back = () => {
               window.navigators[0].jumpTo(routes.appStack);
@@ -111,7 +118,7 @@ const HairfolioItem = observer(({store, isEditable}) => {
             color: '#404040'
           }}
         >
-          {store.name}
+          {store.name == 'Inspiration' ? 'Inspo' : store.name}
         </Text>
         <Text
           style = {{

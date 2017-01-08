@@ -7,6 +7,7 @@ import ServiceTag from 'stores/tags/ServiceTag.js'
 import {ImageEditor} from 'react-native';
 import Service from 'hairfolio/src/services/index.js'
 import ImageResizer from 'react-native-image-resizer';
+import RNFetchBlob from 'react-native-fetch-blob'
 
 export default class Picture {
 
@@ -57,29 +58,70 @@ export default class Picture {
     let uri = await this.resizeImage(this.source.uri);
     // uri = await this.cropImage(uri);
 
-    var formdata = new FormData();
-    formdata.append('file', {
-      type: 'image/jpeg',
-      uri,
-      name: 'upload.jpg'
-    });
+    let json, formdata;
 
-    let preset = Service.fetch.store.getState().environment.environment.get('cloud_preset');
-    let cloudName = Service.fetch.store.getState().environment.environment.get('cloud_name');
+    if (this.isVideo) {
+      console.log('video');
 
-    formdata.append('upload_preset', preset);
-    let res = await fetch(
-      `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'multipart/form-data; boundary=6ff46e0b6b5148d984f148b6542e5a5d'
-        },
-        body: formdata
-      }
-    );
 
-    let json = await res.json();
+
+      formdata = new FormData();
+      formdata.append('file', {
+        type: 'video/quicktime',
+        uri,
+        name: 'upload.mov'
+      });
+
+      let preset = Service.fetch.store.getState().environment.environment.get('cloud_preset');
+      let cloudName = Service.fetch.store.getState().environment.environment.get('cloud_name');
+
+      let res = RNFetchBlob.fetch('POST', `https://api.cloudinary.com/v1_1/${cloudName}/video/upload`, {
+        'Content-Type' : 'multipart/form-data',
+      }, [
+        //
+        { name : 'file', filename : 'upload.mov', type:'video/quicktime', data: RNFetchBlob.wrap(uri)},
+        // elements without property `filename` will be sent as plain text
+        { name : 'upload_preset', data : preset},
+      ]).then((resp) => {
+        // ...
+      }).catch((err) => {
+        // ...
+      })
+
+      console.log('video res', res);
+
+
+      json = await res.json();
+
+
+    } else {
+      formdata = new FormData();
+      formdata.append('file', {
+        type: 'image/jpeg',
+        uri,
+        name: 'upload.jpg'
+      });
+
+      let preset = Service.fetch.store.getState().environment.environment.get('cloud_preset');
+      let cloudName = Service.fetch.store.getState().environment.environment.get('cloud_name');
+
+      formdata.append('upload_preset', preset);
+      let res = await fetch(
+        `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'multipart/form-data; boundary=6ff46e0b6b5148d984f148b6542e5a5d'
+          },
+          body: formdata
+        }
+      );
+
+      json = await res.json();
+
+    }
+
+    console.log('json', json);
 
 
     window.tag = this.tags;

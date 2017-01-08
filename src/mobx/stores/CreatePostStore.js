@@ -254,6 +254,7 @@ class Gallery {
 }
 
 class CreatePostStore {
+  @observable isRecording = false;
   @observable loadGallery = false;
   @observable inputMethod = 'Photo';
   @observable isOpen = false;
@@ -332,6 +333,22 @@ class CreatePostStore {
     this.gallery.addLibraryPictures(
       this.selectedPictures
     );
+    this.gallery.wasOpened = true;
+  }
+
+  @action addTakenVideoToGallery() {
+
+    let video = new Picture(
+      {uri: this.lastTakenPicture.path},
+      {uri: this.lastTakenPicture.path},
+      this.gallery
+    );
+
+    video.isVideo = true;
+
+
+    this.gallery.addPicture(video);
+
     this.gallery.wasOpened = true;
   }
 

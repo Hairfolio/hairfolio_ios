@@ -268,7 +268,7 @@ export default class EditCustomer extends PureComponent {
       <View style={{height: StyleSheet.hairlineWidth}} />
 
       <PickerInput
-        choices={_.map(_.range(0, 20), i => ({
+        choices={_.map(_.range(0, 46), i => ({
           label: i.toString(),
           value: i
         }))}

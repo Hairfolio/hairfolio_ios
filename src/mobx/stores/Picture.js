@@ -55,21 +55,20 @@ export default class Picture {
 
 
   async toJSON() {
-    let uri = await this.resizeImage(this.source.uri);
-    // uri = await this.cropImage(uri);
+
+    let uri = this.source.uri;
 
     let json, formdata;
 
     if (this.isVideo) {
-      console.log('video');
-
-
+      uri = uri.substr(7);
+      console.log('video', uri);
 
       formdata = new FormData();
       formdata.append('file', {
-        type: 'video/quicktime',
+        type: 'video/mp4',
         uri,
-        name: 'upload.mov'
+        name: 'upload.mp4'
       });
 
       let preset = Service.fetch.store.getState().environment.environment.get('cloud_preset');
@@ -79,7 +78,7 @@ export default class Picture {
         'Content-Type' : 'multipart/form-data',
       }, [
         //
-        { name : 'file', filename : 'upload.mov', type:'video/quicktime', data: uri},
+        { name : 'file', filename : 'upload.mp4', type:'video/mp4', data: RNFetchBlob.wrap(uri)},
         // elements without property `filename` will be sent as plain text
         { name : 'upload_preset', data : preset},
       ]).then((resp) => {
@@ -97,6 +96,9 @@ export default class Picture {
 
 
     } else {
+      uri = await this.resizeImage(uri);
+    // uri = await this.cropImage(uri);
+
       formdata = new FormData();
       formdata.append('file', {
         type: 'image/jpeg',

@@ -237,6 +237,8 @@ class Gallery {
 
   async toJSON() {
 
+    console.log('post to json');
+
     let items = [];
 
     for (let pic of this.pictures) {

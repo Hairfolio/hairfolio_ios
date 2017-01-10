@@ -53,11 +53,18 @@ const VideoRecorder = observer(({isOpen}) => {
         video: {
           enabled: true,
           format: 'MPEG4',
+          bitrate: 2000000,
+          timescale: 1
         }
       }}
       device='back'
       onNewSegment={(segment) => {
         console.log('newSegment', segment);
+        _.last(window.navigators).jumpTo(gallery)
+        CreatePostStore.loadGallery = false;
+        CreatePostStore.lastTakenPicture = {path: segment.url};
+        CreatePostStore.addTakenVideoToGallery()
+
       }}
       style={{
         width: windowWidth,
@@ -280,6 +287,7 @@ export default class CreatePost extends PureComponent {
     CreatePostStore.isRecording = false;
     window.recorder.pause();
 
+    /*
     window.recorder.save((errr, url) => {
       console.log('url = ', url);
 
@@ -287,7 +295,9 @@ export default class CreatePost extends PureComponent {
       CreatePostStore.loadGallery = false;
       CreatePostStore.lastTakenPicture = {path: url};
       CreatePostStore.addTakenVideoToGallery()
+
     });
+    */
 
   }
 

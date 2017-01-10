@@ -54,7 +54,7 @@
   
 
 #if DEBUG
-  jsCodeLocation = [NSURL URLWithString:@"http://172.20.10.5:8081/index.ios.bundle?platform=ios&dev=true"];
+  jsCodeLocation = [NSURL URLWithString:@"http://192.168.1.133:8081/index.ios.bundle?platform=ios&dev=true"];
 #else
   jsCodeLocation = [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
 #endif

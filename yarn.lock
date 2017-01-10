@@ -3656,6 +3656,12 @@ react-native-linear-gradient@^1.5.13:
   version "1.6.2"
   resolved "https://registry.yarnpkg.com/react-native-linear-gradient/-/react-native-linear-gradient-1.6.2.tgz#1ea3e7a186b514661b927673aa9c427dd520999f"
 
+react-native-screcorder@latest:
+  version "0.1.4"
+  resolved "https://registry.yarnpkg.com/react-native-screcorder/-/react-native-screcorder-0.1.4.tgz#79b8c67b3a0e070e4f067ae375a8330c7f37e90c"
+  dependencies:
+    merge "^1.2.0"
+
 react-native-scrollable-tab-view@^0.6.0:
   version "0.6.0"
   resolved "https://registry.yarnpkg.com/react-native-scrollable-tab-view/-/react-native-scrollable-tab-view-0.6.0.tgz#36050cf72dae0dc00b6b8d7f9a570955d99a213b"

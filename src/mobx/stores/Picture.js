@@ -75,17 +75,19 @@ export default class Picture {
       let preset = Service.fetch.store.getState().environment.environment.get('cloud_preset');
       let cloudName = Service.fetch.store.getState().environment.environment.get('cloud_name');
 
-      let res = RNFetchBlob.fetch('POST', `https://api.cloudinary.com/v1_1/${cloudName}/video/upload`, {
+      let res = await RNFetchBlob.fetch('POST', `https://api.cloudinary.com/v1_1/${cloudName}/video/upload`, {
         'Content-Type' : 'multipart/form-data',
       }, [
         //
-        { name : 'file', filename : 'upload.mov', type:'video/quicktime', data: RNFetchBlob.wrap(uri)},
+        { name : 'file', filename : 'upload.mov', type:'video/quicktime', data: uri},
         // elements without property `filename` will be sent as plain text
         { name : 'upload_preset', data : preset},
       ]).then((resp) => {
+        console.log('resp',  resp);
         // ...
       }).catch((err) => {
         // ...
+        console.log('err', err);
       })
 
       console.log('video res', res);

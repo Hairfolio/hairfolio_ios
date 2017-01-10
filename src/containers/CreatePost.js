@@ -29,6 +29,9 @@ import {CameraKitCamera} from 'react-native-camera-kit'
 import SlimHeader from '../components/SlimHeader.js'
 import LibraryListView from 'components/post/LibraryListView'
 
+var Recorder  = require('react-native-screcorder');
+var Video     = require('react-native-video');
+
 const VideoRecorder = observer(({isOpen}) => {
 
   if (!isOpen) {
@@ -39,22 +42,27 @@ const VideoRecorder = observer(({isOpen}) => {
     );
   }
 
+  let windowWidth = Dimensions.get('window').width;
 
   return (
-    <View>
-      <Camera
-        ref={(cam) => {
-          window.video = cam;
-        }}
-        style={{
-          width: Dimensions.get('window').width,
-          height: Dimensions.get('window').width
-        }}
-        captureMode={Camera.constants.CaptureMode.video}
-        aspect={Camera.constants.Aspect.fill}
-      >
-      </Camera>
-    </View>
+    <Recorder
+      ref={rec => window.recorder = rec}
+      config={{
+        flashMode: Recorder.constants.SCFlashModeOff,
+        video: {
+          enabled: true,
+          format: 'MPEG4',
+        }
+      }}
+      device='front'
+      onNewSegment={(segment) => {
+        console.log('newSegment', segment);
+      }}
+      style={{
+        width: windowWidth,
+        height: windowWidth
+      }}>
+    </Recorder>
   );
 });
 
@@ -243,8 +251,13 @@ export default class CreatePost extends PureComponent {
   }
 
   startRecording() {
+
+    window.recorder.record();
+
     CreatePostStore.isRecording = true;
 
+
+    /*
     window.video.capture(
       {mode: Camera.constants.CaptureMode.video}
     )
@@ -258,12 +271,23 @@ export default class CreatePost extends PureComponent {
         CreatePostStore.addTakenVideoToGallery()
       })
     .catch(err => console.error(err));
+    */
 
   }
 
   stopRecording() {
     CreatePostStore.isRecording = false;
-    window.video.stopCapture();
+    window.recorder.pause();
+
+    window.recorder.save((errr, url) => {
+      console.log('url = ', url);
+
+      _.last(this.context.navigators).jumpTo(gallery)
+      CreatePostStore.loadGallery = false;
+      CreatePostStore.lastTakenPicture = {path: url};
+      CreatePostStore.addTakenVideoToGallery()
+    });
+
   }
 
   render() {

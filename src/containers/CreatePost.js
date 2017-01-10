@@ -29,8 +29,9 @@ import {CameraKitCamera} from 'react-native-camera-kit'
 import SlimHeader from '../components/SlimHeader.js'
 import LibraryListView from 'components/post/LibraryListView'
 
-var Recorder  = require('react-native-screcorder');
-var Video     = require('react-native-video');
+import Recorder from 'react-native-screcorder'
+
+window.myRecorder = Recorder;
 
 const VideoRecorder = observer(({isOpen}) => {
 
@@ -54,7 +55,7 @@ const VideoRecorder = observer(({isOpen}) => {
           format: 'MPEG4',
         }
       }}
-      device='front'
+      device='back'
       onNewSegment={(segment) => {
         console.log('newSegment', segment);
       }}

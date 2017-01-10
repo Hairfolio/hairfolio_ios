@@ -27,6 +27,7 @@ import ShareStore from 'stores/ShareStore.js'
 
 import ServiceBackend from 'backend/ServiceBackend.js'
 import LoadingScreen from 'components/LoadingScreen.js'
+import Video from 'react-native-video'
 
 
 import LinearGradient from 'react-native-linear-gradient';
@@ -112,6 +113,31 @@ const ImagePreview = observer(({gallery, navigators}) => {
     setTimeout(()=> CreatePostStore.gallery.filterStore.setMainImage(CreatePostStore.gallery.selectedPicture), 500);
     _.last(navigators).jumpTo(filter)
   };
+
+  window.picture = gallery.selectedPicture;
+
+  if (gallery.selectedPicture.isVideo) {
+    return (
+      <Video
+        ref={ref => {
+          window.player = ref;
+        }}
+        source={{uri: gallery.selectedPicture.source.uri }}
+        style={{
+          width: windowWidth,
+          height: windowWidth,
+        }}
+        muted={false}
+        resizeMode="cover"
+        paused={false}
+        repeat={true}
+        onError={msg => console.log('error', msg)}
+      />
+    );
+  }
+
+
+
   return (
     <View
       style={{
@@ -191,11 +217,13 @@ const ImagePreview = observer(({gallery, navigators}) => {
       };
 
       if (pic.imageSource) {
-        return <Image
-          style={style}
-          key={pic.key}
-          source={pic.imageSource}
-          />;
+        return (
+          <Image
+            style={style}
+            key={pic.key}
+            source={pic.imageSource}
+          />
+        );
       }
 
       return (

@@ -29,6 +29,34 @@ RCT_EXPORT_METHOD(filterImage:(NSString *)path filterName:(NSString *)filterName
   
   //  Convert UIColor to CIColor
   
+  UIImage* image = [UIImage imageWithContentsOfFile:path];
+  
+  CIImage *ciImage = [[CIImage alloc] initWithImage:image];
+  
+  //  Set values for CIColorMonochrome Filter
+  CIFilter *filter = [CIFilter filterWithName:filterName
+                                keysAndValues:kCIInputImageKey, ciImage, nil];
+  
+  // [filter setValue:[NSNumber numberWithDouble:0.75]  forKey: @"inputPower"];
+  
+  
+  ciImage = [filter outputImage];
+  
+  
+  
+  CIContext *context   = [CIContext contextWithOptions:nil];
+  CGImageRef cgImage   = [context createCGImage:ciImage fromRect:ciImage.extent];
+  UIImage *filteredImage       = [UIImage imageWithCGImage:cgImage];
+  
+  NSData *data = UIImageJPEGRepresentation(filteredImage, 0.8);
+  NSString *dataString = [data base64EncodedStringWithOptions:0]; // base64 encoded image string
+  
+  callback(@[dataString]);
+  
+
+  
+  
+  /*
   CGSize size = CGSizeMake(400, 400);
 
   

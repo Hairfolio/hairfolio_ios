@@ -25,6 +25,7 @@ import PostTags from 'components/feed/PostTags.js'
 
 import PostStar from 'components/feed/PostStar.js'
 import PostSave from 'components/feed/PostSave.js'
+import VideoPreview from 'components/VideoPreview.js'
 
 import * as routes from 'hairfolio/src/routes.js'
 
@@ -169,11 +170,16 @@ const PostDetailsHeader = observer(({store}) => {
       }}
     >
 
-      <View style={{height: windowWidth, width: windowWidth}}>
+    <View style={{height: windowWidth, width: windowWidth}}>
+      {
+        store.selectedPicture.isVideo ?
+       <VideoPreview picture={store.selectedPicture} /> :
         <Image
           style={{height: windowWidth, width: windowWidth}}
           source={store.selectedPicture.getSource(2 * windowWidth)}
         />
+      }
+
         <TouchableOpacity
           style = {{
             position: 'absolute',

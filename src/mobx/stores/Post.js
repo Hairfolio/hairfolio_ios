@@ -86,6 +86,10 @@ export default class Post {
         null
       );
 
+      if (pic.video_url) {
+        picture.videoUrl = pic.video_url;
+      }
+
       for (let item of pic.labels) {
 
         if (item.formulas.length > 0) {

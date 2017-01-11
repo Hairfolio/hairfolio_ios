@@ -43,6 +43,7 @@ var ImageFilter = require('NativeModules').ImageFilter;
 
 import MyPicker from 'components/MyPicker.js'
 
+import {Dimensions} from 'react-native';
 
 import ReactNative from 'react-native';
 
@@ -50,9 +51,9 @@ import ServiceBox from 'components/post/ServiceBox.js'
 
 import AddTagModal from 'components/post/AddTagModal.js'
 
+import VideoPreview from 'components/VideoPreview.js'
 
 const ImagePreview = observer(({gallery, navigators}) => {
-
 
   if (CreatePostStore.loadGallery) {
     return (
@@ -118,6 +119,8 @@ const ImagePreview = observer(({gallery, navigators}) => {
 
   if (gallery.selectedPicture.isVideo) {
     return (
+      <VideoPreview picture={gallery.selectedPicture} />
+      /*
       <Video
         ref={ref => {
           window.player = ref;
@@ -133,6 +136,7 @@ const ImagePreview = observer(({gallery, navigators}) => {
         repeat={true}
         onError={msg => console.log('error', msg)}
       />
+      */
     );
   }
 
@@ -186,22 +190,24 @@ const ImagePreview = observer(({gallery, navigators}) => {
       </View>
     </TouchableOpacity>
 
-    <TouchableOpacity
-      onPress={filterPicture}
-      style={{
-        position: 'absolute',
-        bottom: 0,
-        right: 0,
-        padding: h(14)
-      }}
-    >
-      <View>
-        <Image
-          style={{height: 35, width: 35}}
-          source={require('img/post_filter.png')}
-        />
-      </View>
-    </TouchableOpacity>
+    {gallery.selectedPicture.isVideo ?  <View /> :
+      <TouchableOpacity
+        onPress={filterPicture}
+        style={{
+          position: 'absolute',
+          bottom: 0,
+          right: 0,
+          padding: h(14)
+        }}
+      >
+        <View>
+          <Image
+            style={{height: 35, width: 35}}
+            source={require('img/post_filter.png')}
+          />
+        </View>
+      </TouchableOpacity>
+      }
     {gallery.selectedPicture.tags.map((pic) => {
 
       let style = {
@@ -258,6 +264,15 @@ const ActionRow = observer(({tagMenu, imageStyle}) => {
 });
 
 const ActionMenu = observer(({gallery}) => {
+
+  if (gallery.selectedPicture == null) {
+    return <View />;
+  }
+
+  if (gallery.selectedPicture.isVideo) {
+    return <View />;
+  }
+
   return (
     <View style={{height: h(82), flexDirection: 'row'}} >
       <ActionRow

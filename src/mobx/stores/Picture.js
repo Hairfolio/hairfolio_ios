@@ -14,6 +14,8 @@ export default class Picture {
   @observable parent;
   @observable tags = [];
   @observable source;
+  @observable videoUrl;
+  @observable isPlaying = false;
 
   constructor(orignalSource, source, parent) {
     this.source = source;
@@ -53,80 +55,75 @@ export default class Picture {
     return this.source;
   }
 
+  async uploadVideo() {
+    let uri = this.videoUrl.substr(7);
+    console.log('video', uri);
+
+    let formdata = new FormData();
+    formdata.append('file', {
+      type: 'video/mp4',
+      uri,
+      name: 'upload.mp4'
+    });
+
+    let preset = Service.fetch.store.getState().environment.environment.get('cloud_preset');
+    let cloudName = Service.fetch.store.getState().environment.environment.get('cloud_name');
+
+    let res = await RNFetchBlob.fetch('POST', `https://api.cloudinary.com/v1_1/${cloudName}/video/upload`, {
+      'Content-Type' : 'multipart/form-data',
+    }, [
+      //
+      { name : 'file', filename : 'upload.mp4', type:'video/mp4', data: RNFetchBlob.wrap(uri)},
+      // elements without property `filename` will be sent as plain text
+      { name : 'upload_preset', data : preset},
+    ]);
+
+    return res.json();
+  }
+
+  async uploadPicture() {
+    let uri = await this.resizeImage(this.source.uri);
+
+    let formdata = new FormData();
+    formdata.append('file', {
+      type: 'image/jpeg',
+      uri,
+      name: 'upload.jpg'
+    });
+
+    let preset = Service.fetch.store.getState().environment.environment.get('cloud_preset');
+    let cloudName = Service.fetch.store.getState().environment.environment.get('cloud_name');
+
+    formdata.append('upload_preset', preset);
+    let res = await fetch(
+      `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'multipart/form-data; boundary=6ff46e0b6b5148d984f148b6542e5a5d'
+        },
+        body: formdata
+      }
+    );
+
+    return res.json();
+  }
+
 
   async toJSON() {
 
-    let uri = this.source.uri;
+    let ret = {};
 
     let json, formdata;
 
     if (this.isVideo) {
-      uri = uri.substr(7);
-      console.log('video', uri);
-
-      formdata = new FormData();
-      formdata.append('file', {
-        type: 'video/mp4',
-        uri,
-        name: 'upload.mp4'
-      });
-
-      let preset = Service.fetch.store.getState().environment.environment.get('cloud_preset');
-      let cloudName = Service.fetch.store.getState().environment.environment.get('cloud_name');
-
-      let res = await RNFetchBlob.fetch('POST', `https://api.cloudinary.com/v1_1/${cloudName}/video/upload`, {
-        'Content-Type' : 'multipart/form-data',
-      }, [
-        //
-        { name : 'file', filename : 'upload.mp4', type:'video/mp4', data: RNFetchBlob.wrap(uri)},
-        // elements without property `filename` will be sent as plain text
-        { name : 'upload_preset', data : preset},
-      ]).then((resp) => {
-        console.log('resp',  resp);
-        // ...
-      }).catch((err) => {
-        // ...
-        console.log('err', err);
-      })
-
-      console.log('video res', res);
-
-
-      json = await res.json();
-
-
-    } else {
-      uri = await this.resizeImage(uri);
-    // uri = await this.cropImage(uri);
-
-      formdata = new FormData();
-      formdata.append('file', {
-        type: 'image/jpeg',
-        uri,
-        name: 'upload.jpg'
-      });
-
-      let preset = Service.fetch.store.getState().environment.environment.get('cloud_preset');
-      let cloudName = Service.fetch.store.getState().environment.environment.get('cloud_name');
-
-      formdata.append('upload_preset', preset);
-      let res = await fetch(
-        `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'multipart/form-data; boundary=6ff46e0b6b5148d984f148b6542e5a5d'
-          },
-          body: formdata
-        }
-      );
-
-      json = await res.json();
-
+      let videoJSON = await this.uploadVideo();
+      console.log('videoJSON', videoJSON);
+      ret.video_url = videoJSON.secure_url;
     }
 
-    console.log('json', json);
-
+    let pictureJSON = await this.uploadPicture();
+    ret.asset_url =  pictureJSON.url;
 
     window.tag = this.tags;
 
@@ -139,12 +136,15 @@ export default class Picture {
 
     window.tags = labels_attributes;
 
+    ret.labels_attributes = labels_attributes;
+
     // console.log('label_attributes', labels_attributes);
 
-    return {
-      asset_url: json.url,
-      labels_attributes
-    };
+    return ret;
+  }
+
+  @computed get isVideo() {
+    return this.videoUrl != null;
   }
 
   @computed get selected() {

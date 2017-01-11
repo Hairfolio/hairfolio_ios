@@ -346,7 +346,9 @@ class CreatePostStore {
       this.gallery
     );
 
-    video.isVideo = true;
+    console.log('picture thumnail', this.lastTakenPicture.path);
+
+    video.videoUrl = this.lastTakenPicture.videoUrl;
 
 
     this.gallery.addPicture(video);

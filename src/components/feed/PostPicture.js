@@ -94,16 +94,36 @@ const PostPicture = observer(({post}) => {
           >
             {post.pictures.map(
               (pic) => (
-                <Image
-                  key={pic.key}
-                  style={{height: windowWidth, width: windowWidth}}
-                  source={pic.getSource(windowWidth * 2)}
-                />
+                <View>
+                  <Image
+                    key={pic.key}
+                    style={{height: windowWidth, width: windowWidth}}
+                    source={pic.getSource(windowWidth * 2)}
+                  />
+                {pic.isVideo ?
+                    <View
+                      style={{
+                        position: 'absolute',
+                        right: h(18),
+                        bottom: h(80)
+                      }}
+                    >
+                      <Image
+                        source={require('img/play_button.png')}
+                        style={{height: 20, width: 20}}
+                      />
+                    </View>
+                    : <View />
+                }
+              </View>
               )
             )}
           </Swiper>
           <PostStar post={post} />
           <PostSave post={post} />
+
+
+
 
           <View
             style={{

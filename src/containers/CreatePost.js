@@ -60,11 +60,15 @@ const VideoRecorder = observer(({isOpen}) => {
       device='back'
       onNewSegment={(segment) => {
         console.log('newSegment', segment);
+
+        // window.recorder.removeAllSegments()?
         _.last(window.navigators).jumpTo(gallery)
         CreatePostStore.loadGallery = false;
-        CreatePostStore.lastTakenPicture = {path: segment.url};
+        CreatePostStore.lastTakenPicture = {
+          path: segment.thumbnail,
+          videoUrl: segment.url,
+        };
         CreatePostStore.addTakenVideoToGallery()
-
       }}
       style={{
         width: windowWidth,
@@ -287,17 +291,8 @@ export default class CreatePost extends PureComponent {
     CreatePostStore.isRecording = false;
     window.recorder.pause();
 
-    /*
-    window.recorder.save((errr, url) => {
-      console.log('url = ', url);
-
-      _.last(this.context.navigators).jumpTo(gallery)
-      CreatePostStore.loadGallery = false;
-      CreatePostStore.lastTakenPicture = {path: url};
-      CreatePostStore.addTakenVideoToGallery()
-
-    });
-    */
+    _.last(window.navigators).jumpTo(gallery)
+    CreatePostStore.loadGallery = true;
 
   }
 

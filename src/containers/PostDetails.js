@@ -36,7 +36,6 @@ export default class PostDetails extends PureComponent {
     navigators: React.PropTypes.array.isRequired
   };
 
-
   render() {
     return (<NavigationSetting
       style={{

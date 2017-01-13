@@ -56,7 +56,18 @@ class FilterImage {
     if (filterName == 'None') {
       this.source = originalSource;
     } else {
-      ImageFilter.filterImage(originalSource.uri.substr(7), filterName, (res) => {
+
+      let uri = originalSource.uri;
+
+      /*
+      if (uri.startsWith('file')) {
+        uri = uri.replace('file:/', '');
+      } else if (uri.startsWith('asset')) {
+        uri = uri.replace('assets-library:/', '');
+      }
+      */
+
+      ImageFilter.filterImage(uri, filterName, (res) => {
         this.source = {uri: 'data:image/jpeg;base64,' + res};
       });
     }

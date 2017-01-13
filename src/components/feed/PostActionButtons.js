@@ -66,7 +66,7 @@ const PostActionButtons = observer(({post}) => {
         });
       } else if (buttonIndex == 2) {
         // report abuse
-        Communications.email(['stephendamico@gmail.com'], null, null, 'Abusive Post', 'The post from  ' + post.creator.name + ', created on ' + post.createdTime + ' is abusive, please check. id: ' + post.id)
+        Communications.email(['stephen@hairfolioapp.com'], null, null, 'Abusive Post', 'The post from  ' + post.creator.name + ', created on ' + post.createdTime + ' is abusive, please check. id: ' + post.id)
       }
     });
   }

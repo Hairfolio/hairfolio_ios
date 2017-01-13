@@ -56,6 +56,9 @@ export default class FormPageInput extends PureComponent {
     return (<TouchableOpacity
       disabled={this.props.disabled}
       onPress={() => {
+        if (this.props.onPress) {
+          this.props.onPress();
+        }
         if (!this.props.page)
           return;
         _.last(this.context.navigators).jumpTo(this.props.page);

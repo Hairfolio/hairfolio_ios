@@ -29,7 +29,7 @@ const WhiteHeader = observer(({title, onLeft, onRenderRight}) => {
         backgroundColor: 'white',
         height: h(86) + 20,
         paddingTop: 20,
-        paddingHorizontal: h(26),
+        paddingHorizontal: 0,
         flexDirection: 'row',
         alignItems: 'center',
         borderBottomWidth: 1,
@@ -38,16 +38,16 @@ const WhiteHeader = observer(({title, onLeft, onRenderRight}) => {
     >
       <TouchableOpacity
         style={{
-          width: 80
+          width: 80,
+          backgroundColor: 'red',
         }}
         onPress={onLeft}
       >
-
-
       {onLeft ?
           <View
             style = {{
               height: h(60),
+              paddingLeft: h(26),
               flexDirection: 'row',
               alignItems: 'center'
             }}
@@ -75,7 +75,8 @@ const WhiteHeader = observer(({title, onLeft, onRenderRight}) => {
 
       <View
         style={{
-          width: 80
+          width: 80,
+          paddingRight: h(26)
         }}
       >
         {renderRight()}

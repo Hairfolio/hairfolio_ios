@@ -183,8 +183,10 @@ const PostDetailsHeader = observer(({store}) => {
         <TouchableOpacity
           style = {{
             position: 'absolute',
-            top: h(40),
-            left: h(33)
+            top: h(20),
+            paddingVertical: h(20),
+            left: h(13),
+            paddingHorizontal: h(20)
           }}
           onPress={() => store.back()}
         >
@@ -197,8 +199,10 @@ const PostDetailsHeader = observer(({store}) => {
         <TouchableOpacity
           style = {{
             position: 'absolute',
-            top: h(43),
-            right: h(33)
+            top: h(23),
+            right: h(13),
+            paddingHorizontal: h(20),
+            paddingVertical: h(20)
           }}
         >
           <Image
@@ -210,8 +214,6 @@ const PostDetailsHeader = observer(({store}) => {
           />
         </TouchableOpacity>
         <PostTags store={store} />
-
-
         <PostDetailsActionButtons store={store} />
         <PostSave post={post} />
         <PostStar post={post} />

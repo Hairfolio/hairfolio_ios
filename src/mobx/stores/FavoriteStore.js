@@ -39,7 +39,6 @@ class FavoriteStore {
     let myId = Service.fetch.store.getState().user.data.get('id')
     console.log('myId', myId);
 
-    // TODO user proper backend
     let res = (await ServiceBackend.get('posts?favorites=true')).posts;
     this.elements = [];
 

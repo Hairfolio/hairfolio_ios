@@ -12,6 +12,8 @@ import {COLORS, FONTS, SCALE} from '../style';
 import NavigationSetting from '../navigation/NavigationSetting';
 import validator from 'validator';
 
+import Communications from 'react-native-communications'
+
 import appEmitter from '../appEmitter';
 
 import {registrationActions} from '../actions/registration';
@@ -82,6 +84,7 @@ export default class EditCustomer extends PureComponent {
 
 
     let business;
+    let salonUserId;
     if (this.props.user.get('account_type') === 'ambassador') {
       business = rawValues.brand;
     } else {
@@ -91,7 +94,6 @@ export default class EditCustomer extends PureComponent {
       }
     }
 
-    let salonUserId;
 
     if (business != null) {
       rawValues.business_info = business.info;
@@ -532,9 +534,17 @@ export default class EditCustomer extends PureComponent {
 
           <PageInput
             placeholder="Feedback"
+            onPress={() => {
+              Communications.email(['stephen@hairfolioapp.com'], null, null, 'Feedback', '');
+            }}
           />
           <View style={{height: StyleSheet.hairlineWidth}} />
           <PageInput
+            onPress={
+              () => {
+                Communications.web('http://hairfolioapp.com/terms-conditions/')
+              }
+            }
             placeholder="Terms & Conditions"
           />
 

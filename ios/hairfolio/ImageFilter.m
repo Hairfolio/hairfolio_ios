@@ -29,29 +29,97 @@ RCT_EXPORT_METHOD(filterImage:(NSString *)path filterName:(NSString *)filterName
   
   //  Convert UIColor to CIColor
   
-  UIImage* image = [UIImage imageWithContentsOfFile:path];
   
-  CIImage *ciImage = [[CIImage alloc] initWithImage:image];
-  
-  //  Set values for CIColorMonochrome Filter
-  CIFilter *filter = [CIFilter filterWithName:filterName
-                                keysAndValues:kCIInputImageKey, ciImage, nil];
-  
-  // [filter setValue:[NSNumber numberWithDouble:0.75]  forKey: @"inputPower"];
-  
-  
-  ciImage = [filter outputImage];
-  
-  
-  
-  CIContext *context   = [CIContext contextWithOptions:nil];
-  CGImageRef cgImage   = [context createCGImage:ciImage fromRect:ciImage.extent];
-  UIImage *filteredImage       = [UIImage imageWithCGImage:cgImage];
-  
-  NSData *data = UIImageJPEGRepresentation(filteredImage, 0.8);
-  NSString *dataString = [data base64EncodedStringWithOptions:0]; // base64 encoded image string
-  
-  callback(@[dataString]);
+  if ([path hasPrefix:@"file"]) {
+    
+    NSString* newPath = [path substringFromIndex:6];
+    
+    UIImage* image = [UIImage imageWithContentsOfFile:newPath];
+    
+    
+    
+    CIImage *ciImage = [[CIImage alloc] initWithImage:image];
+    
+    //  Set values for CIColorMonochrome Filter
+    CIFilter *filter = [CIFilter filterWithName:filterName
+                                  keysAndValues:kCIInputImageKey, ciImage, nil];
+    
+    
+    ciImage = [filter outputImage];
+    
+    
+    
+    CIContext *context   = [CIContext contextWithOptions:nil];
+    CGImageRef cgImage   = [context createCGImage:ciImage fromRect:ciImage.extent];
+    UIImage *filteredImage       = [UIImage imageWithCGImage:cgImage];
+    
+    NSData *data = UIImageJPEGRepresentation(filteredImage, 0.8);
+    NSString *dataString = [data base64EncodedStringWithOptions:0]; // base64 encoded image string
+    
+    callback(@[dataString]);
+  } else {
+    
+    CGSize size = CGSizeMake(400, 400);
+    
+    
+    NSURL* imageURL = [NSURL URLWithString:path];
+    
+    
+    PHFetchResult *results;
+    results = [PHAsset fetchAssetsWithALAssetURLs:@[imageURL] options:nil];
+    
+    
+    PHAsset *asset = [results firstObject];
+    PHImageRequestOptions *imageOptions = [PHImageRequestOptions new];
+    
+    
+    // Note: PhotoKit defaults to a deliveryMode of PHImageRequestOptionsDeliveryModeOpportunistic
+    // which means it may call back multiple times - we probably don't want that
+    imageOptions.deliveryMode = PHImageRequestOptionsDeliveryModeHighQualityFormat;
+    
+    CGSize targetSize;
+    targetSize = CGSizeApplyAffineTransform(size, CGAffineTransformMakeScale(2.0, 2.0));
+    imageOptions.resizeMode = PHImageRequestOptionsResizeModeFast;
+    
+    
+    PHImageContentMode contentMode = PHImageContentModeAspectFill;
+    
+    [[PHImageManager defaultManager] requestImageForAsset:asset
+                                               targetSize:targetSize
+                                              contentMode:contentMode
+                                                  options:imageOptions
+                                            resultHandler:^(UIImage *result, NSDictionary<NSString *, id> *info) {
+                                              //  Convert UIImage to CIImage
+                                              
+                                              CIImage *ciImage = [[CIImage alloc] initWithImage:result];
+                                              
+                                              //  Set values for CIColorMonochrome Filter
+                                              CIFilter *filter = [CIFilter filterWithName:filterName
+                                                                            keysAndValues:kCIInputImageKey, ciImage, nil];
+                                              
+                                              // [filter setValue:[NSNumber numberWithDouble:0.75]  forKey: @"inputPower"];
+                                              
+                                              
+                                              ciImage = [filter outputImage];
+                                              
+                                              
+                                              
+                                              CIContext *context   = [CIContext contextWithOptions:nil];
+                                              CGImageRef cgImage   = [context createCGImage:ciImage fromRect:ciImage.extent];
+                                              UIImage *filteredImage       = [UIImage imageWithCGImage:cgImage];
+                                              
+                                              NSData *data = UIImageJPEGRepresentation(filteredImage, 0.8);
+                                              NSString *dataString = [data base64EncodedStringWithOptions:0]; // base64 encoded image string
+                                              
+                                              callback(@[dataString]);
+                                              
+                                              
+                                              
+                                              
+                                              
+                                            }];
+    
+  }
   
 
   

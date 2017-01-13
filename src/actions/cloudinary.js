@@ -50,6 +50,9 @@ export const cloudinaryActions = {
             uri,
             name: 'upload.jpg'
           });
+
+          console.log('cloud', getState().environment.environment.get('cloud_preset'), getState().environment.environment.get('cloud_name'));
+
           formdata.append('upload_preset', getState().environment.environment.get('cloud_preset'));
           return window.fetch(
             `https://api.cloudinary.com/v1_1/${getState().environment.environment.get('cloud_name')}/image/upload`,
@@ -74,6 +77,7 @@ export const cloudinaryActions = {
           })
           .then((response) => {
             var r = response.jsonData;
+            console.log('publicID', r.public_id);
             return {
               handle,
               'public_id': r.public_id

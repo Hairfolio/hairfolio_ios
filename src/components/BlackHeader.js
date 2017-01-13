@@ -51,14 +51,14 @@ const BlackHeader = observer(({title, onLeft, onRenderRight, onRenderLeft}) => {
         backgroundColor: '#393939',
         height: h(86) + 20,
         paddingTop: 20,
-        paddingHorizontal: h(26),
         flexDirection: 'row',
         alignItems: 'center'
       }}
     >
       <TouchableOpacity
         style={{
-          width: 80
+          width: 80,
+          paddingLeft: h(26),
         }}
         onPress={onLeft}
       >
@@ -79,7 +79,8 @@ const BlackHeader = observer(({title, onLeft, onRenderRight, onRenderLeft}) => {
       <View
         style={{
           width: 80,
-          backgroundColor: 'transparent'
+          backgroundColor: 'transparent',
+          paddingRight: h(26)
         }}
       >
         {renderRight()}

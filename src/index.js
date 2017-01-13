@@ -5,6 +5,7 @@ import PureComponent from './components/PureComponent';
 import {Provider} from 'react-redux';
 import {View, TextInput, NativeModules, Animated, StatusBar} from 'react-native';
 import dismissKeyboard from 'react-native/Libraries/Utilities/dismissKeyboard';
+import ServiceBackend from 'backend/ServiceBackend.js'
 
 import Navigator from './navigation/Navigator';
 
@@ -23,7 +24,6 @@ import {getHairfolios} from 'backend/HairfolioBackend';
 import {hello, comments, starGivers, oauthStack, loginStack, forgottenPasswordStack, signupConsumerStack, signupStylistStack, signupSalonStack, signupBrandStack, appStack, editCustomerStack, createPostStack, postDetails,
   searchDetails, tagPosts, hairfolioPosts, messagesRoute, writeMessageRoute, messageDetailsRoute, blackBook, contactDetails
 } from './routes';
-
 
 import {appActions} from './actions/app';
 import UserStore from 'stores/UserStore.js';
@@ -75,13 +75,15 @@ export default class Root extends PureComponent {
       // prepare services
       _.each(services, service => service.setStore(store));
       _.each(services, service => service.ready());
+
+
       this.initialRoute = loginStack;
 
       if (utils.isReady(store.getState().user.state)) {
         this.initialRoute = appStack;
       }
 
-      // this.initialRoute = hello;
+        // this.initialRoute = hello;
 
       this.setState({ready: true});
     });

@@ -42,7 +42,7 @@ class Message {
   }
 
   async init(obj) {
-    console.log('obj', obj);
+    console.log('msg obj', obj);
 
     let isMe = obj.user.id == Service.fetch.store.getState().user.data.get('id');
     console.log('isMe', isMe);
@@ -58,6 +58,7 @@ class Message {
       await post.init(obj.post);
       this.post = post;
     } else if (obj.url) {
+      console.log('msg pic');
       let pic = {uri: obj.url};
 
       this.picture = new Picture(
@@ -65,6 +66,13 @@ class Message {
         pic,
         null
       );
+
+
+      if (obj.url.indexOf('mov') > -1) {
+        this.picture.videoUrl = obj.url;
+      }
+
+
     } else {
       this.text = obj.body;
     }
@@ -119,7 +127,7 @@ class Message {
 
 class LoadingStore {
   @observable isLoading = false;
-  @observable loadingText = 'uploading Picture';
+  @observable loadingText = 'Uploading ...';
 }
 
 class MessageDetailsStore {
@@ -167,10 +175,9 @@ class MessageDetailsStore {
 
     // read the conversations
     ServiceBackend.post(`conversations/${this.id}/read`);
-
     let res = (await ServiceBackend.get(`conversations/${this.id}/messages`)).messages;
 
-    console.log('messages');
+    console.log('messages', res);
 
     this.messages = (await Promise.all(res.map(e => {
       let c = new Message();
@@ -263,6 +270,62 @@ class MessageDetailsStore {
     };
 
     await ServiceBackend.post(`conversations/${this.id}/messages`, postData);
+
+  }
+
+  async sendVideo(response) {
+
+    this.loadingStore.isLoading = true;
+
+    let msg = new Message();
+    let pic = {uri: response.uri, isStatic: true};
+
+    msg.picture = new Picture(
+      pic,
+      pic,
+      null
+    );
+
+    let uri = response.uri;
+
+    msg.picture.videoUrl = uri;
+
+
+    // send to cloudinary
+    let res = await msg.picture.uploadVideo();
+
+    console.log('msg cloud 2', res);
+
+
+    pic = {uri: res.secure_url, isStatic: true};
+    pic.videoUrl = res.secure_url;
+
+
+
+    msg.picture = new Picture(
+      pic,
+      pic,
+      null
+    );
+
+    this.messages.push(msg)
+
+    this.loadingStore.isLoading = false;
+
+    setTimeout(() => this.scrollToBottom(), 100)
+
+    let postData = {
+      message: {
+        body: '',
+        url: res.secure_url
+      }
+    };
+
+    console.log('msg postData', postData);
+
+    let res2 = await ServiceBackend.post(`conversations/${this.id}/messages`, postData);
+
+    console.log('msg res2', res2);
 
   }
 

@@ -38,8 +38,7 @@ const WhiteHeader = observer(({title, onLeft, onRenderRight}) => {
     >
       <TouchableOpacity
         style={{
-          width: 80,
-          backgroundColor: 'red',
+          width: 80
         }}
         onPress={onLeft}
       >

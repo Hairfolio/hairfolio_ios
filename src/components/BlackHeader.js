@@ -79,8 +79,7 @@ const BlackHeader = observer(({title, onLeft, onRenderRight, onRenderLeft}) => {
       <View
         style={{
           width: 80,
-          backgroundColor: 'transparent',
-          paddingRight: h(26)
+          backgroundColor: 'transparent'
         }}
       >
         {renderRight()}

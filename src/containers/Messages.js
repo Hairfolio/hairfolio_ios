@@ -233,7 +233,7 @@ export default class Messages extends PureComponent {
                   WriteMessageStore.myBack = () => window.navigators[0].jumpTo(routes.messagesRoute);
                 }
               }
-              style={{height: h(60), justifyContent: 'center'}}
+              style={{height: h(60), paddingRight: h(26), justifyContent: 'center'}}
             >
               <Image
                 style = {{

@@ -92,7 +92,8 @@ export default class WriteMessage extends PureComponent {
                   color: 'white',
                   fontFamily: FONTS.MEDIUM,
                   textAlign: 'right',
-                  opacity: WriteMessageStore.selectedNumber == 0 ? 0.5 : 1
+                  opacity: WriteMessageStore.selectedNumber == 0 ? 0.5 : 1,
+                  paddingLeft: h(28),
                 }}
               >
                 Start

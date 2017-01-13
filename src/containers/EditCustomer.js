@@ -11,6 +11,7 @@ import {environment} from '../selectors/environment';
 import {COLORS, FONTS, SCALE} from '../style';
 import NavigationSetting from '../navigation/NavigationSetting';
 import validator from 'validator';
+import FeedStore from 'stores/FeedStore.js'
 
 import Communications from 'react-native-communications'
 
@@ -552,6 +553,7 @@ export default class EditCustomer extends PureComponent {
           <DeleteButton
             label="LOG OUT"
             onPress={() => {
+              FeedStore.reset();
               this.props.dispatch(registrationActions.logout());
               appEmitter.emit('logout');
               _.first(this.context.navigators).jumpTo(loginStack);
@@ -561,6 +563,8 @@ export default class EditCustomer extends PureComponent {
           <DeleteButton
             label="DESTROY"
             onPress={() => {
+              FeedStore.reset();
+              this.props.dispatch(registrationActions.logout());
               this.props.dispatch(registrationActions.destroy());
               appEmitter.emit('logout', {destroy: true});
               _.first(this.context.navigators).jumpTo(loginStack);

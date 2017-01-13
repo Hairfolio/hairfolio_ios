@@ -131,7 +131,7 @@ class ServiceBackend extends Backend {
         }
 
         FeedStore.load();
-        SearchStore.refresh();
+        // SearchStore.refresh();
 
         window.navigators[1].jumpTo(routes.createPost)
         window.navigators[0].jumpTo(routes.appStack);

@@ -8,6 +8,8 @@ import {
   TextInput,
   TouchableHighlight,
   View, Text, Dimensions, TouchableOpacity, TouchableWithoutFeedback, Image} from 'react-native';
+
+import VideoPreview from 'components/VideoPreview.js'
 import connect from '../lib/connect';
 import {app} from '../selectors/app';
 import {post} from '../selectors/post';
@@ -93,14 +95,23 @@ class MessageContent  extends React.Component {
         </View>
       );
     } else if (this.props.store.type == 'picture') {
+      console.log('msg img');
 
 
-      return (
-        <MyImage
-          source={this.props.store.picture.getSource(2 * this.props.maxWidth)}
-          width={this.props.maxWidth}
-        />
-      );
+      if (this.props.store.picture.isVideo) {
+        return (
+          <VideoPreview picture={this.props.store.picture} />
+        );
+      } else {
+        return (
+          <MyImage
+            source={this.props.store.picture.getSource(2 * this.props.maxWidth)}
+            width={this.props.maxWidth}
+          />
+        );
+      }
+
+
     } else {
       // post
       let store = this.props.store;
@@ -280,15 +291,28 @@ const MessageInput = observer(() => {
       <TouchableOpacity
         onPress={
           () => {
+
+            StatusBar.setHidden(true);
+
             ImagePicker.showImagePicker({
+              title: 'Select Photo or Video',
+              takePhotoButtonTitle: 'Take Photo or Video',
+              mediaType: 'mixed',
               noData: true,
-              allowsEditing: true
+              allowsEditing: true,
+              videoQuality: 'high'
             }, (response) => {
+              StatusBar.setHidden(false);
+              console.log('response', response);
               if (response.error) {
                 alert(response.error);
               }
               if (response.uri) {
-                MessageDetailsStore.sendPicture(response);
+                if (response.uri.endsWith('MOV')) {
+                  MessageDetailsStore.sendVideo(response);
+                } else {
+                  MessageDetailsStore.sendPicture(response);
+                }
               }
             });
           }

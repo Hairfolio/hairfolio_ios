@@ -2,6 +2,7 @@ import {Record, Map} from 'immutable';
 import {appTypes} from '../actions/app';
 import {usersTypes} from '../actions/users';
 import {registrationTypes} from '../actions/registration';
+import FeedStore from 'stores/FeedStore.js'
 
 import {LOADING, LOADING_ERROR, READY} from '../constants';
 
@@ -32,6 +33,9 @@ export default function usersReducer(state = initialState, action) {
     }
 
     case registrationTypes.FOLLOW_USER_SUCCESS.toString(): {
+
+      FeedStore.load();
+
       if (!state.users.get(action.payload.id))
         return state;
 
@@ -40,6 +44,9 @@ export default function usersReducer(state = initialState, action) {
     }
 
     case registrationTypes.UNFOLLOW_USER_SUCCESS.toString(): {
+
+      FeedStore.load();
+
       if (!state.users.get(action.payload.id))
         return state;
 

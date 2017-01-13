@@ -19,7 +19,7 @@ import {
 
 import LinearGradient from 'react-native-linear-gradient';
 
-import Swiper from 'react-native-swiper';
+import Swiper from 'hairfolio/react-native-swiper';
 
 import ServiceRow from 'components/post/ServiceRow.js'
 
@@ -154,7 +154,7 @@ const ServiceInfo = observer(({store}) => {
 
   return (
     <View>
-      <View style={{marginTop: h(61)}}>
+      <View style={{marginTop: h(81)}}>
         <ServiceRow selector={{title: 'Service', value: store.serviceName }} />
         <ServiceRow selector={{title: 'Brand', value: store.brandName}} />
         <ServiceRow selector={{title: 'Color', value: store.lineName}} />
@@ -163,6 +163,7 @@ const ServiceInfo = observer(({store}) => {
     </View>
   );
 });
+
 
 const PostDetailsColorFormula = observer(({store}) => {
 
@@ -207,7 +208,6 @@ const PostDetailsColorFormula = observer(({store}) => {
           top: 10,
           bottom: null
         }}
-
       >
         {store.serviceTags.map(e =>
             <ServiceInfo key={e.key} store={e} />

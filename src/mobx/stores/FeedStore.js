@@ -22,6 +22,12 @@ class FeedStore {
 
   constructor() {
     this.elements = [];
+    this.hasLoaded = false;
+  }
+
+  reset() {
+    this.hasLoaded = false;
+    this.elements = [];
   }
 
   async load() {

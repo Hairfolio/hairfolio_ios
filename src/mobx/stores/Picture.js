@@ -44,11 +44,22 @@ export default class Picture {
   }
 
   getSource(width) {
+
     let uri = this.source.uri;
+
+    if (this.isVideo) {
+      console.log('msg video src', uri);
+      uri = this.videoUrl.substr(0, this.videoUrl.lastIndexOf('.')) + '.jpg';
+    }
+
+    console.log('msg img src', uri);
+
 
     if (uri && uri.indexOf('cloudinary') > -1) {
       let splitUrl = uri.split('upload');
       let newUrl = `${splitUrl[0]}upload/w_${width}${splitUrl[1]}`;
+      console.log('pic uri', newUrl);
+      console.log('msg pic url', newUrl);
       return {uri: newUrl};
     }
 

@@ -14,7 +14,7 @@ let PhotoAlbum = NativeModules.PhotoAlbum;
 import {v4} from 'uuid';
 
 import User from 'stores/User.js'
-import {_, moment, React, Text} from 'hairfolio/src/helpers';
+import {_, jpg, moment, React, Text} from 'hairfolio/src/helpers';
 
 
 class Message {
@@ -60,6 +60,10 @@ class Message {
     } else if (obj.url) {
       console.log('msg pic');
       let pic = {uri: obj.url};
+
+      if (obj.url.indexOf('mov') > -1) {
+        pic = {uri: jpg(obj.url)};
+      }
 
       this.picture = new Picture(
         pic,
@@ -296,17 +300,15 @@ class MessageDetailsStore {
 
     console.log('msg cloud 2', res);
 
-
-    pic = {uri: res.secure_url, isStatic: true};
-    pic.videoUrl = res.secure_url;
-
-
+    pic = {uri: jpg(res.secure_url)};
 
     msg.picture = new Picture(
       pic,
       pic,
       null
     );
+
+    msg.picture.videoUrl = res.secure_url;
 
     this.messages.push(msg)
 

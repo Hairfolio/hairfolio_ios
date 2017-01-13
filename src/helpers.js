@@ -38,6 +38,8 @@ let windowHeight = Dimensions.get('window').height;
 
 let s = (el) => (a) => el = a;
 
+let jpg = (url) => url.substr(0, url.lastIndexOf('.')) + '.jpg';
+
 export {
   _, // lodash
   observer, // mobx
@@ -60,5 +62,6 @@ export {
   // react-native components
   ActionSheetIOS, PickerIOS, ActivityIndicator, WebView, Picker, Animated, Modal, StatusBar, ScrollView, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet, Dimensions,
   getUserId,
+  jpg
 };
 

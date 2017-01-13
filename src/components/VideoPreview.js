@@ -51,11 +51,11 @@ import ServiceBox from 'components/post/ServiceBox.js'
 
 import AddTagModal from 'components/post/AddTagModal.js'
 
-const VideoPreview = observer(({picture}) => {
+const VideoPreview = observer(({picture, width}) => {
+
+  let myWidth = width ? width : windowWidth;
 
   let pic = picture;
-
-  let windowWidth = Dimensions.get('window').width;
 
   if (pic == null) {
     return <View />;
@@ -65,8 +65,8 @@ const VideoPreview = observer(({picture}) => {
     return (
       <View
         style={{
-          width: windowWidth,
-          height: windowWidth,
+          width: myWidth,
+          height: myWidth,
           overflow: 'hidden'
         }}
       >
@@ -81,8 +81,8 @@ const VideoPreview = observer(({picture}) => {
             pic.isPlaying = false;
           }}
           style={{
-            marginTop: -(windowHeight - windowWidth) / 2,
-            width: windowWidth,
+            marginTop: -(windowHeight - myWidth) / 2,
+            width: myWidth,
             height: windowHeight,
             backgroundColor: 'black'
           }}
@@ -95,14 +95,14 @@ const VideoPreview = observer(({picture}) => {
     return (
       <View
         style={{
-          width: windowWidth,
-          height: windowWidth
+          width: myWidth,
+          height: myWidth
         }}
       >
       <Image
         style={{
-          height: windowWidth,
-          width: windowWidth
+          height: myWidth,
+          width: myWidth
 
         }}
         source={pic.source}
@@ -118,8 +118,8 @@ const VideoPreview = observer(({picture}) => {
         <Image
           style={{
             position: 'absolute',
-            top: windowWidth / 2 - 40,
-            left: windowWidth / 2 - 40,
+            top: myWidth / 2 - 40,
+            left: myWidth / 2 - 40,
             height: 80,
             width: 80
 

@@ -1,5 +1,5 @@
 import {observable, computed, action} from 'mobx';
-import {_, v4, Text} from 'hairfolio/src/helpers';
+import {_, jpg, v4, Text} from 'hairfolio/src/helpers';
 
 import LinkTag from 'stores/tags/LinkTag.js'
 import HashTag from 'stores/tags/HashTag.js'
@@ -47,12 +47,14 @@ export default class Picture {
 
     let uri = this.source.uri;
 
+    /*
     if (this.isVideo) {
       console.log('msg video src', uri);
-      uri = this.videoUrl.substr(0, this.videoUrl.lastIndexOf('.')) + '.jpg';
+      uri = jpg(this.videoUrl);
     }
 
     console.log('msg img src', uri);
+    */
 
 
     if (uri && uri.indexOf('cloudinary') > -1) {
@@ -156,6 +158,13 @@ export default class Picture {
 
   @computed get isVideo() {
     return this.videoUrl != null;
+  }
+
+  @computed get videoThumbnail() {
+    if (this.videoUrl == null) {
+      return '';
+    }
+    return jpg(this.videoUrl);
   }
 
   @computed get selected() {

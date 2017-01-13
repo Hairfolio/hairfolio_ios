@@ -100,7 +100,7 @@ class MessageContent  extends React.Component {
 
       if (this.props.store.picture.isVideo) {
         return (
-          <VideoPreview picture={this.props.store.picture} />
+          <VideoPreview width={this.props.maxWidth} picture={this.props.store.picture} />
         );
       } else {
         return (

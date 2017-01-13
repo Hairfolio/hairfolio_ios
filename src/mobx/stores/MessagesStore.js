@@ -4,7 +4,7 @@ import Camera from 'react-native-camera';
 import Picture from 'stores/Picture.js'
 import ServiceBackend from 'backend/ServiceBackend.js'
 
-import {_, v4, getUserId,  moment, React, Text} from 'hairfolio/src/helpers';
+import {_, v4, jpg, getUserId,  moment, React, Text} from 'hairfolio/src/helpers';
 
 import User from 'stores/User.js'
 import Service from 'hairfolio/src/services/index.js'
@@ -56,15 +56,30 @@ class Message {
         null
       );
     } else if (lastMessage.url && lastMessage.url.length > 0) {
-      this.text = 'shared a picture';
 
-      let pic = {uri: lastMessage.url };
+      if (lastMessage.url.endsWith('mov')) {
+        this.text = 'shared a video';
 
-      this.picture = new Picture(
-        pic,
-        pic,
-        null
-      );
+        let pic = {uri: jpg(lastMessage.url)};
+
+        this.picture = new Picture(
+          pic,
+          pic,
+          null
+        );
+
+        this.picture.videoUrl = lastMessage.url;
+      } else {
+        this.text = 'shared a picture';
+
+        let pic = {uri: lastMessage.url};
+
+        this.picture = new Picture(
+          pic,
+          pic,
+          null
+        );
+      }
 
     } else {
       this.text = lastMessage.body;

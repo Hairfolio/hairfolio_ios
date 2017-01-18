@@ -110,7 +110,7 @@ const VideoPreview = observer(({picture, width}) => {
       <TouchableWithoutFeedback
         onPress={
           () => {
-            console.log('start playing');
+            console.log('start playing', pic.videoUrl);
             pic.isPlaying = true;
           }
         }

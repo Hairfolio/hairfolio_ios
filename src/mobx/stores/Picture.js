@@ -60,8 +60,6 @@ export default class Picture {
     if (uri && uri.indexOf('cloudinary') > -1) {
       let splitUrl = uri.split('upload');
       let newUrl = `${splitUrl[0]}upload/w_${width}${splitUrl[1]}`;
-      console.log('pic uri', newUrl);
-      console.log('msg pic url', newUrl);
       return {uri: newUrl};
     }
 
@@ -69,7 +67,11 @@ export default class Picture {
   }
 
   async uploadVideo() {
-    let uri = this.videoUrl.substr(7);
+    let uri = this.videoUrl;
+
+    if (this.videoUrl.startsWith('file')) {
+      uri = uri.substr(7);
+    }
     console.log('video', uri);
 
     let formdata = new FormData();
@@ -81,6 +83,8 @@ export default class Picture {
 
     let preset = Service.fetch.store.getState().environment.environment.get('cloud_preset');
     let cloudName = Service.fetch.store.getState().environment.environment.get('cloud_name');
+
+    console.log('data', RNFetchBlob.wrap(uri));
 
     let res = await RNFetchBlob.fetch('POST', `https://api.cloudinary.com/v1_1/${cloudName}/video/upload`, {
       'Content-Type' : 'multipart/form-data',

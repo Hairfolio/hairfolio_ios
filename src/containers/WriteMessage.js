@@ -74,15 +74,12 @@ export default class WriteMessage extends PureComponent {
        <View style={{flex: 1}}>
         <BlackHeader
           onLeft={() => WriteMessageStore.myBack()}
-          title='New Message'
+          title={WriteMessageStore.title}
           onRenderRight={() =>
             <TouchableOpacity
               onPress={
                 () => {
-                  MessageDetailsStore.myBack = () => window.navigators[0].jumpTo(routes.messagesRoute);
-                  MessageDetailsStore.createConversation(WriteMessageStore.selectedItems);
-                  MessageDetailsStore.title = WriteMessageStore.titleNames;
-                  window.navigators[0].jumpTo(routes.messageDetailsRoute);
+                  WriteMessageStore.actionBtnAction();
                 }
               }
             >
@@ -96,7 +93,7 @@ export default class WriteMessage extends PureComponent {
                   paddingRight: h(28),
                 }}
               >
-                Start
+                {WriteMessageStore.actionBtnText}
               </Text>
             </TouchableOpacity>
           }

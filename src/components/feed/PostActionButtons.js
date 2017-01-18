@@ -21,6 +21,8 @@ import {
 import StarGiversStore from 'stores/StarGiversStore'
 import CommentsStore from 'stores/CommentsStore'
 
+import WriteMessageStore from 'stores/WriteMessageStore'
+
 import Communications from 'react-native-communications';
 
 import {starGivers, comments, appStack} from '../../routes';
@@ -174,7 +176,15 @@ const PostActionButtons = observer(({post}) => {
         </Text>
       </TouchableOpacity>
 
-      <View
+      <TouchableOpacity
+        onPress={
+          () => {
+            WriteMessageStore.myBack = () => window.navigators[0].jumpTo(routes.appStack);
+            WriteMessageStore.mode = 'POST';
+            WriteMessageStore.post = post;
+            window.navigators[0].jumpTo(routes.writeMessageRoute);
+          }
+        }
         style={{
           flexDirection: 'row',
           flex: 1,
@@ -186,7 +196,7 @@ const PostActionButtons = observer(({post}) => {
             width: h(46),
           }}
           source={require('img/feed_share.png')} />
-      </View>
+      </TouchableOpacity>
       <TouchableOpacity
         onPress={openMore}
         style={{

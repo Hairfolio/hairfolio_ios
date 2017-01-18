@@ -25,6 +25,7 @@ RCT_EXPORT_METHOD(getPhotosFromAlbums:(NSString *)name callback:(RCTResponseSend
   NSMutableArray *arr = [[NSMutableArray alloc] init];
   
   
+  
   PHFetchResult *userAlbums = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeAlbum subtype:PHAssetCollectionSubtypeAny options:nil];
   PHFetchResult *smartAlbums = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeSmartAlbum subtype:PHAssetCollectionSubtypeAny options:nil];
   
@@ -36,7 +37,39 @@ RCT_EXPORT_METHOD(getPhotosFromAlbums:(NSString *)name callback:(RCTResponseSend
         PHFetchResult *assetsInCollection = [PHAsset fetchAssetsInAssetCollection:collection options:nil];
         
         for (PHAsset *asset in assetsInCollection) {
-          [arr addObject:asset.localIdentifier];
+          
+          if (asset.mediaType == PHAssetMediaTypeImage || asset.mediaType == PHAssetMediaTypeVideo) {
+            NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+            [dict setObject:asset.localIdentifier forKey:@"uri"];
+            
+            
+            long seconds = lroundf(asset.duration); // Since modulo operator (%) below needs int or long
+            long min = (seconds % 3600) / 60;
+            long sec = seconds % 60;
+            
+            
+            if (asset.mediaType == PHAssetMediaTypeVideo) {
+              [dict setObject:@"true" forKey:@"isVideo"];
+              /*
+               
+               if (asset.mediaType == PHAssetMediaTypeVideo) {
+               [dict setObject:@"true" forKey:@"isVideo"];
+               
+               [[PHImageManager defaultManager] requestAVAssetForVideo:asset options:nil resultHandler:^(AVAsset * _Nullable videoAsset, AVAudioMix * _Nullable audioMix, NSDictionary * _Nullable info) {
+               NSLog(@"test");
+               if (videoAsset is AVURLAsset)
+               videoAsset
+               }];
+               
+               */
+            } else {
+              [dict setObject:@"false" forKey:@"isVideo"];
+            }
+
+            
+            [dict setObject:[NSString stringWithFormat:@"%ld:%02ld", min, sec] forKey:@"duration"];
+            [arr addObject:dict];
+          }
         }
       }
       

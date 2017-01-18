@@ -229,8 +229,9 @@ export default class Messages extends PureComponent {
             <TouchableOpacity
               onPress={
                 () => {
-                  window.navigators[0].jumpTo(routes.writeMessageRoute);
+                  WriteMessageStore.mode = 'MESSAGE';
                   WriteMessageStore.myBack = () => window.navigators[0].jumpTo(routes.messagesRoute);
+                  window.navigators[0].jumpTo(routes.writeMessageRoute);
                 }
               }
               style={{height: h(60), paddingRight: h(26), justifyContent: 'center'}}

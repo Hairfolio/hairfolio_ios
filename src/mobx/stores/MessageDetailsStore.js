@@ -58,7 +58,6 @@ class Message {
       await post.init(obj.post);
       this.post = post;
     } else if (obj.url) {
-      console.log('msg pic');
       let pic = {uri: obj.url};
 
       if (obj.url.indexOf('mov') > -1) {
@@ -152,7 +151,7 @@ class MessageDetailsStore {
     this.isLoading = true;
     this.messages = [];
 
-    console.log(users);
+    console.log('users', users);
     let ids = users.map(e => e.user.id);
 
     let userId = Service.fetch.store.getState().user.data.get('id');

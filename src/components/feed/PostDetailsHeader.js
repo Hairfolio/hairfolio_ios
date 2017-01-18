@@ -29,6 +29,8 @@ import VideoPreview from 'components/VideoPreview.js'
 
 import * as routes from 'hairfolio/src/routes.js'
 
+import WriteMessageStore from 'stores/WriteMessageStore'
+
 const PostDetailsActionButtons = observer(({store}) => {
 
   return (
@@ -204,6 +206,14 @@ const PostDetailsHeader = observer(({store}) => {
             paddingHorizontal: h(20),
             paddingVertical: h(20)
           }}
+          onPress={
+            () => {
+              WriteMessageStore.myBack = () => window.navigators[0].jumpTo(routes.postDetails);
+              WriteMessageStore.mode = 'POST';
+              WriteMessageStore.post = post;
+              window.navigators[0].jumpTo(routes.writeMessageRoute);
+            }
+          }
         >
           <Image
             style = {{

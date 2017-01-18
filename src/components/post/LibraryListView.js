@@ -80,9 +80,20 @@ const LibraryPicture = observer(({picture}) => {
             picture={picture}
             width={width}
           />
+          <Text
+            style={{
+              position: 'absolute',
+              bottom: 5,
+              right: 5,
+              color: 'white',
+              backgroundColor: 'transparent'
+            }}
+          >
+            {picture.timeText}
+          </Text>
         </View>
       </TouchableWithoutFeedback>
-    );
+  );
     // }
 });
 

@@ -11,6 +11,8 @@ import {_, v4, moment, React, Text} from 'hairfolio/src/helpers';
 import User from 'stores/User.js'
 
 import * as routes from 'hairfolio/src/routes.js'
+import MessageDetailsStore from 'stores/MessageDetailsStore.js';
+
 
 export class SelectableUser {
   @observable user;
@@ -50,6 +52,64 @@ class WriteMessageStore {
   @observable users = [];
   @observable inputText = '';
   @observable isLoading = false;
+  @observable mode = 'POST'
+
+
+  writeNewMessage() {
+    MessageDetailsStore.myBack = () => window.navigators[0].jumpTo(routes.messagesRoute);
+    MessageDetailsStore.createConversation(this.selectedItems);
+    MessageDetailsStore.title = this.titleNames;
+    window.navigators[0].jumpTo(routes.messageDetailsRoute);
+  }
+
+  async sharePost(myId, userId, post) {
+
+    // create Conversation
+    let postData = {
+      sender: Service.fetch.store.getState().user.data.get('id'),
+      conversation: {
+        sender_id: myId,
+        recipient_ids: [userId]
+      }
+    };
+
+    // 1. get conversation
+    let res = (await ServiceBackend.post('conversations', postData)).conversation;
+
+    // share the post
+
+
+  }
+
+
+  actionBtnAction() {
+    if (this.mode == 'MESSAGE') {
+      this.writeNewMessage();
+    } else {
+      let users = this.selectedItems.map(e => e.user);
+
+      for (let user of users) {
+        ServiceBackend.sendPostMessage(user, this.post);
+      }
+      this.myBack();
+    }
+  }
+
+  @computed get actionBtnText() {
+    if (this.mode == 'MESSAGE') {
+      return 'Start';
+    } else {
+      return 'Share';
+    }
+  }
+
+  @computed get title() {
+    if (this.mode == 'MESSAGE') {
+      return 'New Message';
+    } else {
+      return 'Share Post';
+    }
+  }
 
   @computed get titleNames() {
     let title = '';

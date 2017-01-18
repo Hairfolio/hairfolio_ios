@@ -22,11 +22,28 @@ class LibraryPicture {
   @observable parent;
 
   @observable serviceTags = [];
-  constructor(uri, parent) {
+  constructor(data, parent) {
     this.key = v4();
     this.parent = parent;
+    this.isVideo = data.isVideo == 'true';
+
+   let uri = data.uri;
+    if (uri.indexOf('/') > -1) {
+      uri = uri.substr(0, uri.indexOf('/'));
+    }
     this.uri = `assets-library://asset/asset.JPG?id=${uri}&ext=JPG`;
-    this.imageID = uri;
+    this.videoUrl = `assets-library://asset/asset.mov?id=${uri}&ext=mov`;
+
+    this.duration = data.duration;
+    this.imageID = data.uri;
+  }
+
+  @computed get timeText() {
+    if (this.isVideo) {
+      return this.duration;
+    }
+
+    return '';
   }
 
   @action select() {
@@ -228,7 +245,15 @@ class Gallery {
   }
 
   @action addLibraryPictures(libraryPictures) {
-    let pictures = libraryPictures.map((el) => new Picture({uri: el.uri}, {uri: el.uri}, this));
+    let pictures = libraryPictures.map((el) => {
+      let pic = new Picture({uri: el.uri}, {uri: el.uri}, this);
+
+      if (el.isVideo) {
+        pic.videoUrl = el.videoUrl;
+      }
+
+      return pic;
+    });
 
     for (let el of this.pictures) {
       pictures.push(el);

@@ -298,9 +298,10 @@ const MessageInput = observer(() => {
               title: 'Select Photo or Video',
               takePhotoButtonTitle: 'Take Photo or Video',
               mediaType: 'mixed',
+              videoQuality: 'medium',
+              durationLimit: 60,
               noData: true,
-              allowsEditing: true,
-              videoQuality: 'high'
+              allowsEditing: true
             }, (response) => {
               StatusBar.setHidden(false);
               console.log('response', response);

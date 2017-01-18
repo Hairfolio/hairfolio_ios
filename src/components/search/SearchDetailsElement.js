@@ -198,6 +198,18 @@ const TagSearch = observer(({store}) => {
   );
 });
 
+
+
+const NearbySearch = observer(({store}) => {
+  return (
+    <FollowUserList
+      store={store}
+      noResultText='Nothing was found'
+    />
+  );
+
+});
+
 const SalonSearch = observer(({store}) => {
   return (
     <FollowUserList
@@ -248,6 +260,7 @@ const SearchDetailsElement = observer(() => {
   const TagPage = SearchPage(TagSearch, SearchDetailsStore.hashStore);
   const SalonPage = SearchPage(SalonSearch, SearchDetailsStore.salonStore);
   const BrandPage = SearchPage(BrandSearch, SearchDetailsStore.brandStore);
+  const NearbyPage = SearchPage(NearbySearch, SearchDetailsStore.nearbyStore);
 
   return (
     <View style={{height: windowHeight}}>
@@ -260,6 +273,7 @@ const SearchDetailsElement = observer(() => {
           <TagPage tabLabel='Tags' />
           <SalonPage tabLabel='Salon' />
           <BrandPage tabLabel='Brand' />
+          <NearbyPage tabLabel='Nearby' />
         </ScrollableTabView>
     </View>
   );

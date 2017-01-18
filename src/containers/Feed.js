@@ -125,7 +125,6 @@ const FeedHeader = observer(() => {
 });
 
 
-@connect(app, user)
 @observer
 export default class Feed extends PureComponent {
 
@@ -168,7 +167,7 @@ export default class Feed extends PureComponent {
     } else {
       content = (
         <ScrollView>
-          {store.elements.map(p => <Post key={p.key} post={p} />)}
+          {store.elements.map((p, i) => <Post key={p.key} post={p} />)}
         </ScrollView>
       );
     }

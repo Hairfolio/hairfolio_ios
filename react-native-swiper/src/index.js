@@ -496,8 +496,8 @@ export default class extends Component {
 
     for (let i = 0; i < this.state.total; i++) {
       dots.push(i === this.state.index
-        ? React.cloneElement(ActiveDot(i), {key: i})
-        : React.cloneElement(Dot(i), {key: i})
+        ? React.cloneElement(ActiveDot(i + 1), {key: i})
+        : React.cloneElement(Dot(i + 1), {key: i})
       )
     }
 

@@ -62,7 +62,6 @@ export default class Post {
     this.starNumber = data.likes_count;
     this.numberOfComments = data.comments_count;
 
-    console.log('data', data);
     this.hasStarred = data.liked_by_me;
 
     let user = new User();
@@ -72,7 +71,6 @@ export default class Post {
     this.creator = user;
 
     this.createdTime = moment(data.created_at);
-
 
     for (let pic of data.photos) {
 

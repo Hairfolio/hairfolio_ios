@@ -171,7 +171,7 @@ const PopularPosts = observer(({store}) => {
         style = {{
           marginTop: h(25),
           height: h(90),
-          backgroundColor: '#F4F4F4',
+          backgroundColor: 'white',
           paddingLeft: h(17),
           justifyContent: 'center'
         }}

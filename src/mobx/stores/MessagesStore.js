@@ -48,6 +48,8 @@ class Message {
     if (lastMessage.post != null) {
       this.text = 'shared a post';
 
+      /*
+       * TODO ones backend is fixed include this again
       let pic = {uri: lastMessage.post.photos[0].asset_url};
 
       this.picture = new Picture(
@@ -55,6 +57,7 @@ class Message {
         pic,
         null
       );
+      */
     } else if (lastMessage.url && lastMessage.url.length > 0) {
 
       if (lastMessage.url.endsWith('mov')) {
@@ -88,8 +91,6 @@ class Message {
     if (lastMessage.user.id == Service.fetch.store.getState().user.data.get('id')) {
       this.text = 'You: ' + this.text;
     }
-
-
 
     return this;
   }

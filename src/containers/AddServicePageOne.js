@@ -165,7 +165,10 @@ export default class AddServicePageOne extends Component {
                       CreatePostStore.gallery.position.y,
                       {
                         service_id: AddServiceStore.serviceSelector.selectedData.id,
-                        line_id: AddServiceStore.colorNameSelector.selectedData.id
+                        service_name: AddServiceStore.serviceSelector.selectedData.name,
+                        line_id: AddServiceStore.colorNameSelector.selectedData.id,
+                        line_name: AddServiceStore.colorNameSelector.selectedData.name,
+                        brand_name: AddServiceStore.brandSelector.selectedData.name
                       }
                     );
                     _.last(this.context.navigators).jumpTo(

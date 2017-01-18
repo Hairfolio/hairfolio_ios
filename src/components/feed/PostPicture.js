@@ -94,7 +94,7 @@ const PostPicture = observer(({post}) => {
           >
             {post.pictures.map(
               (pic) => (
-                <View>
+                <View key={pic.key}>
                   <Image
                     key={pic.key}
                     style={{height: windowWidth, width: windowWidth}}

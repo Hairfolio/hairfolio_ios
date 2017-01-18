@@ -159,7 +159,10 @@ class Gallery {
 
   constructor() {
     window.gallary = this;
-    this.filterStore = new FilterStore(this);
+
+    setTimeout(() => {
+      this.filterStore = new FilterStore(this);
+    });
   }
 
   @action deleteSelectedPicture() {
@@ -272,7 +275,7 @@ class CreatePostStore {
   @observable loadingText;
 
   constructor() {
-    this.updateLibraryPictures();
+    // this.updateLibraryPictures();
   }
 
   @computed get flashIconSource() {
@@ -315,7 +318,6 @@ class CreatePostStore {
     this.groupName = 'Camera Roll';
     this.libraryPictures = [];
     this.selectedPictures = [];
-    this.updateLibraryPictures();
 
     if (resetGallary) {
       this.isOpen = false;
@@ -391,15 +393,20 @@ class CreatePostStore {
 
   imageLoaded() {
     this.loadedImages++;
-    // console.log('imageLoaded ', this.loadedImages);
 
-    if (this.loadedImages % 50 == 0 && this.imageData.length > 0) {
-      let newImages = this.imageData.splice(0, 50).map((el) => new LibraryPicture(el, this));
-      this.libraryPictures = this.libraryPictures.concat(newImages);
+    // TODO only load first 1200 pictures
+    if (this.loadedImages % 50 == 0 && this.imageData.length > 0 && this.loadedImages < 1200) {
+
+      // don't load next images so we have time to render
+      setTimeout(() => {
+        let newImages = this.imageData.splice(0, 50).map((el) => new LibraryPicture(el, this));
+        this.libraryPictures = this.libraryPictures.concat(newImages);
+      }, 50);
     }
   }
 
   updateLibraryPictures() {
+    console.log('load photos');
     this.loadedImages = 0;
     this.libraryPictures;
     PhotoAlbum.getPhotosFromAlbums(this.groupName, (data) => {
@@ -426,6 +433,10 @@ class CreatePostStore {
 
   @action changeInputMethod(name) {
     this.inputMethod = name;
+
+    if (this.inputMethod == 'Library') {
+      this.updateLibraryPictures();
+    }
   }
 
   @computed get title() {

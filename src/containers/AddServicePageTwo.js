@@ -94,6 +94,7 @@ const ColorGrid = observer(({colorGrid}) => {
   return (
     <ScrollView
       bounces={false}
+      directionalLockEnabled
       horizontal
     >
       <View style={{flexDirection: 'row'}}>

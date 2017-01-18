@@ -136,9 +136,34 @@ export default class Picture {
     }
 
     let pictureJSON = await this.uploadPicture();
-    ret.asset_url =  pictureJSON.url;
+    ret.asset_url = pictureJSON.url;
 
     window.tag = this.tags;
+
+    for (let tag of this.tags) {
+      console.log('tag-type', tag.type);
+      if (tag.type == 'service') {
+        console.log('tag', tag);
+        if (tag.serviceName) {
+          let tagName = tag.serviceName.replace(/\W/g, '').toLowerCase();
+          this.tags.push(new HashTag(-100, -100, '#' + tagName));
+        }
+        if (tag.brandName) {
+          let tagName = tag.brandName.replace(/\W/g, '').toLowerCase();
+          this.tags.push(new HashTag(-100, -100,  '#' + tagName));
+        }
+
+        if (tag.lineName) {
+          let tagName = tag.lineName.replace(/\W/g, '').toLowerCase();
+          this.tags.push(new HashTag(-100, -100,  '#' + tagName));
+        }
+
+        for (let color of tag.colors) {
+          let tagName = color.name.toLowerCase();
+          this.tags.push(new HashTag(-100, -100,  '#' + tagName));
+        }
+      }
+    }
 
     let labels_attributes = await Promise.all(
       this.tags.map(tag => {

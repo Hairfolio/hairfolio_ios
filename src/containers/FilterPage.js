@@ -57,11 +57,11 @@ const FilterImage = observer(({item}) => {
 
 const FilterSelector = observer(({store}) => {
   return (
-    <ScrollView horizontal={true} style={{height: h(270)}}>
-
+    <ScrollView
+      horizontal={true}
+      style={{height: h(270)}}
+    >
       {store.filteredImages.map((el) => <FilterImage key={el.key} item={el} />)}
-
-
     </ScrollView>
 
   );
@@ -78,6 +78,10 @@ export default class FilterPage extends Component {
   render() {
 
     let store = CreatePostStore.gallery.filterStore;
+
+    if (!store) {
+      return <View />;
+    }
 
     return <View style={{paddingTop: 20, backgroundColor: 'white', flex: 1}}>
       <SlimHeader

@@ -22,6 +22,8 @@ import PostPicture from 'components/feed/PostPicture.js'
 import PostActionButtons from 'components/feed/PostActionButtons.js'
 import PostDescription from 'components/feed/PostDescription.js'
 
+import * as routes from 'hairfolio/src/routes.js'
+
 import Swiper from 'react-native-swiper';
 
 const Post = observer(({post}) => {
@@ -31,7 +33,7 @@ const Post = observer(({post}) => {
       <PostHeader post={post} />
       <PostPicture post={post} />
       <PostActionButtons post={post} />
-      <PostDescription post={post} />
+      <PostDescription currentRoute={routes.appStack} post={post} />
     </View>
   );
 });

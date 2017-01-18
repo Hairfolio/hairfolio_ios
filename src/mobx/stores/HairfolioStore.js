@@ -24,14 +24,14 @@ class Hairfolio {
     console.log('hairfolios', obj);
     this.name = obj.name;
     this.id = obj.id;
-    this.numberOfPosts = obj.posts.length;
+    this.numberOfPosts = obj.posts_count ? obj.posts_count : '?';
 
-    this.posts = obj.posts;
+    this.lastPost = obj.last_post;
 
     let picObj;
 
-    if (this.numberOfPosts > 0) {
-      picObj = {uri: obj.posts[0].photos[0].asset_url};
+    if (this.lastPost) {
+      picObj = {uri: this.lastPost.photos[0].asset_url};
       this.picture = new Picture(picObj, picObj, null);
     }
   }

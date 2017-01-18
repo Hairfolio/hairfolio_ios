@@ -12,13 +12,16 @@ import {
   windowHeight,
   // react-native components
   AlertIOS,
+  ActionSheetIOS,
   Modal,
   ScrollView,
   PickerIOS, Picker, StatusBar, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet
 } from 'hairfolio/src/helpers.js';
 
+import TagPostStore from 'stores/TagPostStore.js'
+import * as routes from 'hairfolio/src/routes.js'
 
-const PostDescription = observer(({post, style = {}}) => {
+const PostDescription = observer(({post, currentRoute = routes.postDetails, style = {}}) => {
   return (
     <View
       style={{
@@ -48,7 +51,21 @@ const PostDescription = observer(({post, style = {}}) => {
           post.hashTags.map(e =>
               <Text
                 key={e.key}
-                onPress={() => alert('you clicked ' + e.hashtag)}
+                onPress={() => {
+                  //ActionSheetIOS.showActionSheetWithOptions({
+                  //  title: `#${e.hashtag}`,
+                  //  options: [`See all posts tagged #${e.hashtag}`, 'Cancel'],
+                  //  cancelButtonIndex: 1,
+                  //},
+                  //  (buttonIndex) => {
+                  // if (buttonIndex == 0) {
+                  TagPostStore.title = `#${e.hashtag}`;
+                  TagPostStore.load(e.hashtag);
+                  TagPostStore.back = () => window.navigators[0].jumpTo(currentRoute);
+                  window.navigators[0].jumpTo(routes.tagPosts);
+                  //    }
+                  // })
+                }}
                 style = {{
                   fontSize: h(28),
                   color: '#3E3E3E',

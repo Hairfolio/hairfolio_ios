@@ -261,7 +261,10 @@ export default class AddServicePageThree extends Component {
               CreatePostStore.gallery.position.y,
               {
                 service_id: AddServiceStore.serviceSelector.selectedData.id,
+                service_name: AddServiceStore.serviceSelector.selectedData.name,
                 line_id: AddServiceStore.colorNameSelector.selectedData.id,
+                line_name: AddServiceStore.colorNameSelector.selectedData.name,
+                brand_name: AddServiceStore.brandSelector.selectedData.name,
                 post_item_tag_colors: AddServiceStore.selectedColors,
                 developer_volume: parseInt(AddServiceStore.vlSelector.selectedValue.split(' ')[0], 10),
                 developer_amount: parseInt(AddServiceStore.vlWeightSelector.selectedValue.split(' ')[0], 10),

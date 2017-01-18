@@ -5,6 +5,8 @@ import {_, v4, moment} from 'hairfolio/src/helpers';
 
 import FollowUser from 'stores/FollowUser.js'
 
+import {GeoLocation} from 'react-native'
+
 class SearchUserFollowStore {
   @observable users = [];
   @observable isLoading = false;
@@ -65,6 +67,26 @@ class SearchSalonStore extends SearchUserFollowStore {
   }
 }
 
+
+class SearchNearbyStore extends SearchUserFollowStore {
+
+  async getUserLocation() {
+    return new Promise((res, rej) => {
+      window.navigator.geolocation.getCurrentPosition(
+        res,
+        rej,
+        {enableHighAccuracy: false, timeout: 20000, maximumAge: 1000}
+      );
+    });
+
+  }
+  async backendSearch(name) {
+    let position = await this.getUserLocation();
+    console.log('position', position);
+    return {users: []};//await ServiceBackend.get('salons');
+  }
+}
+
 class Tag {
   constructor(obj) {
     console.log('hash', obj);
@@ -106,6 +128,7 @@ class SearchDetailsStore {
   @observable brandStore = new SearchBrandStore();
   @observable salonStore = new SearchSalonStore();
   @observable hashStore = new SearchHashStore();
+  @observable nearbyStore = new SearchNearbyStore();
 
   @observable searchString;
 
@@ -115,6 +138,7 @@ class SearchDetailsStore {
     this.brandStore.search(name);
     this.salonStore.search(name);
     this.hashStore.search(name);
+    this.nearbyStore.search(name);
   }
 
   reset() {
@@ -122,6 +146,7 @@ class SearchDetailsStore {
     this.brandStore.reset();
     this.salonStore.reset();
     this.hashStore.reset();
+    this.nearbyStore.reset();
     this.searchString = '';
   }
 }

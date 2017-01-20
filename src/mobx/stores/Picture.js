@@ -9,6 +9,10 @@ import Service from 'hairfolio/src/services/index.js'
 import ImageResizer from 'react-native-image-resizer';
 import RNFetchBlob from 'react-native-fetch-blob'
 
+import {CameraRoll, NativeModules} from 'react-native';
+
+let PhotoAlbum = NativeModules.PhotoAlbum;
+
 export default class Picture {
 
   @observable parent;
@@ -66,12 +70,23 @@ export default class Picture {
     return this.source;
   }
 
+  async getVideoPath(identifier) {
+
+    return new Promise((resolve, rej) => {
+      PhotoAlbum.getVideoPath2(identifier, (data) => {
+        resolve(data);
+      });
+    });
+
+  }
+
   async uploadVideo() {
     let uri = this.videoUrl;
 
     if (this.videoUrl.startsWith('file')) {
       uri = uri.substr(7);
     }
+
     console.log('video', uri);
 
     let formdata = new FormData();
@@ -84,7 +99,16 @@ export default class Picture {
     let preset = Service.fetch.store.getState().environment.environment.get('cloud_preset');
     let cloudName = Service.fetch.store.getState().environment.environment.get('cloud_name');
 
+    console.log('lib ', uri);
     console.log('data', RNFetchBlob.wrap(uri));
+
+    // load pictures from library
+    if (this.identifier) {
+      let path = await this.getVideoPath(this.identifier);
+      // console.log('mypath', path);
+      uri = path[0].uri;
+    }
+
 
     let res = await RNFetchBlob.fetch('POST', `https://api.cloudinary.com/v1_1/${cloudName}/video/upload`, {
       'Content-Type' : 'multipart/form-data',

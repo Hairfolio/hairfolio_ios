@@ -98,8 +98,9 @@ const ImagePreview = observer(({gallery, navigators}) => {
 
   let deletePicture = () => {
     AlertIOS.alert(
-      'Delete Picture',
-      'Are you sure you want to delete this picture from the gallary?',
+      gallery.selectedPicture.isVideo ? 'Delete Video' : 'Delete Picture',
+      'Are you sure you want to delete this item from the gallary?',
+
       [
         {text: 'Yes', onPress: () => gallery.deleteSelectedPicture()},
 
@@ -117,26 +118,30 @@ const ImagePreview = observer(({gallery, navigators}) => {
 
   window.picture = gallery.selectedPicture;
 
+  let closeBtn = (
+    <TouchableOpacity
+      onPress={deletePicture}
+      style={{
+        position: 'absolute',
+        top: 0,
+        right: 0,
+        padding: h(14)
+      }}
+    >
+      <View>
+        <Image
+          source={require('img/post_close.png')}
+        />
+      </View>
+    </TouchableOpacity>
+  );
+
   if (gallery.selectedPicture.isVideo) {
     return (
-      <VideoPreview picture={gallery.selectedPicture} />
-      /*
-      <Video
-        ref={ref => {
-          window.player = ref;
-        }}
-        source={{uri: gallery.selectedPicture.source.uri }}
-        style={{
-          width: windowWidth,
-          height: windowWidth,
-        }}
-        muted={false}
-        resizeMode="cover"
-        paused={false}
-        repeat={true}
-        onError={msg => console.log('error', msg)}
-      />
-      */
+      <View>
+        <VideoPreview picture={gallery.selectedPicture} />
+        {closeBtn}
+      </View>
     );
   }
 
@@ -174,21 +179,7 @@ const ImagePreview = observer(({gallery, navigators}) => {
           source={gallery.selectedPicture.source}
         />
       </TouchableWithoutFeedback>
-    <TouchableOpacity
-      onPress={deletePicture}
-      style={{
-        position: 'absolute',
-        top: 0,
-        right: 0,
-        padding: h(14)
-      }}
-    >
-      <View>
-        <Image
-          source={require('img/post_close.png')}
-        />
-      </View>
-    </TouchableOpacity>
+      {closeBtn}
 
     {gallery.selectedPicture.isVideo ?  <View /> :
       <TouchableOpacity
@@ -270,7 +261,11 @@ const ActionMenu = observer(({gallery}) => {
   }
 
   if (gallery.selectedPicture.isVideo) {
-    return <View />;
+    return (
+      <View
+        style={{height: h(82), backgroundColor: 'white', flexDirection: 'row'}}
+      />
+    );
   }
 
   return (

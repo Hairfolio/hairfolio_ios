@@ -21,7 +21,7 @@ import {
 import TagPostStore from 'stores/TagPostStore.js'
 import * as routes from 'hairfolio/src/routes.js'
 
-const PostDescription = observer(({post, currentRoute = routes.postDetails, style = {}}) => {
+const PostDescription = observer(({post, limitLinesNumbers, currentRoute = routes.postDetails, style = {}}) => {
   return (
     <View
       style={{
@@ -31,22 +31,25 @@ const PostDescription = observer(({post, currentRoute = routes.postDetails, styl
         ...style
       }}
     >
-      <Text
-        style = {{
-          fontSize: h(28),
-          color: '#868686',
-          fontFamily: FONTS.ROMAN,
-        }}
-      >
-        {post.description}
-      </Text>
+
 
       <Text
         style = {{
           flexWrap: 'wrap',
           flexDirection: 'row',
         }}
+        numberOfLines={limitLinesNumbers ? 2 : null}
       >
+        <Text
+          style = {{
+            fontSize: h(28),
+            color: '#868686',
+            fontFamily: FONTS.ROMAN,
+          }}
+        >
+          {post.description + ' '}
+        </Text>
+
         {
           post.hashTags.map(e =>
               <Text

@@ -33,7 +33,7 @@ const Post = observer(({post}) => {
       <PostHeader post={post} />
       <PostPicture post={post} />
       <PostActionButtons post={post} />
-      <PostDescription currentRoute={routes.appStack} post={post} />
+      <PostDescription limitLinesNumbers currentRoute={routes.appStack} post={post} />
     </View>
   );
 });

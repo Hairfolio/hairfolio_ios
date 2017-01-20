@@ -27,12 +27,19 @@ class LibraryPicture {
     this.parent = parent;
     this.isVideo = data.isVideo == 'true';
 
-   let uri = data.uri;
-    if (uri.indexOf('/') > -1) {
-      uri = uri.substr(0, uri.indexOf('/'));
+    this.id = data.id;
+
+    this.uri = `assets-library://asset/asset.JPG?id=${data.id}&ext=JPG`;
+
+    // this.videoUrl = `assets-library://asset/asset.mov?id=${data.id}&ext=mov`;
+
+    if (this.isVideo) {
+      PhotoAlbum.getVidePath(data.id, (data) => {
+        this.videoUrl = data[0].uri;
+        console.log('lib video', this.videoUrl);
+      });
     }
-    this.uri = `assets-library://asset/asset.JPG?id=${uri}&ext=JPG`;
-    this.videoUrl = `assets-library://asset/asset.mov?id=${uri}&ext=mov`;
+
 
     this.duration = data.duration;
     this.imageID = data.uri;
@@ -250,6 +257,7 @@ class Gallery {
 
       if (el.isVideo) {
         pic.videoUrl = el.videoUrl;
+        pic.identifier = el.id;
       }
 
       return pic;

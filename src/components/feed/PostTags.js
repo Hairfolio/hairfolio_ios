@@ -91,6 +91,12 @@ const PostTags  = observer(({store}) => {
     >
       {store.selectedPicture.tags.map((pic) => {
 
+        console.log('mypic', pic);
+
+        if (pic.x < 0) {
+          return <View key={pic.key} />;
+        }
+
         let style = {
           position: 'absolute',
           top: pic.y - 13,

@@ -46,25 +46,29 @@ const BoxSelector = observer(({selector}) => {
   if (selector.isOpen) {
 
     if (selector.isLoaded) {
-      picker = <Picker
-        selectedValue={selector.value}
-        style={{marginTop: h(20), backgroundColor: 'white'}}
-        itemStyle={{fontSize: h(32)}}
-        onValueChange={val => selector.setValue(val)}>
-        {selector.data.map(data =>
+      picker = (
+        <Picker
+          selectedValue={selector.value}
+          style={{marginTop: h(20), backgroundColor: 'white'}}
+          itemStyle={{fontSize: h(32)}}
+          onValueChange={val => selector.setValue(val)}>
+          {selector.data.map(data =>
             <Picker.Item key={data.id} label={data.name} value={data.name} />
-        )}
-      </Picker>;
+          )}
+        </Picker>
+      );
     } else {
-      picker = <View style={{
-        marginTop: h(20),
-        height: 200,
-        backgroundColor: 'white',
-        alignItems: 'center',
-        justifyContent: 'center'
-      }}>
-      <ActivityIndicator size="large" />
-      </View>
+      picker = (
+          <View style={{
+            marginTop: h(20),
+            height: 200,
+            backgroundColor: 'white',
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}>
+            <ActivityIndicator size="large" />
+        </View>
+      );
     }
   }
 
@@ -134,7 +138,7 @@ export default class AddServicePageOne extends Component {
           <SlimHeader
             leftText='Back'
             onLeft={() => {
-              _.last(this.context.navigators).jumpTo(gallery)
+              AddServiceStore.myBack();
             }}
             title='Add Service (1/3)'
             titleStyle={{fontFamily: FONTS.SF_MEDIUM}}
@@ -160,34 +164,24 @@ export default class AddServicePageOne extends Component {
                     _.last(this.context.navigators).jumpTo(addServiceTwo)
                     setTimeout(() => store.isLoading = false, 500);
                   } else {
-                    CreatePostStore.gallery.addServicePicture(
-                      CreatePostStore.gallery.position.x,
-                      CreatePostStore.gallery.position.y,
-                      {
-                        service_id: AddServiceStore.serviceSelector.selectedData.id,
-                        service_name: AddServiceStore.serviceSelector.selectedData.name,
-                        line_id: AddServiceStore.colorNameSelector.selectedData.id,
-                        line_name: AddServiceStore.colorNameSelector.selectedData.name,
-                        brand_name: AddServiceStore.brandSelector.selectedData.name
-                      }
-                    );
-                    _.last(this.context.navigators).jumpTo(
-                      gallery
-                    );
+
+                    let storeObj = {
+                      service_id: AddServiceStore.serviceSelector.selectedData.id,
+                      service_name: AddServiceStore.serviceSelector.selectedData.name,
+                      line_id: AddServiceStore.colorNameSelector.selectedData.id,
+                      line_name: AddServiceStore.colorNameSelector.selectedData.name,
+                      brand_name: AddServiceStore.brandSelector.selectedData.name
+                    };
+
+                    AddServiceStore.save(storeObj);
                   }
                 } else {
                   // no brand
                   let data = {
                     service_id: AddServiceStore.serviceSelector.selectedData.id
                   }
-                  CreatePostStore.gallery.addServicePicture(
-                    CreatePostStore.gallery.position.x,
-                    CreatePostStore.gallery.position.y,
-                    data
-                  );
-                  _.last(this.context.navigators).jumpTo(
-                    gallery
-                  );
+
+                  AddServiceStore.save(data);
                 }
               } else {
                 alert('Please fill out all the fields first');

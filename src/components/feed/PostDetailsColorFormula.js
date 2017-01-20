@@ -23,6 +23,10 @@ import Swiper from 'hairfolio/react-native-swiper';
 
 import ServiceRow from 'components/post/ServiceRow.js'
 
+import AddServiceStore from 'stores/AddServiceStore.js'
+
+import * as routes from 'hairfolio/src/routes.js'
+
 const ColorInfo = observer(({store, unit, textStyle, style}) => {
   let colorArray;
 
@@ -120,6 +124,35 @@ const DuratationInfo = observer(({store}) => {
 
 const ServiceInfo = observer(({store}) => {
 
+  let editService = () => {
+
+
+    window.serviceTag = store;
+
+    AddServiceStore.reset();
+    AddServiceStore.init(store);
+
+    // AddServiceStore.posX = a.nativeEvent.locationX;
+    // AddServiceStore.posY = a.nativeEvent.locationY;
+
+    AddServiceStore.myBack = () => {
+      window.navigators[0].jumpTo(routes.postDetails);
+    };
+
+    AddServiceStore.save = (obj) => {
+      /*
+      CreatePostStore.gallery.addServicePicture(
+        AddServiceStore.posX,
+        AddServiceStore.posY,
+        obj
+      );
+      */
+      AddServiceStore.myBack();
+    };
+
+    window.navigators[0].jumpTo(routes.addServiceOne);
+  };
+
   let colors = (
     <View
       style = {{
@@ -128,7 +161,15 @@ const ServiceInfo = observer(({store}) => {
       }}
     >
 
-    {store.colors.map(c => <ColorInfo unit={store.unit} key={c.color.id} store={c} />)}
+    <View>
+      <View
+        style={{
+          flex: 1
+        }}
+      >
+        {store.colors.map(c => <ColorInfo unit={store.unit} key={c.color.id} store={c} />)}
+      </View>
+    </View>
 
     {
       store.developerVolume ?
@@ -155,9 +196,45 @@ const ServiceInfo = observer(({store}) => {
   return (
     <View>
       <View style={{marginTop: h(81)}}>
-        <ServiceRow selector={{title: 'Service', value: store.serviceName }} />
-        <ServiceRow selector={{title: 'Brand', value: store.brandName}} />
-        <ServiceRow selector={{title: 'Color', value: store.lineName}} />
+        <View
+          style={{flexDirection: 'row'}}
+          st>
+          <View style={{flex: 1}}>
+            <ServiceRow selector={{title: 'Service', value: store.serviceName }} />
+            <ServiceRow selector={{title: 'Brand', value: store.brandName}} />
+            <ServiceRow selector={{title: 'Color', value: store.lineName}} />
+          </View>
+
+          <View
+            style={{
+              width: 60
+            }}
+
+          >
+            <TouchableOpacity
+              style={{flexDirection: 'row'}}
+              onPress={editService}
+            >
+              <Image
+                style={{
+                  height: 16,
+                  width: 16
+                }}
+                source={require('img/feed_settings.png')}
+              />
+              <Text
+                style={{
+                  color: '#393939',
+                  fontSize: h(28),
+                  marginRight: h(28),
+                  marginLeft: h(13)
+                }}
+              >
+                Edit
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
       </View>
       {colors}
     </View>

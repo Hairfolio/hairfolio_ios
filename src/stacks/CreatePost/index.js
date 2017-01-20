@@ -79,9 +79,11 @@ export default class EditCustomerStack extends PureComponent {
             albumPage,
             addLink,
             gallery,
+            /*
             addServiceOne,
             addServiceTwo,
             addServiceThree,
+            */
             share,
             addBlackBook
           ]}

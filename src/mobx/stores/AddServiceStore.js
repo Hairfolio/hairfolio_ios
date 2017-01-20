@@ -348,6 +348,11 @@ class AddServiceStore {
     return res;
   }
 
+  init(serviceStore) {
+
+    // TODO
+  }
+
   reset() {
     this.isLoading = false;
 

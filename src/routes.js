@@ -512,7 +512,6 @@ export const editCustomerAddress = new EditCustomerAddressRoute();
 export const salonInfo = new SalonInfoRoute();
 export const brandInfo = new BrandInfoRoute();
 
-
 export const salonStylists = new SalonStylistsRoute({
   backTo: salonInfo
 });

@@ -22,8 +22,7 @@ import Intro from './components/Intro';
 import {getHairfolios} from 'backend/HairfolioBackend';
 
 import {hello, comments, starGivers, oauthStack, loginStack, forgottenPasswordStack, signupConsumerStack, signupStylistStack, signupSalonStack, signupBrandStack, appStack, editCustomerStack, createPostStack, postDetails,
-  searchDetails, tagPosts, hairfolioPosts, messagesRoute, writeMessageRoute, messageDetailsRoute, blackBook, contactDetails
-} from './routes';
+  searchDetails, tagPosts, hairfolioPosts, messagesRoute, writeMessageRoute, messageDetailsRoute, blackBook, contactDetails, addServiceOne, addServiceTwo, addServiceThree } from './routes';
 
 import {appActions} from './actions/app';
 import UserStore from 'stores/UserStore.js';
@@ -152,7 +151,10 @@ export default class Root extends PureComponent {
                   writeMessageRoute,
                   messageDetailsRoute,
                   blackBook,
-                  contactDetails
+                  contactDetails,
+                  addServiceOne,
+                  addServiceTwo,
+                  addServiceThree
                 ]}
               />
             </Provider>

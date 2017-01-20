@@ -146,7 +146,6 @@ const ImagePreview = observer(({gallery, navigators}) => {
   }
 
 
-
   return (
     <View
       style={{
@@ -161,10 +160,25 @@ const ImagePreview = observer(({gallery, navigators}) => {
           gallery.position.y = a.nativeEvent.locationY;
 
           if (gallery.serviceTagSelected) {
-
-
             AddServiceStore.reset();
-            _.last(navigators).jumpTo(addServiceOne);
+
+            AddServiceStore.posX = a.nativeEvent.locationX;
+            AddServiceStore.posY = a.nativeEvent.locationY;
+
+            AddServiceStore.myBack = () => {
+              navigators[0].jumpTo(routes.createPostStack);
+            };
+
+            AddServiceStore.save = (obj) => {
+              CreatePostStore.gallery.addServicePicture(
+                AddServiceStore.posX,
+                AddServiceStore.posY,
+                obj
+              );
+              AddServiceStore.myBack();
+            };
+
+            navigators[0].jumpTo(addServiceOne);
           } else if (gallery.linkTagSelected) {
             _.last(navigators).jumpTo(addLink);
           } else if (gallery.hashTagSelected) {

@@ -256,24 +256,21 @@ export default class AddServicePageThree extends Component {
           titleStyle={{fontFamily: FONTS.SF_MEDIUM}}
           rightText='Done'
           onRight={() => {
-            CreatePostStore.gallery.addServicePicture(
-              CreatePostStore.gallery.position.x,
-              CreatePostStore.gallery.position.y,
-              {
-                service_id: AddServiceStore.serviceSelector.selectedData.id,
-                service_name: AddServiceStore.serviceSelector.selectedData.name,
-                line_id: AddServiceStore.colorNameSelector.selectedData.id,
-                line_name: AddServiceStore.colorNameSelector.selectedData.name,
-                brand_name: AddServiceStore.brandSelector.selectedData.name,
-                post_item_tag_colors: AddServiceStore.selectedColors,
-                developer_volume: parseInt(AddServiceStore.vlSelector.selectedValue.split(' ')[0], 10),
-                developer_amount: parseInt(AddServiceStore.vlWeightSelector.selectedValue.split(' ')[0], 10),
-                developer_time: parseInt(AddServiceStore.selectedMinutes.split(' ')[0], 10)
-              }
-            );
-            _.last(this.context.navigators).jumpTo(
-              gallery
-            )
+
+            let storeObj = {
+              service_id: AddServiceStore.serviceSelector.selectedData.id,
+              service_name: AddServiceStore.serviceSelector.selectedData.name,
+              line_id: AddServiceStore.colorNameSelector.selectedData.id,
+              line_name: AddServiceStore.colorNameSelector.selectedData.name,
+              brand_name: AddServiceStore.brandSelector.selectedData.name,
+              post_item_tag_colors: AddServiceStore.selectedColors,
+              developer_volume: parseInt(AddServiceStore.vlSelector.selectedValue.split(' ')[0], 10),
+              developer_amount: parseInt(AddServiceStore.vlWeightSelector.selectedValue.split(' ')[0], 10),
+              developer_time: parseInt(AddServiceStore.selectedMinutes.split(' ')[0], 10)
+            }
+
+            AddServiceStore.save(storeObj);
+
           }}
         />
       <View style={{flex: 1}}>

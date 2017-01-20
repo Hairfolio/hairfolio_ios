@@ -464,8 +464,9 @@ export default class extends Component {
         }, this.props.activeDotStyle]}>
         <Text
           style={{
-            fontFamily: 'Avenir-Medium',
-            color: '#007aff',
+            fontFamily: 'Avenir-Heavy',
+            color: '#393939',
+            fontSize: 16,
           }}
         >
           {n}
@@ -482,8 +483,9 @@ export default class extends Component {
         }, this.props.dotStyle ]} >
         <Text
           style={{
-            fontFamily: 'Avenir-Medium',
-            color: 'rgba(0,0,0,.2)',
+            fontFamily: 'Avenir-Heavy',
+            color: '#B5B5B5',
+            fontSize: 16,
           }}
         >
           {n}

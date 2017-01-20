@@ -19,6 +19,131 @@
 
 RCT_EXPORT_MODULE()
 
+RCT_EXPORT_METHOD(getVidePath:(NSString *)identifier callback:(RCTResponseSenderBlock)callback) {
+  
+  NSMutableArray *arr = [[NSMutableArray alloc] init];
+  PHFetchResult *results = [PHAssetCollection fetchAssetCollectionsWithLocalIdentifiers:@[identifier]   options:nil];
+  
+  
+  
+  for (PHAsset *asset in results) {
+    
+    if (asset.mediaType == PHAssetMediaTypeVideo) {
+      NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+      
+      NSArray *resources = [PHAssetResource assetResourcesForAsset:asset];
+      NSString *orgFilename = ((PHAssetResource*)resources[0]).originalFilename;
+      
+      [dict setObject:orgFilename forKey:@"fileName"];
+
+      
+
+      
+      [[PHImageManager defaultManager] requestAVAssetForVideo:asset options:nil resultHandler:^(AVAsset *asset, AVAudioMix *audioMix, NSDictionary *info)
+       {
+         if ([asset isKindOfClass:[AVURLAsset class]])
+         {
+           NSURL *url = [(AVURLAsset*)asset URL];
+           [dict setObject:url.relativePath forKey:@"uri"];
+           
+           [arr addObject:dict];
+           
+           
+           
+           callback(@[arr]);
+           return;
+         }
+       }];
+    }
+  }
+  
+  
+
+
+
+}
+
+
+RCT_EXPORT_METHOD(getVideoPath2:(NSString *)identifier callback:(RCTResponseSenderBlock)callback) {
+  
+  
+  NSMutableArray *arr = [[NSMutableArray alloc] init];
+  PHFetchResult *results = [PHAssetCollection fetchAssetCollectionsWithLocalIdentifiers:@[identifier]   options:nil];
+  
+  
+  
+  for (PHAsset *asset in results) {
+    
+    if (asset.mediaType == PHAssetMediaTypeVideo) {
+      NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+      
+      NSArray *resources = [PHAssetResource assetResourcesForAsset:asset];
+      NSString *orgFilename = ((PHAssetResource*)resources[0]).originalFilename;
+      
+      [dict setObject:orgFilename forKey:@"fileName"];
+      
+      
+      
+      
+      [[PHImageManager defaultManager] requestAVAssetForVideo:asset options:nil resultHandler:^(AVAsset *asset, AVAudioMix *audioMix, NSDictionary *info)
+       {
+         if ([asset isKindOfClass:[AVURLAsset class]])
+         {
+         
+           NSURL *temp = [[NSFileManager defaultManager] temporaryDirectory];
+           
+           NSString* newPath = [NSString stringWithFormat:@"%@/%@.mov", temp.path, [NSUUID UUID].UUIDString];
+           
+           NSURL *fileURL = [NSURL fileURLWithPath:newPath];
+                             
+           __block NSData *assetData = nil;
+           
+           // asset is you AVAsset object
+           AVAssetExportSession *exportSession = [[AVAssetExportSession alloc] initWithAsset:asset presetName:AVAssetExportPresetMediumQuality];
+           
+           exportSession.outputURL = fileURL;
+           // e.g .mov type
+           exportSession.outputFileType = AVFileTypeQuickTimeMovie;
+           
+
+           [exportSession exportAsynchronouslyWithCompletionHandler:^(void)
+            {
+              dispatch_async(dispatch_get_main_queue(), ^{
+                NSLog(@"Export Complete %ld %@", (long)exportSession.status, exportSession.error);
+                
+                assetData = [NSData dataWithContentsOfURL:fileURL];
+                NSLog(@"AVAsset saved to NSData.");
+                
+                
+                [dict setObject:newPath forKey:@"uri"];
+                
+                [arr addObject:dict];
+                callback(@[arr]);
+                
+              });
+              
+            }];
+           
+           return;
+         }
+       }];
+    }
+  }
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+  
+}
+
 
 RCT_EXPORT_METHOD(getPhotosFromAlbums:(NSString *)name callback:(RCTResponseSenderBlock)callback) {
   
@@ -40,7 +165,8 @@ RCT_EXPORT_METHOD(getPhotosFromAlbums:(NSString *)name callback:(RCTResponseSend
           
           if (asset.mediaType == PHAssetMediaTypeImage || asset.mediaType == PHAssetMediaTypeVideo) {
             NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
-            [dict setObject:asset.localIdentifier forKey:@"uri"];
+            
+            [dict setObject:asset.localIdentifier forKey:@"id"];
             
             
             long seconds = lroundf(asset.duration); // Since modulo operator (%) below needs int or long
@@ -50,18 +176,6 @@ RCT_EXPORT_METHOD(getPhotosFromAlbums:(NSString *)name callback:(RCTResponseSend
             
             if (asset.mediaType == PHAssetMediaTypeVideo) {
               [dict setObject:@"true" forKey:@"isVideo"];
-              /*
-               
-               if (asset.mediaType == PHAssetMediaTypeVideo) {
-               [dict setObject:@"true" forKey:@"isVideo"];
-               
-               [[PHImageManager defaultManager] requestAVAssetForVideo:asset options:nil resultHandler:^(AVAsset * _Nullable videoAsset, AVAudioMix * _Nullable audioMix, NSDictionary * _Nullable info) {
-               NSLog(@"test");
-               if (videoAsset is AVURLAsset)
-               videoAsset
-               }];
-               
-               */
             } else {
               [dict setObject:@"false" forKey:@"isVideo"];
             }

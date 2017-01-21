@@ -50,7 +50,7 @@ export default class ServiceTag {
     }
   }
 
-  async toJSON() {
+  async toJSON(upload) {
 
     let colorData = [];
 

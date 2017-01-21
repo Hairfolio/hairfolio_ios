@@ -27,6 +27,8 @@ import AddServiceStore from 'stores/AddServiceStore.js'
 
 import * as routes from 'hairfolio/src/routes.js'
 
+import PostDetailStore from 'stores/PostDetailStore'
+
 const ColorInfo = observer(({store, unit, textStyle, style}) => {
   let colorArray;
 
@@ -124,12 +126,14 @@ const DuratationInfo = observer(({store}) => {
 
 const ServiceInfo = observer(({store}) => {
 
+
+
   let editService = () => {
 
 
     window.serviceTag = store;
 
-    AddServiceStore.reset();
+    // AddServiceStore.reset();
     AddServiceStore.init(store);
 
     // AddServiceStore.posX = a.nativeEvent.locationX;
@@ -139,14 +143,22 @@ const ServiceInfo = observer(({store}) => {
       window.navigators[0].jumpTo(routes.postDetails);
     };
 
-    AddServiceStore.save = (obj) => {
-      /*
-      CreatePostStore.gallery.addServicePicture(
-        AddServiceStore.posX,
-        AddServiceStore.posY,
-        obj
-      );
-      */
+    let myId = store.id;
+
+    AddServiceStore.save = async (obj) => {
+
+      console.log('save', obj);
+      obj.id = myId;
+
+      let store = PostDetailStore.currentStore;
+      window.postStore = store;
+
+      window.picture = await store.selectedPicture.toJSON(false, obj);
+
+      window.obj = obj;
+      console.log(window.obj);
+      console.log(window.picture);
+
       AddServiceStore.myBack();
     };
 

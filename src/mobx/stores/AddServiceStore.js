@@ -147,7 +147,8 @@ class ColorField {
 
   @observable amountSelector;
 
-  constructor({id, code, hex, start_hex, end_hex}, unit, mainStore, isSelected = false) {
+  constructor({id, code, hex, amount, start_hex, end_hex}, unit, mainStore, isSelected = false) {
+
     this.name = code;
 
     this.color = `#${hex}`;
@@ -161,16 +162,16 @@ class ColorField {
     this.isSelected = false;
     this.mainStore = mainStore;
     this.isSelected = isSelected;
-    this.amount = 20;
+    this.amount = amount ? amount : 20;
 
     this.amountSelector2 = new SimpleSelector(
       _.times(301, (n) => `${n} ${unit}`),
-      `20 ${unit}`
+      amount ? `${amount} ${unit}` : `20 ${unit}`
     );
 
     this.amountSelector = new Selector(
       mainStore,
-      `20${unit}`,
+      amount ? `${amount}${unit}` : `20${unit}`,
       _.times(100, (n) => `${n + 1}${unit}`),
       true,
       'Amount'
@@ -239,7 +240,7 @@ class ColorGrid {
   @action setColors(data, unit) {
     // data[0].colors[1].start_hex = 'ff0000';
     // data[0].colors[1].end_hex = '0000ff';
-    this.colors = data.map(({colors}) => colors.map(d => new ColorField(d, unit, this.parent)));
+    this.colors = data.map(({colors}) => colors.map(d => new ColorField(d, unit, this.parent, d.isSelected == true)));
   }
 
 }
@@ -335,22 +336,106 @@ class AddServiceStore {
 
     let unit = this.colorNameSelector.selectedData.unit;
     let res = await ServiceBackend.getColors(lineId);
-    this.colorGrid.setColors(res, unit);
 
+
+    if (this.initStore) {
+      for (let color of this.initStore.colors) {
+        for (let el of res) {
+          for (let item of el.colors) {
+            if (item.id == color.color.id) {
+              console.log('color data', color);
+              item.isSelected = true;
+              item.amount = color.weight;
+            }
+          }
+        }
+      }
+
+    }
+
+    console.log('myRes', res);
+
+
+
+    this.colorGrid.setColors(res, unit);
 
     this.vlWeightSelector = new SimpleSelector(
       _.times(301, (n) => `${n} ${unit}`),
       `30 ${unit}`
     );
 
+    if (this.initStore) {
+      if (this.initStore.developerAmount) {
+        this.vlWeightSelector = new SimpleSelector(
+          _.times(301, (n) => `${n} ${unit}`),
+          `${this.initStore.developerAmount} ${unit}`
+        );
 
+      }
+
+      if (this.initStore.developerVolume) {
+        this.vlSelector = new SimpleSelector(
+          _.times(12, (n) => `${5 * (n + 1)} VL`),
+          `${this.initStore.developerVolume} VL`
+        );
+      }
+
+
+      if (this.initStore.developerTime) {
+        this.selectedMinutes = `${this.initStore.developerTime} min`;
+      }
+    }
 
     return res;
   }
 
-  init(serviceStore) {
+  async _init(serviceStore) {
+    this.isLoading = true;
 
-    // TODO
+    this.serviceSelector = new Selector(
+      this,
+      [],
+      'Service',
+      true
+    );
+
+    this.brandSelector = new Selector(
+      this,
+      [],
+      'Brand',
+      serviceStore.brandName != null
+    );
+
+
+    this.colorNameSelector = new Selector(
+      this,
+      [],
+      'Color name',
+      serviceStore.lineName != null
+    );
+
+
+    let promises = await this.loadService();
+
+    this.serviceSelector.setValue(serviceStore.serviceName);
+
+    if (serviceStore.brandName) {
+      await this.loadBrand();
+      this.brandSelector.setValue(serviceStore.brandName);
+
+      if (serviceStore.lineName) {
+        await this.loadLines();
+        this.colorNameSelector.setValue(serviceStore.lineName)
+      }
+    }
+
+    this.isLoading = false;
+
+    this.initStore = serviceStore;
+  }
+
+  init(serviceStore) {
+    this._init(serviceStore);
   }
 
   reset() {
@@ -379,6 +464,8 @@ class AddServiceStore {
       'Color name',
       false
     );
+
+    this.initStore = null;
   }
 
   @computed get descriptionPageTwo() {

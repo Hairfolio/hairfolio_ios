@@ -12,17 +12,22 @@ export default class HashTag {
     this.type = 'hashtag';
   }
 
-  async toJSON() {
-    let tagName = this.hashtag.substr(1);
-
-    let res = await ServiceBackend.get(`tags/exact?q=${tagName}`);
+  async toJSON(upload = true) {
     let tagId;
 
-    if (res == null) {
-      let tag = (await ServiceBackend.post('tags', {tag: {name: tagName}})).tag;
-      tagId = tag.id;
+    if (upload) {
+      let tagName = this.hashtag.substr(1);
+
+      let res = await ServiceBackend.get(`tags/exact?q=${tagName}`);
+
+      if (res == null) {
+        let tag = (await ServiceBackend.post('tags', {tag: {name: tagName}})).tag;
+        tagId = tag.id;
+      } else {
+        tagId = res.tag.id;
+      }
     } else {
-      tagId = res.tag.id;
+      tagId = this.tagId;
     }
 
     return _.pickBy({

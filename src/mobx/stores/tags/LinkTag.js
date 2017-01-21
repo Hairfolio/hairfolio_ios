@@ -26,7 +26,7 @@ export default class LinkTag {
     console.log('linkUrl', this.linkUrl);
   }
 
-  async toJSON() {
+  async toJSON(upload) {
 
     return _.pickBy({
       // type: this.type,

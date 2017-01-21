@@ -151,25 +151,57 @@ export default class Picture {
   }
 
 
-  async toJSON() {
+  async toJSON(upload = true, obj = {}) {
 
     let ret = {};
 
     let json, formdata;
 
+
     if (this.isVideo) {
-      let videoJSON = await this.uploadVideo();
-      console.log('videoJSON', videoJSON);
-      ret.video_url = videoJSON.secure_url;
+
+      if (upload) {
+        let videoJSON = await this.uploadVideo();
+        console.log('videoJSON', videoJSON);
+        ret.video_url = videoJSON.secure_url;
+      } else {
+        ret.video_url = this.videoUrl;
+      }
     }
 
-    let pictureJSON = await this.uploadPicture();
-    ret.asset_url = pictureJSON.url;
+    if (upload) {
+      let pictureJSON = await this.uploadPicture();
+      ret.asset_url = pictureJSON.url;
+    } else {
+      ret.asset_url = this.source.uri;
+    }
 
     window.tag = this.tags;
 
+    // if editing remove invalid tags first and generate again
+    if (!upload) {
+      // remove negative tags for now
+      this.tags = this.tags.filter(t => t.x >= 0);
+
+
+      let oldIndex = 0;
+
+      let index = 0;
+
+      for (let t of this.tags) {
+        if (t.id == obj.id) {
+          oldIndex = index;
+        }
+        index++;
+      }
+
+      let oldService = this.tags[oldIndex];
+
+      this.tags[oldIndex] = new ServiceTag(oldService.x, oldService.x, obj);
+    }
+
     for (let tag of this.tags) {
-      console.log('tag-type', tag.type);
+
       if (tag.type == 'service') {
         console.log('tag', tag);
         if (tag.serviceName) {
@@ -187,7 +219,16 @@ export default class Picture {
         }
 
         for (let color of tag.colors) {
-          let tagName = color.name.toLowerCase();
+          console.log('color', color);
+
+          let tagName;
+
+          if (!upload) {
+            tagName = color.color.code;
+          } else {
+            tagName = color.name.toLowerCase();
+          }
+
           this.tags.push(new HashTag(-100, -100,  '#' + tagName));
         }
       }

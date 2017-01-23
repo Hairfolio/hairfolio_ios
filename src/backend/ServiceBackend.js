@@ -49,12 +49,7 @@ class ServiceBackend extends Backend {
 
     console.log('folios', res);
 
-    let postIds = res.folio.posts.map(e => e.id);
-    postIds.push(post.id);
-
-    console.log('postIds', post.ids);
-
-    let pinRes = await this.put(`folios/${hairfolio.id}`, {folio: {post_ids: postIds}});
+    let pinRes = await this.post(`folios/${hairfolio.id}/add_post`, {post_id: post.id});
 
     console.log('pinRes', pinRes);
   }

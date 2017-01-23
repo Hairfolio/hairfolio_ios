@@ -19,6 +19,8 @@ import {
 
 import LinearGradient from 'react-native-linear-gradient';
 
+import ServiceBackend from 'backend/ServiceBackend.js'
+
 import Swiper from 'hairfolio/react-native-swiper';
 
 import ServiceRow from 'components/post/ServiceRow.js'
@@ -151,27 +153,31 @@ const ServiceInfo = observer(({store}) => {
       obj.id = myId;
 
 
-      let colors = obj.post_item_tag_colors;
+      if (obj.post_item_tag_colors) {
+        let colors = obj.post_item_tag_colors;
 
-      let myArr = [];
+        let myArr = [];
 
-      for (let formula of colors) {
-        let col = formula.toJSON();
-        console.log('new color', col);
-        myArr.push(col);
+        for (let formula of colors) {
+          let col = formula.toJSON();
+          console.log('new color', col);
+          myArr.push(col);
+        }
+
+        obj.post_item_tag_colors = myArr;
       }
-
-      obj.post_item_tag_colors = myArr;
 
 
       let store = PostDetailStore.currentStore;
-      window.postStore = store;
 
-      window.picture = await store.selectedPicture.toJSON(false, obj);
+      let picture = await store.selectedPicture.toJSON(false, obj);
 
-      window.obj = obj;
-      console.log(window.obj);
-      console.log(window.picture);
+      let res = await ServiceBackend.put('photos/' + store.selectedPicture.id,
+        {
+          photo: picture
+        });
+
+      console.log('res photo', res);
 
       AddServiceStore.myBack();
     };

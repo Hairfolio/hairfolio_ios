@@ -8,7 +8,7 @@ export default class HashTag {
     this.y = y;
     this.key = v4();
     this.abbrev = 'H';
-    this.hashtag = hashtag;
+    this.hashtag = hashtag.replace('#', '');
     this.type = 'hashtag';
   }
 
@@ -16,7 +16,7 @@ export default class HashTag {
     let tagId;
 
     if (upload) {
-      let tagName = this.hashtag.substr(1);
+      let tagName = this.hashtag.replace('#', '');
 
       let res = await ServiceBackend.get(`tags/exact?q=${tagName}`);
 

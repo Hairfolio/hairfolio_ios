@@ -231,6 +231,8 @@ export default class Picture {
             tagName = color.name.toLowerCase();
           }
 
+          tagName = tagName.replace(/\W/g, '').toLowerCase();
+
           this.tags.push(new HashTag(-100, -100,  '#' + tagName));
         }
       }

@@ -85,6 +85,8 @@ export default class Post {
         null
       );
 
+      picture.id = pic.id;
+
       if (pic.video_url) {
         picture.videoUrl = pic.video_url;
       }
@@ -373,7 +375,6 @@ export default class Post {
     let inspiration = hairfolios.filter(e => e.name == 'Inspiration');
 
     let inspirationId;
-    let postIds;
 
     console.log('inspiration length', inspiration.length);
 
@@ -381,16 +382,16 @@ export default class Post {
       console.log('other case');
       let res = await ServiceBackend.post('folios', {folio: {name: 'Inspiration'}});
       inspirationId = res.folio.id;
-      postIds = res.folio.posts.map(e => e.id);
     } else {
+      console.log('inspiration', inspiration);
       inspirationId = inspiration[0].id;
-      postIds = inspiration[0].posts.map(e => e.id);
+
     }
 
-    postIds.push(this.id);
+    let pinRes = await ServiceBackend.post(`folios/
+${inspirationId}/add_post`, {post_id: this.id});
 
-
-    let pinRes = await ServiceBackend.put(`folios/${inspirationId}`, {folio: {post_ids: postIds}});
+    console.log('pin res', pinRes);
 
 
     this.showSave = false;

@@ -55,9 +55,19 @@ export default class ServiceTag {
     let colorData = [];
 
     for (let el of this.colors) {
+
+      let amount = el.amount;
+
+
+      if (el.amountSelector2) {
+        amount = parseInt(el.amountSelector2.selectedValue.split(' ')[0], 10);
+      }
+
+      let colorId = el.id ? el.id : el.color.id;
+
       colorData.push({
-        color_id: el.id,
-        weight: el.amount
+        color_id: colorId,
+        weight: amount
       });
     }
 

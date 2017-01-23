@@ -133,6 +133,18 @@ export default class AddServicePageOne extends Component {
 
     let store = AddServiceStore;
 
+    let content = <View />;
+
+    if (!store.isLoading) {
+      content = (
+        <View>
+          <BoxSelector selector={store.serviceSelector} />
+          <BoxSelector selector={store.brandSelector} />
+          <BoxSelector selector={store.colorNameSelector} />
+        </View>
+      );
+    }
+
     return (
         <View style={{paddingTop: 20, flex: 1, backgroundColor: 'white'}}>
           <SlimHeader
@@ -173,6 +185,7 @@ export default class AddServicePageOne extends Component {
                       brand_name: AddServiceStore.brandSelector.selectedData.name
                     };
 
+                    AddServiceStore.isLoading = true;
                     AddServiceStore.save(storeObj);
                   }
                 } else {
@@ -189,11 +202,7 @@ export default class AddServicePageOne extends Component {
             }}
           />
           <View style={{flex: 1, backgroundColor: '#F3F3F3'}}>
-            <BoxSelector selector={store.serviceSelector} />
-
-            <BoxSelector selector={store.brandSelector} />
-
-            <BoxSelector selector={store.colorNameSelector} />
+            {content}
           </View>
 
           <LoadingScreen store={store} />

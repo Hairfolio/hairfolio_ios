@@ -227,6 +227,23 @@ class ColorField {
   @action select() {
     this.isSelected = true;
   }
+
+  toJSON() {
+
+    let amount = parseInt(this.amountSelector2.selectedValue.split(' ')[0], 10);
+
+    return {
+      amount: amount,
+      weight: amount,
+      color: {
+        code: this.name,
+        end_hex: this.endColor.substr(1),
+        id: this.id,
+        start_hex: this.startColor.substr(1),
+      }
+    };
+  }
+
 }
 
 class ColorGrid {
@@ -242,7 +259,6 @@ class ColorGrid {
     // data[0].colors[1].end_hex = '0000ff';
     this.colors = data.map(({colors}) => colors.map(d => new ColorField(d, unit, this.parent, d.isSelected == true)));
   }
-
 }
 
 

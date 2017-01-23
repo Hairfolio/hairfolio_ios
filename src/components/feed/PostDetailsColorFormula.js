@@ -150,6 +150,20 @@ const ServiceInfo = observer(({store}) => {
       console.log('save', obj);
       obj.id = myId;
 
+
+      let colors = obj.post_item_tag_colors;
+
+      let myArr = [];
+
+      for (let formula of colors) {
+        let col = formula.toJSON();
+        console.log('new color', col);
+        myArr.push(col);
+      }
+
+      obj.post_item_tag_colors = myArr;
+
+
       let store = PostDetailStore.currentStore;
       window.postStore = store;
 

@@ -22,6 +22,7 @@ import CreatePostStore from 'stores/CreatePostStore.js'
 import AddServiceStore from 'stores/AddServiceStore.js'
 import {appStack, createPost, onPress, postFilter, albumPage, gallery, addServiceTwo} from '../routes';
 
+import LoadingScreen from 'components/LoadingScreen.js'
 
 import Picker from 'react-native-wheel-picker'
 
@@ -258,6 +259,7 @@ export default class AddServicePageThree extends Component {
           onRight={() => {
 
             let storeObj = {
+              unit: AddServiceStore.colorNameSelector.selectedData.unit,
               service_id: AddServiceStore.serviceSelector.selectedData.id,
               service_name: AddServiceStore.serviceSelector.selectedData.name,
               line_id: AddServiceStore.colorNameSelector.selectedData.id,
@@ -268,6 +270,8 @@ export default class AddServicePageThree extends Component {
               developer_amount: parseInt(AddServiceStore.vlWeightSelector.selectedValue.split(' ')[0], 10),
               developer_time: parseInt(AddServiceStore.selectedMinutes.split(' ')[0], 10)
             }
+
+            AddServiceStore.isLoading = true;
 
             AddServiceStore.save(storeObj);
 
@@ -284,6 +288,8 @@ export default class AddServicePageThree extends Component {
         </ScrollView>
 
         <PickerPageThree store={AddServiceStore} />
+
+        <LoadingScreen store={AddServiceStore} />
 
       </View>
     </View>

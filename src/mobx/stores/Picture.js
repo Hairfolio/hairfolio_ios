@@ -197,6 +197,8 @@ export default class Picture {
 
       let oldService = this.tags[oldIndex];
 
+      window.lastData2 = obj;
+
       this.tags[oldIndex] = new ServiceTag(oldService.x, oldService.x, obj);
     }
 
@@ -270,6 +272,13 @@ export default class Picture {
   }
 
   @action addServiceTag(x, y, data) {
+
+    window.lastData = data;
+
+    console.log('service data', data);
+
+
+
     this.tags.push(new ServiceTag(x, y, data));
   }
 

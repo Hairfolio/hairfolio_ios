@@ -19,7 +19,7 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>84</string>
+	<string>85</string>
 	<key>Fabric</key>
 	<dict>
 		<key>APIKey</key>
@@ -36,6 +36,10 @@
 	</dict>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>instagram</string>
+	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
@@ -88,10 +92,6 @@
 		<string>UIInterfaceOrientationPortrait</string>
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
-  <false/>
-  <key>LSApplicationQueriesSchemes</key>
-  <array>
-      <string>instagram</string>
-  </array>
+	<false/>
 </dict>
 </plist>

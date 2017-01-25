@@ -44,6 +44,7 @@ export default class Share extends PureComponent {
         onWillFocus={
           () => {
             AddBlackBookStore.load();
+            ShareStore.resetButtons();
             // ActivityYouStore.load();
             // ActivityFollowingStore.load();
           }
@@ -66,8 +67,8 @@ export default class Share extends PureComponent {
                 alignItems: 'center'
               }}
               onPress={() => {
-               ServiceBackend.postPost();
-                  }}
+                ServiceBackend.postPost();
+              }}
             >
               <Text
                 style={{

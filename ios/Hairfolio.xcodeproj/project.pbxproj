@@ -41,6 +41,7 @@
 		B9A2B91B43E240DF9185AD6C /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0437A9983780464B85DE2EDF /* Foundation.ttf */; };
 		D03042B06F4E41CFBA6BAAEA /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6610EEF426034C338DC5DBE5 /* Zocial.ttf */; };
 		DF38CA524BFC41D297EF2939 /* libRCTCamera.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2130E4AFBE5546F1A7E3696D /* libRCTCamera.a */; };
+		E7053AC51E38DF78009B4F73 /* RNInstagramShare.m in Sources */ = {isa = PBXBuildFile; fileRef = E7053AC41E38DF78009B4F73 /* RNInstagramShare.m */; };
 		E77863021E225F5600FED48D /* libRNFetchBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E77863011E225F3700FED48D /* libRNFetchBlob.a */; };
 		E7AFEF891E28E0FD00F8B820 /* libRNImagePicker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E7AFEF871E28DFA900F8B820 /* libRNImagePicker.a */; };
 		E7D568E71E24F4FE00F7C5B0 /* libRNRecorder.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E7D568E21E24F4C300F7C5B0 /* libRNRecorder.a */; };
@@ -317,6 +318,8 @@
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 		A4B5392F7F84425E9E427465 /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 0; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
 		D832DCB264524ADFAB69455A /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 0; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
+		E7053AC31E38DF78009B4F73 /* RNInstagramShare.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNInstagramShare.h; sourceTree = "<group>"; };
+		E7053AC41E38DF78009B4F73 /* RNInstagramShare.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNInstagramShare.m; sourceTree = "<group>"; };
 		E77862FC1E225F3700FED48D /* RNFetchBlob.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNFetchBlob.xcodeproj; path = "../node_modules/react-native-fetch-blob/ios/RNFetchBlob.xcodeproj"; sourceTree = "<group>"; };
 		E7AFEF821E28DFA900F8B820 /* RNImagePicker.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNImagePicker.xcodeproj; path = "../node_modules/react-native-image-picker/ios/RNImagePicker.xcodeproj"; sourceTree = "<group>"; };
 		E7D568C81E24F4C300F7C5B0 /* RNRecorder.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNRecorder.xcodeproj; path = "../node_modules/react-native-screcorder/ios/RNRecorder.xcodeproj"; sourceTree = "<group>"; };
@@ -548,6 +551,8 @@
 				04FE74291D36C6B600292C84 /* StoreManager.h */,
 				FF4E259B1D9FE518003CF7EE /* PhotoAlbum.m */,
 				FF4E259C1D9FE518003CF7EE /* PhotoAlbum.h */,
+				E7053AC31E38DF78009B4F73 /* RNInstagramShare.h */,
+				E7053AC41E38DF78009B4F73 /* RNInstagramShare.m */,
 			);
 			name = hairfolio;
 			sourceTree = "<group>";
@@ -1160,6 +1165,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FF7347611DD0A8D7005A7E47 /* RCTImageResizer.m in Sources */,
+				E7053AC51E38DF78009B4F73 /* RNInstagramShare.m in Sources */,
 				04FE741E1D36C67400292C84 /* StoreManager.m in Sources */,
 				FFA033001DCB511F000158B7 /* KDSocialShare.m in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,

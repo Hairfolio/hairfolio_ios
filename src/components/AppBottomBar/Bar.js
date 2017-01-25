@@ -73,7 +73,7 @@ export default class LoginNavigationbar extends PureComponent {
           this.props.navigator.jumpTo(route);
         }
       }}
-    >
+   >
       <View style={{
         flex: 1,
         borderTopWidth: StyleSheet.hairlineWidth,

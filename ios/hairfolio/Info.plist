@@ -19,7 +19,7 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>83</string>
+	<string>84</string>
 	<key>Fabric</key>
 	<dict>
 		<key>APIKey</key>
@@ -88,8 +88,10 @@
 		<string>UIInterfaceOrientationPortrait</string>
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
-	<false/>
-	<key>efsddf</key>
-	<string></string>
+  <false/>
+  <key>LSApplicationQueriesSchemes</key>
+  <array>
+      <string>instagram</string>
+  </array>
 </dict>
 </plist>

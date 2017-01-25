@@ -64,6 +64,7 @@ const VideoRecorder = observer(({isOpen}) => {
         // window.recorder.removeAllSegments()?
         _.last(window.navigators).jumpTo(gallery)
         CreatePostStore.loadGallery = false;
+
         CreatePostStore.lastTakenPicture = {
           path: segment.thumbnail,
           videoUrl: segment.url,

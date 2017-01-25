@@ -8,9 +8,12 @@ import Picture from 'stores/Picture.js'
 import ServiceBackend from 'backend/ServiceBackend.js'
 import Service from 'hairfolio/src/services/index.js'
 
+import CreatePostStore from 'stores/CreatePostStore.js'
+
 import User from 'stores/User.js'
 
 let PhotoAlbum = NativeModules.PhotoAlbum;
+let InstagramShare = NativeModules.RNInstagramShare;
 
 import {v4} from 'uuid';
 
@@ -149,12 +152,55 @@ class HairfolioStore {
 
 }
 
+class ShareButtonStore {
+  @observable isEnabled = false;
+
+  reset() {
+    this.isEnabled = false;
+  }
+
+  enableDisable() {
+    this.isEnabled = !this.isEnabled;
+  }
+
+  @computed get opacity() {
+    return this.isEnabled ? 1 : 0.5;
+  }
+
+}
+
+class InstagramShareButton extends ShareButtonStore {
+
+  enableDisable() {
+    this.isEnabled = true;
+    // alert(CreatePostStore.gallery.selectedPicture.source.uri);
+    let picture = CreatePostStore.gallery.selectedPicture;
+
+    let uri = picture.localId ? picture.localId :  picture.source.uri;
+
+    let type;
+
+    if (!picture.isVideo || picture.source.uri.startsWith('asset') || picture.localId) {
+      InstagramShare.share(uri, 'library');
+    } else {
+      InstagramShare.share(picture.videoUrl, 'file');
+    }
+
+  }
+}
 
 class ShareStore {
 
   @observable contacts = [];
   @observable sendStore = new SendStore();
   @observable hairfolioStore = new HairfolioStore();
+
+
+  @observable shareFacebookStore = new ShareButtonStore();
+  @observable shareTwitterStore = new ShareButtonStore();
+  @observable sharePinterestStore = new ShareButtonStore();
+  @observable shareInstagramStore = new InstagramShareButton();
+
 
   constructor() {
     this.contacts = [];
@@ -165,6 +211,13 @@ class ShareStore {
 
   @computed get blackBookHeader() {
     return `${this.contacts.length} People`;
+  }
+
+  resetButtons() {
+    this.shareFacebookStore = new ShareButtonStore();
+    this.shareTwitterStore = new ShareButtonStore();
+    this.sharePinterestStore = new ShareButtonStore();
+    this.shareInstagramStore = new InstagramShareButton();
   }
 
   reset() {

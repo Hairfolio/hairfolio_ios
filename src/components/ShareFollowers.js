@@ -24,6 +24,7 @@ import {
 import ShareStore from 'stores/ShareStore.js'
 import * as routes from 'hairfolio/src/routes.js'
 import AddBlackBookStore from 'stores/AddBlackBookStore.js'
+import CreatePostStore from 'stores/CreatePostStore.js'
 
 const Hairfolio  = observer(({store}) => {
 
@@ -215,6 +216,181 @@ let styles = {
 };
 
 
+const ShareSummary = observer(() => {
+
+  let img = <View />;
+
+
+  if (CreatePostStore.gallery.selectedPicture) {
+    img = (
+      <Image
+        style={{
+          height: h(120),
+          width: h(120),
+          margin: h(14),
+        }}
+        source={CreatePostStore.gallery.selectedPicture.source}
+      />
+    )
+  }
+
+
+  return (
+    <View
+      style={{
+        marginVertical: h(20),
+        height: h(150),
+        backgroundColor: 'white',
+        flexDirection: 'row'
+      }}
+    >
+      <View>
+        {img}
+      </View>
+      <View
+        style={{
+          flex: 1
+        }}
+      >
+        <Text
+          numberOfLines={3}
+          style={{
+            marginTop: h(14),
+            marginRight: h(14),
+            fontSize: h(28),
+            color: '#868686',
+            fontFamily: 'Avenir-Roman'
+          }}
+        >{CreatePostStore.gallery.description}
+
+        <Text
+          style={{
+            fontFamily: 'Avenir-Medium',
+            color: '#3E3E3E'
+          }}
+        >
+          {CreatePostStore.hashTagsText}
+        </Text>
+
+      </Text>
+      </View>
+
+
+    </View>
+  );
+});
+
+const ShareButton = observer(({color, store, isLeft = true, imageSource, text}) => {
+  return (
+    <TouchableWithoutFeedback
+      onPress={() => store.enableDisable()}
+    >
+      <View
+        style={{
+          opacity: store.opacity,
+          flex: 1,
+        }}
+      >
+        <View
+          style={{
+            backgroundColor: color,
+            flex: 1,
+            marginRight: isLeft ? 1 : 0,
+            marginBottom: 1,
+            height: h(100),
+            flexDirection: 'row'
+          }}
+        >
+
+        <View
+          style={{
+            width: h(100),
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}
+        >
+          <Image
+            source={imageSource}
+          />
+        </View>
+
+        <View
+          style={{
+            justifyContent: 'center'
+          }}
+        >
+          <Text
+            style={{
+              fontSize: h(34),
+              color: 'white',
+              fontFamily: 'Avenir-Roman'
+            }}
+          >
+            {text}
+          </Text>
+        </View>
+      </View>
+    </View>
+  </TouchableWithoutFeedback>
+  );
+});
+
+const ShareNetworks = observer(() => {
+  return (
+    <View>
+      <View
+        style = {{
+          backgroundColor: '#F8F8F8',
+          flexDirection: 'row',
+        }}
+      >
+        <Text style = {styles.headerStyleLeft}>
+          Share on
+        </Text>
+      </View>
+
+      <View
+        style={{
+          flexDirection: 'row'
+        }}
+      >
+        <ShareButton
+          store={ShareStore.shareTwitterStore}
+          text='Twitter'
+          color='#55ACEE'
+          imageSource={require('img/share_twitter.png')} />
+
+        <ShareButton
+          text='Instagram'
+          store={ShareStore.shareInstagramStore}
+          isLeft={false}
+          color='#3F729B'
+          imageSource={require('img/share_instagram.png')} />
+      </View>
+
+      <View
+        style={{
+          flexDirection: 'row'
+        }}
+      >
+        <ShareButton
+          text='Pinterest'
+          store={ShareStore.sharePinterestStore}
+          color='#BD081C'
+          imageSource={require('img/share_pinterest.png')} />
+
+        <ShareButton
+          text='Facebook'
+          store={ShareStore.shareFacebookStore}
+          isLeft={false}
+          color='#3B5997'
+          imageSource={require('img/share_facebook.png')} />
+      </View>
+
+    </View>
+  );
+});
+
 const ShareFollowers = observer(() => {
 
   return (
@@ -223,8 +399,10 @@ const ShareFollowers = observer(() => {
         backgroundColor: '#F8F8F8'
       }}
     >
+      <ShareSummary />
       <ShareHairfolio />
       <ShareBlackBook />
+      <ShareNetworks />
     </ScrollView>
   );
 });

@@ -206,14 +206,14 @@ class Gallery {
     );
     this.selectedPicture = this.pictures[0];
 
-    this.description = 'This is a sample post';
+    this.description = 'This is a sample post that goes ';
 
     this.filterStore.setMainImage(this.selectedPicture);
-    this.selectedTag = this.linkTagMenu;
-    this.linkTagMenu.selected = true;
+    // this.selectedTag = this.linkTagMenu;
+    // this.linkTagMenu.selected = true;
 
     // add hashtag
-    // this.addHashToPicture(20, 100, 'test');
+    this.addHashToPicture(20, 100, 'test');
   }
 
   @action updateFilterStore() {
@@ -393,13 +393,17 @@ class CreatePostStore {
 
   @action addTakenPictureToGallery() {
 
-    this.gallery.addPicture(
-      new Picture(
-        {uri: this.lastTakenPicture.uri},
-        {uri: this.lastTakenPicture.uri},
-        this.gallery
-      )
+    let picture = new Picture(
+      {uri: this.lastTakenPicture.uri},
+      {uri: this.lastTakenPicture.uri},
+      this.gallery
     );
+
+    if (this.lastTakenPicture.id) {
+      picture.localId = this.lastTakenPicture.id;
+    }
+
+    this.gallery.addPicture(picture);
 
     this.gallery.wasOpened = true;
   }
@@ -479,6 +483,25 @@ class CreatePostStore {
       return this.inputMethod;
     }
   }
+
+  @computed get hashTagsText() {
+    let text = '';
+
+    for (let picture of this.gallery.pictures) {
+
+      for (let tag of picture.tags) {
+        if (tag.type == 'hashtag' && tag.x >= 0) {
+          text += ' #' + tag.hashtag;
+        }
+      }
+    }
+
+
+    return text;
+
+  }
+
+
 
 
 };

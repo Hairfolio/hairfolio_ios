@@ -78,7 +78,7 @@ const PostActionButtons = observer(({post}) => {
       style={{
         height: h(100),
         flexDirection: 'row',
-        paddingHorizontal: h(31),
+        paddingLeft: h(31),
         alignItems: 'center',
         borderBottomWidth: h(2),
         borderBottomColor: '#C1C1C1'
@@ -146,7 +146,7 @@ const PostActionButtons = observer(({post}) => {
       <TouchableOpacity
         style={{
           flexDirection: 'row',
-          marginRight: h(50)
+          marginRight: h(25)
         }}
         onPress={ () => {
 
@@ -188,6 +188,9 @@ const PostActionButtons = observer(({post}) => {
         style={{
           flexDirection: 'row',
           flex: 1,
+          paddingLeft: h(25),
+          height: h(100),
+          alignItems: 'center'
         }}
       >
         <Image
@@ -200,14 +203,17 @@ const PostActionButtons = observer(({post}) => {
       <TouchableOpacity
         onPress={openMore}
         style={{
-          flexDirection: 'row'
+          flexDirection: 'row',
+          paddingLeft: h(15),
+          paddingRight: h(31),
+          height: h(100),
+          alignItems: 'center'
         }}
       >
         <Image
           style={{
             height: h(13),
-            width: h(59),
-            marginRight: h(15),
+            width: h(59)
           }}
           source={require('img/feed_more.png')} />
       </TouchableOpacity>

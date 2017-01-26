@@ -99,7 +99,7 @@ const ImagePreview = observer(({gallery, navigators}) => {
   let deletePicture = () => {
     AlertIOS.alert(
       gallery.selectedPicture.isVideo ? 'Delete Video' : 'Delete Picture',
-      'Are you sure you want to delete this item from the gallary?',
+      'Are you sure you want to delete this item from the gallery?',
 
       [
         {text: 'Yes', onPress: () => gallery.deleteSelectedPicture()},

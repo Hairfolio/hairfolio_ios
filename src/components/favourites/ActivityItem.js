@@ -17,7 +17,8 @@ import {
   AlertIOS,
   Modal,
   ScrollView,
-  PickerIOS, Picker, StatusBar, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet
+  PickerIOS, Picker, StatusBar, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet,
+getUserId
 } from 'hairfolio/src/helpers.js';
 
 
@@ -53,7 +54,7 @@ const ActivityItem = observer(({store, isMe}) => {
     }
   } else if (store.type == 'star') {
     if (isMe) {
-      infoContent = <Text>stared your post</Text>
+      infoContent = <Text>starred your post</Text>
     } else {
       infoContent = (
         <Text>starred a post of
@@ -102,7 +103,7 @@ const ActivityItem = observer(({store, isMe}) => {
         }}
       >
         <Text style={{fontFamily: FONTS.MEDIUM, color: '#3E3E3E'}}>
-          {store.user.name + ' '}
+          {store.user.id == getUserId() ? 'You ' : store.user.name + ' '}
         </Text>
           {infoContent}
       </Text>

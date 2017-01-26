@@ -20,11 +20,13 @@ import {
 
 import {profile, profileExternal, appStack} from 'hairfolio/src/routes';
 
-const PostHeader = observer(({post}) => {
+const PostHeader = observer(({post, disableClick = false}) => {
   return (
     <TouchableWithoutFeedback
       onPress={() => {
-        appStack.scene().goToProfile(post.creator.id);
+        if (!disableClick) {
+          appStack.scene().goToProfile(post.creator.id);
+        }
       }}
     >
       <View

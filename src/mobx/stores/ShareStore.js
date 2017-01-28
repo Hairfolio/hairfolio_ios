@@ -15,6 +15,8 @@ import User from 'stores/User.js'
 let PhotoAlbum = NativeModules.PhotoAlbum;
 let InstagramShare = NativeModules.RNInstagramShare;
 
+let TwitterHelper = NativeModules.TwitterHelper;
+
 const FBSDK = require('react-native-fbsdk');
 const {
   ShareApi,
@@ -195,24 +197,53 @@ class InstagramShareButton extends ShareButtonStore {
   }
 }
 
+class TwitterShareButton extends ShareButtonStore {
 
-class FacebookShareButton extends ShareButtonStore {
+  async share(imageUrl) {
 
-  async requestPermissions() {
+    if (!this.isEnabled) {
+      return;
+    }
 
-    let result = await LoginManager.logInWithPublishPermissions(['publish_actions']);
+    TwitterHelper.tweet(
+      CreatePostStore.gallery.description + CreatePostStore.hashTagsText,
+      imageUrl,
+      () => {
 
-    if (result.isCancelled) {
-      alert('Login cancelled');
-    } else {
-      alert('Login success with permissions: '
-        + result.grantedPermissions.toString());
+      },
+      () => {
+        alert('Twitter sharing failed');
+      }
+    );
+
+
+  }
+
+
+  async enableDisable() {
+
+    if (this.isEnabled) {
+      this.isEnabled = false;
+      return;
+    }
+
+
+    try {
+      let res = await TwitterHelper.login();
+      this.isEnabled = true;
+
+    } catch(error) {
+      this.isEnabled = false;
     }
 
 
 
 
   }
+}
+
+
+class FacebookShareButton extends ShareButtonStore {
 
   async share(imageUrl) {
 
@@ -275,7 +306,7 @@ class ShareStore {
 
 
   @observable shareFacebookStore = new FacebookShareButton();
-  @observable shareTwitterStore = new ShareButtonStore();
+  @observable shareTwitterStore = new TwitterShareButton();
   @observable sharePinterestStore = new ShareButtonStore();
   @observable shareInstagramStore = new InstagramShareButton();
 
@@ -288,6 +319,7 @@ class ShareStore {
 
   share(imageUrl) {
     this.shareFacebookStore.share(imageUrl);
+    this.shareTwitterStore.share(imageUrl);
   }
 
 
@@ -297,7 +329,7 @@ class ShareStore {
 
   resetButtons() {
     this.shareFacebookStore = new FacebookShareButton();
-    this.shareTwitterStore = new ShareButtonStore();
+    this.shareTwitterStore = new TwitterShareButton();
     this.sharePinterestStore = new ShareButtonStore();
     this.shareInstagramStore = new InstagramShareButton();
   }

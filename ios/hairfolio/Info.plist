@@ -18,8 +18,17 @@
 	<string>1.0</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>fb653107098196959</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleVersion</key>
-	<string>86</string>
+	<string>87</string>
 	<key>Fabric</key>
 	<dict>
 		<key>APIKey</key>
@@ -32,17 +41,32 @@
 				<key>KitName</key>
 				<string>Crashlytics</string>
 			</dict>
+			<dict>
+				<key>KitInfo</key>
+				<dict>
+					<key>consumerKey</key>
+					<string>lKaBx3oArqiRyY3swiPM0LoEP</string>
+					<key>consumerSecret</key>
+					<string>G1o4iClzRYjYAU2u1l02sW02MhtoRpFlRS50VeQP23RwAg4T3i</string>
+				</dict>
+				<key>KitName</key>
+				<string>Twitter</string>
+			</dict>
 		</array>
 	</dict>
+	<key>FacebookAppID</key>
+	<string>653107098196959</string>
+	<key>FacebookDisplayName</key>
+	<string>Hairfolio-Dev</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>instagram</string>
-    <string>fbapi</string>
-    <string>fb-messenger-api</string>
-    <string>fbauth2</string>
-    <string>fbshareextension</string>
+		<string>fbapi</string>
+		<string>fb-messenger-api</string>
+		<string>fbauth2</string>
+		<string>fbshareextension</string>
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
@@ -97,18 +121,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-  <key>CFBundleURLTypes</key>
-  <array>
-    <dict>
-      <key>CFBundleURLSchemes</key>
-      <array>
-        <string>fb653107098196959</string>
-      </array>
-    </dict>
-  </array>
-  <key>FacebookAppID</key>
-  <string>653107098196959</string>
-  <key>FacebookDisplayName</key>
-  <string>Hairfolio-Dev</string>
 </dict>
 </plist>

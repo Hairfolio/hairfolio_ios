@@ -16,9 +16,12 @@
 
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 
-
-
 #import <Fabric/Fabric.h>
+#import <TwitterKit/TwitterKit.h>
+
+
+
+
 #import <Crashlytics/Crashlytics.h>
 
 //Add the following lines
@@ -35,7 +38,8 @@
   [[FBSDKApplicationDelegate sharedInstance] application:application
                            didFinishLaunchingWithOptions:launchOptions];
   
-  [Fabric with:@[[Crashlytics class]]];
+  [Fabric with:@[[Crashlytics class], [Twitter class]]];
+
   
   //Add the following lines
   RCTSetLogThreshold(RCTLogLevelInfo);

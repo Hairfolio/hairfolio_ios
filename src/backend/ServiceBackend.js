@@ -103,8 +103,11 @@ class ServiceBackend extends Backend {
       CreatePostStore.loadingText = 'Uploading pictures ..';
       let data = await CreatePostStore.gallery.toJSON();
 
+
       CreatePostStore.loadingText = 'Publishing the post';
       console.log('post data', data);
+
+      ShareStore.share(data.post.photos_attributes[0].asset_url);
 
       let res = await this.post('posts', data);
 

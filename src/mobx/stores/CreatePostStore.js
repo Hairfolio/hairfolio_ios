@@ -206,7 +206,7 @@ class Gallery {
     );
     this.selectedPicture = this.pictures[0];
 
-    this.description = 'This is a sample post that goes ';
+    this.description = 'This is a sample post.';
 
     this.filterStore.setMainImage(this.selectedPicture);
     // this.selectedTag = this.linkTagMenu;

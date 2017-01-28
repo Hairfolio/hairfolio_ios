@@ -15,6 +15,13 @@ import User from 'stores/User.js'
 let PhotoAlbum = NativeModules.PhotoAlbum;
 let InstagramShare = NativeModules.RNInstagramShare;
 
+const FBSDK = require('react-native-fbsdk');
+const {
+  ShareApi,
+  LoginManager,
+  AccessToken
+} = FBSDK;
+
 import {v4} from 'uuid';
 
 import {_, moment, React, Text} from 'hairfolio/src/helpers';
@@ -42,7 +49,6 @@ class SelectableUser extends SelectableUserBase {
     return '#F8F8F8';
   }
 }
-
 
 class SendStore {
   @observable users = [];
@@ -189,6 +195,78 @@ class InstagramShareButton extends ShareButtonStore {
   }
 }
 
+
+class FacebookShareButton extends ShareButtonStore {
+
+  async requestPermissions() {
+
+    let result = await LoginManager.logInWithPublishPermissions(['publish_actions']);
+
+    if (result.isCancelled) {
+      alert('Login cancelled');
+    } else {
+      alert('Login success with permissions: '
+        + result.grantedPermissions.toString());
+    }
+
+
+
+
+  }
+
+  async share(imageUrl) {
+
+    if (!this.isEnabled) {
+      return;
+    }
+
+    const shareLinkContent = {
+      contentType: 'link',
+      contentUrl: 'http://hairfolioapp.com/',
+      contentTitle: 'Hairfolio',
+      contentDescription: 'Hairfolio is nice :)',
+      imageUrl: imageUrl
+    };
+
+
+    ShareApi.canShare(shareLinkContent).then(
+      function(canShare) {
+        if (canShare) {
+          return ShareApi.share(shareLinkContent, '/me', CreatePostStore.gallery.description + CreatePostStore.hashTagsText);
+        }
+      }
+    ).then(
+      function(result) {
+        // alert('Share with ShareApi success.');
+      },
+      function(error) {
+        alert('There was an issue with sharing on Facebook: ' + error);
+      }
+    );
+  }
+
+
+  async enableDisable() {
+
+    if (this.isEnabled) {
+      this.isEnabled = false;
+      return;
+    }
+
+    let token = await AccessToken.getCurrentAccessToken();
+
+    if (token == null) {
+      let result = await LoginManager.logInWithPublishPermissions(['publish_actions']);
+
+      if (!result.isCancelled) {
+        this.isEnabled = true;
+      }
+    } else {
+      this.isEnabled = true;
+    }
+  }
+}
+
 class ShareStore {
 
   @observable contacts = [];
@@ -196,7 +274,7 @@ class ShareStore {
   @observable hairfolioStore = new HairfolioStore();
 
 
-  @observable shareFacebookStore = new ShareButtonStore();
+  @observable shareFacebookStore = new FacebookShareButton();
   @observable shareTwitterStore = new ShareButtonStore();
   @observable sharePinterestStore = new ShareButtonStore();
   @observable shareInstagramStore = new InstagramShareButton();
@@ -208,13 +286,17 @@ class ShareStore {
     this.hairfolioStore = new HairfolioStore();
   }
 
+  share(imageUrl) {
+    this.shareFacebookStore.share(imageUrl);
+  }
+
 
   @computed get blackBookHeader() {
     return `${this.contacts.length} People`;
   }
 
   resetButtons() {
-    this.shareFacebookStore = new ShareButtonStore();
+    this.shareFacebookStore = new FacebookShareButton();
     this.shareTwitterStore = new ShareButtonStore();
     this.sharePinterestStore = new ShareButtonStore();
     this.shareInstagramStore = new InstagramShareButton();

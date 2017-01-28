@@ -14,6 +14,9 @@
 #import "RCTUtils.h"
 #import "RCTLinkingManager.h"
 
+#import <FBSDKCoreKit/FBSDKCoreKit.h>
+
+
 
 #import <Fabric/Fabric.h>
 #import <Crashlytics/Crashlytics.h>
@@ -28,17 +31,10 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
   
-  /*
-  for (NSString* family in [UIFont familyNames])
-  {
-    NSLog(@"%@", family);
-    for (NSString* name in [UIFont fontNamesForFamilyName: family])
-    {
-      NSLog(@" %@", name);
-    }
-  }
-   */
-
+  // facebook sdk
+  [[FBSDKApplicationDelegate sharedInstance] application:application
+                           didFinishLaunchingWithOptions:launchOptions];
+  
   [Fabric with:@[[Crashlytics class]]];
   
   //Add the following lines
@@ -95,9 +91,22 @@
   return YES;
 }
 
+- (void)applicationDidBecomeActive:(UIApplication *)application {
+  [FBSDKAppEvents activateApp];
+}
+
+
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
   sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
 {
+  
+  if ([url.absoluteString hasPrefix:@"fb"]) {
+    return [[FBSDKApplicationDelegate sharedInstance] application:application
+                                                          openURL:url
+                                                sourceApplication:sourceApplication
+                                                       annotation:annotation];
+    
+  }
   return [RCTLinkingManager application:application openURL:url
                       sourceApplication:sourceApplication annotation:annotation];
 }

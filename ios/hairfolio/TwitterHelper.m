@@ -35,7 +35,7 @@ RCT_REMAP_METHOD(login, resolver: (RCTPromiseResolveBlock)resolve
   
   NSString *statusesShowEndpoint = @"https://api.twitter.com/1.1/statuses/update.json";
   NSDictionary *params = @{
-                           @"status": tweetContent,
+                           @"status": [tweetContent substringToIndex: MIN(140, [tweetContent length])],
                            @"media_ids": [mediaId stringValue]
                            };
   NSError *clientError;

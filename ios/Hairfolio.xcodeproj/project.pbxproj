@@ -47,6 +47,21 @@
 		E70F4FB31E3CCD2300FFF207 /* TwitterKitResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = E70F4FB01E3CCD2300FFF207 /* TwitterKitResources.bundle */; };
 		E70F4FB41E3CCD2300FFF207 /* TwitterCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E70F4FB11E3CCD2300FFF207 /* TwitterCore.framework */; };
 		E70F4FB71E3CCE8D00FFF207 /* TwitterHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = E70F4FB61E3CCE8D00FFF207 /* TwitterHelper.m */; };
+		E70F50041E3D978F00FFF207 /* PDKBoard.m in Sources */ = {isa = PBXBuildFile; fileRef = E70F4FF21E3D978F00FFF207 /* PDKBoard.m */; };
+		E70F50051E3D978F00FFF207 /* PDKCategories.m in Sources */ = {isa = PBXBuildFile; fileRef = E70F4FF41E3D978F00FFF207 /* PDKCategories.m */; };
+		E70F50061E3D978F00FFF207 /* PDKClient.m in Sources */ = {isa = PBXBuildFile; fileRef = E70F4FF61E3D978F00FFF207 /* PDKClient.m */; };
+		E70F50071E3D978F00FFF207 /* PDKImageInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = E70F4FF81E3D978F00FFF207 /* PDKImageInfo.m */; };
+		E70F50081E3D978F00FFF207 /* PDKInterest.m in Sources */ = {isa = PBXBuildFile; fileRef = E70F4FFA1E3D978F00FFF207 /* PDKInterest.m */; };
+		E70F50091E3D978F00FFF207 /* PDKModelObject.m in Sources */ = {isa = PBXBuildFile; fileRef = E70F4FFC1E3D978F00FFF207 /* PDKModelObject.m */; };
+		E70F500A1E3D978F00FFF207 /* PDKPin.m in Sources */ = {isa = PBXBuildFile; fileRef = E70F4FFE1E3D978F00FFF207 /* PDKPin.m */; };
+		E70F500B1E3D978F00FFF207 /* PDKResponseObject.m in Sources */ = {isa = PBXBuildFile; fileRef = E70F50001E3D978F00FFF207 /* PDKResponseObject.m */; };
+		E70F500C1E3D978F00FFF207 /* PDKUser.m in Sources */ = {isa = PBXBuildFile; fileRef = E70F50021E3D978F00FFF207 /* PDKUser.m */; };
+		E70F502C1E3D9ED800FFF207 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E70F502B1E3D9ED800FFF207 /* Security.framework */; };
+		E70F50471E3DA1B000FFF207 /* AFNetworking.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E70F50451E3DA1B000FFF207 /* AFNetworking.framework */; };
+		E70F50481E3DA1B000FFF207 /* SAMKeychain.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E70F50461E3DA1B000FFF207 /* SAMKeychain.framework */; };
+		E70F504A1E3DA2A500FFF207 /* AFNetworking.framework in Embed framework */ = {isa = PBXBuildFile; fileRef = E70F50451E3DA1B000FFF207 /* AFNetworking.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		E70F504B1E3DA2A500FFF207 /* SAMKeychain.framework in Embed framework */ = {isa = PBXBuildFile; fileRef = E70F50461E3DA1B000FFF207 /* SAMKeychain.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		E70F504E1E3DA44300FFF207 /* PinterestHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = E70F504D1E3DA44300FFF207 /* PinterestHelper.m */; };
 		E77863021E225F5600FED48D /* libRNFetchBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E77863011E225F3700FED48D /* libRNFetchBlob.a */; };
 		E7AFEF891E28E0FD00F8B820 /* libRNImagePicker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E7AFEF871E28DFA900F8B820 /* libRNImagePicker.a */; };
 		E7CCE8A51E3A472300C8A340 /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7CCE8A41E3A472300C8A340 /* Bolts.framework */; };
@@ -273,6 +288,21 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		E70F50491E3DA24C00FFF207 /* Embed framework */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				E70F504A1E3DA2A500FFF207 /* AFNetworking.framework in Embed framework */,
+				E70F504B1E3DA2A500FFF207 /* SAMKeychain.framework in Embed framework */,
+			);
+			name = "Embed framework";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		008F07F21AC5B25A0029DE68 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
 		00C302A71ABCB8CE00DB3ED1 /* RCTActionSheet.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTActionSheet.xcodeproj; path = "../node_modules/react-native/Libraries/ActionSheetIOS/RCTActionSheet.xcodeproj"; sourceTree = "<group>"; };
@@ -343,6 +373,30 @@
 		E70F4FB11E3CCD2300FFF207 /* TwitterCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = TwitterCore.framework; sourceTree = "<group>"; };
 		E70F4FB51E3CCE8D00FFF207 /* TwitterHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TwitterHelper.h; path = hairfolio/TwitterHelper.h; sourceTree = "<group>"; };
 		E70F4FB61E3CCE8D00FFF207 /* TwitterHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TwitterHelper.m; path = hairfolio/TwitterHelper.m; sourceTree = "<group>"; };
+		E70F4FF11E3D978F00FFF207 /* PDKBoard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PDKBoard.h; path = pinterest/PDKBoard.h; sourceTree = "<group>"; };
+		E70F4FF21E3D978F00FFF207 /* PDKBoard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PDKBoard.m; path = pinterest/PDKBoard.m; sourceTree = "<group>"; };
+		E70F4FF31E3D978F00FFF207 /* PDKCategories.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PDKCategories.h; path = pinterest/PDKCategories.h; sourceTree = "<group>"; };
+		E70F4FF41E3D978F00FFF207 /* PDKCategories.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PDKCategories.m; path = pinterest/PDKCategories.m; sourceTree = "<group>"; };
+		E70F4FF51E3D978F00FFF207 /* PDKClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PDKClient.h; path = pinterest/PDKClient.h; sourceTree = "<group>"; };
+		E70F4FF61E3D978F00FFF207 /* PDKClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PDKClient.m; path = pinterest/PDKClient.m; sourceTree = "<group>"; };
+		E70F4FF71E3D978F00FFF207 /* PDKImageInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PDKImageInfo.h; path = pinterest/PDKImageInfo.h; sourceTree = "<group>"; };
+		E70F4FF81E3D978F00FFF207 /* PDKImageInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PDKImageInfo.m; path = pinterest/PDKImageInfo.m; sourceTree = "<group>"; };
+		E70F4FF91E3D978F00FFF207 /* PDKInterest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PDKInterest.h; path = pinterest/PDKInterest.h; sourceTree = "<group>"; };
+		E70F4FFA1E3D978F00FFF207 /* PDKInterest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PDKInterest.m; path = pinterest/PDKInterest.m; sourceTree = "<group>"; };
+		E70F4FFB1E3D978F00FFF207 /* PDKModelObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PDKModelObject.h; path = pinterest/PDKModelObject.h; sourceTree = "<group>"; };
+		E70F4FFC1E3D978F00FFF207 /* PDKModelObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PDKModelObject.m; path = pinterest/PDKModelObject.m; sourceTree = "<group>"; };
+		E70F4FFD1E3D978F00FFF207 /* PDKPin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PDKPin.h; path = pinterest/PDKPin.h; sourceTree = "<group>"; };
+		E70F4FFE1E3D978F00FFF207 /* PDKPin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PDKPin.m; path = pinterest/PDKPin.m; sourceTree = "<group>"; };
+		E70F4FFF1E3D978F00FFF207 /* PDKResponseObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PDKResponseObject.h; path = pinterest/PDKResponseObject.h; sourceTree = "<group>"; };
+		E70F50001E3D978F00FFF207 /* PDKResponseObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PDKResponseObject.m; path = pinterest/PDKResponseObject.m; sourceTree = "<group>"; };
+		E70F50011E3D978F00FFF207 /* PDKUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PDKUser.h; path = pinterest/PDKUser.h; sourceTree = "<group>"; };
+		E70F50021E3D978F00FFF207 /* PDKUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PDKUser.m; path = pinterest/PDKUser.m; sourceTree = "<group>"; };
+		E70F50031E3D978F00FFF207 /* PinterestSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PinterestSDK.h; path = pinterest/PinterestSDK.h; sourceTree = "<group>"; };
+		E70F502B1E3D9ED800FFF207 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		E70F50451E3DA1B000FFF207 /* AFNetworking.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AFNetworking.framework; path = carthage/Carthage/Build/iOS/AFNetworking.framework; sourceTree = "<group>"; };
+		E70F50461E3DA1B000FFF207 /* SAMKeychain.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SAMKeychain.framework; path = carthage/Carthage/Build/iOS/SAMKeychain.framework; sourceTree = "<group>"; };
+		E70F504C1E3DA44300FFF207 /* PinterestHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PinterestHelper.h; sourceTree = "<group>"; };
+		E70F504D1E3DA44300FFF207 /* PinterestHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PinterestHelper.m; sourceTree = "<group>"; };
 		E77862FC1E225F3700FED48D /* RNFetchBlob.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNFetchBlob.xcodeproj; path = "../node_modules/react-native-fetch-blob/ios/RNFetchBlob.xcodeproj"; sourceTree = "<group>"; };
 		E7AFEF821E28DFA900F8B820 /* RNImagePicker.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNImagePicker.xcodeproj; path = "../node_modules/react-native-image-picker/ios/RNImagePicker.xcodeproj"; sourceTree = "<group>"; };
 		E7CCE8A41E3A472300C8A340 /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Bolts.framework; sourceTree = "<group>"; };
@@ -391,6 +445,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E70F50471E3DA1B000FFF207 /* AFNetworking.framework in Frameworks */,
+				E70F50481E3DA1B000FFF207 /* SAMKeychain.framework in Frameworks */,
+				E70F502C1E3D9ED800FFF207 /* Security.framework in Frameworks */,
 				E7AFEF891E28E0FD00F8B820 /* libRNImagePicker.a in Frameworks */,
 				E7D568F41E25039500F7C5B0 /* libRCTVideo.a in Frameworks */,
 				E7CCE8A91E3A474300C8A340 /* FBSDKLoginKit.framework in Frameworks */,
@@ -572,6 +629,7 @@
 		13B07FAE1A68108700A75B9A /* hairfolio */ = {
 			isa = PBXGroup;
 			children = (
+				E70F4FF01E3D978200FFF207 /* pinterest */,
 				0453CA9E1D40F9730033DF87 /* fonts */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
@@ -589,6 +647,8 @@
 				E7053AC41E38DF78009B4F73 /* RNInstagramShare.m */,
 				E70F4FB51E3CCE8D00FFF207 /* TwitterHelper.h */,
 				E70F4FB61E3CCE8D00FFF207 /* TwitterHelper.m */,
+				E70F504C1E3DA44300FFF207 /* PinterestHelper.h */,
+				E70F504D1E3DA44300FFF207 /* PinterestHelper.m */,
 			);
 			name = hairfolio;
 			sourceTree = "<group>";
@@ -677,6 +737,32 @@
 			indentWidth = 2;
 			sourceTree = "<group>";
 			tabWidth = 2;
+		};
+		E70F4FF01E3D978200FFF207 /* pinterest */ = {
+			isa = PBXGroup;
+			children = (
+				E70F4FF11E3D978F00FFF207 /* PDKBoard.h */,
+				E70F4FF21E3D978F00FFF207 /* PDKBoard.m */,
+				E70F4FF31E3D978F00FFF207 /* PDKCategories.h */,
+				E70F4FF41E3D978F00FFF207 /* PDKCategories.m */,
+				E70F4FF51E3D978F00FFF207 /* PDKClient.h */,
+				E70F4FF61E3D978F00FFF207 /* PDKClient.m */,
+				E70F4FF71E3D978F00FFF207 /* PDKImageInfo.h */,
+				E70F4FF81E3D978F00FFF207 /* PDKImageInfo.m */,
+				E70F4FF91E3D978F00FFF207 /* PDKInterest.h */,
+				E70F4FFA1E3D978F00FFF207 /* PDKInterest.m */,
+				E70F4FFB1E3D978F00FFF207 /* PDKModelObject.h */,
+				E70F4FFC1E3D978F00FFF207 /* PDKModelObject.m */,
+				E70F4FFD1E3D978F00FFF207 /* PDKPin.h */,
+				E70F4FFE1E3D978F00FFF207 /* PDKPin.m */,
+				E70F4FFF1E3D978F00FFF207 /* PDKResponseObject.h */,
+				E70F50001E3D978F00FFF207 /* PDKResponseObject.m */,
+				E70F50011E3D978F00FFF207 /* PDKUser.h */,
+				E70F50021E3D978F00FFF207 /* PDKUser.m */,
+				E70F50031E3D978F00FFF207 /* PinterestSDK.h */,
+			);
+			name = pinterest;
+			sourceTree = "<group>";
 		};
 		E747724C1E3A504600CE5FF6 /* Products */ = {
 			isa = PBXGroup;
@@ -769,6 +855,9 @@
 		FFA032FB1DCB5080000158B7 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				E70F50451E3DA1B000FFF207 /* AFNetworking.framework */,
+				E70F50461E3DA1B000FFF207 /* SAMKeychain.framework */,
+				E70F502B1E3D9ED800FFF207 /* Security.framework */,
 				E7CCE8AA1E3A475300C8A340 /* FBSDKShareKit.framework */,
 				E7CCE8A81E3A474300C8A340 /* FBSDKLoginKit.framework */,
 				E7CCE8A61E3A473300C8A340 /* FBSDKCoreKit.framework */,
@@ -807,6 +896,7 @@
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
+				E70F50491E3DA24C00FFF207 /* Embed framework */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				FFDE377D1D9B1D1600F2F4C2 /* ShellScript */,
 			);
@@ -1228,16 +1318,26 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E70F500C1E3D978F00FFF207 /* PDKUser.m in Sources */,
 				FF7347611DD0A8D7005A7E47 /* RCTImageResizer.m in Sources */,
+				E70F500B1E3D978F00FFF207 /* PDKResponseObject.m in Sources */,
 				E7053AC51E38DF78009B4F73 /* RNInstagramShare.m in Sources */,
+				E70F50091E3D978F00FFF207 /* PDKModelObject.m in Sources */,
 				04FE741E1D36C67400292C84 /* StoreManager.m in Sources */,
+				E70F500A1E3D978F00FFF207 /* PDKPin.m in Sources */,
+				E70F50061E3D978F00FFF207 /* PDKClient.m in Sources */,
 				FFA033001DCB511F000158B7 /* KDSocialShare.m in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				FF9AD50F1DAD4BA9001E1690 /* ImageFilter.m in Sources */,
 				FF4E259D1D9FE518003CF7EE /* PhotoAlbum.m in Sources */,
+				E70F50041E3D978F00FFF207 /* PDKBoard.m in Sources */,
+				E70F50071E3D978F00FFF207 /* PDKImageInfo.m in Sources */,
+				E70F50081E3D978F00FFF207 /* PDKInterest.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 				FF7347621DD0A8D7005A7E47 /* ImageHelpers.m in Sources */,
 				E70F4FB71E3CCE8D00FFF207 /* TwitterHelper.m in Sources */,
+				E70F504E1E3DA44300FFF207 /* PinterestHelper.m in Sources */,
+				E70F50051E3D978F00FFF207 /* PDKCategories.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1309,6 +1409,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/carthage/Carthage/Build/iOS",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1347,6 +1448,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/carthage/Carthage/Build/iOS",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",

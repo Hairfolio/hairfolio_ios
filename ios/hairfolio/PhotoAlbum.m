@@ -25,20 +25,11 @@ RCT_EXPORT_METHOD(getVidePath:(NSString *)identifier callback:(RCTResponseSender
   PHFetchResult *results = [PHAssetCollection fetchAssetCollectionsWithLocalIdentifiers:@[identifier]   options:nil];
   
   
-  
   for (PHAsset *asset in results) {
     
     if (asset.mediaType == PHAssetMediaTypeVideo) {
       NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
-      
-      NSArray *resources = [PHAssetResource assetResourcesForAsset:asset];
-      NSString *orgFilename = ((PHAssetResource*)resources[0]).originalFilename;
-      
-      [dict setObject:orgFilename forKey:@"fileName"];
 
-      
-
-      
       [[PHImageManager defaultManager] requestAVAssetForVideo:asset options:nil resultHandler:^(AVAsset *asset, AVAudioMix *audioMix, NSDictionary *info)
        {
          if ([asset isKindOfClass:[AVURLAsset class]])
@@ -47,8 +38,6 @@ RCT_EXPORT_METHOD(getVidePath:(NSString *)identifier callback:(RCTResponseSender
            [dict setObject:url.relativePath forKey:@"uri"];
            
            [arr addObject:dict];
-           
-           
            
            callback(@[arr]);
            return;

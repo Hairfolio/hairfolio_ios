@@ -19,7 +19,7 @@
 #import <Fabric/Fabric.h>
 #import <TwitterKit/TwitterKit.h>
 
-
+#import "PDKClient.h"
 
 
 #import <Crashlytics/Crashlytics.h>
@@ -39,14 +39,15 @@
                            didFinishLaunchingWithOptions:launchOptions];
   
   [Fabric with:@[[Crashlytics class], [Twitter class]]];
+  
+  // Pinterest configuration
+  [PDKClient configureSharedInstanceWithAppId:@"4881507433385575890"];
+
 
   
   //Add the following lines
   RCTSetLogThreshold(RCTLogLevelInfo);
   RCTSetLogFunction(CrashlyticsReactLogFunction);
-
-  
-  
   
   NSURL *jsCodeLocation;
 
@@ -103,6 +104,9 @@
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
   sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
 {
+  if ([url.absoluteString hasPrefix:@"pdk"] || [url.absoluteString hasPrefix:@"pinterest"]) {
+      return [[PDKClient sharedInstance] handleCallbackURL:url];
+  }
   
   if ([url.absoluteString hasPrefix:@"fb"]) {
     return [[FBSDKApplicationDelegate sharedInstance] application:application

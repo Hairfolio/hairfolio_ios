@@ -16,6 +16,7 @@ let PhotoAlbum = NativeModules.PhotoAlbum;
 let InstagramShare = NativeModules.RNInstagramShare;
 
 let TwitterHelper = NativeModules.TwitterHelper;
+let PinterestHelper = NativeModules.PinterestHelper;
 
 const FBSDK = require('react-native-fbsdk');
 const {
@@ -208,12 +209,8 @@ class TwitterShareButton extends ShareButtonStore {
     TwitterHelper.tweet(
       CreatePostStore.gallery.description + CreatePostStore.hashTagsText,
       imageUrl,
-      () => {
-
-      },
-      () => {
-        alert('Twitter sharing failed');
-      }
+      () => { },
+      () => { alert('Twitter sharing failed'); }
     );
 
 
@@ -239,6 +236,44 @@ class TwitterShareButton extends ShareButtonStore {
 
 
 
+  }
+}
+
+class PinterestShareButton extends ShareButtonStore {
+
+  async share(imageUrl) {
+
+    /*
+    if (!this.isEnabled) {
+      return;
+    }
+
+    TwitterHelper.tweet(
+      CreatePostStore.gallery.description + CreatePostStore.hashTagsText,
+      imageUrl,
+      () => { },
+      () => { alert('Twitter sharing failed'); }
+    );
+    */
+  }
+
+
+  async enableDisable() {
+
+    if (this.isEnabled) {
+      this.isEnabled = false;
+      return;
+    }
+
+
+    try {
+      let res = await PinterestHelper.login();
+
+      await PinterestHelper.getBoards();
+      this.isEnabled = true;
+    } catch(error) {
+      this.isEnabled = false;
+    }
   }
 }
 
@@ -307,7 +342,7 @@ class ShareStore {
 
   @observable shareFacebookStore = new FacebookShareButton();
   @observable shareTwitterStore = new TwitterShareButton();
-  @observable sharePinterestStore = new ShareButtonStore();
+  @observable sharePinterestStore = new PinterestShareButton();
   @observable shareInstagramStore = new InstagramShareButton();
 
 
@@ -330,7 +365,7 @@ class ShareStore {
   resetButtons() {
     this.shareFacebookStore = new FacebookShareButton();
     this.shareTwitterStore = new TwitterShareButton();
-    this.sharePinterestStore = new ShareButtonStore();
+    this.sharePinterestStore = new PinterestShareButton();
     this.shareInstagramStore = new InstagramShareButton();
   }
 

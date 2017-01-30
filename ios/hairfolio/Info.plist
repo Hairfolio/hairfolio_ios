@@ -23,6 +23,7 @@
 		<dict>
 			<key>CFBundleURLSchemes</key>
 			<array>
+        <string>pdk4881507433385575890</string>
 				<string>fb653107098196959</string>
 			</array>
 		</dict>
@@ -62,6 +63,7 @@
 	<false/>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
+		<string>pinterestsdk.v1</string>
 		<string>instagram</string>
 		<string>fbapi</string>
 		<string>fb-messenger-api</string>

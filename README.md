@@ -47,7 +47,20 @@ For the property 'persistent' I also modified the core of text.
 
 cp RCTTextField* ./node_modules/react-native/Libraries/Text/
 
+We will also need to install the fbsdk for sharing
+
 
 Project structure :
 
 cd node_modules && ln -nsf ../app
+
+
+Refrences:
+https://dev.twitter.com/rest/reference/post/statuses/update
+
+
+Carthage:
+* brew update
+* brew install carthage
+* cd carthage
+* carthage update

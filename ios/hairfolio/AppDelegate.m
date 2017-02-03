@@ -41,7 +41,7 @@
   [Fabric with:@[[Crashlytics class], [Twitter class]]];
   
   // Pinterest configuration
-  [PDKClient configureSharedInstanceWithAppId:@"4881507433385575890"];
+  [PDKClient configureSharedInstanceWithAppId:@"4881270499925049265"];
 
 
   

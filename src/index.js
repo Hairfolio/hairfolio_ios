@@ -166,4 +166,4 @@ export default class Root extends PureComponent {
 };
 
 
-window.DEBUG_POST = true
+window.DEBUG_POST = false

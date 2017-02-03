@@ -89,17 +89,7 @@ class SearchNearbyStore extends SearchUserFollowStore {
     console.log('url', url);
 
 
-    let res = await ServiceBackend.get(url);
-
-    let users = [];
-
-    for (let user in res) {
-      if (user) {
-        users.push(user);
-      }
-    }
-
-    return {users};
+    return await ServiceBackend.get(url);
   }
 }
 

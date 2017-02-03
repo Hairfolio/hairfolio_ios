@@ -1,5 +1,5 @@
 import {observable, computed, action} from 'mobx';
-import {CameraRoll, NativeModules} from 'react-native';
+import {CameraRoll, AsyncStorage, AlertIOS, NativeModules} from 'react-native';
 import Camera from 'react-native-camera';
 
 import FilterStore from 'stores/FilterStore.js'
@@ -155,10 +155,8 @@ class HairfolioStore {
       console.log('case 2');
       this.hairfolios = results.map(e => new Hairfolio(e)).reverse();
     }
-
     this.isLoading = false;
   }
-
 }
 
 class ShareButtonStore {
@@ -241,21 +239,49 @@ class TwitterShareButton extends ShareButtonStore {
 
 class PinterestShareButton extends ShareButtonStore {
 
+  constructor(parent) {
+    super();
+    this.parent = parent;
+  }
+
   async share(imageUrl) {
 
-    /*
     if (!this.isEnabled) {
       return;
     }
 
-    TwitterHelper.tweet(
-      CreatePostStore.gallery.description + CreatePostStore.hashTagsText,
-      imageUrl,
-      () => { },
-      () => { alert('Twitter sharing failed'); }
-    );
-    */
+    try {
+      let data = await PinterestHelper.getBoardIdFromName(this.selectedBoard);
+
+      PinterestHelper.pinPost(
+        data.id,
+        imageUrl,
+        CreatePostStore.gallery.description + CreatePostStore.hashTagsText,
+        'http://hairfolioapp.com/'
+      );
+
+    } catch (error) {
+      alert(error);
+    }
   }
+
+  async createNewBoard(name) {
+    try {
+      await PinterestHelper.createNewBoard(name);
+      this.setBoardName(name);
+    } catch(error) {
+      alert(error);
+    }
+  }
+
+
+
+  setBoardName(name) {
+    this.isEnabled = true;
+    AsyncStorage.setItem('pinterestBoard', name);
+    this.selectedBoard = name;
+  }
+
 
 
   async enableDisable() {
@@ -269,9 +295,52 @@ class PinterestShareButton extends ShareButtonStore {
     try {
       let res = await PinterestHelper.login();
 
-      await PinterestHelper.getBoards();
-      this.isEnabled = true;
+      // get the board name from the local storage
+      let boardName = await AsyncStorage.getItem('pinterestBoard');
+
+      if (boardName) {
+        this.setBoardName(boardName);
+
+        return;
+      }
+
+
+      let data = await PinterestHelper.getBoards();
+
+      let boards = data.boards;
+
+      if (boards.length == 0) {
+        AlertIOS.prompt(
+          'Pin to board',
+          'No Pinterest board could be found, please type the name of the pinterest board that should be created.',
+          name => {
+            this.createNewBoard(name);
+          }
+        );
+      } else {
+
+
+        let index = 0;
+
+        let boardData = [];
+        boardData.push(
+          { key: index++, section: true, label: 'Select Board' }
+        );
+
+        for (let name of boards) {
+          boardData.push(
+            { key: index++, label: name},
+          );
+
+        }
+
+        this.parent.boardData = boardData;
+
+        this.parent.pinterestSelector.open();
+      }
+
     } catch(error) {
+      alert(error);
       this.isEnabled = false;
     }
   }
@@ -339,10 +408,11 @@ class ShareStore {
   @observable sendStore = new SendStore();
   @observable hairfolioStore = new HairfolioStore();
 
+  @observable boardData = [];
 
   @observable shareFacebookStore = new FacebookShareButton();
   @observable shareTwitterStore = new TwitterShareButton();
-  @observable sharePinterestStore = new PinterestShareButton();
+  @observable sharePinterestStore = new PinterestShareButton(this);
   @observable shareInstagramStore = new InstagramShareButton();
 
 
@@ -350,11 +420,13 @@ class ShareStore {
     this.contacts = [];
     this.sendStore = new SendStore();
     this.hairfolioStore = new HairfolioStore();
+    this.boardData = [];
   }
 
   share(imageUrl) {
     this.shareFacebookStore.share(imageUrl);
     this.shareTwitterStore.share(imageUrl);
+    this.sharePinterestStore.share(imageUrl);
   }
 
 
@@ -365,7 +437,7 @@ class ShareStore {
   resetButtons() {
     this.shareFacebookStore = new FacebookShareButton();
     this.shareTwitterStore = new TwitterShareButton();
-    this.sharePinterestStore = new PinterestShareButton();
+    this.sharePinterestStore = new PinterestShareButton(this);
     this.shareInstagramStore = new InstagramShareButton();
   }
 
@@ -375,6 +447,7 @@ class ShareStore {
     this.hairfolioStore = new HairfolioStore();
     this.hairfolioStore.load();
     this.sendStore.load();
+    this.boardData = [];
   }
 
   newHairfolio() {
@@ -399,6 +472,10 @@ class ShareStore {
 
   @computed get selectedUsers() {
     return this.sendStore.selectedItems;
+  }
+
+  @computed get showBoard() {
+    return this.boardData.length > 0;
   }
 }
 

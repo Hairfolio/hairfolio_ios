@@ -26,6 +26,10 @@ import * as routes from 'hairfolio/src/routes.js'
 import AddBlackBookStore from 'stores/AddBlackBookStore.js'
 import CreatePostStore from 'stores/CreatePostStore.js'
 
+import ModalPicker from 'hairfolio/react-native-modal-picker'
+
+import Prompt from 'react-native-prompt';
+
 const Hairfolio  = observer(({store}) => {
 
   if (store.isInEdit) {
@@ -391,14 +395,36 @@ const ShareNetworks = observer(() => {
   );
 });
 
+const BoardPicker = observer(() => {
+
+  if (ShareStore.showBoard) {
+    return (
+      <ModalPicker
+        ref = {res => ShareStore.pinterestSelector = res}
+        data={ShareStore.boardData}
+        initValue="SelectsharePinterestStore something yummy!"
+        onChange={(option)=>{
+          ShareStore.sharePinterestStore.setBoardName(option.label);
+        }}
+      >
+        <View />
+      </ModalPicker>
+    );
+  } else {
+    return <View />;
+  }
+});
+
 const ShareFollowers = observer(() => {
 
-  return (
+
+    return (
     <ScrollView
       style = {{
         backgroundColor: '#F8F8F8'
       }}
     >
+      <BoardPicker />
       <ShareSummary />
       <ShareHairfolio />
       <ShareBlackBook />

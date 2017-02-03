@@ -29,6 +29,8 @@
     "react-native-keyboard-aware-scroll-view": "^0.1.2",
     "react-native-keyboard-spacer": "^0.3.0",
     "react-native-linear-gradient": "^1.5.13",
+    "react-native-modal-picker": "^0.0.16",
+    "react-native-prompt": "^1.0.0",
     "react-native-screcorder": "latest",
     "react-native-scrollable-tab-view": "^0.6.0",
     "react-native-social-share": "^0.8.0",

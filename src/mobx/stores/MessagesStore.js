@@ -141,6 +141,8 @@ class MessagesStore {
 
     let res = (await ServiceBackend.get('conversations')).conversations;
 
+    res = res.filter(e => e.last_message != null);
+
     this.messages = await Promise.all(res.map(e => {
       let c = new Message();
       return c.init(e);

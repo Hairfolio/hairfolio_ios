@@ -23,13 +23,13 @@
 		<dict>
 			<key>CFBundleURLSchemes</key>
 			<array>
-        <string>pdk4881507433385575890</string>
+				<string>pdk4881270499925049265</string>
 				<string>fb653107098196959</string>
 			</array>
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>88</string>
+	<string>90</string>
 	<key>Fabric</key>
 	<dict>
 		<key>APIKey</key>

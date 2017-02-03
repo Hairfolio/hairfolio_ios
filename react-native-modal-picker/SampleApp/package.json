@@ -1,0 +1,13 @@
+{
+  "name": "SampleApp",
+  "version": "0.0.2",
+  "private": true,
+  "scripts": {
+    "start": "react-native run-ios"
+  },
+  "dependencies": {
+    "react": "^15.1.0",
+    "react-native": "^0.27.2",
+    "react-native-modal-picker": "file:../"
+  }
+}

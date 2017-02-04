@@ -16,14 +16,15 @@ RCT_REMAP_METHOD(login, resolver: (RCTPromiseResolveBlock)resolve
                  rejecter:(RCTPromiseRejectBlock)reject)
 {
   
-  
-  
-  [[PDKClient sharedInstance] authenticateWithPermissions:@[PDKClientReadPublicPermissions, PDKClientWritePublicPermissions] fromViewController:nil withSuccess:^(PDKResponseObject *responseObject) {
-    resolve(@[[NSNull null]]);
+  dispatch_async(dispatch_get_main_queue(), ^{
     
-  } andFailure:^(NSError *error) {
-    reject(0, @"Some error occured", error);
-  }];
+    [[PDKClient sharedInstance] authenticateWithPermissions:@[PDKClientReadPublicPermissions, PDKClientWritePublicPermissions] fromViewController:nil withSuccess:^(PDKResponseObject *responseObject) {
+      resolve(@[[NSNull null]]);
+      
+    } andFailure:^(NSError *error) {
+      reject(0, @"Some error occured", error);
+    }];
+  });
 }
 
 

@@ -1,5 +1,5 @@
 import {observable, computed, action} from 'mobx';
-import {CameraRoll, AsyncStorage, AlertIOS, NativeModules} from 'react-native';
+import {CameraRoll, AsyncStorage, Clipboard, AlertIOS, NativeModules} from 'react-native';
 import Camera from 'react-native-camera';
 
 import FilterStore from 'stores/FilterStore.js'
@@ -178,7 +178,13 @@ class ShareButtonStore {
 
 class InstagramShareButton extends ShareButtonStore {
 
-  enableDisable() {
+  openInstagram(copyToClipboard) {
+
+    if (copyToClipboard) {
+      Clipboard.setString(CreatePostStore.gallery.description + CreatePostStore.hashTagsText);
+    }
+
+
     this.isEnabled = true;
     // alert(CreatePostStore.gallery.selectedPicture.source.uri);
     let picture = CreatePostStore.gallery.selectedPicture;
@@ -192,7 +198,18 @@ class InstagramShareButton extends ShareButtonStore {
     } else {
       InstagramShare.share(picture.videoUrl, 'file');
     }
+  }
 
+  enableDisable() {
+    AlertIOS.alert(
+      'Copy description to clipboard?',
+      'Copy this post\'s description to your clipboard so you can paste it into the Instagram description field?',
+      [
+        {text: 'OK', onPress: () => {this.openInstagram(true)}},
+
+        {text: 'No thanks', onPress: () => {this.openInstagram(false)}},
+      ],
+    );
   }
 }
 

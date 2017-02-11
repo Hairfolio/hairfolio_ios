@@ -7,69 +7,176 @@ import Picture from 'stores/Picture.js';
 
 let ImageFilter = NativeModules.ImageFilter;
 
-let filters;
+let newFilters;
 
 // for performance issues in the simulator use less filters
 if (process.env.NODE_ENV == 'production') {
-  filters = [
-    'None',
-    'CIColorControls',
-    'CIColorMatrix',
-    'CIColorPolynomial',
-    'CIExposureAdjust',
-    'CIGammaAdjust',
-    'CISRGBToneCurveToLinear',
-    'CIVibrance',
-    'CIColorCubeWithColorSpace',
-    'CIPhotoEffectChrome',
-    'CIPhotoEffectFade',
-    'CIPhotoEffectInstant',
-    'CIPhotoEffectNoir',
-    'CIPhotoEffectMono',
-    'CIPhotoEffectTonal',
-    'CIVignette',
-    'CISharpenLuminance',
-    'CIUnsharpMask',
-    'CIDepthOfField',
-    'CIHighlightShadowAdjust',
-  ];
+
+  newFilters = [
+
+    {
+      name: 'None',
+      params: {
+
+      }
+    },
+
+    {
+      name: 'CIColorMonochrome',
+      params: {
+        inputColor: {
+          red: 0.740458,
+          green: 0.256214,
+          blue: 0.528626,
+          alpha: 0.900574
+        },
+        inputIntensity: 0.1811512
+      }
+    },
+
+    {
+      name: 'CINoiseReduction',
+      params: {
+        inputNoiseLevel: 0.03967269,
+        inputSharpness: 1.665914
+      }
+    },
+
+    {
+      name: 'CIColorControls',
+      params: {
+        inputSaturation: 1.788939,
+        inputBrightness: -0.003386005,
+        inputContrast: 0.9991535
+      }
+    },
+
+    {
+      name: 'CIColorControls',
+      params: {
+        inputSaturation: 1.53386,
+        inputBrightness: 0.53386,
+        inputContrast: 2.093256
+      }
+    },
+
+    {
+      name: 'CIExposureAdjust',
+      params: {
+        inputEV: 1.365688
+      }
+    },
+
+    {
+      name: 'CIGammaAdjust',
+      params: {
+        inputPower: 1.291196
+      }
+    },
+
+
+    {
+      name: 'CIPhotoEffectInstant',
+      params: {
+      }
+    },
+
+    {
+      name: 'CIPhotoEffectFade',
+      params: {
+      }
+    },
+
+    {
+      name: 'CIPhotoEffectProcess',
+      params: {
+      }
+    },
+
+    {
+      name: 'CIPhotoEffectTransfer',
+      params: {
+      }
+    },
+
+    {
+      name: 'CISepiaTone',
+      params: {
+        inputIntensity: 0.1811512
+      }
+    },
+
+    {
+      name: 'CIVignette',
+      params: {
+        inputIntensity: 0.1811512,
+        inputRadius: 0
+      }
+    },
+
+
+  ]
+
 } else {
-  filters = [
-    'None',
-    'CISRGBToneCurveToLinear',
-    'CIColorInvert',
-    'CISepiaTone',
-  ];
+
+  newFilters = [
+
+    {
+      name: 'None',
+      params: {
+
+      }
+    },
+
+    {
+      name: 'CIColorMonochrome',
+      params: {
+        inputColor: {
+          red: 0.740458,
+          green: 0.256214,
+          blue: 0.528626,
+          alpha: 0.900574
+        },
+        inputIntensity: 0.1811512
+      }
+    },
+
+    {
+      name: 'CINoiseReduction',
+      params: {
+        inputNoiseLevel: 0.03967269,
+        inputSharpness: 1.665914
+      }
+    },
+  ]
 }
 
 class FilterImage {
 
   @observable source;
 
-  constructor(parent, originalSource, filterName) {
+  constructor(parent, originalSource, {name, params}) {
     this.parent = parent;
     this.originalSource = originalSource;
-    this.filterName = filterName;
+    this.filterName = name;
     this.isLoading = true;
     this.key = v4();
 
-    if (filterName == 'None') {
+    if (this.filterName == 'None') {
       this.source = originalSource;
+
     } else {
 
       let uri = originalSource.uri;
 
-      /*
-      if (uri.startsWith('file')) {
-        uri = uri.replace('file:/', '');
-      } else if (uri.startsWith('asset')) {
-        uri = uri.replace('assets-library:/', '');
-      }
-      */
-
-      ImageFilter.filterImage(uri, filterName, (res) => {
-        this.source = {uri: 'data:image/jpeg;base64,' + res};
-      });
+      ImageFilter.newFilterImage(
+        uri,
+        this.filterName,
+        params,
+        (res) => {
+          this.source = {uri: 'data:image/jpeg;base64,' + res};
+        }
+      );
     }
   }
 
@@ -102,13 +209,10 @@ export default class FilterStore {
   @action setMainImage(image) {
     this.mainPicture = image;
 
-    _.each(filters, (filterName) => {
+    _.each(newFilters, (filterObj) => {
       this.filteredImages.push(
-        new FilterImage(this, image.originalSource, filterName)
+        new FilterImage(this, image.originalSource, filterObj)
       );
     });
-
   }
-
-
 };

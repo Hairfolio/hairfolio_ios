@@ -13,6 +13,7 @@ import {
   // react-native components
   AlertIOS,
   Modal,
+  getUserId,
   ScrollView,
   PickerIOS, Picker, StatusBar, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet
 } from 'hairfolio/src/helpers.js';
@@ -126,7 +127,7 @@ const DuratationInfo = observer(({store}) => {
   );
 });
 
-const ServiceInfo = observer(({store}) => {
+const ServiceInfo = observer(({canEdit, store}) => {
 
 
 
@@ -184,6 +185,36 @@ const ServiceInfo = observer(({store}) => {
 
     window.navigators[0].jumpTo(routes.addServiceOne);
   };
+
+
+  let editButton =  (
+    <TouchableOpacity
+      style={{flexDirection: 'row'}}
+      onPress={editService}
+    >
+      <Image
+        style={{
+          height: 16,
+          width: 16
+        }}
+        source={require('img/feed_settings.png')}
+      />
+      <Text
+        style={{
+          color: '#393939',
+          fontSize: h(28),
+          marginRight: h(28),
+          marginLeft: h(13)
+        }}
+      >
+        Edit
+      </Text>
+    </TouchableOpacity>
+  );
+
+  if (!canEdit) {
+    editButton = <View />;
+  }
 
   let colors = (
     <View
@@ -243,28 +274,7 @@ const ServiceInfo = observer(({store}) => {
             }}
 
           >
-            <TouchableOpacity
-              style={{flexDirection: 'row'}}
-              onPress={editService}
-            >
-              <Image
-                style={{
-                  height: 16,
-                  width: 16
-                }}
-                source={require('img/feed_settings.png')}
-              />
-              <Text
-                style={{
-                  color: '#393939',
-                  fontSize: h(28),
-                  marginRight: h(28),
-                  marginLeft: h(13)
-                }}
-              >
-                Edit
-              </Text>
-            </TouchableOpacity>
+            {editButton}
           </View>
         </View>
       </View>
@@ -275,6 +285,11 @@ const ServiceInfo = observer(({store}) => {
 
 
 const PostDetailsColorFormula = observer(({store}) => {
+
+  let creatorId = store.post.creator.id;
+
+  let canEdit = getUserId() == store.post.creator.id;
+
 
   let serviceTags =  store.serviceTags;
 
@@ -319,7 +334,7 @@ const PostDetailsColorFormula = observer(({store}) => {
         }}
       >
         {store.serviceTags.map(e =>
-            <ServiceInfo key={e.key} store={e} />
+            <ServiceInfo canEdit={canEdit} key={e.key} store={e} />
         )}
       </Swiper>
     </View>

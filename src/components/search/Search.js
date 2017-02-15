@@ -102,15 +102,16 @@ const TagItem = observer(({store}) => {
     >
       <View
         style = {{
-          height: h(188),
-          width: h(188)
+          height: h(220),
+          width: h(220)
         }}
       >
         <Image
-          style={{height: h(188), width: h(188)}}
-          source={store.picture.getSource(188)} />
+          style={{height: h(220), width: h(220)}}
+          source={store.picture.getSource(220)} />
         <Text
           style = {{
+            width: h(220 - 2 * 13),
             position: 'absolute',
             bottom: 0,
             left: h(13),
@@ -131,7 +132,7 @@ const TopTags = observer(({store}) => {
 
   if (store.isLoading) {
     return (
-      <View style={{height: h(188), justifyContent: 'center'}}>
+      <View style={{height: h(220), justifyContent: 'center'}}>
         <ActivityIndicator size='large' />
       </View>
     );
@@ -140,7 +141,7 @@ const TopTags = observer(({store}) => {
   return (
     <ScrollView
       style = {{
-        height: h(188),
+        height: h(220),
       }}
       horizontal
       bounces={false}

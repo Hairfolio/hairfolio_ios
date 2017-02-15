@@ -41,6 +41,12 @@ const ColorInfo = observer(({store, unit, textStyle, style}) => {
     colorArray = [`#${store.color.hex}`, `#${store.color.hex}`];
   }
 
+  let code = store.color.code;
+
+  if (code.startsWith('0')) {
+    code = code.substr(1);
+  }
+
   return (
     <View
       style={{
@@ -89,7 +95,7 @@ const ColorInfo = observer(({store, unit, textStyle, style}) => {
             ...textStyle
           }}
         >
-          {store.color.code}
+          {code}
         </Text>
       </LinearGradient>
     </View>
@@ -223,37 +229,27 @@ const ServiceInfo = observer(({canEdit, store}) => {
         flexWrap: 'wrap'
       }}
     >
-
-    <View>
-      <View
-        style={{
-          flex: 1
-        }}
-      >
-        {store.colors.map(c => <ColorInfo unit={store.unit} key={c.color.id} store={c} />)}
-      </View>
-    </View>
-
-    {
-      store.developerVolume ?
-    <ColorInfo
-      key='vl'
-      unit={store.unit}
-      textStyle={{color: '#3C3C3C'}}
-      style={{borderWidth: h(1), borderColor: '#979797' }}
-      store={{
-        color: {
-          code: `${store.developerVolume}VL`,
-          start_hex: 'ffffff',
-          end_hex: 'ffffff',
-        },
-        weight: store.developerAmount
-      }}
-    />
-        : <View />
-    }
+      {store.colors.map(c => <ColorInfo unit={store.unit} key={c.color.id} store={c} />)}
+      {
+        store.developerVolume ?
+          <ColorInfo
+            key='vl'
+            unit={store.unit}
+            textStyle={{color: '#3C3C3C'}}
+            style={{borderWidth: h(1), borderColor: '#979797' }}
+            store={{
+              color: {
+                code: `${store.developerVolume}VL`,
+                start_hex: 'ffffff',
+                end_hex: 'ffffff',
+              },
+              weight: store.developerAmount
+            }}
+          />
+          : <View />
+      }
       <DuratationInfo store={store}/>
-    </View>
+  </View>
   );
 
   return (

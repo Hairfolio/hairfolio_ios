@@ -149,7 +149,12 @@ class ColorField {
 
   constructor({id, code, hex, amount, start_hex, end_hex}, unit, mainStore, isSelected = false) {
 
+
     this.name = code;
+
+    if (this.name && this.name.startsWith('0')) {
+      this.name = this.name.substr(1);
+    }
 
     this.color = `#${hex}`;
     this.id = id;

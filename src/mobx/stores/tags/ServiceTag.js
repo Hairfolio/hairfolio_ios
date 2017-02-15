@@ -29,6 +29,9 @@ export default class ServiceTag {
       this.line_id = obj.line.id;
       this.colors = obj.treatments;
       this.type = 'service';
+
+
+      console.log('mycolors1', this.colors)
     } else {
       this.x = x;
       this.y = y;
@@ -46,8 +49,12 @@ export default class ServiceTag {
 
       this.line_id = line_id;
       this.colors = post_item_tag_colors ? post_item_tag_colors : [];
+
       this.type = 'service';
+      console.log('mycolors2', this.colors)
     }
+
+
   }
 
   async toJSON(upload) {

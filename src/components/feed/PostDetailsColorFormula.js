@@ -102,6 +102,23 @@ const ColorInfo = observer(({store, unit, textStyle, style}) => {
   );
 });
 
+
+const ColorFiller = observer(() => {
+
+  return (
+    <View
+      style={{
+        paddingLeft: h(15),
+        width: (windowWidth - h(15)) / 4,
+        marginTop: h(12),
+        height: h(210),
+        backgroundColor: 'white'
+      }}
+    >
+    </View>
+  );
+});
+
 const DuratationInfo = observer(({store}) => {
 
   if (!store.developerTime) {
@@ -222,6 +239,17 @@ const ServiceInfo = observer(({canEdit, store}) => {
     editButton = <View />;
   }
 
+  let colorNumber = store.colors.length % 4;
+
+  let fillers = [];
+
+  if (colorNumber > 1) {
+    for (let i = 0; i < 4 - colorNumber; i++) {
+      fillers.push(<ColorFiller />);
+    }
+  }
+
+
   let colors = (
     <View
       style = {{
@@ -230,6 +258,7 @@ const ServiceInfo = observer(({canEdit, store}) => {
       }}
     >
       {store.colors.map(c => <ColorInfo unit={store.unit} key={c.color.id} store={c} />)}
+      {fillers}
       {
         store.developerVolume ?
           <ColorInfo

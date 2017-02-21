@@ -90,13 +90,11 @@ const TagItem = observer(({store}) => {
     <TouchableWithoutFeedback
       onPress={
         () => {
-          let name = store.name;
-          TagPostStore.title = `#${name}`;
-          TagPostStore.load(name);
-          TagPostStore.back = () => {
-            window.navigators[0].jumpTo(routes.appStack);
-          }
-          window.navigators[0].jumpTo(routes.tagPosts);
+          TagPostStore.jump(
+            store.name,
+            `#${store.name}`,
+            () => window.navigators[0].jumpTo(routes.appStack)
+          );
         }
       }
     >

@@ -63,10 +63,19 @@ class TagMenu {
 
   @observable selected = false;
 
-  constructor(title, source, parent) {
+  constructor(title, sourceOn, sourceOff, parent) {
     this.title = title;
-    this.source = source;
+    this.sourceOn = sourceOn;
+    this.sourceOff = sourceOff;
     this.parent = parent;
+  }
+
+  @computed get source() {
+    if (this.selected) {
+      return this.sourceOn;
+    } else {
+      return this.sourceOff;
+    }
   }
 
   @action select() {
@@ -137,9 +146,26 @@ class Gallery {
 
   wasOpened = false;
 
-  @observable hashTagMenu = new TagMenu('Add Tag', require('img/post_hashtag.png'), this);
-  @observable serviceTagMenu = new TagMenu('Add Service', require('img/post_service.png'), this);
-  @observable linkTagMenu = new TagMenu('Add Link', require('img/post_link.png'), this);
+  @observable hashTagMenu = new TagMenu(
+    'ADD TAG',
+    require('img/post_hashtag_on.png'),
+    require('img/post_hashtag_off.png'),
+    this
+  );
+
+  @observable serviceTagMenu = new TagMenu(
+    'ADD SERVICE',
+    require('img/post_service_on.png'),
+    require('img/post_service_off.png'),
+    this
+  );
+
+  @observable linkTagMenu = new TagMenu(
+    'ADD LINK',
+    require('img/post_link_on.png'),
+    require('img/post_link_off.png'),
+    this
+  );
 
 
   @action applyFilter() {
@@ -307,8 +333,32 @@ class CreatePostStore {
   @observable isLoading = false;
   @observable loadingText;
 
+  @observable recordedTime;
+
   constructor() {
     // this.updateLibraryPictures();
+  }
+
+
+  startRecording() {
+    window.recorder.record();
+    this.isRecording = true;
+    this.recordedTime = 0;
+
+    this.recordFun = setInterval(
+      () => {
+        this.recordedTime += 1;
+      },
+      1000
+    );
+  }
+
+  stopRecording() {
+    CreatePostStore.isRecording = false;
+
+    clearInterval(this.recordFun);
+
+    window.recorder.pause();
   }
 
   @computed get flashIconSource() {
@@ -476,9 +526,25 @@ class CreatePostStore {
     }
   }
 
+  @computed get recordedTimeDisplay() {
+    let time = this.recordedTime;
+    const minutes = Math.floor(time / 60);
+    const seconds =  time - 60 * minutes;
+    let secondsDisplay = seconds < 10 ? '0' + seconds : seconds;
+    let minutesDisplay = minutes < 10 ? '0' + minutes : minutes;
+
+    return `${minutesDisplay}:${secondsDisplay}`;
+  }
+
   @computed get title() {
     if (this.inputMethod == 'Library') {
       return this.groupName;
+    } else if (this.inputMethod == 'Video') {
+      if (this.isRecording) {
+        return this.recordedTimeDisplay;
+      } else {
+        return this.inputMethod;
+      }
     } else {
       return this.inputMethod;
     }

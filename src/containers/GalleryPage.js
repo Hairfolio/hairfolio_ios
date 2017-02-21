@@ -53,6 +53,61 @@ import AddTagModal from 'components/post/AddTagModal.js'
 
 import VideoPreview from 'components/VideoPreview.js'
 
+import Triangle from 'react-native-triangle';
+
+class HashTag extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      top: -100,
+      left: -100,
+      width: null,
+    };
+  }
+
+  componentDidMount() {
+    setTimeout(() =>  {
+      this.refs.hashView.measure((a, b, width, height, px, py) => {
+        console.log('myWidth', width);
+        console.log('myWidth', height);
+        this.setState({
+          width: width + 10,
+          left: this.props.pic.x - width / 2 - 5,
+          top: this.props.pic.y - h(25)
+        });
+      });
+    });
+  }
+  render() {
+    return (
+     <View
+          ref='hashView'
+          onLayout={(a, b, c, d) => console.log('hash', a, b, c, d)}
+          style={{
+            top: this.state.top,
+            left: this.state.left,
+            width: this.state.width,
+            height: 25,
+            alignItems: 'center',
+            justifyContent: 'center',
+            flexDirection: 'row',
+          }}
+        >
+          <Triangle
+            width={10}
+            height={25}
+            color={'#3E3E3E'}
+            direction={'left'}
+          />
+
+        <Text style={{paddingLeft: 5, paddingTop: 3, paddingRight: 5, backgroundColor: '#3E3E3E', fontSize: 15, height:25, color: 'white'}}>#{this.props.pic.hashtag}</Text>
+      </View>
+    );
+  }
+}
+
+
 const ImagePreview = observer(({gallery, navigators}) => {
 
   if (CreatePostStore.loadGallery) {
@@ -227,6 +282,13 @@ const ImagePreview = observer(({gallery, navigators}) => {
         alignItems: 'center'
       };
 
+      if (pic.type == 'hashtag') {
+        return (
+          <HashTag key={pic.key} pic={pic} />
+        );
+      }
+
+
       if (pic.imageSource) {
         return (
           <Image
@@ -251,16 +313,26 @@ const ImagePreview = observer(({gallery, navigators}) => {
 });
 
 const ActionRow = observer(({tagMenu, imageStyle}) => {
+
+  let backgroundColor = tagMenu.selected ? '#3E3E3E' : 'white';
+  let fontColor = tagMenu.selected ? 'white' : '#424242';
+
+
   return (
     <TouchableWithoutFeedback
       onPress={() => tagMenu.select()}
     >
-      <View style={{flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems: 'center', opacity: tagMenu.opacity}}>
+      <View style={{flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems: 'center', backgroundColor: backgroundColor}}>
         <Image
           style={{height: h(34), width: h(28), marginRight: 5, ...imageStyle}}
           source={tagMenu.source}
         />
-        <Text>
+        <Text
+          style={{
+            fontSize: h(24),
+            color: fontColor
+          }}
+        >
           {tagMenu.title}
         </Text>
       </View>
@@ -285,9 +357,26 @@ const ActionMenu = observer(({gallery}) => {
   return (
     <View style={{height: h(82), flexDirection: 'row'}} >
       <ActionRow
-        tagMenu={gallery.hashTagMenu} />
-      <ActionRow imageStyle={{width: h(40), height: h(28)}} tagMenu={gallery.serviceTagMenu} />
-      <ActionRow tagMenu={gallery.linkTagMenu} />
+        imageStyle={{
+          width: h(19),
+          height: h(27)
+        }}
+        tagMenu={gallery.hashTagMenu}
+      />
+      <ActionRow
+        imageStyle={{
+          width: h(33),
+          height: h(34)
+        }}
+        tagMenu={gallery.serviceTagMenu}
+      />
+      <ActionRow
+        imageStyle={{
+          width: h(26),
+          height: h(27)
+        }}
+        tagMenu={gallery.linkTagMenu}
+      />
 
     </View>
 

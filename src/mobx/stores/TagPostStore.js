@@ -6,7 +6,10 @@ import {_, moment, React, Text} from 'hairfolio/src/helpers';
 
 import PostListStore from 'stores/PostListStore'
 
-class TagPostStore extends PostListStore  {
+
+import * as routes from 'hairfolio/src/routes';
+
+class TagPostModel extends PostListStore  {
   @observable title = '#myTag'
 
   async backendCall(name) {
@@ -23,6 +26,39 @@ class TagPostStore extends PostListStore  {
     }
 
     return await ServiceBackend.get(`tags/${tagId}/posts`);
+  }
+}
+
+
+class TagPostStore {
+
+  @observable stack = [];
+
+  jump(name, title, onBack = () => window.navigators[0].jumpTo(routes.appStack)) {
+    ;
+    let tagStore = new TagPostModel();
+    tagStore.title = title;
+    tagStore.load(name)
+    tagStore.myBack = () => {
+      onBack();
+      this.stack.pop();
+    }
+    this.stack.push(tagStore);
+
+    window.navigators[0].jumpTo(routes.tagPosts);
+  }
+
+  @computed get isEmpty() {
+    return this.stack.length == 0;
+  }
+
+  @computed get currentStore() {
+    if (!this.isEmpty) {
+      let s = this.stack[this.stack.length - 1];
+      return s;
+    } else {
+      return null;
+    }
   }
 }
 

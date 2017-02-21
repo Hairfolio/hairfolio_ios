@@ -24,7 +24,6 @@ import PostDescription from 'components/feed/PostDescription.js'
 
 import * as routes from 'hairfolio/src/routes.js'
 
-import Swiper from 'react-native-swiper';
 
 const Post = observer(({post}) => {
   return (

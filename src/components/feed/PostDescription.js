@@ -55,19 +55,11 @@ const PostDescription = observer(({post, limitLinesNumbers, currentRoute = route
               <Text
                 key={e.key}
                 onPress={() => {
-                  //ActionSheetIOS.showActionSheetWithOptions({
-                  //  title: `#${e.hashtag}`,
-                  //  options: [`See all posts tagged #${e.hashtag}`, 'Cancel'],
-                  //  cancelButtonIndex: 1,
-                  //},
-                  //  (buttonIndex) => {
-                  // if (buttonIndex == 0) {
-                  TagPostStore.title = `#${e.hashtag}`;
-                  TagPostStore.load(e.hashtag);
-                  TagPostStore.back = () => window.navigators[0].jumpTo(currentRoute);
-                  window.navigators[0].jumpTo(routes.tagPosts);
-                  //    }
-                  // })
+                  TagPostStore.jump(
+                    e.hashtag,
+                    `#${e.hashtag}`,
+                    () => window.navigators[0].jumpTo(currentRoute)
+                  );
                 }}
                 style = {{
                   fontSize: h(28),

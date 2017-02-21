@@ -21,7 +21,7 @@ import {
 } from 'hairfolio/src/helpers.js';
 
 import PostDetailStore from 'stores/PostDetailStore'
-
+import Triangle from 'react-native-triangle';
 
 
 class HashTag extends React.Component {
@@ -63,12 +63,19 @@ class HashTag extends React.Component {
             left: this.state.left,
             width: this.state.width,
             height: 25,
-            backgroundColor: '#3E3E3E',
             alignItems: 'center',
-            justifyContent: 'center'
+            justifyContent: 'center',
+            flexDirection: 'row',
           }}
         >
-          <Text style={{fontSize: 15, backgroundColor: 'transparent', color: 'white'}}>#{this.props.pic.hashtag}</Text>
+          <Triangle
+            width={10}
+            height={25}
+            color={'#3E3E3E'}
+            direction={'left'}
+          />
+
+        <Text style={{paddingLeft: 5, paddingTop: 3, paddingRight: 5, backgroundColor: '#3E3E3E', fontSize: 15, height:25, color: 'white'}}>#{this.props.pic.hashtag}</Text>
       </View>
     </TouchableWithoutFeedback>
     );

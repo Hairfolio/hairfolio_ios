@@ -149,13 +149,16 @@ const TagItem = observer(({item}) => {
         () => {
           console.log('onPress');
           let name = item.name.substring(1);
-          TagPostStore.title = `#${name}`;
-          TagPostStore.load(name);
-          TagPostStore.back = () => {
-            SearchDetailsStore.dontReset = true;
-            window.navigators[0].jumpTo(routes.searchDetails);
-          }
-          window.navigators[0].jumpTo(routes.tagPosts);
+
+
+          TagPostStore.jump(
+            name,
+            `#${name}`,
+            () => {
+              SearchDetailsStore.dontReset = true;
+              window.navigators[0].jumpTo(routes.searchDetails);
+            }
+          );
         }
       }
     >

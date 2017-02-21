@@ -368,7 +368,7 @@ const ShareNetworks = observer(() => {
           text='Instagram'
           store={ShareStore.shareInstagramStore}
           isLeft={false}
-          color='#3F729B'
+          color='#CF1662'
           imageSource={require('img/share_instagram.png')} />
       </View>
 
@@ -416,9 +416,7 @@ const BoardPicker = observer(() => {
 });
 
 const ShareFollowers = observer(() => {
-
-
-    return (
+  return (
     <ScrollView
       style = {{
         backgroundColor: '#F8F8F8'

@@ -90,7 +90,7 @@ const BoxSelector = observer(({selector}) => {
       >
         <View
           style={{
-            height: h(80),
+            height: h(88),
             backgroundColor: 'white',
             marginHorizontal: h(20),
             marginTop: h(20),

@@ -146,8 +146,11 @@ class ColorField {
   @observable amount;
 
   @observable amountSelector;
+  @observable isBlank;
 
-  constructor({id, code, hex, amount, start_hex, end_hex}, unit, mainStore, isSelected = false) {
+  constructor({id, code, hex, amount, start_hex, end_hex, blank}, unit, mainStore, isSelected = false) {
+
+    this.isBlank = blank;
 
 
     this.name = code;
@@ -161,7 +164,6 @@ class ColorField {
 
     this.startColor = start_hex ? `#${start_hex}` : null;
     this.endColor = end_hex ? `#${end_hex}` : null;
-
 
     this.key = v4();
     this.isSelected = false;
@@ -209,7 +211,6 @@ class ColorField {
   }
 
   @computed get gradientColors() {
-
     if (this.startColor && this.endColor) {
       return [this.startColor, this.endColor];
     }
@@ -226,7 +227,7 @@ class ColorField {
   }
 
   @computed get canSelect() {
-    return this.mainStore.selectedColors.length < 4;
+    return !this.isBlank && this.mainStore.selectedColors.length < 4;
   }
 
   @action select() {

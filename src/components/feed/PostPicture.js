@@ -26,11 +26,56 @@ import PostSave from 'components/feed/PostSave.js'
 
 import Swiper from 'react-native-swiper';
 
-let autoplay;
-if (process.env.NODE_ENV == 'production') {
-  autoplay = true;
-} else {
-  autoplay = false;
+@observer
+class InstantSwiper extends React.Component {
+
+  constructor(props) {
+    super(props)
+  }
+
+
+  componentDidMount() {
+    this.autoplayFun = setInterval(
+      () => {
+        this.props.post.nextImage();
+      },
+      3000
+    );
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.autoplayFun);
+  }
+
+  render() {
+
+    let pic = this.props.post.currentImage;
+
+    return  (
+      <View key={pic.key}>
+        <Image
+          key={pic.key}
+          style={{height: windowWidth, width: windowWidth}}
+          source={pic.getSource(windowWidth * 2)}
+        />
+        {pic.isVideo ?
+            <View
+              style={{
+                position: 'absolute',
+                right: h(18),
+                bottom: h(80)
+              }}
+            >
+              <Image
+                source={require('img/play_button.png')}
+                style={{height: 20, width: 20}}
+              />
+            </View>
+            : <View />
+        }
+      </View>
+    )
+  }
 }
 
 const PostPicture = observer(({post}) => {
@@ -80,45 +125,9 @@ const PostPicture = observer(({post}) => {
       <View>
         <View
           style={{height: windowWidth, width: windowWidth}}>
-          <Swiper
-            showsButtons={false}
-            showsPagination={false}
-            index={post.currentIndex}
-            refs={(el) => window.swiper = el}
-            autoplay={autoplay}
-            onMomentumScrollEnd={
-              (e, {index}, context) => {
-                post.currentIndex = index;
-              }
-            }
-          >
-            {post.pictures.map(
-              (pic) => (
-                <View key={pic.key}>
-                  <Image
-                    key={pic.key}
-                    style={{height: windowWidth, width: windowWidth}}
-                    source={pic.getSource(windowWidth * 2)}
-                  />
-                {pic.isVideo ?
-                    <View
-                      style={{
-                        position: 'absolute',
-                        right: h(18),
-                        bottom: h(80)
-                      }}
-                    >
-                      <Image
-                        source={require('img/play_button.png')}
-                        style={{height: 20, width: 20}}
-                      />
-                    </View>
-                    : <View />
-                }
-              </View>
-              )
-            )}
-          </Swiper>
+
+          <InstantSwiper post={post} />
+
           <PostStar post={post} />
           <PostSave post={post} />
 

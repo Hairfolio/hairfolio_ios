@@ -169,7 +169,7 @@ const BrowseFooter = observer(() => {
     <View
       style={{
         height: h(100),
-        backgroundColor: 'black',
+        backgroundColor: '#3E3E3E',
         justifyContent: 'center',
         alignItems: 'center',
         flexDirection: 'row'
@@ -193,19 +193,28 @@ const BrowseFooter = observer(() => {
           _.last(window.navigators).jumpTo(gallery);
         }}
         style={{
-          backgroundColor: '#555555',
+          backgroundColor: 'white',
           borderRadius: h(10),
           flex: 1,
           height: h(60),
           justifyContent: 'center',
-          alignItems: 'center'
+          alignItems: 'center',
+          flexDirection: 'row'
         }}
       >
+        <Image
+          style={{
+            height: h(26),
+            width: h(24),
+            marginRight: h(10)
+          }}
+          source={require('img/post_link_off.png')}
+        />
         <Text
           style={{
             fontSize: h(30),
-            color: 'white'
-          }}>Tag</Text>
+            color: '#3E3E3E'
+          }}>ADD LINK TAG</Text>
       </TouchableOpacity>
       <TouchableOpacity
         onPress={() => window.webview.goForward()}

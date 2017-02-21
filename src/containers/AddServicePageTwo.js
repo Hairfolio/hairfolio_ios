@@ -42,9 +42,10 @@ const ColorItem = observer(({colorField}) => {
         } else if (colorField.canSelect) {
           console.log('set selected');
           colorField.isSelected = true;
-        } else {
+        } else if (!colorField.isBlank) {
           alert('You already selected 4 colors!');
         }
+
       }}
 
     >
@@ -75,7 +76,7 @@ const ColorItem = observer(({colorField}) => {
             backgroundColor: 'transparent',
             top: 0,
             left: 3
-          }}>#</Text>
+          }}>{colorField.isBlank ? '' : '#'}</Text>
       </LinearGradient>
     </TouchableWithoutFeedback>
   );

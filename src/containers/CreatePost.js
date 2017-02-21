@@ -264,33 +264,11 @@ export default class CreatePost extends PureComponent {
   }
 
   startRecording() {
-
-    window.recorder.record();
-
-    CreatePostStore.isRecording = true;
-
-
-    /*
-    window.video.capture(
-      {mode: Camera.constants.CaptureMode.video}
-    )
-      .then((data) => {
-        alert('recoding finished');
-        _.last(this.context.navigators).jumpTo(gallery)
-
-        console.log('data', data);
-        CreatePostStore.loadGallery = false;
-        CreatePostStore.lastTakenPicture = data;
-        CreatePostStore.addTakenVideoToGallery()
-      })
-    .catch(err => console.error(err));
-    */
-
+    CreatePostStore.startRecording();
   }
 
   stopRecording() {
-    CreatePostStore.isRecording = false;
-    window.recorder.pause();
+    CreatePostStore.stopRecording();
 
     _.last(window.navigators).jumpTo(gallery)
     CreatePostStore.loadGallery = true;

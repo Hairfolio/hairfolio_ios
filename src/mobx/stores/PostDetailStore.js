@@ -79,13 +79,14 @@ class PostDetailsModel {
       },
         (buttonIndex) => {
           if (buttonIndex == 0) {
-            TagPostStore.title = `#${tag.hashtag}`;
-            TagPostStore.load(tag.hashtag);
-            TagPostStore.back = () =>
-            window.navigators[0].jumpTo(routes.postDetails);
-            window.navigators[0].jumpTo(routes.tagPosts);
+            TagPostStore.jump(
+              tag.hashtag,
+              `#${tag.hashtag}`,
+              () => {
+                window.navigators[0].jumpTo(routes.postDetails);
+              }
+            );
           }
-
         });
     } else if (tag.type == 'link') {
 
@@ -111,11 +112,13 @@ class PostDetailsModel {
               }
             });
           } else if (options[buttonIndex].indexOf('tagged') > -1) {
-            TagPostStore.title = `#${tag.hashtag}`;
-            TagPostStore.load(tag.hashtag);
-            TagPostStore.back = () =>
-            window.navigators[0].jumpTo(routes.postDetails);
-            window.navigators[0].jumpTo(routes.tagPosts);
+            TagPostStore.jump(
+              tag.hashtag,
+              `#${tag.hashtag}`,
+              () => {
+                window.navigators[0].jumpTo(routes.postDetails);
+              }
+            );
           }
         });
     }

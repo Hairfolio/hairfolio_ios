@@ -18,6 +18,7 @@ export default class LinkTag {
 
     this.linkUrl = linkUrl || url;
     this.imageUrl = imageUrl;
+    this.imageSource = require('img/post_link_tag.png');
     this.name = name;
     this.hashtag = hashtag ? hashtag.name : hashtag;
     this.hashtag_id = hashtag ? hashtag.id : null;

@@ -121,6 +121,11 @@ export default class Post {
     return this;
   }
 
+  nextImage() {
+    if (this.pictures.length < 2) return this.currentIndex;
+    this.currentIndex = (this.currentIndex + 1) % this.pictures.length;
+  }
+
 
   @computed get currentImage() {
     return this.pictures[this.currentIndex];

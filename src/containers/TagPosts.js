@@ -37,7 +37,7 @@ const Content = observer(({store}) => {
       flex: 1,
     }}>
       <WhiteHeader
-        onLeft={() => store.back()}
+        onLeft={() => store.myBack()}
         title={store.title} />
       <GridList
         onBack={
@@ -49,7 +49,7 @@ const Content = observer(({store}) => {
   );
 });
 
-@connect(app)
+@observer
 export default class TagPosts extends PureComponent {
 
   static contextTypes = {
@@ -57,6 +57,16 @@ export default class TagPosts extends PureComponent {
   };
 
   render() {
+
+
+    if (TagPostStore.isEmpty) {
+      return null;
+    }
+
+    let currentStore = TagPostStore.currentStore;
+
+
+    if (currentStore == null) return <View />;
 
     return (<NavigationSetting
       style={{
@@ -68,7 +78,7 @@ export default class TagPosts extends PureComponent {
         StatusBar.setBarStyle('default');
       }}
     >
-      <Content store={TagPostStore} />
+      <Content store={currentStore} />
   </NavigationSetting>);
   }
 };

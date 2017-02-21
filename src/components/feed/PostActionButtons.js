@@ -40,33 +40,12 @@ const PostActionButtons = observer(({post}) => {
     let imageLink =  post.pictures[0].source.uri;
 
     ActionSheetIOS.showActionSheetWithOptions({
-      options: ['Share to Facebook', 'Share to Twitter', 'Report', 'Cancel'],
-      destructiveButtonIndex: 2,
-      cancelButtonIndex: 3,
+      options: ['Report', 'Cancel'],
+      destructiveButtonIndex: 0,
+      cancelButtonIndex: 1,
     },
     (buttonIndex) => {
       if (buttonIndex == 0) {
-        // share on facebook
-        KDSocialShare.shareOnFacebook({
-          'text':'Check out this new hairfolio post!',
-          'link':'',
-          'imagelink': imageLink,
-        },
-          (results) => {
-            console.log(results);
-          }
-        );
-      } else if (buttonIndex == 1) {
-        // share on twitter
-        KDSocialShare.tweet({
-          'text':'Check out this new hairfolio post!',
-          'link':'',
-          'imagelink': imageLink,
-        },
-        (results) => {
-          console.log(results);
-        });
-      } else if (buttonIndex == 2) {
         // report abuse
         Communications.email(['stephen@hairfolioapp.com'], null, null, 'Abusive Post', 'The post from  ' + post.creator.name + ', created on ' + post.createdTime + ' is abusive, please check. id: ' + post.id)
       }

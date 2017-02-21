@@ -26,49 +26,64 @@ import {STATUSBAR_HEIGHT, POST_INPUT_MODE} from '../constants';
 import LoadingScreen from 'components/LoadingScreen.js'
 import BlackHeader from 'components/BlackHeader.js'
 
+import PostDetailStore from 'stores/PostDetailStore.js'
+import CommentsStore from 'stores/CommentsStore.js'
+import TagPostStore from 'stores/TagPostStore.js'
+
+
 import {
-  ActivityIndicator,
+  ActivityIndicator
 } from 'hairfolio/src/helpers.js';
 
 const FollowUserRow = observer(({store}) => {
   return (
-    <View
-      style={{
-        paddingLeft: h(20),
-        alignItems: 'center',
-        flexDirection: 'row',
-
+    <TouchableWithoutFeedback
+      onPress={() => {
+        appStack.scene().goToProfile(store.user.id);
+        window.navigators[0].jumpTo(appStack);
+        PostDetailStore.clear();
+        TagPostStore.clear();
+        CommentsStore.clear();
       }}
     >
-      <Image
-        style={{height: h(80), width: h(80), borderRadius: h(40)}}
-        source={store.profilePicture.getSource(80)}
-      />
       <View
         style={{
-          marginLeft: 20,
-          flexDirection: 'row',
+          paddingLeft: h(20),
           alignItems: 'center',
-          borderBottomWidth: h(1),
-          borderBottomColor: '#D8D8D8',
-          height: h(122),
-          flex: 1,
-          paddingRight: h(20),
+          flexDirection: 'row',
+
         }}
       >
-        <Text
+        <Image
+          style={{height: h(80), width: h(80), borderRadius: h(40)}}
+          source={store.profilePicture.getSource(80)}
+        />
+        <View
           style={{
-            color: '#3E3E3E',
-            fontFamily: FONTS.MEDIUM,
-            fontSize: h(28),
-            flex: 1
+            marginLeft: 20,
+            flexDirection: 'row',
+            alignItems: 'center',
+            borderBottomWidth: h(1),
+            borderBottomColor: '#D8D8D8',
+            height: h(122),
+            flex: 1,
+            paddingRight: h(20),
           }}
-        >{store.name}
-        </Text>
+        >
+          <Text
+            style={{
+              color: '#3E3E3E',
+              fontFamily: FONTS.MEDIUM,
+              fontSize: h(28),
+              flex: 1
+            }}
+          >{store.name}
+          </Text>
 
-        {store.showFollowButton ? <FollowButton store={store} /> : null}
+          {store.showFollowButton ? <FollowButton store={store} /> : null}
+        </View>
       </View>
-    </View>
+    </TouchableWithoutFeedback>
   );
 });
 

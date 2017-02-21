@@ -17,16 +17,21 @@ import {
   PickerIOS, Picker, StatusBar, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet
 } from 'hairfolio/src/helpers.js';
 
-
 import {profile, profileExternal, appStack} from 'hairfolio/src/routes';
 
-const PostHeader = observer(({post, disableClick = false}) => {
+import PostDetailStore from 'stores/PostDetailStore.js'
+import TagPostStore from 'stores/TagPostStore.js'
+import CommentsStore from 'stores/CommentsStore.js'
+
+const PostHeader = observer(({post, onPress}) => {
   return (
     <TouchableWithoutFeedback
       onPress={() => {
-        if (!disableClick) {
-          appStack.scene().goToProfile(post.creator.id);
-        }
+        appStack.scene().goToProfile(post.creator.id);
+        window.navigators[0].jumpTo(appStack);
+        PostDetailStore.clear();
+        TagPostStore.clear();
+        CommentsStore.clear();
       }}
     >
       <View

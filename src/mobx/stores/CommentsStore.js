@@ -156,6 +156,10 @@ class CommentsStore {
       return null;
     }
   }
+
+  clear() {
+    this.stack = [];
+  }
 }
 
 const store = new CommentsStore();

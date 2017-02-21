@@ -60,6 +60,10 @@ class TagPostStore {
       return null;
     }
   }
+
+  clear() {
+    this.stack = [];
+  }
 }
 
 const store = new TagPostStore();

@@ -51,11 +51,45 @@ import ServiceBox from 'components/post/ServiceBox.js'
 
 import AddTagModal from 'components/post/AddTagModal.js'
 
+const PlayButton = observer(({myWidth, pic}) => {
+
+  if (pic.isPlaying && !pic.isPaused) {
+    return <View />;
+  }
+
+  return (
+
+    <TouchableWithoutFeedback
+      onPress={
+        () => {
+          console.log('start playing', pic.videoUrl);
+          pic.isPaused = false;
+          pic.isPlaying = true;
+        }
+      }
+    >
+      <Image
+        style={{
+          position: 'absolute',
+          top: myWidth / 2 - 40,
+          left: myWidth / 2 - 40,
+          height: 80,
+          width: 80
+
+        }}
+        source={require('img/play_button.png')}
+      />
+    </TouchableWithoutFeedback>
+  );
+});
+
 const VideoPreview = observer(({picture, width}) => {
 
   let myWidth = width ? width : windowWidth;
 
   let pic = picture;
+
+
 
   if (pic == null) {
     return <View />;
@@ -63,33 +97,44 @@ const VideoPreview = observer(({picture, width}) => {
 
   if (pic.isPlaying) {
     return (
-      <View
-        style={{
-          width: myWidth,
-          height: myWidth,
-          overflow: 'hidden'
-        }}
-      >
-        <Video
-          ref={
-            v => {
-              window.galleryVideo = v;
-            }
+      <TouchableWithoutFeedback
+        onPress={
+          () => {
+            pic.isPaused = !pic.isPaused;
           }
-          resizeMode="stretch"
-          onEnd={() => {
-            pic.isPlaying = false;
-          }}
+        }
+      >
+        <View
           style={{
-            marginTop: -(windowHeight - myWidth) / 2,
             width: myWidth,
-            height: windowHeight,
-            backgroundColor: 'black'
+            height: myWidth,
+            overflow: 'hidden'
           }}
-          key={pic.key}
-          source={{uri: pic.videoUrl}}
-        />
-      </View>
+        >
+          <Video
+            ref={
+              v => {
+                window.galleryVideo = v;
+                pic.video = v;
+              }
+            }
+            paused={pic.isPaused}
+            resizeMode="stretch"
+            onEnd={() => {
+              pic.isPlaying = false;
+            }}
+            style={{
+              marginTop: -(windowHeight - myWidth) / 2,
+              width: myWidth,
+              height: windowHeight,
+              backgroundColor: 'black'
+            }}
+            key={pic.key}
+            source={{uri: pic.videoUrl}}
+          />
+          <PlayButton myWidth={myWidth} pic={pic} />
+        </View>
+      </TouchableWithoutFeedback>
     );
   } else {
     return (
@@ -107,27 +152,7 @@ const VideoPreview = observer(({picture, width}) => {
         }}
         source={pic.source}
       />
-      <TouchableWithoutFeedback
-        onPress={
-          () => {
-            console.log('start playing', pic.videoUrl);
-            pic.isPlaying = true;
-          }
-        }
-      >
-        <Image
-          style={{
-            position: 'absolute',
-            top: myWidth / 2 - 40,
-            left: myWidth / 2 - 40,
-            height: 80,
-            width: 80
-
-          }}
-          source={require('img/play_button.png')}
-        />
-      </TouchableWithoutFeedback>
-
+      <PlayButton myWidth={myWidth} pic={pic} />
     </View>
     );
   }

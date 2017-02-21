@@ -43,7 +43,7 @@ const PostDetailsContent = observer(() => {
     <ScrollView
       ref={el => {store.scrollView = el}}
     >
-      <PostHeader post={store.post} disableClick />
+      <PostHeader post={store.post} />
       <PostDetailsHeader store={store} />
       <PostDetailsImageList store={store} />
       <PostDescription

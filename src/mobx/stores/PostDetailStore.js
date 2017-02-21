@@ -160,6 +160,10 @@ class PostDetailStore {
       return null;
     }
   }
+
+  clear() {
+    this.stack = [];
+  }
 }
 
 const store = new PostDetailStore();

@@ -19,7 +19,10 @@ export default class Picture {
   @observable tags = [];
   @observable source;
   @observable videoUrl;
+
+  // for video
   @observable isPlaying = false;
+  @observable isPaused = false;
 
   constructor(orignalSource, source, parent) {
     this.source = source;

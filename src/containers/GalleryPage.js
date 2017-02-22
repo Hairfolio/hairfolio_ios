@@ -245,6 +245,7 @@ const ImagePreview = observer(({gallery, navigators}) => {
         <Image
           ref={(el) => window.img = el}
           style={{height: windowWidth, width: windowWidth}}
+          onError={(e) => alert(e.nativeEvent.error)}
           source={gallery.selectedPicture.source}
         />
       </TouchableWithoutFeedback>

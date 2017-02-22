@@ -490,38 +490,6 @@ export default class EditCustomer extends PureComponent {
             this.renderStylistSpecifics() : null
           }
 
-          <Categorie name="SOCIAL SHARING" />
-
-          <ToggleInput
-            placeholder="Facebook"
-            ref={(r) => this.addFormItem(r, 'share_facebook')}
-            validation={(v) => true}
-          />
-          <View style={{height: StyleSheet.hairlineWidth}} />
-          <ToggleInput
-            placeholder="Twitter"
-            ref={(r) => this.addFormItem(r, 'share_twitter')}
-            validation={(v) => true}
-          />
-          <View style={{height: StyleSheet.hairlineWidth}} />
-          <ToggleInput
-            placeholder="Instagram"
-            ref={(r) => this.addFormItem(r, 'share_instagram')}
-            validation={(v) => true}
-          />
-          <View style={{height: StyleSheet.hairlineWidth}} />
-          <ToggleInput
-            placeholder="Pinterest"
-            ref={(r) => this.addFormItem(r, 'share_pinterest')}
-            validation={(v) => true}
-          />
-          <View style={{height: StyleSheet.hairlineWidth}} />
-          <ToggleInput
-            placeholder="Tumblr"
-            ref={(r) => this.addFormItem(r, 'share_tumblr')}
-            validation={(v) => true}
-          />
-
           <Categorie name="APP" />
           <ProfileTextInput
             editable={false}

@@ -95,15 +95,15 @@ const ColorGrid = observer(({colorGrid}) => {
   return (
     <ScrollView
       bounces={false}
-      directionalLockEnabled
-      horizontal
     >
-      <View style={{flexDirection: 'row'}}>
-        {colorGrid.colors.map((arr, index) => <ColorColumn key={index} arr={arr} />) }
-      </View>
-
+      <ScrollView horizontal
+        bounces={false}
+      >
+        <View style={{flexDirection: 'row'}}>
+          {colorGrid.colors.map((arr, index) => <ColorColumn key={index} arr={arr} />) }
+        </View>
+      </ScrollView>
     </ScrollView>
-
   );
 });
 
@@ -121,6 +121,7 @@ export default class AddServicePageTwo extends Component {
     return (
         <View style={{paddingTop: 20, flex: 1, backgroundColor: 'white'}}>
           <SlimHeader
+            titleWidth={140}
             leftText='Back'
             onLeft={() => {
               _.last(this.context.navigators).jumpTo(addServiceOne)
@@ -143,7 +144,13 @@ export default class AddServicePageTwo extends Component {
           <Text
             style={{fontSize: h(40), textAlign: 'center', marginVertical: h(30), fontFamily: FONTS.SF_MEDIUM}}
           > {AddServiceStore.descriptionPageTwo} </Text>
+          <View
+            style={{
+              flex: 1
+            }}
+          >
           <ColorGrid colorGrid={AddServiceStore.colorGrid} />
+        </View>
         </View>
 
         </View>

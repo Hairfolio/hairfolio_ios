@@ -199,12 +199,23 @@ class Gallery {
     }
   }
 
+  unselectTag() {
+
+    this.selectedTag = null;
+
+    for (let el of [this.hashTagMenu, this.serviceTagMenu, this.linkTagMenu]) {
+      el.selected = false;
+    }
+  }
+
   @action reset() {
     this.selectedPicture = null;
     this.selectedTag = null;
     this.pictures = [];
     this.description = '';
     this.wasOpened = false;
+
+    this.unselectTag();
   }
 
   constructor() {

@@ -123,7 +123,10 @@ const CatalogResultItem = observer(({item}) => {
           source={{uri: item.imageUrl}}
           style={{height: h(150), width: h(150), marginLeft: h(11) }}
         />
-        <Text style={{paddingLeft: 20, fontSize: h(28)}}>{item.name}</Text>
+        <Text
+          style={{paddingLeft: 20, flex:1, fontSize: h(28)}}>
+          {item.name}
+        </Text>
       </View>
     </TouchableHighlight>
   );

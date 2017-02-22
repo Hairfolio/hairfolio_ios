@@ -544,6 +544,8 @@ export default class GalleryPage extends Component {
               _.first(this.context.navigators).jumpTo(appStack)
               _.last(this.context.navigators).jumpTo(createPost)
 
+              CreatePostStore.gallery.unselectTag();
+
               // only reset after view is gone
               setTimeout(() => CreatePostStore.reset(), 1000);
             }}
@@ -554,6 +556,7 @@ export default class GalleryPage extends Component {
               if (!CreatePostStore.gallery.description ||  CreatePostStore.gallery.description.length == 0) {
                 alert('Description cannot be blank');
               } else {
+                CreatePostStore.gallery.unselectTag();
                 ShareStore.reset();
                 _.last(this.context.navigators).jumpTo(routes.share)
 
@@ -579,7 +582,8 @@ export default class GalleryPage extends Component {
             {line}
             <PictureView
               onPlus={() => {
-                CreatePostStore.reset(false)
+                CreatePostStore.reset(false);
+                CreatePostStore.gallery.unselectTag();
                 StatusBar.setHidden(true)
                 _.last(this.context.navigators).jumpTo(createPost)
               }}

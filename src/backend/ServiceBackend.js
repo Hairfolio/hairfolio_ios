@@ -27,6 +27,7 @@ class ServiceBackend extends Backend {
   }
 
   async getLines(brandId) {
+    console.log('lines url', `lines?brand_id=${brandId}`);
     return (await this.get(`lines?brand_id=${brandId}`)).lines;
   }
 

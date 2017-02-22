@@ -148,6 +148,7 @@ export default class AddServicePageOne extends Component {
     return (
         <View style={{paddingTop: 20, flex: 1, backgroundColor: 'white'}}>
           <SlimHeader
+            titleWidth={140}
             leftText='Back'
             onLeft={() => {
               AddServiceStore.myBack();

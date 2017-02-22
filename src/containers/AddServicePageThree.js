@@ -248,6 +248,7 @@ export default class AddServicePageThree extends Component {
       <View style={{paddingTop: 20, backgroundColor: 'white'}}>
         <SlimHeader
           leftText='Back'
+          titleWidth={140}
           onLeft={() => {
             _.last(this.context.navigators).jumpTo(
               addServiceTwo

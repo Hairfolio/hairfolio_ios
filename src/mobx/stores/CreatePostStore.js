@@ -431,7 +431,10 @@ class CreatePostStore {
     this.gallery.addLibraryPictures(
       this.selectedPictures
     );
+
     this.gallery.wasOpened = true;
+    this.gallery.selectedPicture = null;
+    this.gallery.selectedPicture = _.first(this.gallery.pictures);
   }
 
   @action addTakenVideoToGallery() {
@@ -499,7 +502,7 @@ class CreatePostStore {
       setTimeout(() => {
         let newImages = this.imageData.splice(0, 50).map((el) => new LibraryPicture(el, this));
         this.libraryPictures = this.libraryPictures.concat(newImages);
-      }, 50);
+      }, 100);
     }
   }
 

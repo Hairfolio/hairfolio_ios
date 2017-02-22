@@ -114,7 +114,12 @@ if (process.env.NODE_ENV == 'production') {
       }
     },
 
-
+    {
+      name: 'CISharpenLuminance',
+      params: {
+        inputSharpness: 1.623025,
+      }
+    },
   ]
 
 } else {
@@ -146,6 +151,12 @@ if (process.env.NODE_ENV == 'production') {
       params: {
         inputNoiseLevel: 0.03967269,
         inputSharpness: 1.665914
+      }
+    },
+    {
+      name: 'CISharpenLuminance',
+      params: {
+        inputSharpness: 1.623025,
       }
     },
   ]

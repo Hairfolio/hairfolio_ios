@@ -14,12 +14,20 @@ const INDEX = {
 }
 
 class CatalogItem {
-  constructor({name, tag, image_url, link_url }) {
+  constructor({name, tag, image_url, cloudinary_url, link_url }) {
     this.name = name;
     this.imageUrl = image_url;
     this.linkUrl = link_url;
     this.hashtag = tag;
     this.key = v4();
+
+    console.log('cloudinary', cloudinary_url);
+
+    let uri = cloudinary_url;
+    if (uri && uri.indexOf('cloudinary') > -1) {
+      let splitUrl = uri.split('upload');
+      this.imageUrl = `${splitUrl[0]}upload/w_120,h_120${splitUrl[1]}`;
+    }
   }
 };
 
@@ -36,6 +44,8 @@ class Catalog {
 
       let results = await ServiceBackend.getCatalogItems(term);
       console.log('searchresults', results);
+
+      results = results.filter(i => i.cloudinary_url && i.cloudinary_url.length > 0);
 
       this.items = results.map(n => new CatalogItem(n));
 

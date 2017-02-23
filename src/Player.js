@@ -30,8 +30,6 @@ export default class Player extends Component {
   }
   render() {
 
-    console.log('hello');
-
     let initialRoute = {
       component: GalleryPage,
     };

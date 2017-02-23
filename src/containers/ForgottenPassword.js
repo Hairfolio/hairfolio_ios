@@ -66,7 +66,6 @@ export default class ForgottenPassword extends PureComponent {
             }, 3000);
           },
           (e) => {
-            console.log(e);
             this.refs.ebc.error(e);
           }
           );

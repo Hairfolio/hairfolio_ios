@@ -118,7 +118,6 @@ const PostPicture = observer(({post}) => {
         post.lastClickTime = currentClickTime;
       }}
       onLongPress={(e) => {
-        console.log('long press');
         post.savePost();
       }}
     >

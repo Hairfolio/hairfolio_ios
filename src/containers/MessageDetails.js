@@ -95,9 +95,6 @@ class MessageContent  extends React.Component {
         </View>
       );
     } else if (this.props.store.type == 'picture') {
-      console.log('msg img');
-
-
       if (this.props.store.picture.isVideo) {
         return (
           <VideoPreview width={this.props.maxWidth} picture={this.props.store.picture} />
@@ -304,7 +301,6 @@ const MessageInput = observer(() => {
               allowsEditing: true
             }, (response) => {
               StatusBar.setHidden(false);
-              console.log('response', response);
               if (response.error) {
                 alert(response.error);
               }

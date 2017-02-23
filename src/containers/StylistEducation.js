@@ -72,7 +72,6 @@ export default class StylistEducation extends PureComponent {
     var education = new OrderedMap(this.props.user.get('educations').map(education => [education.get('id'), education]));
 
     window.user = this.props.user;
-    console.log('renderContent', education);
 
     return (<View style={{
       flex: 1

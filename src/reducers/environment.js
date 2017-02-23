@@ -44,7 +44,6 @@ export default function registrationReducer(state = initialState, action) {
     }
 
     case registrationTypes.GET_ENVIRONMENT_SUCCESS.toString(): {
-      console.log('environment', action.payload);
       return state.merge({
         state: READY,
         environment: action.payload

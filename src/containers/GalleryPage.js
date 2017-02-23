@@ -69,8 +69,6 @@ class HashTag extends React.Component {
   componentDidMount() {
     setTimeout(() =>  {
       this.refs.hashView.measure((a, b, width, height, px, py) => {
-        console.log('myWidth', width);
-        console.log('myWidth', height);
         this.setState({
           width: width + 10,
           left: this.props.pic.x - width / 2 - 5,
@@ -83,7 +81,6 @@ class HashTag extends React.Component {
     return (
      <View
           ref='hashView'
-          onLayout={(a, b, c, d) => console.log('hash', a, b, c, d)}
           style={{
             top: this.state.top,
             left: this.state.left,
@@ -413,8 +410,6 @@ const PlusPicture = observer(({onPress}) => {
 const Picture = observer(({picture}) => {
 
 
-  console.log('Picture', picture.selected);
-
   let selectedBox;
 
   if (picture.selected) {
@@ -473,7 +468,6 @@ const PictureView = observer(({gallery, onPlus}) => {
 
 const TagInfo = observer(({gallery}) => {
 
-  console.log('selectedTag', gallery.selectedTag);
   if (gallery.selectedTag == null) {
     return null;
   }
@@ -510,12 +504,10 @@ export default class GalleryPage extends Component {
   scrollToElement(reactNode) {
     RCTUIManager.measure(ReactNative.findNodeHandle(reactNode), (x, y, width, height, pageX, pageY) => {
       RCTUIManager.measure(this.refs.scrollView.getInnerViewNode(), (x2, y2, width2, height2, pageX2, pageY2) => {
-        console.log('pageY', pageY, pageY2, height, height2);
         // currentPos: 64
         var currentScroll = 64 - pageY2;
         var differenceY = -pageY - 240 + (windowHeight - 20 - h(88));
 
-        console.log(differenceY);
         if (currentScroll - differenceY > 0) {
           this.refs.scrollView.scrollTo({y: currentScroll - differenceY});
         }

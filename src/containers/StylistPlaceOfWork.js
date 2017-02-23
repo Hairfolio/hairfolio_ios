@@ -155,7 +155,6 @@ export default class StylistPlaceOfWork extends PureComponent {
             >
               {() => <View>
                 {!this.state.selected ? _.map(this.state.autocompleteList, element=> {
-                  console.log('salon', element);
 
                   let salon = element.salon;
 

@@ -379,7 +379,6 @@ export default class EditCustomer extends PureComponent {
         }
 
         for (let key in formData) {
-          // console.log('key', key);
 
           if (key == 'business') {
             for (let key2 in formData[key]) {
@@ -406,7 +405,6 @@ export default class EditCustomer extends PureComponent {
             appEmitter.emit('user-edited', 'edit-page');
           },
           (e) => {
-            console.log(e);
             this.refs.ebc.error(e);
           }
         );

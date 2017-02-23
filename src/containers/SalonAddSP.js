@@ -136,7 +136,6 @@ export default class SalonAddSP extends PureComponent {
               _.last(this.context.navigators).jumpBack();
             },
             (e) => {
-              console.log(e);
               this.refs.ebc.error(e);
             }
           );

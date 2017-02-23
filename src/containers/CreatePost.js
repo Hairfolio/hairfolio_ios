@@ -59,8 +59,6 @@ const VideoRecorder = observer(({isOpen}) => {
       }}
       device='back'
       onNewSegment={(segment) => {
-        console.log('newSegment', segment);
-
         // window.recorder.removeAllSegments()?
         _.last(window.navigators).jumpTo(gallery)
         CreatePostStore.loadGallery = false;
@@ -182,7 +180,6 @@ const Footer = ({selectedMode, onSelect}) => {
 
 
 const LibraryHeader = observer(({onLeft, onRight, onTitle, store}) => {
-  console.log('rerender library header');
   return (
     <View
       style={{

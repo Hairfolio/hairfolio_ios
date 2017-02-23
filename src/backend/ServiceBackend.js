@@ -27,7 +27,6 @@ class ServiceBackend extends Backend {
   }
 
   async getLines(brandId) {
-    console.log('lines url', `lines?brand_id=${brandId}`);
     return (await this.get(`lines?brand_id=${brandId}`)).lines;
   }
 
@@ -44,19 +43,14 @@ class ServiceBackend extends Backend {
   }
 
   async pinHairfolio(hairfolio, post) {
-    console.log('pin hairfolio', hairfolio.id, post.id);
 
     let res = await this.put('folios/' + hairfolio.id, {folio: {name: hairfolio.name}});
 
-    console.log('folios', res);
-
     let pinRes = await this.post(`folios/${hairfolio.id}/add_post`, {post_id: post.id});
 
-    console.log('pinRes', pinRes);
   }
 
   async sendPostMessage(user, post) {
-    console.log('sendPostMessage');
     let userId = Service.fetch.store.getState().user.data.get('id')
     let ids = [userId, user.id];
 
@@ -106,7 +100,6 @@ class ServiceBackend extends Backend {
 
 
       CreatePostStore.loadingText = 'Publishing the post';
-      console.log('post data', data);
 
       ShareStore.share(data.post.photos_attributes[0].asset_url);
 

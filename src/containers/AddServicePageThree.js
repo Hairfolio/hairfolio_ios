@@ -109,7 +109,6 @@ const ColorInfo = observer(({color}) => {
 
 const ColorSummary = observer(({store}) => {
 
-  console.log('selectedColros', store.selectedColors.length);
   return (
     <View
       style={{
@@ -129,8 +128,6 @@ const ColorSummary = observer(({store}) => {
 });
 
 const PickerPageThree = observer(({store}) => {
-
-  console.log('change pageThreeSelector');
 
   if (store.pageThreeSelector == null) {
     return <View />;

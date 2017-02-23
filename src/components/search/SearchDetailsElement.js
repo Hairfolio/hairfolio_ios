@@ -147,7 +147,6 @@ const TagItem = observer(({item}) => {
       underlayColor='#ccc'
       onPress={
         () => {
-          console.log('onPress');
           let name = item.name.substring(1);
 
 

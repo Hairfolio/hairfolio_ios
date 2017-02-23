@@ -69,9 +69,6 @@ export default class SalonSP extends PureComponent {
     window.myuser = this.props.user;
     var offerings = new OrderedMap(this.props.user.get('offerings').map(offerings => [offerings.get('id'), offerings]));
 
-    console.log(this.props.user.get('offerings').count());
-    console.log('offerings', this.props.user.get('offerings'));
-
     return (<View style={{
       flex: 1
     }}>

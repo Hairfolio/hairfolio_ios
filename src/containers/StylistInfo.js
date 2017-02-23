@@ -60,7 +60,6 @@ export default class StylistInfo extends PureComponent {
             _.first(this.context.navigators).jumpTo(appStack, () => this.clearValues());
           },
           (e) => {
-            console.log(e);
             this.refs.ebc.error(e);
           }
         );

@@ -10,8 +10,6 @@ const initialState = new (Record({
 
 export default function postReducer(state = initialState, action) {
 
-  console.log('postReducer', action);
-
   switch (action.type) {
     case appTypes.REVIVE_STATE: {
       return initialState;

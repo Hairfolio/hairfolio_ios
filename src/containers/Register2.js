@@ -155,7 +155,6 @@ export default class Register2 extends PureComponent {
                   _.first(this.context.navigators).jumpTo(stack);
                 },
                 (e) => {
-                  console.log(e);
                   this.context.setBannerError(e);
                 }
               );

@@ -175,7 +175,6 @@ const ContactList = observer(({store}) => {
 
   let data = store.data;
 
-  console.log('alpha data', data);
 
   let children = [];
 

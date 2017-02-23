@@ -167,7 +167,6 @@ const PostDetailsHeader = observer(({store}) => {
           post.lastClickTime = currentClickTime;
         }}
       onLongPress={(e) => {
-        console.log('long press');
         post.savePost();
       }}
     >

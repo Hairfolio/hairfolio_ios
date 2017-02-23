@@ -137,8 +137,6 @@ const HairfolioItem = observer(({store, isEditable}) => {
 });
 
 const HairfolioEdit = observer(({store}) => {
-  console.log('render item');
-
   return (
       <View
         style={{

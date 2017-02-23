@@ -209,8 +209,6 @@ export default class Messages extends PureComponent {
       MessagesContent,
       store
     );
-    console.log('render messages');
-
 
     return (<NavigationSetting
       style={{

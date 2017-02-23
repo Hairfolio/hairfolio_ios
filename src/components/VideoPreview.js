@@ -62,7 +62,6 @@ const PlayButton = observer(({myWidth, pic}) => {
     <TouchableWithoutFeedback
       onPress={
         () => {
-          console.log('start playing', pic.videoUrl);
           pic.isPaused = false;
           pic.isPlaying = true;
         }

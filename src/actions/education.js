@@ -47,9 +47,6 @@ export const educationActions = {
 
   addEducation(education) {
 
-    console.log('education', education);
-
-
     return ({services: {fetch}, getState}) => {
       return {
         type: educationTypes.ADD_EDUCATION,

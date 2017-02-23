@@ -38,8 +38,6 @@ class HashTag extends React.Component {
   componentDidMount() {
     setTimeout(() =>  {
       this.refs.hashView.measure((a, b, width, height, px, py) => {
-        console.log('myWidth', width);
-        console.log('myWidth', height);
         this.setState({
           width: width + 10,
           left: this.props.pic.x - width / 2 - 5,
@@ -57,7 +55,6 @@ class HashTag extends React.Component {
       >
         <View
           ref='hashView'
-          onLayout={(a, b, c, d) => console.log('hash', a, b, c, d)}
           style={{
             top: this.state.top,
             left: this.state.left,
@@ -97,8 +94,6 @@ const PostTags  = observer(({store}) => {
       }}
     >
       {store.selectedPicture.tags.map((pic) => {
-
-        console.log('mypic', pic);
 
         if (pic.x < 0) {
           return <View key={pic.key} />;

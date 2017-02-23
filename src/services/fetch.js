@@ -60,13 +60,10 @@ export default class Fetch {
 
     var uri = this.store.getState().app.host + path;
 
-    console.log('fetch', uri, opts);
-
     return window.fetch(uri, opts)
       .then(utils.parseJSON)
       .then(checkStatus)
       .then((response) => {
-        console.log('result received for ', uri, response.jsonData);
         return response.jsonData;
       })
       .catch((e) => {

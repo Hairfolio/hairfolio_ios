@@ -126,8 +126,6 @@ export default class Profile extends PureComponent {
     window.profileState = this;
 
 
-    console.log('rerender profile');
-
     return (<BannerErrorContainer ref="ebc" style={{
       flex: 1
     }}>
@@ -353,9 +351,6 @@ export default class Profile extends PureComponent {
                                 }
                               }
                             ];
-
-                            console.log('userObjects', userObjects);
-
 
                             MessageDetailsStore.createConversation(userObjects);
                             MessageDetailsStore.title = this.getName();

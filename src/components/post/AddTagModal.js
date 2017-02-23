@@ -24,7 +24,6 @@ import CreatePostStore from 'stores/CreatePostStore.js'
 import KeyboardStore from 'stores/KeyboardStore.js'
 
 const SearchResultItem = observer(({item}) => {
-  console.log('item', item.name);
   return (
     <TouchableHighlight
       underlayColor='#ccc'
@@ -96,7 +95,6 @@ const SearchResults = observer(({store}) => {
 
 const Header = observer(({store}) => {
 
-  console.log('render header');
   return (
     <View
       style = {{

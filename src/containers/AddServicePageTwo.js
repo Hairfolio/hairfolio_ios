@@ -40,7 +40,6 @@ const ColorItem = observer(({colorField}) => {
         if (colorField.isSelected) {
           colorField.isSelected = false;
         } else if (colorField.canSelect) {
-          console.log('set selected');
           colorField.isSelected = true;
         } else if (!colorField.isBlank) {
           alert('You already selected 4 colors!');

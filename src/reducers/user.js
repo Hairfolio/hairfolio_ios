@@ -67,7 +67,6 @@ export default function userReducer(state = initialState, action) {
     }
     case registrationTypes.UNFOLLOW_USER_SUCCESS.toString(): {
       window.state = state;
-      console.log('state', state);
 
       setTimeout(() => {
         window.profileState.setState({followed: false});
@@ -89,12 +88,10 @@ export default function userReducer(state = initialState, action) {
     }
 
     case educationTypes.ADD_EDUCATION_SUCCESS.toString(): {
-      console.log('ADD_EDUCATION_SUCCESS', action.payload);
       return state.setIn(['data', 'educations'], state.get('data').get('educations').push((new Map({})).mergeDeep(action.payload.education)));
     }
 
     case educationTypes.EDIT_EDUCATION_SUCCESS.toString(): {
-      console.log('EDIT_EDUCATION_SUCCESS', action.payload);
       educations = state.get('data').get('educations');
       educations = educations.map(step => {
         if (step.get('id') !== action.payload.education.id)
@@ -105,7 +102,6 @@ export default function userReducer(state = initialState, action) {
     }
 
     case educationTypes.DELETE_EDUCATION_SUCCESS.toString(): {
-      console.log('DELETE_EDUCATION_SUCCESS', action.payload);
       educations = state.get('data').get('educations');
       educations = educations.filter(step => {
         return step.get('id') !== action.payload.education.id;
@@ -114,12 +110,10 @@ export default function userReducer(state = initialState, action) {
     }
 
     case offeringsTypes.ADD_OFFERINGS_SUCCESS.toString(): {
-      console.log('ADD_OFFERINGS_SUCCESS', action.payload);
       return state.setIn(['data', 'offerings'], state.get('data').get('offerings').push((new Map({})).mergeDeep(action.payload.offering)));
     }
 
     case offeringsTypes.EDIT_OFFERINGS_SUCCESS.toString(): {
-      console.log('EDIT_OFFERINGS_SUCCESS', action.payload);
       offerings = state.get('data').get('offerings');
       offerings = offerings.map(offering => {
         if (offering.get('id') !== action.payload.offering.id)
@@ -130,7 +124,6 @@ export default function userReducer(state = initialState, action) {
     }
 
     case offeringsTypes.DELETE_OFFERINGS_SUCCESS.toString(): {
-      console.log('DELETE_OFFERINGS_SUCCESS', action.payload);
       offerings = state.get('data').get('offerings');
       offerings = offerings.filter(offering => {
         return offering.get('offering').get('id') !== action.payload.offering.id;
@@ -157,8 +150,6 @@ export default function userReducer(state = initialState, action) {
     }
 
     case registrationTypes.EDIT_USER_SUCCESS.toString(): {
-
-      console.log('edit data', action);
 
       return state
         .setIn(['data', 'certificates'], new List([]))

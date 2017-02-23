@@ -65,7 +65,6 @@ export default function(store, initialState, toBeSaved, reviveState) {
       }, {});
 
       if (!_.isEmpty(toSave)) {
-        console.log('saving cache');
         save(toSave);
       }
 

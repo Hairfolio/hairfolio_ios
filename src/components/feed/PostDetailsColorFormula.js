@@ -173,7 +173,6 @@ const ServiceInfo = observer(({canEdit, store}) => {
 
     AddServiceStore.save = async (obj) => {
 
-      console.log('save', obj);
       obj.id = myId;
 
 
@@ -184,7 +183,6 @@ const ServiceInfo = observer(({canEdit, store}) => {
 
         for (let formula of colors) {
           let col = formula.toJSON();
-          console.log('new color', col);
           myArr.push(col);
         }
 
@@ -200,8 +198,6 @@ const ServiceInfo = observer(({canEdit, store}) => {
         {
           photo: picture
         });
-
-      console.log('res photo', res);
 
       AddServiceStore.myBack();
     };

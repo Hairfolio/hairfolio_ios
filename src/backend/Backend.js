@@ -33,8 +33,6 @@ export default class Backend {
     }
 
 
-    console.log('token', token);
-
     return headers;
   }
 
@@ -48,9 +46,6 @@ export default class Backend {
       body: JSON.stringify(data)
     });
 
-    console.log('response', data);
-
-    console.log('put2', response);
     let json = await response.json();
 
     if (response.status) {
@@ -61,8 +56,6 @@ export default class Backend {
 
 
   async post(url, data) {
-    console.log('post ', BASE_URL + url);
-
     window.head = this.getHeaders();
     window.data = data;
     let response = await myfetch(BASE_URL + url, {
@@ -72,14 +65,11 @@ export default class Backend {
       body: JSON.stringify(data)
     });
 
-    console.log('post2 '  + BASE_URL + url, response);
     let json = await response.json();
 
     if (response.status) {
       json.status = response.status;
     }
-
-    console.log('post3 ' + BASE_URL + url, json);
 
     return json;
   }

@@ -375,7 +375,6 @@ export const registrationActions = {
     return ({services: {fetch}}) => {
 
 
-      console.log('email signup value', value);
       if (value.business) {
         _.each(value.business, (v, key) => value[`business_${key}`] = v);
         delete value.business;
@@ -507,15 +506,11 @@ export const registrationActions = {
   editUser(values = {}, type) {
     return ({services: {fetch}, getState}) => {
 
-      console.log('edit user', values, type);
-
       if (values.experience_ids) {
         values.experience_ids = values.experience_ids.split(',').map(e => Math.floor(e));
       } else {
         values.experience_ids = [];
       }
-
-      console.log('ex ids', values.experience_ids);
 
       if (values.certificate_ids) {
         values.certificate_ids = values.certificate_ids.split(',').map(e => Math.floor(e));

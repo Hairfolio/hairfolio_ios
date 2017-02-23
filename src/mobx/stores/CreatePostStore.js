@@ -36,7 +36,6 @@ class LibraryPicture {
     if (this.isVideo) {
       PhotoAlbum.getVidePath(data.id, (data) => {
         this.videoUrl = data[0].uri;
-        console.log('lib video', this.videoUrl);
       });
     }
 
@@ -283,7 +282,6 @@ class Gallery {
   }
 
   @action addPicture(pic) {
-    console.log('addPicture');
     this.pictures.unshift(pic);
     this.selectedPicture = _.first(this.pictures);
   }
@@ -309,8 +307,6 @@ class Gallery {
   }
 
   async toJSON() {
-
-    console.log('post to json');
 
     let items = [];
 
@@ -393,7 +389,6 @@ class CreatePostStore {
   }
 
   @action switchCameraFlashMode() {
-    console.log('set flash mode');
     if (this.cameraFlashMode == Camera.constants.FlashMode.off) {
       this.cameraFlashMode = Camera.constants.FlashMode.auto;
       window.camera.setFlashMode('auto');
@@ -444,8 +439,6 @@ class CreatePostStore {
       {uri: this.lastTakenPicture.path},
       this.gallery
     );
-
-    console.log('picture thumnail', this.lastTakenPicture.path);
 
     video.videoUrl = this.lastTakenPicture.videoUrl;
 
@@ -507,7 +500,6 @@ class CreatePostStore {
   }
 
   updateLibraryPictures() {
-    console.log('load photos');
     this.loadedImages = 0;
     this.libraryPictures;
     PhotoAlbum.getPhotosFromAlbums(this.groupName, (data) => {

@@ -93,7 +93,6 @@ class BlackBookStore {
     this.mode = 'normal';
 
     let contacts = (await ServiceBackend.get('contacts')).contacts;
-    console.log('contacts', contacts);
 
     this.contacts = contacts.map(e => new Contact(e));
 

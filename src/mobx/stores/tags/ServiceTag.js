@@ -9,7 +9,6 @@ export default class ServiceTag {
     if (obj.treatments) {
       // backend creation
 
-      console.log('serviceTag', obj);
       this.x = x;
       this.y = y;
       this.key = v4();
@@ -30,8 +29,6 @@ export default class ServiceTag {
       this.colors = obj.treatments;
       this.type = 'service';
 
-
-      console.log('mycolors1', this.colors)
     } else {
       this.x = x;
       this.y = y;
@@ -51,7 +48,6 @@ export default class ServiceTag {
       this.colors = post_item_tag_colors ? post_item_tag_colors : [];
 
       this.type = 'service';
-      console.log('mycolors2', this.colors)
     }
 
 
@@ -93,9 +89,6 @@ export default class ServiceTag {
         },
       ]
     }
-
-    console.log('serviceData', data);
-
 
     return _.pickBy(data);
   }

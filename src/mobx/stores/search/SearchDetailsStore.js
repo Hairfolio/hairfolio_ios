@@ -26,14 +26,12 @@ class SearchUserFollowStore {
     this.isLoading = true;
 
     let users = (await this.backendSearch(param)).users;
-    console.log('backend res', users);
 
     let userList = users.map(e => {
       let user = new FollowUser();
       return user.init(e);
     });
 
-    console.log('userList', userList);
 
     this.users = await Promise.all(userList);
 
@@ -82,11 +80,9 @@ class SearchNearbyStore extends SearchUserFollowStore {
   }
   async backendSearch(name) {
     let position = await this.getUserLocation();
-    console.log('position', position);
 
     let url = `salons?latitude=${position.coords.latitude}&longitude=${position.coords.longitude}&q=${name}`;
 
-    console.log('url', url);
 
 
     return await ServiceBackend.get(url);
@@ -95,7 +91,6 @@ class SearchNearbyStore extends SearchUserFollowStore {
 
 class Tag {
   constructor(obj) {
-    console.log('hash', obj);
     this.key = v4();
     this.name = `#${obj.name}`;
   }
@@ -114,12 +109,9 @@ class SearchHashStore {
   async search(name) {
 
     this.isLoading = true;
-    console.log('testloading');
 
     let searchString = `tags?q=${name}`;
-    console.log('hashtags SearchString', searchString);
     let hashtags = (await ServiceBackend.get(searchString)).tags;
-    console.log('hashtags', hashtags);
     this.tags = hashtags.map(e => new Tag(e));
 
 

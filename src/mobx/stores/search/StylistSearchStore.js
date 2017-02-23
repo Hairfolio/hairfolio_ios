@@ -18,18 +18,12 @@ class StylistSearchStore {
     this.isLoading = true;
 
     let users = (await ServiceBackend.get('users?account_type=stylist')).users;
-    console.log('backend res', users);
-
     let userList = users.map(e => {
       let user = new FollowUser();
       return user.init(e);
     });
 
-    console.log('userList', userList);
-
     this.users = await Promise.all(userList);
-
-    console.log('stylists ', this.StylistSearchStore);
 
     this.isLoading = false;
 

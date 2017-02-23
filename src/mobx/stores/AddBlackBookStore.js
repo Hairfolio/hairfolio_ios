@@ -28,8 +28,6 @@ class SelectableUser {
   }
 
   async init(obj) {
-    console.log('contactObj', obj);
-
     let user = new User();
 
     user.sample(obj.first_name + ' ' + obj.last_name);

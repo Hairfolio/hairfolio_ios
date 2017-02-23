@@ -365,7 +365,6 @@ class AddServiceStore {
         for (let el of res) {
           for (let item of el.colors) {
             if (item.id == color.color.id) {
-              console.log('color data', color);
               item.isSelected = true;
               item.amount = color.weight;
             }
@@ -374,10 +373,6 @@ class AddServiceStore {
       }
 
     }
-
-    console.log('myRes', res);
-
-
 
     this.colorGrid.setColors(res, unit);
 
@@ -590,7 +585,6 @@ class AddServiceStore {
 
     if (selector == this.serviceSelector) {
       let data = this.serviceSelector.selectedData;
-      console.log('selectedData', data);
 
       this.brandSelector.reset();
       this.colorNameSelector.reset();

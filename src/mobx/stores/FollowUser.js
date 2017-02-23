@@ -22,7 +22,6 @@ export default class FollowUser {
 
   async init(data) {
     this.user = new User();
-    console.log('followUser', data);
     this.isFollowing = data.is_followed_by_me;
     await this.user.init(data);
     return this;
@@ -46,12 +45,9 @@ export default class FollowUser {
 
     let myId = globalStore.getState().user.data.get('id')
 
-    console.log('myId', myId);
-    console.log('toId', this.user.id);
 
     let res = await ServiceBackend.post(`users/${this.user.id}/follows`, { });
 
-    console.log('followResults', res);
     this.followLoading = false;
     this.isFollowing = true;
     FeedStore.load();

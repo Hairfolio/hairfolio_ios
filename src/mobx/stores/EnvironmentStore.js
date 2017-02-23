@@ -9,7 +9,6 @@ class EnvironmentStore {
       return this.environment;
     } else {
       let res = await ServiceBackend.get('/sessions/environment');
-      console.log('envi', res);
       this.environment = res;
       return res;
     }

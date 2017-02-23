@@ -54,16 +54,6 @@ export default class Picture {
 
     let uri = this.source.uri;
 
-    /*
-    if (this.isVideo) {
-      console.log('msg video src', uri);
-      uri = jpg(this.videoUrl);
-    }
-
-    console.log('msg img src', uri);
-    */
-
-
     if (uri && uri.indexOf('cloudinary') > -1) {
       let splitUrl = uri.split('upload');
       let newUrl = `${splitUrl[0]}upload/w_${width}${splitUrl[1]}`;
@@ -90,7 +80,6 @@ export default class Picture {
       uri = uri.substr(7);
     }
 
-    console.log('video', uri);
 
     let formdata = new FormData();
     formdata.append('file', {
@@ -102,13 +91,9 @@ export default class Picture {
     let preset = Service.fetch.store.getState().environment.environment.get('cloud_preset');
     let cloudName = Service.fetch.store.getState().environment.environment.get('cloud_name');
 
-    console.log('lib ', uri);
-    console.log('data', RNFetchBlob.wrap(uri));
-
     // load pictures from library
     if (this.identifier) {
       let path = await this.getVideoPath(this.identifier);
-      // console.log('mypath', path);
       uri = path[0].uri;
     }
 
@@ -165,7 +150,6 @@ export default class Picture {
 
       if (upload) {
         let videoJSON = await this.uploadVideo();
-        console.log('videoJSON', videoJSON);
         ret.video_url = videoJSON.secure_url;
       } else {
         ret.video_url = this.videoUrl;
@@ -208,7 +192,6 @@ export default class Picture {
     for (let tag of this.tags) {
 
       if (tag.type == 'service') {
-        console.log('tag', tag);
         if (tag.serviceName) {
           let tagName = tag.serviceName.replace(/\W/g, '').toLowerCase();
           this.tags.push(new HashTag(-100, -100, '#' + tagName));
@@ -224,7 +207,6 @@ export default class Picture {
         }
 
         for (let color of tag.colors) {
-          console.log('color', color);
 
           let tagName;
 
@@ -243,7 +225,6 @@ export default class Picture {
 
     let labels_attributes = await Promise.all(
       this.tags.map(tag => {
-        console.log('tagjson', tag);
         return tag.toJSON();
       })
     );
@@ -251,8 +232,6 @@ export default class Picture {
     window.tags = labels_attributes;
 
     ret.labels_attributes = labels_attributes;
-
-    // console.log('label_attributes', labels_attributes);
 
     return ret;
   }
@@ -279,10 +258,6 @@ export default class Picture {
   @action addServiceTag(x, y, data) {
 
     window.lastData = data;
-
-    console.log('service data', data);
-
-
 
     this.tags.push(new ServiceTag(x, y, data));
   }

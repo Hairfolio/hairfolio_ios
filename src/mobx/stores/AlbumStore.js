@@ -9,7 +9,6 @@ class LibraryPicture {
   constructor(data) {
     this.key = counter++;
     this.uri = data.node.image.uri;
-    console.log(data);
   }
 
 };
@@ -44,7 +43,6 @@ class AlbumStore {
   load() {
     PhotoAlbum.getAlbumNames((results) => {
       this.albums = results.map((el) => new Album(el.title, el.count, el.uri));
-      console.log(results);
     });
   }
 };

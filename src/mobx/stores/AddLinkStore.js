@@ -21,8 +21,6 @@ class CatalogItem {
     this.hashtag = tag;
     this.key = v4();
 
-    console.log('cloudinary', cloudinary_url);
-
     let uri = cloudinary_url;
     if (uri && uri.indexOf('cloudinary') > -1) {
       let splitUrl = uri.split('upload');
@@ -43,8 +41,6 @@ class Catalog {
     try {
 
       let results = await ServiceBackend.getCatalogItems(term);
-      console.log('searchresults', results);
-
       results = results.filter(i => i.cloudinary_url && i.cloudinary_url.length > 0);
 
       this.items = results.map(n => new CatalogItem(n));

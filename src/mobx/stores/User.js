@@ -73,8 +73,6 @@ export default class User {
 
     let picObj = {uri: utils.getUserProfilePicURI(new GetObj(data), new GetObj(environment))};
 
-    console.log('uri', utils.getUserProfilePicURI(new GetObj(data), new GetObj(environment)));
-
     this.profilePicture = new Picture(
       picObj,
       picObj,

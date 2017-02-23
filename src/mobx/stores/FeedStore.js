@@ -35,7 +35,6 @@ class FeedStore {
 
     let res = (await ServiceBackend.get('posts')).posts;
 
-    console.log('res feed', res);
     this.elements = [];
 
 

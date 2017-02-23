@@ -42,10 +42,8 @@ class Message {
   }
 
   async init(obj) {
-    console.log('msg obj', obj);
 
     let isMe = obj.user.id == Service.fetch.store.getState().user.data.get('id');
-    console.log('isMe', isMe);
 
     if (!isMe) {
       let user = new User();
@@ -151,7 +149,6 @@ class MessageDetailsStore {
     this.isLoading = true;
     this.messages = [];
 
-    console.log('users', users);
     let ids = users.map(e => e.user.id);
 
     let userId = Service.fetch.store.getState().user.data.get('id');
@@ -165,7 +162,6 @@ class MessageDetailsStore {
       }
     };
 
-    console.log('postData', postData);
 
     let res = (await ServiceBackend.post('conversations', postData)).conversation;
 
@@ -179,8 +175,6 @@ class MessageDetailsStore {
     // read the conversations
     ServiceBackend.post(`conversations/${this.id}/read`);
     let res = (await ServiceBackend.get(`conversations/${this.id}/messages`)).messages;
-
-    console.log('messages', res);
 
     this.messages = (await Promise.all(res.map(e => {
       let c = new Message();
@@ -297,8 +291,6 @@ class MessageDetailsStore {
     // send to cloudinary
     let res = await msg.picture.uploadVideo();
 
-    console.log('msg cloud 2', res);
-
     pic = {uri: jpg(res.secure_url)};
 
     msg.picture = new Picture(
@@ -322,11 +314,7 @@ class MessageDetailsStore {
       }
     };
 
-    console.log('msg postData', postData);
-
     let res2 = await ServiceBackend.post(`conversations/${this.id}/messages`, postData);
-
-    console.log('msg res2', res2);
 
   }
 
@@ -346,9 +334,6 @@ class MessageDetailsStore {
 
     // send to cloudinary
     let res = await msg.picture.toJSON();
-
-    console.log('cloud 2', res);
-
 
     pic = {uri: res.asset_url, isStatic: true};
 

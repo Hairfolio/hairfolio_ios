@@ -22,9 +22,6 @@ export default class LinkTag {
     this.name = name;
     this.hashtag = hashtag ? hashtag.name : hashtag;
     this.hashtag_id = hashtag ? hashtag.id : null;
-
-
-    console.log('linkUrl', this.linkUrl);
   }
 
   async toJSON(upload) {

@@ -20,7 +20,6 @@ class Comment {
   }
 
   async init(obj) {
-    console.log('initComment', obj);
     this.text = obj.body;
     this.user = new User();
 
@@ -88,7 +87,6 @@ class CommentsModel {
   }
 
   async send() {
-    console.log('send');
     let text = this.inputStore.value;
     this.inputStore.value = '';
 
@@ -99,8 +97,6 @@ class CommentsModel {
     };
 
     let res = (await ServiceBackend.post(`/posts/${this.postId}/comments`, postData)).comment;
-
-    console.log('postRes', res);
 
     let comment = new Comment();
     await comment.init(res);
@@ -113,9 +109,7 @@ class CommentsModel {
 
   scrollToBottom() {
     if (this.scrollView) {
-      console.log('scroll bottom');
       const scrollHeight = this.contentHeight - this.scrollViewHeight;
-      console.log('scrollHeight', scrollHeight);
       if (scrollHeight > 0) {
         const scrollResponder = this.scrollView.getScrollResponder();
         scrollResponder.scrollResponderScrollTo({x: 0, y: scrollHeight});

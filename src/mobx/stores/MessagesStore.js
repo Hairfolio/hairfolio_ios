@@ -23,8 +23,6 @@ class Message {
   }
 
   async init(obj) {
-    console.log('initMessage', obj);
-
     this.id = obj.id;
 
     let lastMessage = obj.last_message;
@@ -152,13 +150,9 @@ class MessagesStore {
   }
 
   async delete(message) {
-    console.log('delete');
-
     this.messages = this.messages.filter(e => e != message);
 
     let res = await ServiceBackend.delete(`conversations/${message.id}`);
-    console.log('delete res', res);
-
   }
 
 }

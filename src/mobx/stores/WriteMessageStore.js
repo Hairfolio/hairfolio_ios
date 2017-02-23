@@ -197,11 +197,7 @@ class WriteMessageStore {
       return u.init(e);
     }));
 
-    console.log('myUsers', myUsers);
-
     this.users = myUsers;
-
-    console.log('start render');
 
     this.isLoading = false;
   }

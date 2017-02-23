@@ -49,7 +49,6 @@ export default class Activity {
 
   async init(obj) {
 
-    console.log('activity', obj);
     this.createdTime = moment(obj.created_at);
 
     let user = new User();

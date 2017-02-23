@@ -94,14 +94,11 @@ export default class Post {
       for (let item of pic.labels) {
 
         if (item.formulas.length > 0) {
-          console.log('label service', item.formulas[0]);
           picture.addServiceTag(item.position_left, item.position_top, item.formulas[0]);
         } else if (item.url != null) {
-          console.log('label link', item.url);
           picture.addLinkTag(item.position_left, item.position_top, item);
 
         } else {
-          console.log('label tag');
           picture.addHashTag(item.position_left, item.position_top, item.tag.name);
         }
 
@@ -358,11 +355,9 @@ export default class Post {
     if (hasStarred) {
       this.starNumber--;
       let starResult = await ServiceBackend.delete(`/posts/${this.id}/likes`);
-      console.log('starResult', starResult);
     } else {
       this.starNumber++;
       let starResult = await ServiceBackend.post(`/posts/${this.id}/likes`);
-      console.log('starResult', starResult);
     }
 
     FavoriteStore.load();
@@ -381,23 +376,16 @@ export default class Post {
 
     let inspirationId;
 
-    console.log('inspiration length', inspiration.length);
-
     if (inspiration.length == 0) {
-      console.log('other case');
       let res = await ServiceBackend.post('folios', {folio: {name: 'Inspiration'}});
       inspirationId = res.folio.id;
     } else {
-      console.log('inspiration', inspiration);
       inspirationId = inspiration[0].id;
 
     }
 
     let pinRes = await ServiceBackend.post(`folios/
 ${inspirationId}/add_post`, {post_id: this.id});
-
-    console.log('pin res', pinRes);
-
 
     this.showSave = false;
   }

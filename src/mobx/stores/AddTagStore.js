@@ -42,8 +42,6 @@ class AddTagStore {
       }
 
       let results = await ServiceBackend.getHashTags(term);
-      console.log('searchresults', results);
-
       results = results.filter(({name}) => name != term);
 
       results.unshift({name: term});

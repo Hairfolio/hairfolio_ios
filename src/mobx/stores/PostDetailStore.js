@@ -43,7 +43,6 @@ class PostDetailsModel {
 
   @computed get serviceTags() {
     let services = this.selectedPicture.tags.filter(e => e.type == 'service');
-    console.log('services', this.selectedPicture.tags);
     return services;
   }
 
@@ -66,7 +65,6 @@ class PostDetailsModel {
 
       for (let i = 0; i < serviceTags.length; i++) {
         if (serviceTags[i].key == tag.key) {
-          console.log('change to' + i);
           this.swiper.setState({index: i});
           this.scrollView.scrollTo({y: this.colorFormulaPosY});
         }

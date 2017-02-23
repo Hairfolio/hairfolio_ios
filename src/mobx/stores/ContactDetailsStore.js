@@ -146,8 +146,6 @@ class ContactDetailsStore {
     this.phoneHome = '';
     this.phoneWork = '';
 
-    console.log('phone2', data);
-
     for (let e of data.phones) {
       if (e.phone_type == 'mobile') {
         this.phoneMobile = e.number;
@@ -175,8 +173,6 @@ class ContactDetailsStore {
     this.addressCity = conv(data.city);
     this.addressCountry = conv(data.country);
 
-
-    console.log('profile data', data);
 
     this.notes = await Promise.all(data.posts.map(e => {
       let c = new Post();
@@ -260,8 +256,6 @@ class ContactDetailsStore {
 
     data.emails_attributes = emails_attributes;
 
-    console.log('data', data);
-
     data.phones_attributes = [];
 
     if (this.phoneHome && this.phoneHome.length > 0) {
@@ -337,8 +331,6 @@ class ContactDetailsStore {
 
       let res = await ServiceBackend.post('contacts', {contact: data});
 
-      console.log('contact', res);
-
       this.myBack();
     }
   }
@@ -385,7 +377,6 @@ class ContactDetailsStore {
     if (this.picture == null) {
       return require('img/contact_camera.png');
     } else {
-      console.log('source', this.picture.getSource(120));
       return this.picture.getSource(120);
     }
   }
@@ -404,8 +395,6 @@ class ContactDetailsStore {
     // send to cloudinary
     let res = await picture.toJSON();
 
-    console.log('cloud 2', res);
-
     pic = {uri: res.asset_url, isStatic: true};
 
     this.picture = new Picture(
@@ -420,12 +409,10 @@ class ContactDetailsStore {
   scrollToElement(reactNode) {
     RCTUIManager.measure(ReactNative.findNodeHandle(reactNode), (x, y, width, height, pageX, pageY) => {
       RCTUIManager.measure(this.scrollView.getInnerViewNode(), (x2, y2, width2, height2, pageX2, pageY2) => {
-        console.log('pageY', pageY, pageY2, height, height2);
         // currentPos: 64
         var currentScroll = 64 - pageY2;
         var differenceY = -pageY - 240 + (windowHeight - 20 - h(88));
 
-        console.log(differenceY);
         if (currentScroll - differenceY > 0) {
           this.scrollView.scrollTo({y: currentScroll - differenceY});
         }

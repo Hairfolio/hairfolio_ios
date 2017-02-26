@@ -20,7 +20,6 @@ import {
 import SlimHeader from 'components/SlimHeader.js'
 import AlbumStore from 'stores/AlbumStore.js'
 import CreatePostStore from 'stores/CreatePostStore.js'
-import AddTagStore from 'stores/AddTagStore.js'
 import AddServiceStore from 'stores/AddServiceStore.js'
 
 import ShareStore from 'stores/ShareStore.js'
@@ -48,8 +47,6 @@ import {Dimensions} from 'react-native';
 import ReactNative from 'react-native';
 
 import ServiceBox from 'components/post/ServiceBox.js'
-
-import AddTagModal from 'components/post/AddTagModal.js'
 
 const PlayButton = observer(({myWidth, pic}) => {
 

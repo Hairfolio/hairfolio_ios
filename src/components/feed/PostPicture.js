@@ -31,16 +31,51 @@ class InstantSwiper extends React.Component {
 
   constructor(props) {
     super(props)
+
+    this.state = {
+      currentIndex: 0
+    };
+
+    this.currentImage = <View />;
+
+
+
+    let pictures = this.props.post.pictures;
+
+    let images = [];
+
+    for (let pic of pictures) {
+      images.push(
+        <Image
+          key={pic.key}
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            height: windowWidth,
+            width: windowWidth
+          }}
+          source={pic.getSource(windowWidth * 2)}
+        />
+      );
+    }
+
+    this.images = images;
   }
 
 
   componentDidMount() {
-    this.autoplayFun = setInterval(
-      () => {
-        this.props.post.nextImage();
-      },
-      3000
-    );
+    if (this.images.length > 1) {
+      this.autoplayFun = setInterval(
+        () => {
+          this.setState({
+            currentIndex: (this.state.currentIndex + 1) % this.images.length
+          });
+          // this.props.post.nextImage();
+        },
+        3000
+      );
+    }
   }
 
   componentWillUnmount() {
@@ -51,13 +86,39 @@ class InstantSwiper extends React.Component {
 
     let pic = this.props.post.currentImage;
 
-    return  (
-      <View key={pic.key}>
+    let imageArray = [];
+
+    let index = -1;
+
+    let infoText = `${this.state.currentIndex + 1} of ${this.props.post.pictures.length}`;
+    for (let pic of this.props.post.pictures) {
+      index += 1;
+      imageArray.push(
         <Image
           key={pic.key}
-          style={{height: windowWidth, width: windowWidth}}
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            opacity: this.state.currentIndex == index ? 1 : 0,
+            height: windowWidth,
+            width: windowWidth
+          }}
           source={pic.getSource(windowWidth * 2)}
         />
+      );
+    }
+
+    return  (
+      <View
+        style={{
+          height: windowWidth,
+          width: windowWidth
+        }}
+
+        key={pic.key}>
+
+        {imageArray}
         {pic.isVideo ?
             <View
               style={{
@@ -73,6 +134,29 @@ class InstantSwiper extends React.Component {
             </View>
             : <View />
         }
+
+
+
+        <View
+          style={{
+            position: 'absolute',
+            right: h(18),
+            bottom: h(18),
+            backgroundColor: 'white',
+            paddingVertical: h(7),
+            paddingHorizontal: h(14)
+          }}
+        >
+          <Text
+            style={{
+              fontSize: h(28),
+              fontFamily: FONTS.LIGHT_OBLIQUE,
+              color: '#8D8D8D'
+            }}
+          >
+            {infoText}
+          </Text>
+        </View>
       </View>
     )
   }
@@ -133,27 +217,7 @@ const PostPicture = observer(({post}) => {
 
 
 
-          <View
-            style={{
-              position: 'absolute',
-              right: h(18),
-              bottom: h(18),
-              backgroundColor: 'white',
-              paddingVertical: h(7),
-              paddingHorizontal: h(14)
-            }}
-          >
-            <Text
-              style={{
-                fontSize: h(28),
-                fontFamily: FONTS.LIGHT_OBLIQUE,
-                color: '#8D8D8D'
-              }}
-            >
-              {post.photoInfo}
-            </Text>
-          </View>
-        </View>
+                  </View>
       </View>
     </TouchableWithoutFeedback>
   );

@@ -35,8 +35,6 @@ import ReactNative from 'react-native';
 
 import ServiceBox from 'components/post/ServiceBox.js'
 
-import AddTagModal from 'components/post/AddTagModal.js'
-
 const FilterImage = observer(({item}) => {
   return (
     <TouchableWithoutFeedback
@@ -58,7 +56,7 @@ const FilterImage = observer(({item}) => {
 const FilterSelector = observer(({store}) => {
   return (
     <ScrollView
-      horizontal={true}
+      horizontal
       style={{height: h(270)}}
     >
       {store.filteredImages.map((el) => <FilterImage key={el.key} item={el} />)}

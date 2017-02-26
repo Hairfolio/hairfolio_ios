@@ -82,6 +82,7 @@ class HashTag extends React.Component {
      <View
           ref='hashView'
           style={{
+            position: 'absolute',
             top: this.state.top,
             left: this.state.left,
             width: this.state.width,

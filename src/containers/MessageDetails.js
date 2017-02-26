@@ -251,23 +251,35 @@ const Message = observer(({store}) => {
   );
 });
 
-const MessagesContent = observer(({store}) => {
-  return (
-    <View style={{flex: 1}}>
-      <ScrollView
-        style = {{
-          flex: 1
-        }}
-        ref={el => {store.scrollView = el}}
-        onContentSizeChange={(w, h) => store.contentHeight = h}
-        onLayout={ev => store.scrollViewHeight = ev.nativeEvent.layout.height}
-      >
-        {store.messages.map((e, index) => <Message key={index} store={e} />)}
-        <View style={{height: h(35)}} />
-      </ScrollView>
-    </View>
-  );
-});
+@observer
+class MessagesContent extends React.Component {
+
+  componentDidMount() {
+    setTimeout(() => {
+      this.props.store.scrollToBottom();
+    }, 100);
+  }
+
+  render() {
+    let store = this.props.store;
+
+    return (
+      <View style={{flex: 1}}>
+        <ScrollView
+          style = {{
+            flex: 1
+          }}
+          ref={el => {store.scrollView = el}}
+          onContentSizeChange={(w, h) => store.contentHeight = h}
+          onLayout={ev => store.scrollViewHeight = ev.nativeEvent.layout.height}
+        >
+          {store.messages.map((e, index) => <Message key={index} store={e} />)}
+          <View style={{height: h(35)}} />
+        </ScrollView>
+      </View>
+    );
+  }
+}
 
 import LoadingPage from 'components/LoadingPage'
 

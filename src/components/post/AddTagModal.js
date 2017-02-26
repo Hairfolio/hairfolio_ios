@@ -107,9 +107,7 @@ const Header = observer(({store}) => {
         autoCapitalize='none'
         persistent={store.persistent}
         ref={(el) => {
-          if(el) {
-            el.focus();
-          }
+          store.textInput = el;
         }}
         onSubmitEditing={() => {
           if (store.searchTerm.length == 0) {

@@ -24,7 +24,7 @@ class CatalogItem {
     let uri = cloudinary_url;
     if (uri && uri.indexOf('cloudinary') > -1) {
       let splitUrl = uri.split('upload');
-      this.imageUrl = `${splitUrl[0]}upload/w_120,h_120${splitUrl[1]}`;
+      this.imageUrl = `${splitUrl[0]}upload/w_150${splitUrl[1]}`;
     }
   }
 };

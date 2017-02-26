@@ -247,7 +247,7 @@ class MessageDetailsStore {
       const scrollHeight = this.contentHeight - this.scrollViewHeight;
       if (scrollHeight > 0) {
         const scrollResponder = this.scrollView.getScrollResponder();
-        scrollResponder.scrollResponderScrollTo({x: 0, y: scrollHeight});
+        scrollResponder.scrollResponderScrollTo({x: 0, y: scrollHeight, animated: false});
       }
     }
   }
@@ -362,7 +362,10 @@ class MessageDetailsStore {
   @observable text;
 }
 
+
 const store = new MessageDetailsStore();
+
+window.messageDetailsStore = store;
 
 export default store;
 

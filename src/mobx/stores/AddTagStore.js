@@ -29,6 +29,10 @@ class AddTagStore {
     this.persistent = true;
     this.items = null;
     this.isLoading = false;
+
+    setTimeout(() => {
+      this.textInput.focus();
+    }, 100);
   }
 
   async search() {

@@ -428,7 +428,7 @@ class CreatePostStore {
     );
 
     this.gallery.wasOpened = true;
-    this.gallery.selectedPicture = null;
+    // this.gallery.selectedPicture = null;
     this.gallery.selectedPicture = _.first(this.gallery.pictures);
   }
 

@@ -111,7 +111,8 @@ export default class Picture {
   }
 
   async uploadPicture() {
-    let uri = await this.resizeImage(this.source.uri);
+    // TODO just for testing whether this is the course
+    let uri = this.source.uri; // await this.resizeImage(this.source.uri);
 
     let formdata = new FormData();
     formdata.append('file', {

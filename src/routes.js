@@ -1,5 +1,7 @@
 import Route from './navigation/Route';
 
+import {Navigator} from 'react-native'
+
 import CustomScenesConfig from './stacks/ScenesConfig';
 
 import Hello from './containers/Hello';
@@ -454,9 +456,11 @@ class CommentsStackRoute extends Route {
 
 class EditCustomerStackRoute extends Route {
   SceneComponent = EditCustomerStack;
-  SceneConfig = {
+  SceneConfig = Navigator.SceneConfigs.FloatFromBottom;
+  /*  {
     ...CustomScenesConfig.FadeInOut
-  };
+  }*/
+  ;
 }
 class SignupConsumerStackRoute extends Route {
   SceneComponent = SignupConsumerStack;

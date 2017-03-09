@@ -49,7 +49,7 @@ export default class Route {
   }
 
   onLayout() {
-    
+
   }
 
   renderScene(opts) {

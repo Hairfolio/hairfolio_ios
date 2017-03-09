@@ -169,16 +169,16 @@ class ColorField {
     this.isSelected = false;
     this.mainStore = mainStore;
     this.isSelected = isSelected;
-    this.amount = amount ? amount : 20;
+    this.amount = amount ? amount : 0;
 
     this.amountSelector2 = new SimpleSelector(
       _.times(301, (n) => `${n} ${unit}`),
-      amount ? `${amount} ${unit}` : `20 ${unit}`
+      amount ? `${amount} ${unit}` : `0 ${unit}`
     );
 
     this.amountSelector = new Selector(
       mainStore,
-      amount ? `${amount}${unit}` : `20${unit}`,
+      amount ? `${amount}${unit}` : `0${unit}`,
       _.times(100, (n) => `${n + 1}${unit}`),
       true,
       'Amount'
@@ -312,7 +312,7 @@ class AddServiceStore {
 
   @observable vlWeightSelector = new SimpleSelector(
     _.times(301, (n) => `${n} g`),
-    '30 g'
+    '0 g'
   );
 
 
@@ -378,7 +378,7 @@ class AddServiceStore {
 
     this.vlWeightSelector = new SimpleSelector(
       _.times(301, (n) => `${n} ${unit}`),
-      `30 ${unit}`
+      `0 ${unit}`
     );
 
     if (this.initStore) {

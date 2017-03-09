@@ -9,6 +9,11 @@
 #include "ImageHelpers.h"
 #import "RCTImageLoader.h"
 
+
+#import <Photos/Photos.h>
+#import <Photos/PHAsset.h>
+#import <Photos/PHFetchResult.h>
+
 @implementation ImageResizer
 
 @synthesize bridge = _bridge;
@@ -95,7 +100,44 @@ RCT_EXPORT_METHOD(createResizedImage:(NSString *)path
 {
     CGSize newSize = CGSizeMake(width, height);
     NSString* fullPath = generateFilePath(@"jpg", outputPath);
+  
+  
+  if ([path hasPrefix:@"assets-library"]) {
+    
+    NSString *newPath = [path componentsSeparatedByString:@"="][1];
+    newPath = [newPath componentsSeparatedByString:@"&"][0];
+    
+    PHAsset* legacyAsset = [PHAsset fetchAssetsWithLocalIdentifiers:@[newPath] options:nil].firstObject;
+    
+    PHImageRequestOptions *requestOptions = [[PHImageRequestOptions alloc] init];
+    requestOptions.resizeMode   = PHImageRequestOptionsResizeModeExact;
+    requestOptions.deliveryMode = PHImageRequestOptionsDeliveryModeHighQualityFormat;
+    
+    [[PHImageManager defaultManager] requestImageForAsset:legacyAsset targetSize:PHImageManagerMaximumSize contentMode:PHImageContentModeDefault options:requestOptions resultHandler:^(UIImage * _Nullable image, NSDictionary * _Nullable info) {
+      
+      if (image == nil) {
+        callback(@[@"Could not load the library Image", @""]);
+        return;
+      }
+      
+      UIImage * scaledImage = [image scaleToSize:newSize];
+      if (scaledImage == nil) {
+        callback(@[@"Can't resize the image.", @""]);
+        return;
+      }
+      
+      // Compress and save the image
+      if (!saveImage(fullPath, scaledImage, format, quality)) {
+        callback(@[@"Can't save the image. Check your compression format.", @""]);
+        return;
+      }
 
+
+      callback(@[[NSNull null], fullPath]);
+    }];
+
+  } else {
+  
     [_bridge.imageLoader loadImageWithURLRequest:[RCTConvert NSURLRequest:path] callback:^(NSError *error, UIImage *image) {
         if (error || image == nil) {
             if ([path hasPrefix:@"data:"] || [path hasPrefix:@"file:"]) {
@@ -104,7 +146,12 @@ RCT_EXPORT_METHOD(createResizedImage:(NSString *)path
             } else {
                 image = [[UIImage alloc] initWithContentsOfFile:path];
             }
+          
             if (image == nil) {
+              if (error) {
+                callback(@[error.localizedDescription, @""]);
+                return;
+              }
                 callback(@[path, @""]);
                 return;
             }
@@ -133,6 +180,7 @@ RCT_EXPORT_METHOD(createResizedImage:(NSString *)path
         
         callback(@[[NSNull null], fullPath]);
     }];
+  }
 }
 
 @end

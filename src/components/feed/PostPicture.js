@@ -73,7 +73,7 @@ class InstantSwiper extends React.Component {
           });
           // this.props.post.nextImage();
         },
-        3000
+        300
       );
     }
   }

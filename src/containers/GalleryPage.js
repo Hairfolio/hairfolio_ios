@@ -520,8 +520,9 @@ export default class GalleryPage extends Component {
 
     let gal = CreatePostStore.gallery;
 
-    let line = (
+    let line = (key) => (
       <View
+        key={key}
         style={{
           flex: 1,
           backgroundColor: '#D3D3D3',
@@ -529,6 +530,59 @@ export default class GalleryPage extends Component {
         }}
       />
     );
+
+    let bottomContent = [
+      line('line1'),
+      <PictureView
+        key='preview'
+        onPlus={() => {
+          CreatePostStore.reset(false);
+          CreatePostStore.gallery.unselectTag();
+          StatusBar.setHidden(true)
+          _.last(this.context.navigators).jumpTo(createPost)
+        }}
+        gallery={CreatePostStore.gallery}
+      />,
+      line('line2'),
+      <TextInput
+        key='description'
+        onFocus={(element) => this.scrollToElement(element.target)}
+        onEndEditing={() => this.refs.scrollView.scrollTo({y: 0})}
+        style={{
+          height: 40,
+          backgroundColor: 'white',
+          paddingLeft: h(30),
+          fontSize: h(28),
+          color: '#3E3E3E'
+        }}
+        placeholder='Post description'
+        value={CreatePostStore.gallery.description}
+        onChangeText={(text) => CreatePostStore.gallery.description = text}
+      />
+    ];
+
+    if (CreatePostStore.gallery.selectedTag != null) {
+      bottomContent = (
+        <View
+          style={{
+            height: windowHeight - 20 - h(88) - windowWidth - h(82),
+            width: windowWidth,
+            backgroundColor: 'white',
+            justifyContent: 'center',
+            alignItems: 'center'
+          }}
+        >
+          <Text
+            style={{
+              color: '#424242',
+              fontSize: h(33),
+              fontFamily: FONTS.OBLIQUE,
+              fontWeight: '400'
+            }}
+          >Tap where to add tag</Text>
+        </View>
+      );
+    }
 
     return (
       <View style={{paddingTop: 20, backgroundColor: 'white'}}>
@@ -563,41 +617,17 @@ export default class GalleryPage extends Component {
             bounces={false}
             style={{
               backgroundColor: 'white',
-              height: windowHeight - 20 - h(88)
+              height:  windowHeight - 20 - h(88)
             }}
           >
             <AddTagModal />
             <ImagePreview
               navigators={this.context.navigators}
               gallery={CreatePostStore.gallery} />
-            <TagInfo gallery={CreatePostStore.gallery} />
 
             <ActionMenu gallery={CreatePostStore.gallery} />
-            {line}
-            <PictureView
-              onPlus={() => {
-                CreatePostStore.reset(false);
-                CreatePostStore.gallery.unselectTag();
-                StatusBar.setHidden(true)
-                _.last(this.context.navigators).jumpTo(createPost)
-              }}
-              gallery={CreatePostStore.gallery}
-            />
-            {line}
-            <TextInput
-              onFocus={(element) => this.scrollToElement(element.target)}
-              onEndEditing={() => this.refs.scrollView.scrollTo({y: 0})}
-              style={{
-                height: 40,
-                backgroundColor: 'white',
-                paddingLeft: h(30),
-                fontSize: h(28),
-                color: '#3E3E3E'
-              }}
-              placeholder='Post description'
-              value={CreatePostStore.gallery.description}
-              onChangeText={(text) => CreatePostStore.gallery.description = text}
-            />
+            {bottomContent}
+
           </ScrollView>
           <LoadingScreen style={{opacity: 0.6}} store={CreatePostStore} />
         </View>

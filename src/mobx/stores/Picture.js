@@ -112,7 +112,7 @@ export default class Picture {
 
   async uploadPicture() {
     // TODO just for testing whether this is the course
-    let uri = this.source.uri; // await this.resizeImage(this.source.uri);
+    let uri = await this.resizeImage(this.source.uri);
 
     let formdata = new FormData();
     formdata.append('file', {
@@ -194,16 +194,16 @@ export default class Picture {
 
       if (tag.type == 'service') {
         if (tag.serviceName) {
-          let tagName = tag.serviceName.replace(/\W/g, '').toLowerCase();
+          let tagName = tag.serviceName.replace(/\W/g, '_').toLowerCase();
           this.tags.push(new HashTag(-100, -100, '#' + tagName));
         }
         if (tag.brandName) {
-          let tagName = tag.brandName.replace(/\W/g, '').toLowerCase();
+          let tagName = tag.brandName.replace(/\W/g, '_').toLowerCase();
           this.tags.push(new HashTag(-100, -100,  '#' + tagName));
         }
 
         if (tag.lineName) {
-          let tagName = tag.lineName.replace(/\W/g, '').toLowerCase();
+          let tagName = tag.lineName.replace(/\W/g, '_').toLowerCase();
           this.tags.push(new HashTag(-100, -100,  '#' + tagName));
         }
 

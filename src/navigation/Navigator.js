@@ -118,12 +118,17 @@ export default class CustomNavigator extends PureComponent {
 
   render() {
     return (<Navigator
-      configureScene={(route) => route.configureScene()}
-      renderScene={(route, navigator) => route.renderScene({
+      configureScene={(route, routeStack) => {
+        console.log('route', route, routeStack);
+        return route.configureScene();
+      }}
+      renderScene={(route, navigator) => {
+        return route.renderScene({
         currentRoutes: (this.context.currentRoutes || []).concat([route]),
         navigators: (this.context.navigators || []).concat([navigator]),
         navigationChannels: (this.context.navigationChannels || []).concat([route.navigationChannel])
-      })}
+        })}
+      }
 
       {...this.props}
 

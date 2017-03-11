@@ -1,5 +1,6 @@
 import React from 'react';
 import _ from 'lodash';
+import { LoginManager, AccessToken } from 'react-native-fbsdk';
 import {mixin} from 'core-decorators';
 import PureComponent from '../components/PureComponent';
 import {View, Text} from 'react-native';
@@ -68,13 +69,9 @@ export default class Login extends PureComponent {
               label="Sign In with Facebook"
               onPress={() =>
                 this.props.dispatch(registrationActions.getEnvironment()).then(throwOnFail)
-                  .then(() => this.oauth(loginStack, {
-                    authorize: 'https://www.facebook.com/dialog/oauth',
-                    clientId: this.props.environment.get('facebook_app_id'),
-                    redirectUri: this.props.environment.get('facebook_redirect_url'),
-                    scope: 'email',
-                    type: 'Facebook'
-                  }))
+                  .then(() => LoginManager.logInWithReadPermissions(['email']))
+                  .then(() => AccessToken.getCurrentAccessToken())
+                  .then(data => data.accessToken.toString())
                   .then(token => this.props.dispatch(registrationActions.loginWithFacebook(token)).then(throwOnFail))
                   .then(
                     () => {

@@ -1,5 +1,5 @@
 import React from 'react';
-import {Animated} from 'react-native';
+import {Animated, Image} from 'react-native';
 import PureComponent from './PureComponent';
 import fontelloConfig from '../../fontello.json';
 import {createIconSetFromFontello} from 'react-native-vector-icons';
@@ -11,7 +11,17 @@ export default class WrappedIcon extends PureComponent {
     this.refs.icon.setNativeProps(props);
   }
   render() {
-    return <Icon {...this.props} ref="icon" />;
+
+    if (this.props.name == 'white_x') {
+      return (
+        <Image
+          style={{height: 13, width: 13}}
+          source={require('img/white_x.png')}
+        />
+      );
+    } else {
+      return <Icon {...this.props} ref="icon" />;
+    }
   }
 }
 

@@ -193,19 +193,6 @@ export default class Picture {
     for (let tag of this.tags) {
 
       if (tag.type == 'service') {
-        if (tag.serviceName) {
-          let tagName = tag.serviceName.replace(/\W/g, '_').toLowerCase();
-          this.tags.push(new HashTag(-100, -100, '#' + tagName));
-        }
-        if (tag.brandName) {
-          let tagName = tag.brandName.replace(/\W/g, '_').toLowerCase();
-          this.tags.push(new HashTag(-100, -100,  '#' + tagName));
-        }
-
-        if (tag.lineName) {
-          let tagName = tag.lineName.replace(/\W/g, '_').toLowerCase();
-          this.tags.push(new HashTag(-100, -100,  '#' + tagName));
-        }
 
         for (let color of tag.colors) {
 
@@ -221,6 +208,23 @@ export default class Picture {
 
           this.tags.push(new HashTag(-100, -100,  '#' + tagName));
         }
+
+
+        if (tag.lineName) {
+          let tagName = tag.lineName.replace(/\W/g, '_').toLowerCase();
+          this.tags.push(new HashTag(-100, -100,  '#' + tagName));
+        }
+
+        if (tag.brandName) {
+          let tagName = tag.brandName.replace(/\W/g, '_').toLowerCase();
+          this.tags.push(new HashTag(-100, -100,  '#' + tagName));
+        }
+
+        if (tag.serviceName) {
+          let tagName = tag.serviceName.replace(/\W/g, '_').toLowerCase();
+          this.tags.push(new HashTag(-100, -100, '#' + tagName));
+        }
+
       }
     }
 

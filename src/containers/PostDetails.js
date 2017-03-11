@@ -37,7 +37,8 @@ export default class PostDetails extends PureComponent {
   };
 
   render() {
-    return (<NavigationSetting
+    return (
+      <NavigationSetting
       style={{
         flex: 1,
       }}
@@ -51,6 +52,7 @@ export default class PostDetails extends PureComponent {
       }}>
         <PostDetailsContent />
       </View>
-    </NavigationSetting>);
+    </NavigationSetting>
+    );
   }
 };

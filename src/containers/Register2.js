@@ -3,6 +3,7 @@ import _ from 'lodash';
 import {mixin} from 'core-decorators';
 import PureComponent from '../components/PureComponent';
 import {View} from 'react-native';
+import { LoginManager, AccessToken } from 'react-native-fbsdk';
 import connect from '../lib/connect';
 import {app} from '../selectors/app';
 import {registration} from '../selectors/registration';
@@ -103,13 +104,9 @@ export default class Register2 extends PureComponent {
 
             if (this.props.registrationMethod === 'facebook')
               login = this.props.dispatch(registrationActions.getEnvironment()).then(throwOnFail)
-                .then(() => this.oauth(loginStack, {
-                  authorize: 'https://www.facebook.com/dialog/oauth',
-                  clientId: this.props.environment.get('facebook_app_id'),
-                  redirectUri: this.props.environment.get('facebook_redirect_url'),
-                  scope: 'email',
-                  type: 'Facebook'
-                }))
+                .then(() => LoginManager.logInWithReadPermissions(['email']))
+                .then(() => AccessToken.getCurrentAccessToken())
+                .then(data => data.accessToken.toString())
                 .then(token =>
                   this.props.dispatch(registrationActions.signupWithFacebook(token, type))
                     .then(throwOnFail)

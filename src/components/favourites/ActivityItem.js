@@ -22,6 +22,15 @@ getUserId
 } from 'hairfolio/src/helpers.js';
 
 
+
+import {profile, profileExternal, appStack} from 'hairfolio/src/routes';
+
+import PostDetailStore from 'stores/PostDetailStore.js'
+import TagPostStore from 'stores/TagPostStore.js'
+import CommentsStore from 'stores/CommentsStore.js'
+
+
+
 const ActivityItem = observer(({store, isMe}) => {
 
   let postContent;
@@ -43,10 +52,20 @@ const ActivityItem = observer(({store, isMe}) => {
     } else {
       infoContent = (
         <Text>started following
-          <Text style={{fontFamily: FONTS.MEDIUM, color: '#3E3E3E'}}>
-            {' ' + store.user2.name}
-          </Text>
-
+          <TouchableWithoutFeedback
+            onPress={
+              () =>{
+                appStack.scene().goToProfile(store.user2.id);
+                window.navigators[0].jumpTo(appStack);
+                PostDetailStore.clear();
+                TagPostStore.clear();
+                CommentsStore.clear();
+              }}
+            >
+              <Text style={{fontFamily: FONTS.MEDIUM, color: '#3E3E3E'}}>
+                {' ' + store.user2.name}
+              </Text>
+            </TouchableWithoutFeedback>
         </Text>
       );
     }
@@ -56,9 +75,20 @@ const ActivityItem = observer(({store, isMe}) => {
     } else {
       infoContent = (
         <Text>starred a post of
-          <Text style={{fontFamily: FONTS.MEDIUM, color: '#3E3E3E'}}>
-            {' ' + store.user2.name}
-          </Text>
+          <TouchableWithoutFeedback
+            onPress={
+              () =>{
+                appStack.scene().goToProfile(store.user2.id);
+                window.navigators[0].jumpTo(appStack);
+                PostDetailStore.clear();
+                TagPostStore.clear();
+                CommentsStore.clear();
+              }}
+            >
+              <Text style={{fontFamily: FONTS.MEDIUM, color: '#3E3E3E'}}>
+                {' ' + store.user2.name}
+              </Text>
+            </TouchableWithoutFeedback>
         </Text>
       );
     }
@@ -100,9 +130,21 @@ const ActivityItem = observer(({store, isMe}) => {
           fontFamily:FONTS.ROMAN
         }}
       >
-        <Text style={{fontFamily: FONTS.MEDIUM, color: '#3E3E3E'}}>
-          {store.user.id == getUserId() ? 'You ' : store.user.name + ' '}
-        </Text>
+        <TouchableWithoutFeedback
+          onPress={
+            () =>{
+              appStack.scene().goToProfile(store.user.id);
+              window.navigators[0].jumpTo(appStack);
+              PostDetailStore.clear();
+              TagPostStore.clear();
+              CommentsStore.clear();
+            }}
+          >
+            <Text         style={{fontFamily: FONTS.MEDIUM, color: '#3E3E3E'}}
+            >
+              {store.user.id == getUserId() ? 'You ' : store.user.name + ' '}
+            </Text>
+          </TouchableWithoutFeedback>
           {infoContent}
       </Text>
 

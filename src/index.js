@@ -128,6 +128,8 @@ export default class Root extends PureComponent {
               <Navigator
                 ref='nav'
                 backgroundStyle={{flex: 1}}
+
+
                 initialRoute={this.initialRoute}
                 initialRouteStack={[
                   postDetails,

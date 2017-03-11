@@ -363,7 +363,7 @@ export default class EditCustomer extends PureComponent {
         _.first(this.context.navigators).jumpTo(appStack);
       }}
       leftDisabled={isLoading}
-      leftIcon="back"
+      leftIcon="white_x"
       onWillFocus={this.onWillFocus}
       rightAction={() => {
         if (this.checkErrors())

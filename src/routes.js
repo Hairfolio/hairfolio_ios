@@ -394,9 +394,7 @@ class WriteMessageRoute extends Route {
 
 class PostDetailsRoute extends Route {
   SceneComponent = PostDetails;
-  SceneConfig = {
-    ...CustomScenesConfig.FadeInOut
-  };
+  SceneConfig = Navigator.SceneConfigs.FloatFromBottom;
 }
 
 class TagPostsRoute extends Route {

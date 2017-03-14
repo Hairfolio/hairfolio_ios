@@ -77,6 +77,21 @@ export default class BlackBook extends PureComponent {
         <BlackHeader
           onLeft={() => BlackBookStore.myBack()}
           title='My Black Book'
+
+          onRenderLeft = {() => (
+            <View
+              style = {{
+                height: h(60),
+                flexDirection: 'row',
+                alignItems: 'center'
+              }}
+            >
+              <Image
+                style={{height: h(18), width: h(30)}}
+                source={require('img/white_x.png')}
+              />
+            </View>
+          )}
           onRenderRight={() =>
             <TouchableOpacity
               onPress={
@@ -93,7 +108,8 @@ export default class BlackBook extends PureComponent {
                 style = {{
                   width: h(28),
                   height: h(28),
-                  alignSelf: 'flex-end'
+                  alignSelf: 'flex-end',
+                  marginRight: 10
                 }}
                 source={require('img/message_plus.png')}
               />

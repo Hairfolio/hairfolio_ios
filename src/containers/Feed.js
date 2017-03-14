@@ -29,6 +29,7 @@ import {
   FONTS,
   COLORS,
   autobind,
+  ListView,
   React, // react
   Component,
   windowWidth,
@@ -166,9 +167,26 @@ export default class Feed extends PureComponent {
       );
     } else {
       content = (
-        <ScrollView>
-          {store.elements.map((p, i) => <Post key={p.key} post={p} />)}
-        </ScrollView>
+        <ListView
+          dataSource={store.dataSource}
+          renderRow={(p, i) => <Post key={p.key} post={p} />}
+          renderFooter={
+            () => {
+              if (store.nextPage != null) {
+                return (
+                  <View style={{flex: 1, paddingVertical: 20, alignItems: 'center', justifyContent: 'center'}}>
+                    <ActivityIndicator size='large' />
+                  </View>
+                )
+              } else {
+                return <View />;
+              }
+            }
+          }
+          onEndReached={() => {
+            store.loadNextPage();
+          }}
+        />
       );
     }
 

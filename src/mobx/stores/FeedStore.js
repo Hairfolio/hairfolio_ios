@@ -1,5 +1,5 @@
 import {observable, computed, action} from 'mobx';
-import {CameraRoll, NativeModules} from 'react-native';
+import {CameraRoll, ListView, NativeModules} from 'react-native';
 import Camera from 'react-native-camera';
 
 import FilterStore from 'stores/FilterStore.js'
@@ -23,6 +23,13 @@ class FeedStore {
   constructor() {
     this.elements = [];
     this.hasLoaded = false;
+    this.isLoadingNextPage = false;
+  }
+
+  @computed get dataSource() {
+    const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
+
+    return ds.cloneWithRows(this.elements.slice());
   }
 
   reset() {
@@ -30,23 +37,36 @@ class FeedStore {
     this.elements = [];
   }
 
-  async load() {
-    this.isLoading = true;
+  async loadNextPage() {
+    if (!this.isLoadingNextPage) {
+      this.isLoadingNextPage = true;
+      let res = (await ServiceBackend.get(`posts?page=${this.nextPage}`));
 
-    let res = (await ServiceBackend.get('posts')).posts;
+      let {posts, meta} = res;
 
-    this.elements = [];
+      for (let a = 0; a < posts.length; a++)  {
+        let post = new Post();
+        await post.init(posts[a]);
+        this.elements.push(post);
+      }
 
+      this.nextPage = meta.next_page
 
-    for (let a = 0; a < res.length; a++)  {
-      let post = new Post();
-      await post.init(res[a]);
-      this.elements.push(post);
+      this.isLoadingNextPage = false;
     }
 
 
-    this.isLoading = false;
+  }
 
+  async load() {
+    this.isLoading = true;
+
+    this.elements = [];
+    this.nextPage = 1;
+
+    await this.loadNextPage();
+
+    this.isLoading = false;
   }
 
 }

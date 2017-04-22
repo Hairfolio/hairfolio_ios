@@ -7,12 +7,15 @@ import {_, moment, React, Text} from 'hairfolio/src/helpers';
 import PostListStore from 'stores/PostListStore'
 
 
+import {PostGridStore} from 'stores/PostStore'
+
 import * as routes from 'hairfolio/src/routes';
 
-class TagPostModel extends PostListStore  {
+class TagPostModel extends PostGridStore {
   @observable title = '#myTag'
 
-  async backendCall(name) {
+  async getPosts(page) {
+    let name = this.initData;
 
     let res = await ServiceBackend.get(`tags/exact?q=${name}`);
 
@@ -25,7 +28,7 @@ class TagPostModel extends PostListStore  {
       tagId = res.tag.id;
     }
 
-    return await ServiceBackend.get(`tags/${tagId}/posts`);
+    return ServiceBackend.get(`tags/${tagId}/posts?page=${page}`);
   }
 }
 

@@ -11,6 +11,8 @@ import {COLORS, FONTS, SCALE} from '../style';
 import UserProfileNavigationBar from '../components/UserProfile/Bar';
 import Service from 'hairfolio/src/services/index.js'
 
+import WrappingScrollView from 'components/WrappingScrollView.js'
+
 import ProfileStack from '../stacks/Profile';
 
 import utils from '../utils';
@@ -148,7 +150,7 @@ export default class Profile extends PureComponent {
           flex: 1,
           position: 'relative'
         }}>
-          <ScrollView
+          <WrappingScrollView
             onScroll={(e) => {
 
               this.y = e.nativeEvent.contentOffset.y;
@@ -394,7 +396,7 @@ export default class Profile extends PureComponent {
               profile={this.props.profile}
               scrollToFakeTop={() => this.scrollToFakeTop()}
             />
-          </ScrollView>
+          </WrappingScrollView>
 
           {this.props.profile === this.props.user ? <View ref="settings" style={{
             position: 'absolute',

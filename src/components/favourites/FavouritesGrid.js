@@ -18,11 +18,25 @@ import {
   Modal,
   ActivityIndicator,
   ScrollView,
+  ListView,
   PickerIOS, Picker, StatusBar, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet
 } from 'hairfolio/src/helpers.js';
 
 import FavoriteStore from 'stores/FavoriteStore';
 import GridPost from 'components/favourites/GridPost'
+
+const MyFooter = observer(({store}) => {
+
+  if (store.nextPage != null) {
+    return (
+      <View style={{flex: 1, paddingVertical: 20, alignItems: 'center', justifyContent: 'center'}}>
+        <ActivityIndicator size='large' />
+      </View>
+    )
+  } else {
+    return <View />;
+  }
+});
 
 const FavouritesGrid = observer(() => {
 
@@ -54,16 +68,45 @@ const FavouritesGrid = observer(() => {
   }
 
   return (
-    <ScrollView>
-      <View
+    <View
+      style={{
+        flex: 1
+      }}
+    >
+      <ListView
         style = {{
-          flexDirection: 'row',
-          flexWrap: 'wrap'
+          height: windowHeight - 83 - 50 - 53
         }}
-      >
-    {store.elements.map(p => <GridPost key={p.key} post={p} />)}
+        dataSource={store.dataSource}
+        renderRow={(el, i) => {
+          return (
+            <View
+              style={{
+                flexDirection: 'row',
+                flexWrap: 'wrap'
+              }}
+            >
+              <GridPost key={el[0].key} post={el[0]} />
+              {
+                el[1] != null ?  <GridPost key={el[1].key} post={el[1]} /> :
+                <View
+                  style = {{
+                    width: windowWidth / 2,
+                    height: windowWidth / 2,
+                    backgroundColor: 'white'
+                  }}
+                />
+              }
+            </View>
+          )
+        }}
+        renderFooter={
+          () => <MyFooter store={store} />
+        }
+        onEndReached={() => {
+          store.loadNextPage();
+        }} />
     </View>
-    </ScrollView>
   );
 });
 

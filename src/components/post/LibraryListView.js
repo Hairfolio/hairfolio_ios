@@ -1,12 +1,30 @@
 import React, { Component } from 'react'
-import { Dimensions, ScrollView, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet } from 'react-native'
+import {Dimensions, ListView, ScrollView, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet } from 'react-native'
+
 
 import {COLORS, FONTS, h, SCALE} from 'hairfolio/src/style';
+
+
+import {
+  windowWidth,
+  windowHeight,
+} from 'hairfolio/src/helpers.js';
 
 
 import {observer} from 'mobx-react/native'
 import autobind from 'autobind-decorator'
 import CreatePostStore from 'stores/CreatePostStore.js'
+
+const EmptyPicture = observer(() => {
+  return (
+    <View
+      style={{
+        width: windowWidth / 4,
+        height: windowWidth / 4
+      }}
+    />
+  );
+});
 
 const SelectedBorder = observer(({width, picture}) => {
   if (picture.selectedNumber == null) {
@@ -98,6 +116,7 @@ const LibraryPicture = observer(({picture}) => {
 });
 
 const LibraryListView = observer(({store}) => {
+  /*
   return (
     <ScrollView
       bounces={false}
@@ -106,6 +125,31 @@ const LibraryListView = observer(({store}) => {
         {store.libraryPictures.map((el) => <LibraryPicture picture={el} key={el.key} />)}
       </View>
     </ScrollView>
+  );
+  */
+
+  return (
+    <ListView
+      bounces={false}
+      style={{
+        height: Dimensions.get('window').height - 2 * (h(88) + Dimensions.get('window').width),
+        width: Dimensions.get('window').width,
+        backgroundColor: '#F0F0F0'
+      }}
+      dataSource={store.libraryDataSource}
+      renderRow={(el, i) =>
+        <View
+          style={{
+            flexDirection: 'row',
+          }}
+        >
+          <LibraryPicture key={el[0].key} picture={el[0]} />
+          {el[1] == null ? <EmptyPicture  /> : <LibraryPicture key={el[1].key} picture={el[1]} /> }
+          {el[2] == null ? <EmptyPicture  /> : <LibraryPicture key={el[2].key} picture={el[2]} /> }
+          {el[3] == null ? <EmptyPicture  /> : <LibraryPicture key={el[3].key} picture={el[3]} /> }
+        </View>
+      }
+    />
   );
 });
 

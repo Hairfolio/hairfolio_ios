@@ -35,9 +35,36 @@ RCT_EXPORT_METHOD(share:(NSString *)path type:(NSString *)type){
   if ([type isEqualToString:@"library"]) {
     
     
-    
-    
-    if ([path hasPrefix:@"asset"]) {
+    if ([path hasPrefix:@"file"]) {
+      NSURL *url = [NSURL URLWithString:path];
+      NSData *imageData = [NSData dataWithContentsOfURL:url];
+      NSString *writePath = [NSTemporaryDirectory() stringByAppendingPathComponent:@"instagram.igo"];
+      
+      
+      if (![imageData writeToFile:writePath atomically:YES]) {
+        // failure
+        NSLog(@"image save failed to path %@", writePath);
+        return;
+      }
+      
+      
+      // send it to instagram.
+      NSURL *fileURL = [NSURL fileURLWithPath:writePath];
+      
+      
+      UIViewController *ctrl = [[[[UIApplication sharedApplication] delegate] window] rootViewController];
+      
+      
+      
+      self.documentController = [UIDocumentInteractionController interactionControllerWithURL:fileURL];
+      
+      // documentController.delegate = self;
+      [self.documentController setUTI:@"com.instagram.exclusivegram"];
+      [self.documentController setAnnotation:@{@"InstagramCaption" : @"We are making fun"}];
+      [self.documentController presentOpenInMenuFromRect:ctrl.view.bounds inView:ctrl.view animated:YES];
+      
+      return;
+    } else if ([path hasPrefix:@"asset"]) {
       // we need to get id from whole URL
       localId = [path substringWithRange:NSMakeRange(36, 36)];
     } else {

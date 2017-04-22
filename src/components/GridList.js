@@ -21,7 +21,23 @@ import {
   PickerIOS, Picker, StatusBar, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet
 } from 'hairfolio/src/helpers.js';
 
+import {ListView} from 'react-native'
+
 import GridPost from 'components/favourites/GridPost'
+
+const MyFooter = observer(({store}) => {
+
+  if (store.nextPage != null) {
+    return (
+      <View style={{flex: 1, paddingVertical: 20, alignItems: 'center', justifyContent: 'center'}}>
+        <ActivityIndicator size='large' />
+      </View>
+    )
+  } else {
+    return <View />;
+  }
+});
+
 
 const GridList = observer(({store, noElementsText, onBack}) => {
 
@@ -50,18 +66,62 @@ const GridList = observer(({store, noElementsText, onBack}) => {
     );
   }
 
-  return (
-    <ScrollView>
+  if (store.supportPaging) {
+    return (
       <View
-        style = {{
-          flexDirection: 'row',
-          flexWrap: 'wrap'
+        style={{
+          flex: 1
         }}
       >
-    {store.elements.map(p => <GridPost onBack={onBack} key={p.key} post={p} />)}
-    </View>
-    </ScrollView>
-  );
+        <ListView
+          style = {{
+            height: windowHeight - 83 - 50 - 53
+          }}
+          dataSource={store.dataSource}
+          renderRow={(el, i) => {
+            return (
+              <View
+                style={{
+                  flexDirection: 'row',
+                  flexWrap: 'wrap'
+                }}
+              >
+                <GridPost key={el[0].key} post={el[0]} />
+                {
+                  el[1] != null ?  <GridPost key={el[1].key} post={el[1]} /> :
+                    <View
+                      style = {{
+                        width: windowWidth / 2,
+                        height: windowWidth / 2,
+                        backgroundColor: 'white'
+                      }}
+                    />
+                }
+              </View>
+            )
+          }}
+          renderFooter={
+            () => <MyFooter store={store} />
+          }
+          onEndReached={() => {
+            store.loadNextPage();
+          }} />
+      </View>
+    );
+  } else {
+    return (
+      <ScrollView>
+        <View
+          style = {{
+            flexDirection: 'row',
+            flexWrap: 'wrap'
+          }}
+        >
+          {store.elements.map(p => <GridPost onBack={onBack} key={p.key} post={p} />)}
+        </View>
+      </ScrollView>
+    );
+  }
 });
 
 export default GridList ;

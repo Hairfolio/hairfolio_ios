@@ -6,11 +6,18 @@ import {_, moment, React, Text} from 'hairfolio/src/helpers';
 
 import PostListStore from 'stores/PostListStore'
 
-class UserPostStore extends PostListStore  {
-  async backendCall(userId) {
-    return await ServiceBackend.get(`users/${userId}/posts`);
+const cache = {};
+
+import {PostGridStore} from 'stores/PostStore'
+
+class UserPostStore extends PostGridStore {
+  async getPosts(page) {
+    let userId = this.initData;
+
+    return await ServiceBackend.get(`users/${userId}/posts?page=${this.nextPage}`);
   }
 }
+
 
 const store = new UserPostStore();
 

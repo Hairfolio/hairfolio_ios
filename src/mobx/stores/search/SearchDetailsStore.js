@@ -19,13 +19,11 @@ class SearchUserFollowStore {
     this.wasLoaded = false;
   }
 
-
-
   async search(param) {
 
     this.isLoading = true;
 
-    let users = (await this.backendSearch(param)).users;
+    let users = (await this.backendSearch(encodeURIComponent(param))).users;
 
     let userList = users.map(e => {
       let user = new FollowUser();

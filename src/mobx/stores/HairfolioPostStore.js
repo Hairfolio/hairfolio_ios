@@ -4,13 +4,14 @@ import ServiceBackend from 'backend/ServiceBackend.js'
 
 import {_, moment, React, Text} from 'hairfolio/src/helpers';
 
-import PostListStore from 'stores/PostListStore'
+import {PostGridStore} from 'stores/PostStore'
 
-class HairfolioPostStore extends PostListStore  {
+class HairfolioPostStore extends PostGridStore {
   @observable title = 'Inspiration'
 
-  async backendCall(hairfolio) {
-    return await ServiceBackend.get(`folios/${hairfolio.id}/posts`);
+  async getPosts(page) {
+    let hairfolio = this.initData;
+    return await ServiceBackend.get(`folios/${hairfolio.id}/posts?page=${page}`);
   }
 }
 

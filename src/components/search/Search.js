@@ -15,6 +15,7 @@ import {
   windowHeight,
   // react-native components
   AlertIOS,
+  ListView,
   ActivityIndicator,
   Modal,
   ScrollView,
@@ -29,10 +30,44 @@ import SearchStore from 'stores/SearchStore';
 
 import GridView from 'components/GridView.js';
 
+import GridPost from 'components/favourites/GridPost'
+
 import SearchModeSearch from 'components/search/SearchModeSearch.js'
 
+const MyFooter = observer(({store}) => {
+
+  if (store.nextPage != null || store.isLoading) {
+    return (
+      <View style={{flex: 1, paddingVertical: 20, alignItems: 'center', justifyContent: 'center'}}>
+        <ActivityIndicator size='large' />
+      </View>
+    )
+  } else {
+    return <View />;
+  }
+});
 
 import * as routes from 'hairfolio/src/routes.js'
+
+const TagFooter = observer(({store}) => {
+
+  if (store.nextPage != null) {
+    return (
+      <View style={{flex: 1,
+        height: h(220),
+        width: h(220),
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: 'white'
+      }}>
+        <ActivityIndicator size='large' />
+      </View>
+    )
+  } else {
+    return <View />;
+  }
+});
+
 
 const SearchBar = observer(({store}) => {
   return (
@@ -137,14 +172,31 @@ const TopTags = observer(({store}) => {
   }
 
   return (
-    <ScrollView
+    <View
+      style={{
+        height: h(220)
+      }}
+    >
+
+    <ListView
       style = {{
-        height: h(220),
+        height: h(220)
       }}
       horizontal
-      bounces={false}
-    >
-      {store.elements.map(e => <TagItem key={e.key} store={e} />)}
+      enableEmptySections
+      dataSource={store.dataSource}
+      renderRow={(el, i) => {
+        return (
+          <TagItem key={el.key} store={el} />
+        )
+      }}
+      renderFooter={
+        () => <TagFooter store={store} />
+      }
+      onEndReached={() => {
+        store.loadNextPage();
+      }} />
+
       <Text
         style = {{
           position: 'absolute',
@@ -156,14 +208,14 @@ const TopTags = observer(({store}) => {
           backgroundColor: 'transparent'
         }}
       >TOP TAGS </Text>
-    </ScrollView>
+    </View>
   );
 
 
 
 });
 
-const PopularPosts = observer(({store}) => {
+const PopularPostHeader = observer(({store}) => {
   return (
     <View>
       <View
@@ -186,7 +238,7 @@ const PopularPosts = observer(({store}) => {
         </Text>
 
       </View>
-      <GridView store={store} emptyText='POPULAR TODAY' />
+      {/*<GridView store={store} emptyText='POPULAR TODAY' />*/}
     </View>
 
   );
@@ -194,14 +246,59 @@ const PopularPosts = observer(({store}) => {
 
 const Search = observer(() => {
 
+  if (!SearchStore.loaded) {
+    return <View />;
+  }
+
   return (
-    <View style={{paddingTop: 20}}>
-      <ScrollView style={{height: windowHeight - 20 - BOTTOMBAR_HEIGHT}}>
-        <SearchBar store={SearchStore} />
-        <TopTags store={SearchStore.topTags} />
-        <PopularPosts store={SearchStore.popularPosts} />
-      </ScrollView>
-    </View>
+    <ListView
+      style={{
+        paddingTop: 20,
+        height: windowHeight - 20 - BOTTOMBAR_HEIGHT
+      }}
+      bounces={false}
+      enableEmptySections
+      dataSource={SearchStore.dataSource}
+      renderRow={(el, i) => {
+        if (el.type == 'searchBar') {
+          return <SearchBar store={SearchStore} />;
+        } else if (el.type == 'topTags') {
+          return <TopTags store={SearchStore.topTags} />;
+        } else if (el.type == 'popularPostHeader') {
+          return <PopularPostHeader />;
+        } else {
+          return (
+            <View
+              style={{
+                flexDirection: 'row',
+                flexWrap: 'wrap'
+              }}
+            >
+              <GridPost key={el[0].key} post={el[0]} />
+              {
+                el[1] != null ?  <GridPost key={el[1].key} post={el[1]} /> :
+                  <View
+                    style = {{
+                      width: windowWidth / 2,
+                      height: windowWidth / 2,
+                      backgroundColor: 'white'
+                    }}
+                  />
+              }
+            </View>
+          );
+        }
+      }}
+
+      renderFooter={
+        () => <MyFooter store={SearchStore.popularPosts} />
+      }
+
+      onEndReached={() => {
+        SearchStore.popularPosts.loadNextPage();
+      }}
+
+      />
   );
 
 });

@@ -1,5 +1,5 @@
 import {observable, computed, action} from 'mobx';
-import {CameraRoll, NativeModules} from 'react-native';
+import {CameraRoll, ListView, NativeModules} from 'react-native';
 import Camera from 'react-native-camera';
 
 import FilterStore from 'stores/FilterStore.js'
@@ -15,6 +15,8 @@ import {v4} from 'uuid';
 import {_, moment, React, Text, StatusBar} from 'hairfolio/src/helpers';
 
 import Post from 'stores/Post.js'
+
+import PostStore, {PostGridStore} from 'stores/PostStore.js'
 
 class TagItem {
 
@@ -36,63 +38,64 @@ class TagItem {
   }
 }
 
-class TopTags {
-  @observable isLoading = false;
-  @observable elements = [];
+class TopTags extends PostStore {
+  async loadNextPage() {
+    if (!this.isLoadingNextPage && this.nextPage != null) {
+      console.log('loadNextPage', this.nextPage);
+      this.isLoadingNextPage = true;
 
-  async load() {
-    this.isLoading = true;
+      let myId = Service.fetch.store.getState().user.data.get('id')
 
-    let myId = Service.fetch.store.getState().user.data.get('id')
+      let res = (await ServiceBackend.get(`tags?popular=true&page=${this.nextPage}`));
 
-    let res = (await ServiceBackend.get('tags?popular=true')).tags;
-    this.elements = [];
+      let {tags, meta} = res;
 
-    let arr = [];
+      let arr = [];
 
-    for (let a = 0; a < res.length; a++)  {
-      let tagItem = new TagItem();
-      await tagItem.init(res[a]);
-      arr.push(tagItem);
+      for (let a = 0; a < tags.length; a++)  {
+        let tagItem = new TagItem();
+        await tagItem.init(tags[a]);
+        this.elements.push(tagItem);
+      }
+
+      this.nextPage = meta.next_page
+
+      this.isLoadingNextPage = false;
     }
-
-    this.elements = arr;
-
-    this.isLoading = false;
   }
 }
 
-class PopularPosts {
-  @observable isLoading;
-  @observable elements = [];
-
-  async load() {
-    this.isLoading = true;
-
-    let myId = Service.fetch.store.getState().user.data.get('id')
-
-    let res = (await ServiceBackend.get('posts?popular=true')).posts;
-    this.elements = [];
-
-    for (let a = 0; a < res.length; a++)  {
-      let post = new Post();
-      await post.init(res[a]);
-      this.elements.push(post);
-    }
-    this.isLoading = false;
+class PopularPosts extends PostGridStore {
+  async getPosts(page) {
+    return (await ServiceBackend.get(`posts?popular=true&page=${page}`));
   }
 }
 
 class SearchStore {
-  @observable popularPosts = new PopularPosts();
-  @observable topTags = new TopTags();
+  @observable popularPosts;
+  @observable topTags;
   @observable isLoading = false;
+  @observable loaded;
 
   constructor() {
     this.elements = [];
     this.loaded = false;
+    this.topTags = new TopTags();
+    this.popularPosts = new PopularPosts();
   }
 
+  @computed get dataSource() {
+    const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
+
+    return ds.cloneWithRows(
+      [
+        {type: 'searchBar'},
+        {type: 'topTags'},
+        {type: 'popularPostHeader'},
+        ...this.popularPosts.list
+      ]
+    );
+  }
 
   refresh() {
     this.loaded = false;

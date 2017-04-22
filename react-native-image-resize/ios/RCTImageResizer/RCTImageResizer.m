@@ -116,7 +116,16 @@ RCT_EXPORT_METHOD(createResizedImage:(NSString *)path
     [[PHImageManager defaultManager] requestImageForAsset:legacyAsset targetSize:PHImageManagerMaximumSize contentMode:PHImageContentModeDefault options:requestOptions resultHandler:^(UIImage * _Nullable image, NSDictionary * _Nullable info) {
       
       if (image == nil) {
-        callback(@[@"Could not load the library Image", @""]);
+        NSMutableString *str = [[NSMutableString alloc] initWithString:@"Could not load the library Image: " ];
+        
+        [str appendString:path];
+        [str appendString:@" [id: "];
+        [str appendString:newPath];
+        [str appendString:@" ] "];
+        
+        NSString *res = [NSString stringWithString:str];
+
+        callback(@[res, @""]);
         return;
       }
       

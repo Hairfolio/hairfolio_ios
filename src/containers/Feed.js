@@ -3,8 +3,6 @@ import connect from '../lib/connect';
 import {app} from '../selectors/app';
 import {user} from '../selectors/user';
 import NavigationSetting from '../navigation/NavigationSetting';
-import FavoriteStore from 'stores/FavoriteStore.js';
-
 import {BOTTOMBAR_HEIGHT, STATUSBAR_HEIGHT} from '../constants';
 
 import SimpleButton from '../components/Buttons/Simple';
@@ -199,7 +197,6 @@ export default class Feed extends PureComponent {
           FeedStore.hasLoaded = true;
           FeedStore.load();
         }
-        FavoriteStore.load();
       }}
       style={{
         flex: 1,

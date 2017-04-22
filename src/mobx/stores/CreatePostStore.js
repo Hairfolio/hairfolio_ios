@@ -1,5 +1,5 @@
 import {observable, computed, action} from 'mobx';
-import {CameraRoll, NativeModules} from 'react-native';
+import {CameraRoll, ListView, NativeModules} from 'react-native';
 import Camera from 'react-native-camera';
 
 import FilterStore from 'stores/FilterStore.js'
@@ -486,6 +486,7 @@ class CreatePostStore {
   }
 
   imageLoaded() {
+    /*
     this.loadedImages++;
 
     // TODO only load first 1200 pictures
@@ -497,15 +498,17 @@ class CreatePostStore {
         this.libraryPictures = this.libraryPictures.concat(newImages);
       }, 100);
     }
+    */
   }
 
   updateLibraryPictures() {
-    this.loadedImages = 0;
-    this.libraryPictures;
+    //this.loadedImages = 0;
+    this.libraryPictures = [];
     PhotoAlbum.getPhotosFromAlbums(this.groupName, (data) => {
       this.imageData = data.reverse();
       // load first 50 images and then continue ones they are loaded
-      this.libraryPictures = this.imageData.splice(0, 50).map((el) => new LibraryPicture(el, this));
+      // this.libraryPictures = this.imageData.splice(0, 50).map((el) => new LibraryPicture(el, this));
+      this.libraryPictures = this.imageData.map((el) => new LibraryPicture(el, this));
     });
 
     AlbumStore.load();
@@ -513,6 +516,32 @@ class CreatePostStore {
 
   @computed get libraryTitle() {
     return `Select Media (${this.selectedPictures.length})`;
+  }
+
+  @computed get libraryDataSource() {
+    const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
+
+    let arr = this.libraryPictures.slice();
+
+    let newArr = [];
+
+    let counter = 0;
+
+    while (counter < arr.length) {
+      let content = [];
+      for (let a = 0; a < 4; a++) {
+        if (counter + a < arr.length) {
+          content.push(arr[counter + a]);
+        } else {
+          content.push(null);
+        }
+      }
+
+      newArr.push(content);
+      counter += 4;
+    }
+
+    return ds.cloneWithRows(newArr);
   }
 
   @action changeGroupName(newName) {

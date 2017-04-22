@@ -5,6 +5,7 @@ import connect from '../lib/connect';
 import {app} from '../selectors/app';
 import {COLORS, FONTS, SCALE} from '../style';
 import NavigationSetting from '../navigation/NavigationSetting';
+import FavoriteStore from 'stores/FavoriteStore.js';
 
 import {BOTTOMBAR_HEIGHT, STATUSBAR_HEIGHT} from '../constants';
 
@@ -47,6 +48,7 @@ export default class Favourites extends PureComponent {
           () => {
             ActivityYouStore.load();
             ActivityFollowingStore.load();
+            FavoriteStore.load();
           }
         }
       >

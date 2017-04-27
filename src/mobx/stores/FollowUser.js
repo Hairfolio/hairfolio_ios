@@ -4,10 +4,10 @@ import Camera from 'react-native-camera';
 import Picture from 'stores/Picture.js'
 import ServiceBackend from 'backend/ServiceBackend.js'
 
-import {_, v4, moment, React, Text} from 'hairfolio/src/helpers';
+import {_, v4, moment, React, Text} from 'Hairfolio/src/helpers';
 
 import User from 'stores/User.js'
-import globalStore from 'hairfolio/src/store.js';
+import globalStore from 'Hairfolio/src/store.js';
 
 import FeedStore from 'stores/FeedStore.js'
 

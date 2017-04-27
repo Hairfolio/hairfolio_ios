@@ -1,6 +1,6 @@
 const BASE_URL = 'http://api.hairfolio.tech/';
 
-import Service from 'hairfolio/src/services/index.js'
+import Service from 'Hairfolio/src/services/index.js'
 import UserStore from 'stores/UserStore.js';
 
 let myfetch = function(input, opts) {

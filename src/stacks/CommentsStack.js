@@ -9,7 +9,7 @@ import NavigationBar from '../components/DarkNavigationBar/Bar';
 
 import PureComponent from '../components/PureComponent';
 
-import * as routes from 'hairfolio/src/routes';
+import * as routes from 'Hairfolio/src/routes';
 
 export default class CommentsStack extends PureComponent {
   static propTypes = {};

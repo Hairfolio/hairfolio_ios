@@ -14,7 +14,7 @@ import connect from '../lib/connect';
 import {app} from '../selectors/app';
 import {post} from '../selectors/post';
 import {postActions} from '../actions/post';
-import {COLORS, FONTS, h, SCALE} from 'hairfolio/src/style';
+import {COLORS, FONTS, h, SCALE} from 'Hairfolio/src/style';
 import NavigationSetting from '../navigation/NavigationSetting';
 import {observer} from 'mobx-react/native';
 import autobind from 'autobind-decorator'
@@ -23,7 +23,7 @@ import * as routes from '../routes'
 import PostDetailStore from 'stores/PostDetailStore.js'
 
 import ImagePicker from 'react-native-image-picker'
-import MyImage from 'hairfolio/src/components/MyImage.js'
+import MyImage from 'Hairfolio/src/components/MyImage.js'
 
 import FollowButton from 'components/FollowButton.js'
 
@@ -46,9 +46,9 @@ import MessageDetailsStore from 'stores/MessageDetailsStore.js'
 import {
   windowWidth,
   windowHeight,
-} from 'hairfolio/src/helpers.js';
+} from 'Hairfolio/src/helpers.js';
 
-import Swipeout from 'hairfolio/react-native-swipeout/index.js';
+import Swipeout from 'Hairfolio/react-native-swipeout/index.js';
 
 
 @observer

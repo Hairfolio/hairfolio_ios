@@ -7,7 +7,7 @@ let { DeviceEventEmitter } = React;
 
 import {v4} from 'uuid';
 
-import {_} from 'hairfolio/src/helpers';
+import {_} from 'Hairfolio/src/helpers';
 
 // class that listens to the keyboard and sets the height accordingly
 class KeyboardStore {

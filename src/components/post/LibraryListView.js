@@ -2,13 +2,13 @@ import React, { Component } from 'react'
 import {Dimensions, ListView, ScrollView, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet } from 'react-native'
 
 
-import {COLORS, FONTS, h, SCALE} from 'hairfolio/src/style';
+import {COLORS, FONTS, h, SCALE} from 'Hairfolio/src/style';
 
 
 import {
   windowWidth,
   windowHeight,
-} from 'hairfolio/src/helpers.js';
+} from 'Hairfolio/src/helpers.js';
 
 
 import {observer} from 'mobx-react/native'

@@ -1,7 +1,7 @@
 import {observable, computed, action} from 'mobx';
 import {CameraRoll, NativeModules} from 'react-native';
 import Camera from 'react-native-camera';
-import Service from 'hairfolio/src/services/index.js'
+import Service from 'Hairfolio/src/services/index.js'
 
 import FilterStore from 'stores/FilterStore.js'
 import Picture from 'stores/Picture.js'
@@ -14,7 +14,7 @@ let PhotoAlbum = NativeModules.PhotoAlbum;
 import {v4} from 'uuid';
 
 import User from 'stores/User.js'
-import {_, jpg, moment, React, Text} from 'hairfolio/src/helpers';
+import {_, jpg, moment, React, Text} from 'Hairfolio/src/helpers';
 
 
 class Message {

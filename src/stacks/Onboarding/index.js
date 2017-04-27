@@ -23,7 +23,7 @@ import {Dims} from '../../constants';
 
 import {
   h
-} from 'hairfolio/src/helpers.js';
+} from 'Hairfolio/src/helpers.js';
 
 export default class OnboardingStack extends PureComponent {
   static propTypes = {};

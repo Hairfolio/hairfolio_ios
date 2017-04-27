@@ -7,7 +7,7 @@ import Player from './src/Player.js';
 let debug = false;
 
 if (debug) {
-  AppRegistry.registerComponent('hairfolio', () => Player);
+  AppRegistry.registerComponent('Hairfolio', () => Player);
 } else {
-  AppRegistry.registerComponent('hairfolio', () => Root);
+  AppRegistry.registerComponent('Hairfolio', () => Root);
 }

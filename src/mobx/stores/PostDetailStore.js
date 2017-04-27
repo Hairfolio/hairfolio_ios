@@ -10,10 +10,10 @@ import TagPostStore from 'stores/TagPostStore.js'
 let PhotoAlbum = NativeModules.PhotoAlbum;
 
 import {v4} from 'uuid';
-import {_, Linking, moment, React, Text, ActionSheetIOS} from 'hairfolio/src/helpers';
+import {_, Linking, moment, React, Text, ActionSheetIOS} from 'Hairfolio/src/helpers';
 import Post from 'stores/Post';
 
-import * as routes from 'hairfolio/src/routes';
+import * as routes from 'Hairfolio/src/routes';
 
 class PostDetailsModel {
   @observable post;

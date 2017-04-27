@@ -4,7 +4,7 @@ import Camera from 'react-native-camera';
 
 import FilterStore from 'stores/FilterStore.js'
 import Picture from 'stores/Picture.js'
-import Service from 'hairfolio/src/services/index.js'
+import Service from 'Hairfolio/src/services/index.js'
 
 import ServiceBackend from 'backend/ServiceBackend.js'
 
@@ -12,7 +12,7 @@ let PhotoAlbum = NativeModules.PhotoAlbum;
 
 import {v4} from 'uuid';
 
-import {_, moment, React, Text} from 'hairfolio/src/helpers';
+import {_, moment, React, Text} from 'Hairfolio/src/helpers';
 
 
 class NewMessageStore {

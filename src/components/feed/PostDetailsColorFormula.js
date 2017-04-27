@@ -16,19 +16,19 @@ import {
   getUserId,
   ScrollView,
   PickerIOS, Picker, StatusBar, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet
-} from 'hairfolio/src/helpers.js';
+} from 'Hairfolio/src/helpers.js';
 
 import LinearGradient from 'react-native-linear-gradient';
 
 import ServiceBackend from 'backend/ServiceBackend.js'
 
-import Swiper from 'hairfolio/react-native-swiper';
+import Swiper from 'Hairfolio/react-native-swiper';
 
 import ServiceRow from 'components/post/ServiceRow.js'
 
 import AddServiceStore from 'stores/AddServiceStore.js'
 
-import * as routes from 'hairfolio/src/routes.js'
+import * as routes from 'Hairfolio/src/routes.js'
 
 import PostDetailStore from 'stores/PostDetailStore'
 

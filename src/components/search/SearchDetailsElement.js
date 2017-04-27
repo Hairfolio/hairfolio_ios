@@ -19,16 +19,16 @@ import {
   ScrollView,
   ActivityIndicator,
   PickerIOS, Picker, StatusBar, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet
-} from 'hairfolio/src/helpers.js';
+} from 'Hairfolio/src/helpers.js';
 
-import {BOTTOMBAR_HEIGHT, STATUSBAR_HEIGHT} from 'hairfolio/src/constants.js';
+import {BOTTOMBAR_HEIGHT, STATUSBAR_HEIGHT} from 'Hairfolio/src/constants.js';
 import FollowUserList from 'components/FollowUserList.js'
 
 import TagPostStore from 'stores/TagPostStore.js'
 import ScrollableTabView from 'react-native-scrollable-tab-view'
 import LinkTabBar from 'components/post/LinkTabBar.js'
 
-import * as routes from 'hairfolio/src/routes.js'
+import * as routes from 'Hairfolio/src/routes.js'
 
 import SearchDetailsStore from 'stores/search/SearchDetailsStore'
 
@@ -234,7 +234,7 @@ const BrandSearch = observer(({store}) => {
 let SearchPage = (Class, store, props) => observer(() => {
 
   if (store.isLoading) {
-    return <ActivityIndicator size='large' style={{marginTop: 20}}/>;
+    return <ActivityIndicator size='large'/>;
   }
 
   if (!store.wasLoaded) {

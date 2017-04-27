@@ -14,7 +14,7 @@ import {
   ScrollView,
   ActivityIndicator,
   StatusBar, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet
-} from 'hairfolio/src/helpers.js';
+} from 'Hairfolio/src/helpers.js';
 
 const LoadinScreen = observer(() => {
   return (

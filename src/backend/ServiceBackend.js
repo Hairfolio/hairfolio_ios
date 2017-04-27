@@ -5,9 +5,9 @@ import CreatePostStore from 'stores/CreatePostStore.js'
 import FeedStore from 'stores/FeedStore.js'
 import SearchStore from 'stores/SearchStore.js'
 
-import * as routes from 'hairfolio/src/routes.js'
+import * as routes from 'Hairfolio/src/routes.js'
 import ShareStore from 'stores/ShareStore.js'
-import Service from 'hairfolio/src/services/index.js'
+import Service from 'Hairfolio/src/services/index.js'
 
 let myfetch = function(input, opts) {
   return new Promise((resolve, reject) => {

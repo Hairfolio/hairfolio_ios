@@ -8,7 +8,7 @@ import connect from '../lib/connect';
 import {app} from '../selectors/app';
 import {registration} from '../selectors/registration';
 import NavigationSetting from '../navigation/NavigationSetting';
-import Service from 'hairfolio/src/services/index.js'
+import Service from 'Hairfolio/src/services/index.js'
 import ServiceBackend from 'backend/ServiceBackend.js'
 
 import Picker from '../components/Picker';

@@ -13,13 +13,13 @@ import {
   Modal,
   ScrollView,
   StatusBar, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet
-} from 'hairfolio/src/helpers.js';
+} from 'Hairfolio/src/helpers.js';
 
 import SlimHeader from 'components/SlimHeader.js'
 import AlbumStore from 'stores/AlbumStore.js'
 import CreatePostStore from 'stores/CreatePostStore.js'
 
-import {appStack, createPost, onPress, postFilter, albumPage} from 'hairfolio/src/routes.js';
+import {appStack, createPost, onPress, postFilter, albumPage} from 'Hairfolio/src/routes.js';
 
 import ReactNative from 'react-native';
 

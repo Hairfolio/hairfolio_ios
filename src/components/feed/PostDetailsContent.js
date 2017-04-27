@@ -15,7 +15,7 @@ import {
   Modal,
   ScrollView,
   PickerIOS, Picker, StatusBar, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet
-} from 'hairfolio/src/helpers.js';
+} from 'Hairfolio/src/helpers.js';
 
 
 import PostHeader from 'components/feed/PostHeader.js'
@@ -28,7 +28,7 @@ import PostDetailsColorFormula from 'components/feed/PostDetailsColorFormula.js'
 
 import PostDescription from 'components/feed/PostDescription.js'
 
-import * as routes from 'hairfolio/src/routes.js'
+import * as routes from 'Hairfolio/src/routes.js'
 
 const PostDetailsContent = observer(() => {
 

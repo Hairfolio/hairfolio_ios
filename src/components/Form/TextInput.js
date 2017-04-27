@@ -66,7 +66,6 @@ export default class FormTextInput extends PureComponent {
           paddingRight: SCALE.w(26),
           height: SCALE.h(17 * 2 + 48),
           borderRadius: 1,
-          flex: 1,
           borderWidth: 0,
           textAlignVertical: 'center',
           fontFamily: FONTS.ROMAN,

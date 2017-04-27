@@ -5,7 +5,7 @@ import ServiceBackend from 'backend/ServiceBackend.js'
 
 import {v4} from 'uuid';
 
-import {_, moment, React, Text} from 'hairfolio/src/helpers';
+import {_, moment, React, Text} from 'Hairfolio/src/helpers';
 
 import Activity from 'stores/Activity.js'
 

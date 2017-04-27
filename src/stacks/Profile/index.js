@@ -5,7 +5,7 @@ import {View} from 'react-native';
 
 import Navigator from '../../navigation/Navigator';
 
-import Service from 'hairfolio/src/services/index.js'
+import Service from 'Hairfolio/src/services/index.js'
 import ChannelEmitter from '../../components/Channel/ChannelEmitter';
 
 import PureComponent from '../../components/PureComponent';

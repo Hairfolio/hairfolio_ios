@@ -10,9 +10,9 @@ import {v4} from 'uuid';
 
 
 import ServiceBackend from 'backend/ServiceBackend.js'
-import Service from 'hairfolio/src/services/index.js'
+import Service from 'Hairfolio/src/services/index.js'
 
-import {_, moment, React, Text} from 'hairfolio/src/helpers';
+import {_, moment, React, Text} from 'Hairfolio/src/helpers';
 
 class Hairfolio {
 

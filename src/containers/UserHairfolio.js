@@ -14,11 +14,11 @@ import {
   h,
   getUserId,
   v4
-} from 'hairfolio/src/helpers.js';
+} from 'Hairfolio/src/helpers.js';
 
 import HairfolioStore from 'stores/HairfolioStore.js'
-import Swipeout from 'hairfolio/react-native-swipeout/index.js';
-import * as routes from 'hairfolio/src/routes.js'
+import Swipeout from 'Hairfolio/react-native-swipeout/index.js';
+import * as routes from 'Hairfolio/src/routes.js'
 import HairfolioPostStore from 'stores/HairfolioPostStore'
 
 const HairfolioItem = observer(({store, isEditable}) => {
@@ -181,7 +181,7 @@ const HairfolioList = observer(() => {
   if (store.isLoading) {
     return (
       <View style={{flex: 1}}>
-        <ActivityIndicator style={{marginTop: 20}} size='large' />
+        <ActivityIndicator size='large' />
       </View>
     );
   } else {

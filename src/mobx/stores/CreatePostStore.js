@@ -12,7 +12,7 @@ import AlbumStore from 'stores/AlbumStore.js';
 
 import {v4} from 'uuid';
 
-import {_, React, Text} from 'hairfolio/src/helpers';
+import {_, React, Text} from 'Hairfolio/src/helpers';
 
 var counter = 0;
 const COLORS = ['blue', 'orange', 'red'];
@@ -236,7 +236,7 @@ class Gallery {
     this.addPicture(
       new Picture(
         {uri: 'assets-library://asset/asset.JPG?id=106E99A1-4F6A-45A2-B320-B0AD4A8E8473/L0/001&ext=JPG' },
-    {uri: 'assets-library://asset/asset.JPG?id=106E99A1-4F6A-45A2-B320-B0AD4A8E8473/L0/001&ext=JPG' },
+        {uri: 'assets-library://asset/asset.JPG?id=106E99A1-4F6A-45A2-B320-B0AD4A8E8473/L0/001&ext=JPG' },
         this
       )
     );
@@ -612,5 +612,3 @@ const store = new CreatePostStore();
 window.postStore = store;
 
 export default store;
-
-

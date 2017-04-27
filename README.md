@@ -58,9 +58,24 @@ cd node_modules && ln -nsf ../app
 Refrences:
 https://dev.twitter.com/rest/reference/post/statuses/update
 
+## Native Components
 
-Carthage:
-* brew update
-* brew install carthage
-* cd carthage
-* carthage update
+The native facebook sdk and a few other bits an bobs are side-loaded into the react-native environment.
+
+Native third party components are managed using [Carthage](https://github.com/Carthage/Carthage)
+
+Though there are other options the simplest way to install carthage is via homebrew
+
+```
+brew update
+brew install carthage
+```
+
+Once carthage has been installed you need checkout and build the dependent frameworks
+
+```
+cd ios/carthage
+carthage bootstrap --platform iOS
+```
+
+That's it. The side-loaded components are ready to go.

@@ -1,7 +1,7 @@
 import {observable, computed, action} from 'mobx';
 import ServiceBackend from 'backend/ServiceBackend.js'
 
-import {_, v4, moment} from 'hairfolio/src/helpers';
+import {_, v4, moment} from 'Hairfolio/src/helpers';
 
 import FollowUser from 'stores/FollowUser.js'
 

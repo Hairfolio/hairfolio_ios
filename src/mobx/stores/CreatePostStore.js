@@ -29,7 +29,7 @@ class LibraryPicture {
 
     this.id = data.id;
 
-    this.uri = `assets-library://asset/asset.JPG?id=${data.id}&ext=JPG`;
+    this.uri = `assets-library://asset/asset.JPG?id=${data.id.substring(0, 36)}&ext=JPG`;
 
     // this.videoUrl = `assets-library://asset/asset.mov?id=${data.id}&ext=mov`;
 

@@ -14,7 +14,14 @@ react-native run-ios
 
 
 
-# Un-need now?
+
+
+
+
+
+
+
+# ??Not needed anymore??
 
 I did not want to make a fork of RN, so be sure in node_modules/react-native/Libraries/CustomComponents/Navigator/Navigator.js to do that
 

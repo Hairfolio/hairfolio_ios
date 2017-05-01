@@ -126,6 +126,7 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-social-share')
     compile project(':react-native-wheel-picker')
     compile project(':react-native-video')
     compile project(':react-native-vector-icons')

@@ -78,6 +78,7 @@
 		960ACEFF1EB1629C00869CCF /* SAMKeychain.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 960ACEF51EB1617600869CCF /* SAMKeychain.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		960ACF011EB162B800869CCF /* AFNetworking.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 960ACEF41EB1617600869CCF /* AFNetworking.framework */; };
 		960ACF021EB162B800869CCF /* AFNetworking.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 960ACEF41EB1617600869CCF /* AFNetworking.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		964558381EB712E700CFC0DE /* libRCTCameraRoll.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 964558141EB712DD00CFC0DE /* libRCTCameraRoll.a */; };
 		96665B2E1EB163C70044AD05 /* Avenir-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 96665B141EB163C70044AD05 /* Avenir-Black.ttf */; };
 		96665B2F1EB163C70044AD05 /* Avenir-BlackOblique.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 96665B151EB163C70044AD05 /* Avenir-BlackOblique.ttf */; };
 		96665B301EB163C70044AD05 /* Avenir-Book.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 96665B161EB163C70044AD05 /* Avenir-Book.ttf */; };
@@ -421,6 +422,13 @@
 			remoteGlobalIDString = 58B5119B1A9E6C1200147676;
 			remoteInfo = RCTText;
 		};
+		964558131EB712DD00CFC0DE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9645580A1EB712DD00CFC0DE /* RCTCameraRoll.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 58B5115D1A9E6B3D00147676;
+			remoteInfo = RCTCameraRoll;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -525,6 +533,7 @@
 		960ACEF81EB161A100869CCF /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Bolts.framework; path = Frameworks/Bolts.framework; sourceTree = "<group>"; };
 		960ACEFA1EB161BD00869CCF /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Crashlytics.framework; path = Frameworks/Crashlytics.framework; sourceTree = "<group>"; };
 		960ACEFB1EB161BD00869CCF /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Fabric.framework; path = Frameworks/Fabric.framework; sourceTree = "<group>"; };
+		9645580A1EB712DD00CFC0DE /* RCTCameraRoll.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTCameraRoll.xcodeproj; path = "../node_modules/react-native/Libraries/CameraRoll/RCTCameraRoll.xcodeproj"; sourceTree = "<group>"; };
 		96665B141EB163C70044AD05 /* Avenir-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Avenir-Black.ttf"; path = "fonts/Avenir-Black.ttf"; sourceTree = "<group>"; };
 		96665B151EB163C70044AD05 /* Avenir-BlackOblique.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Avenir-BlackOblique.ttf"; path = "fonts/Avenir-BlackOblique.ttf"; sourceTree = "<group>"; };
 		96665B161EB163C70044AD05 /* Avenir-Book.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Avenir-Book.ttf"; path = "fonts/Avenir-Book.ttf"; sourceTree = "<group>"; };
@@ -595,6 +604,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				964558381EB712E700CFC0DE /* libRCTCameraRoll.a in Frameworks */,
 				2B9CA4AF1EB030EB00845723 /* libz.tbd in Frameworks */,
 				2B9CA44B1EB02BB700845723 /* Twitter.framework in Frameworks */,
 				2B9CA4A41EB02FA700845723 /* Social.framework in Frameworks */,
@@ -960,6 +970,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				9645580A1EB712DD00CFC0DE /* RCTCameraRoll.xcodeproj */,
 				96863FAE1EB291FE00E2908D /* TwitterKitResources.bundle */,
 				960ACEFA1EB161BD00869CCF /* Crashlytics.framework */,
 				960ACEFB1EB161BD00869CCF /* Fabric.framework */,
@@ -1029,6 +1040,14 @@
 				00E356EE1AD99517003FC87E /* HairfolioTests.xctest */,
 				2D02E47B1E0B4A5D006451C7 /* Hairfolio-tvOS.app */,
 				2D02E4901E0B4A5D006451C7 /* Hairfolio-tvOSTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		9645580B1EB712DD00CFC0DE /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				964558141EB712DD00CFC0DE /* libRCTCameraRoll.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1225,6 +1244,10 @@
 				{
 					ProductGroup = 2B7772241EB019CC00DDFABF /* Products */;
 					ProjectRef = F418F48BC5A84F48BB1AADD3 /* RCTCamera.xcodeproj */;
+				},
+				{
+					ProductGroup = 9645580B1EB712DD00CFC0DE /* Products */;
+					ProjectRef = 9645580A1EB712DD00CFC0DE /* RCTCameraRoll.xcodeproj */;
 				},
 				{
 					ProductGroup = 2B7771FC1EB019CB00DDFABF /* Products */;
@@ -1596,6 +1619,13 @@
 			fileType = archive.ar;
 			path = libRCTText.a;
 			remoteRef = 832341B41AAA6A8300B99B32 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		964558141EB712DD00CFC0DE /* libRCTCameraRoll.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRCTCameraRoll.a;
+			remoteRef = 964558131EB712DD00CFC0DE /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */

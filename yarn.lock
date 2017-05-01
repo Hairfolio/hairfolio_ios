@@ -3424,9 +3424,9 @@ react-native-fbsdk@0.5.0:
   version "0.5.0"
   resolved "https://registry.yarnpkg.com/react-native-fbsdk/-/react-native-fbsdk-0.5.0.tgz#3ccd67d189755df11d366b8de9acb91ea2300e6e"
 
-react-native-fetch-blob@^0.10.2-beta.3:
-  version "0.10.4"
-  resolved "https://registry.yarnpkg.com/react-native-fetch-blob/-/react-native-fetch-blob-0.10.4.tgz#7e2d2096ea79dbc8da96e1915cf862f6afe2d0fd"
+react-native-fetch-blob@0.10.5:
+  version "0.10.5"
+  resolved "https://registry.yarnpkg.com/react-native-fetch-blob/-/react-native-fetch-blob-0.10.5.tgz#498e5437ad604db126b46e4a06cd9cbf33d1ea42"
   dependencies:
     base-64 "0.1.0"
     glob "^7.0.6"

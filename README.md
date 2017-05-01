@@ -1,21 +1,20 @@
 # hairfolio_ios
 
-`npm install`
+```
+git clone git@github.com:gigster-eng/hairfolio_ios.git
 
-`npm install -g fontello-cli`
+cd hairfolio_ios
 
-`gulp setup-fontello`
+yarn
 
-`gulp setup-fonts`
+react-native start
 
-to edit/add icons
+react-native run-ios
+```
 
-`fontello-cli open --config fontello.json`
 
-make the modifications, then download json config file and paste content in fontello.json then run
 
-`gulp setup-fontello`
-
+# Un-need now?
 
 I did not want to make a fork of RN, so be sure in node_modules/react-native/Libraries/CustomComponents/Navigator/Navigator.js to do that
 
@@ -57,25 +56,3 @@ cd node_modules && ln -nsf ../app
 
 Refrences:
 https://dev.twitter.com/rest/reference/post/statuses/update
-
-## Native Components
-
-The native facebook sdk and a few other bits an bobs are side-loaded into the react-native environment.
-
-Native third party components are managed using [Carthage](https://github.com/Carthage/Carthage)
-
-Though there are other options the simplest way to install carthage is via homebrew
-
-```
-brew update
-brew install carthage
-```
-
-Once carthage has been installed you need checkout and build the dependent frameworks
-
-```
-cd ios/carthage
-carthage bootstrap --platform iOS
-```
-
-That's it. The side-loaded components are ready to go.

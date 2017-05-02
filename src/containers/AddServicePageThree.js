@@ -242,7 +242,7 @@ export default class AddServicePageThree extends Component {
     let store = AddServiceStore;
 
     return (
-      <View style={{paddingTop: 20, backgroundColor: 'white'}}>
+      <View style={{paddingTop: 20, backgroundColor: 'white', flex: 1}}>
         <SlimHeader
           leftText='Back'
           titleWidth={140}

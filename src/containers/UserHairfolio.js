@@ -195,7 +195,7 @@ const HairfolioList = observer(() => {
 });
 
 @connect(app)
-export default class UserHairfolio extends PureComponent {
+export default class UserHairfolio extends React.Component {
   static propTypes = {
     appVersion: React.PropTypes.string.isRequired,
     onLayout: React.PropTypes.func.isRequired
@@ -216,6 +216,7 @@ export default class UserHairfolio extends PureComponent {
       }}
     >
       <View
+        style={{flex: 1}}
         onLayout={this.props.onLayout}
       >
         <HairfolioList />

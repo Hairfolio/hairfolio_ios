@@ -48,10 +48,7 @@ export class HairfolioStore {
   constructor() {
   }
 
-  async addHairfolio() {
-
-    let name  = this.textInput._lastNativeText;
-
+  async addHairfolio(name) {
     if (name.length > 0) {
       let res = await ServiceBackend.post('folios', {folio: {name: name}});
       this.hairfolios.push(new Hairfolio(res.folio));
@@ -99,4 +96,3 @@ export class HairfolioStore {
 const store = new HairfolioStore();
 
 export default store;
-

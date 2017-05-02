@@ -253,13 +253,12 @@ const Search = observer(() => {
   return (
     <ListView
       style={{
-        paddingTop: 20,
-        height: windowHeight - 20 - BOTTOMBAR_HEIGHT
+        marginTop: 20,
+        flex: 1,
       }}
       bounces={false}
       enableEmptySections
       dataSource={SearchStore.dataSource}
-      automaticallyAdjustContentInsets={false}
       renderRow={(el, i) => {
         if (el.type == 'searchBar') {
           return <SearchBar store={SearchStore} />;

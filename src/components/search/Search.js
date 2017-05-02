@@ -259,6 +259,7 @@ const Search = observer(() => {
       bounces={false}
       enableEmptySections
       dataSource={SearchStore.dataSource}
+      automaticallyAdjustContentInsets={false}
       renderRow={(el, i) => {
         if (el.type == 'searchBar') {
           return <SearchBar store={SearchStore} />;

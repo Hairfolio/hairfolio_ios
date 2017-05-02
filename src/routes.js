@@ -1,6 +1,6 @@
 import Route from './navigation/Route';
 
-import {Navigator} from 'react-native'
+import {Navigator} from 'react-native-deprecated-custom-components';
 
 import CustomScenesConfig from './stacks/ScenesConfig';
 

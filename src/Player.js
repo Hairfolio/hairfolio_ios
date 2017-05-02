@@ -3,9 +3,9 @@ import React, { Component } from 'react'
 import AlbumPage from 'containers/AlbumPage.js'
 import GalleryPage from 'containers/GalleryPage.js'
 
+import {Navigator} from 'react-native-deprecated-custom-components';
 import {
   AppRegistry,
-  Navigator,
   Text,
   Dimensions
 } from 'react-native'

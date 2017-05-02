@@ -1,5 +1,6 @@
 import React from 'react';
-import {Navigator, View, InteractionManager} from 'react-native';
+import {Navigator} from 'react-native-deprecated-custom-components';
+import {View, InteractionManager} from 'react-native';
 import _ from 'lodash';
 import PureComponent from '../components/PureComponent';
 

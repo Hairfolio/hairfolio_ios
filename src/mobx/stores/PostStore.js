@@ -39,7 +39,6 @@ export default class PostStore {
 
       let {posts, meta} = res;
 
-
       for (let a = 0; a < posts.length; a++)  {
         let post = new Post();
         await post.init(posts[a]);

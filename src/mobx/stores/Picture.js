@@ -32,7 +32,7 @@ export default class Picture {
   }
 
   async resizeImage(uri) {
-    return ImageResizer.createResizedImage(uri, 2 * 250, 2 * 250, 'JPEG', 90, 0, null);
+    return ImageResizer.createResizedImage(uri, 2 * 250, 2 * 250, 'JPEG', 90, 0);
   }
 
   async cropImage(uri) {
@@ -112,7 +112,7 @@ export default class Picture {
 
   async uploadPicture() {
     // TODO just for testing whether this is the course
-    let uri = await this.resizeImage(this.source.uri);
+    const uri = await ImageResizer.createResizedImage(this.source.uri, 500, 500, 'JPEG', 90, 0);
 
     let formdata = new FormData();
     formdata.append('file', {

@@ -80,81 +80,83 @@ export default class Register2 extends PureComponent {
           ]}
           disabled={utils.isLoading([this.props.environmentState, this.props.userState, this.state.oauth])}
           onDone={(item = {}) => {
-            if (!item)
-              return;
+            setTimeout(() => {
+              if (!item)
+                return;
 
-            var stacks = {
-              Consumer: signupConsumerStack,
-              Stylist: signupStylistStack,
-              Salon: signupSalonStack,
-              Brand: signupBrandStack
-            };
+              var stacks = {
+                Consumer: signupConsumerStack,
+                Stylist: signupStylistStack,
+                Salon: signupSalonStack,
+                Brand: signupBrandStack
+              };
 
-            if (this.props.registrationMethod === 'email')
-              return _.first(this.context.navigators).jumpTo(stacks[item.label]);
+              if (this.props.registrationMethod === 'email')
+                return _.first(this.context.navigators).jumpTo(stacks[item.label]);
 
-            var type = ({
-              Consumer: 'consumer',
-              Stylist: 'stylist',
-              Salon: 'salon',
-              Brand: 'brand'
-            })[item.label];
+              var type = ({
+                Consumer: 'consumer',
+                Stylist: 'stylist',
+                Salon: 'salon',
+                Brand: 'brand'
+              })[item.label];
 
-            var login;
+              var login;
 
-            if (this.props.registrationMethod === 'facebook')
-              login = this.props.dispatch(registrationActions.getEnvironment()).then(throwOnFail)
-                .then(() => LoginManager.logInWithReadPermissions(['email']))
-                .then(() => AccessToken.getCurrentAccessToken())
-                .then(data => data.accessToken.toString())
-                .then(token =>
-                  this.props.dispatch(registrationActions.signupWithFacebook(token, type))
-                    .then(throwOnFail)
-                );
-
-            if (this.props.registrationMethod === 'instagram')
-              login = this.props.dispatch(registrationActions.getEnvironment()).then(throwOnFail)
-                .then(() => this.oauth(loginStack, {
-                  authorize: 'https://api.instagram.com/oauth/authorize/',
-                  clientId: this.props.environment.get('insta_client_id'),
-                  redirectUri: this.props.environment.get('insta_redirect_url'),
-                  type: 'Instagram',
-                  scope: 'basic'
-                }))
-                .then(token => this.props.dispatch(registrationActions.signupWithInstagram(token, type))
-                  .then(throwOnFail)
-                );
-
-            login
-              .then(
-                () => {
-
-
-                  let userId = Service.fetch.store.getState().user.data.get('id');
-
-                  // update type
-                  ServiceBackend.put('users/' + userId,
-                    {
-                      user: {
-                        account_type: type
-                      }
-                    }
+              if (this.props.registrationMethod === 'facebook')
+                login = this.props.dispatch(registrationActions.getEnvironment()).then(throwOnFail)
+                  .then(() => LoginManager.logInWithReadPermissions(['email']))
+                  .then(() => AccessToken.getCurrentAccessToken())
+                  .then(data => data.accessToken.toString())
+                  .then(token =>
+                    this.props.dispatch(registrationActions.signupWithFacebook(token, type))
+                      .then(throwOnFail)
                   );
 
+              if (this.props.registrationMethod === 'instagram')
+                login = this.props.dispatch(registrationActions.getEnvironment()).then(throwOnFail)
+                  .then(() => this.oauth(loginStack, {
+                    authorize: 'https://api.instagram.com/oauth/authorize/',
+                    clientId: this.props.environment.get('insta_client_id'),
+                    redirectUri: this.props.environment.get('insta_redirect_url'),
+                    type: 'Instagram',
+                    scope: 'basic'
+                  }))
+                  .then(token => this.props.dispatch(registrationActions.signupWithInstagram(token, type))
+                    .then(throwOnFail)
+                  );
 
-                  appEmitter.emit('login');
-                  if (type === 'consumer')
-                    return _.first(this.context.navigators).jumpTo(appStack);
+              login
+                .then(
+                  () => {
 
-                  var stack = stacks[item.label];
-                  stack.scene().jumpToMoreInfos();
 
-                  _.first(this.context.navigators).jumpTo(stack);
-                },
-                (e) => {
-                  this.context.setBannerError(e);
-                }
-              );
+                    let userId = Service.fetch.store.getState().user.data.get('id');
+
+                    // update type
+                    ServiceBackend.put('users/' + userId,
+                      {
+                        user: {
+                          account_type: type
+                        }
+                      }
+                    );
+
+
+                    appEmitter.emit('login');
+                    if (type === 'consumer')
+                      return _.first(this.context.navigators).jumpTo(appStack);
+
+                    var stack = stacks[item.label];
+                    stack.scene().jumpToMoreInfos();
+
+                    _.first(this.context.navigators).jumpTo(stack);
+                  },
+                  (e) => {
+                    this.context.setBannerError(e);
+                  }
+                );
+            }, 100);
           }}
           placeholder="Select account type"
         />

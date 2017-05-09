@@ -105,6 +105,7 @@
 		96665B451EB163C70044AD05 /* SF-UI-Display-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 96665B2B1EB163C70044AD05 /* SF-UI-Display-Semibold.otf */; };
 		96665B461EB163C70044AD05 /* SF-UI-Display-Thin.otf in Resources */ = {isa = PBXBuildFile; fileRef = 96665B2C1EB163C70044AD05 /* SF-UI-Display-Thin.otf */; };
 		96665B471EB163C70044AD05 /* SF-UI-Display-Ultralight.otf in Resources */ = {isa = PBXBuildFile; fileRef = 96665B2D1EB163C70044AD05 /* SF-UI-Display-Ultralight.otf */; };
+		96835A6A1EC2530500864B9F /* libRNRecorder.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B7772421EB019CC00DDFABF /* libRNRecorder.a */; };
 		96863FAF1EB291FE00E2908D /* TwitterKitResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 96863FAE1EB291FE00E2908D /* TwitterKitResources.bundle */; };
 		96863FDA1EB2929900E2908D /* KDSocialShare.m in Sources */ = {isa = PBXBuildFile; fileRef = 96863FD91EB2929900E2908D /* KDSocialShare.m */; };
 		96863FE71EB2942600E2908D /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 96863FE21EB2942600E2908D /* Default-568h@2x.png */; };
@@ -566,6 +567,7 @@
 		96665B2B1EB163C70044AD05 /* SF-UI-Display-Semibold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SF-UI-Display-Semibold.otf"; path = "fonts/SF-UI-Display-Semibold.otf"; sourceTree = "<group>"; };
 		96665B2C1EB163C70044AD05 /* SF-UI-Display-Thin.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SF-UI-Display-Thin.otf"; path = "fonts/SF-UI-Display-Thin.otf"; sourceTree = "<group>"; };
 		96665B2D1EB163C70044AD05 /* SF-UI-Display-Ultralight.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SF-UI-Display-Ultralight.otf"; path = "fonts/SF-UI-Display-Ultralight.otf"; sourceTree = "<group>"; };
+		96835A3E1EC252F500864B9F /* libSCRecorder.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libSCRecorder.a; path = "../node_modules/react-native-screcorder/ios/Libraries/build/Debug-iphoneos/libSCRecorder.a"; sourceTree = "<group>"; };
 		96863FAE1EB291FE00E2908D /* TwitterKitResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = TwitterKitResources.bundle; path = Frameworks/TwitterKit.framework/Versions/A/Resources/TwitterKitResources.bundle; sourceTree = "<group>"; };
 		96863FD81EB2928B00E2908D /* KDSocialShare.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KDSocialShare.h; sourceTree = "<group>"; };
 		96863FD91EB2929900E2908D /* KDSocialShare.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KDSocialShare.m; sourceTree = "<group>"; };
@@ -607,6 +609,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				96835A6A1EC2530500864B9F /* libRNRecorder.a in Frameworks */,
 				969A09A21EBBFC9D00C49C20 /* libRCTImageResizer.a in Frameworks */,
 				964558381EB712E700CFC0DE /* libRCTCameraRoll.a in Frameworks */,
 				2B9CA4AF1EB030EB00845723 /* libz.tbd in Frameworks */,
@@ -893,6 +896,7 @@
 		2B9CA3A71EB0238200845723 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				96835A3E1EC252F500864B9F /* libSCRecorder.a */,
 				2B9CA4AE1EB030EB00845723 /* libz.tbd */,
 				2B9CA4A31EB02FA700845723 /* Social.framework */,
 				2B9CA4A11EB02F9F00845723 /* Security.framework */,

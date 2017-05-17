@@ -22,7 +22,7 @@ import CreatePostStore from 'stores/CreatePostStore.js'
 import ShareStore from 'stores/ShareStore.js'
 import {
   h
-} from 'hairfolio/src/helpers.js';
+} from 'Hairfolio/src/helpers.js';
 
 @connect(app)
 export default class Share extends PureComponent {

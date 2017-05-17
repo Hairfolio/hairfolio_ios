@@ -5,7 +5,7 @@ import {View} from 'react-native';
 
 import Navigator from '../../navigation/Navigator';
 
-import Service from 'hairfolio/src/services/index.js'
+import Service from 'Hairfolio/src/services/index.js'
 import ChannelEmitter from '../../components/Channel/ChannelEmitter';
 
 import PureComponent from '../../components/PureComponent';
@@ -110,14 +110,12 @@ export default class BrandProfileStack extends PureComponent {
           requestAnimationFrame(() => {
             // this.props.profile.get('account_type')
             console.log('request animation');
-            if (this.props.profile.get('id') == Service.fetch.store.getState().user.data.get('id')) {
-              if (this._nav) {
-                this._nav.jumpTo(this.routes[1], () => {
-                  requestAnimationFrame(() => {
-                    this._nav.jumpTo(this.routes[0]);
-                  });
+            if (this._nav) {
+              this._nav.jumpTo(this.routes[1], () => {
+                requestAnimationFrame(() => {
+                  this._nav.jumpTo(this.routes[0]);
                 });
-              }
+              });
             }
           });
 

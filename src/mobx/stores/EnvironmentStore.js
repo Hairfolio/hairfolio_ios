@@ -1,5 +1,5 @@
 import {observable, computed, action} from 'mobx';
-import {_, v4, Text} from 'hairfolio/src/helpers';
+import {_, v4, Text} from 'Hairfolio/src/helpers';
 
 import ServiceBackend from 'backend/ServiceBackend.js'
 

@@ -1,7 +1,7 @@
 import {observable, computed, action} from 'mobx';
 import {CameraRoll, NativeModules} from 'react-native';
 
-import {_, v4} from 'hairfolio/src/helpers';
+import {_, v4} from 'Hairfolio/src/helpers';
 
 import Picture from 'stores/Picture.js';
 

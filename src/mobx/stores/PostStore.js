@@ -3,7 +3,7 @@ import {CameraRoll, ListView, NativeModules} from 'react-native';
 
 import {v4} from 'uuid';
 
-import {_, moment, React, Text} from 'hairfolio/src/helpers';
+import {_, moment, React, Text} from 'Hairfolio/src/helpers';
 
 import Post from 'stores/Post.js'
 
@@ -38,7 +38,6 @@ export default class PostStore {
       let res = (await this.getPosts(this.nextPage));
 
       let {posts, meta} = res;
-
 
       for (let a = 0; a < posts.length; a++)  {
         let post = new Post();

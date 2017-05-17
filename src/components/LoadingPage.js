@@ -19,14 +19,14 @@ import {
   ScrollView,
   ActivityIndicator,
   PickerIOS, Picker, StatusBar, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet
-} from 'hairfolio/src/helpers.js';
+} from 'Hairfolio/src/helpers.js';
 
 let LoadingPage = (Class, store, props) => observer(() => {
 
   if (store.isLoading) {
     return (
       <View style={{flex: 1}}>
-        <ActivityIndicator size='large' style={{marginTop: 20}}/>
+        <ActivityIndicator size='large'/>
       </View>
     );
   }

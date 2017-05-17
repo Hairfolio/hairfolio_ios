@@ -14,11 +14,11 @@ import {
   h,
   getUserId,
   v4
-} from 'hairfolio/src/helpers.js';
+} from 'Hairfolio/src/helpers.js';
 
 import HairfolioStore from 'stores/HairfolioStore.js'
-import Swipeout from 'hairfolio/react-native-swipeout/index.js';
-import * as routes from 'hairfolio/src/routes.js'
+import Swipeout from 'Hairfolio/react-native-swipeout/index.js';
+import * as routes from 'Hairfolio/src/routes.js'
 import HairfolioPostStore from 'stores/HairfolioPostStore'
 
 const HairfolioItem = observer(({store, isEditable}) => {
@@ -136,44 +136,52 @@ const HairfolioItem = observer(({store, isEditable}) => {
   );
 });
 
-const HairfolioEdit = observer(({store}) => {
-  return (
-      <View
-        style={{
-          height: h(140),
-          flexDirection: 'row',
-          alignItems: 'center',
-          backgroundColor: 'white',
-          borderBottomWidth: 1,
-          borderBottomColor: '#DDDDDD'
-        }}
-      >
+class HairfolioEdit extends React.Component {
+  state = {
+    text: '',
+  }
+
+  render() {
+    const {text} = this.state;
+    return (
         <View
-          style = {{
-            height: h(110),
-            width: h(110),
-            marginLeft: h(18),
-            backgroundColor: '#D8D8D8'
+          style={{
+            height: h(140),
+            flexDirection: 'row',
+            alignItems: 'center',
+            backgroundColor: 'white',
+            borderBottomWidth: 1,
+            borderBottomColor: '#DDDDDD'
           }}
         >
+          <View
+            style = {{
+              height: h(110),
+              width: h(110),
+              marginLeft: h(18),
+              backgroundColor: '#D8D8D8'
+            }}
+          >
+          </View>
+          <TextInput
+            ref={el => {HairfolioStore.textInput = el}}
+            defaultValue=''
+            value={text}
+            onChangeText={(text) => this.setState({text})}
+            onEndEditing={() => HairfolioStore.addHairfolio(text)}
+            placeholder='Add New Item'
+            style = {{
+              marginLeft: h(26),
+              flex: 1,
+              fontSize: h(30),
+              fontFamily: FONTS.MEDIUM,
+              color: '#404040'
+            }}
+          />
         </View>
-        <TextInput
-          ref={el => {HairfolioStore.textInput = el}}
-          defaultValue=''
-          onEndEditing={() => HairfolioStore.addHairfolio()}
-          placeholder='Add New Item'
-          style = {{
-            marginLeft: h(26),
-            flex: 1,
-            fontSize: h(30),
-            fontFamily: FONTS.MEDIUM,
-            color: '#404040'
-          }}
-        />
-      </View>
-  );
-});
-
+    );
+  }
+}
 
 const HairfolioList = observer(() => {
   let store = HairfolioStore;
@@ -181,7 +189,7 @@ const HairfolioList = observer(() => {
   if (store.isLoading) {
     return (
       <View style={{flex: 1}}>
-        <ActivityIndicator style={{marginTop: 20}} size='large' />
+        <ActivityIndicator size='large' />
       </View>
     );
   } else {
@@ -205,6 +213,10 @@ export default class UserHairfolio extends PureComponent {
     navigators: React.PropTypes.array.isRequired
   };
 
+  state = {
+    addNewItemValue: '',
+  }
+
   render() {
     return (<NavigationSetting
       style={{
@@ -216,6 +228,7 @@ export default class UserHairfolio extends PureComponent {
       }}
     >
       <View
+        style={{flex: 1}}
         onLayout={this.props.onLayout}
       >
         <HairfolioList />

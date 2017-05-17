@@ -19,13 +19,13 @@ import {
   ScrollView,
   ActivityIndicator,
   PickerIOS, Picker, StatusBar, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet
-} from 'hairfolio/src/helpers.js';
+} from 'Hairfolio/src/helpers.js';
 
 import BlackBookStore from 'stores/BlackBookStore.js'
 
 import ContactDetailsStore from 'stores/ContactDetailsStore.js'
 
-import * as routes from 'hairfolio/src/routes.js'
+import * as routes from 'Hairfolio/src/routes.js'
 
 import AlphabetListView from 'react-native-alphabetlistview'
 

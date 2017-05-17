@@ -1,5 +1,6 @@
 import React from 'react';
-import {Navigator, View, InteractionManager} from 'react-native';
+import {Navigator} from 'react-native-deprecated-custom-components';
+import {View, InteractionManager} from 'react-native';
 import _ from 'lodash';
 import PureComponent from '../components/PureComponent';
 
@@ -119,7 +120,9 @@ export default class CustomNavigator extends PureComponent {
   render() {
     return (<Navigator
       configureScene={(route, routeStack) => {
-        console.log('route', route, routeStack);
+        // console.log('route', route, routeStack);
+        // console.log('route', routeStack);
+        console.log('route', 'changed');
         return route.configureScene();
       }}
       renderScene={(route, navigator) => {

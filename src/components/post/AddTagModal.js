@@ -15,9 +15,9 @@ import {
   Modal,
   ScrollView,
   StatusBar, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet
-} from 'hairfolio/src/helpers.js';
+} from 'Hairfolio/src/helpers.js';
 
-import {appStack, createPost, onPress, postFilter, albumPage} from 'hairfolio/src/routes.js';
+import {appStack, createPost, onPress, postFilter, albumPage} from 'Hairfolio/src/routes.js';
 
 import AddTagStore from 'stores/AddTagStore.js'
 import CreatePostStore from 'stores/CreatePostStore.js'

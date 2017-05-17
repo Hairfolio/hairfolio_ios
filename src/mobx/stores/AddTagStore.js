@@ -5,7 +5,7 @@ import ServiceBackend from 'backend/ServiceBackend.js'
 
 import {v4} from 'uuid';
 
-import {_, Alert} from 'hairfolio/src/helpers';
+import {_, Alert} from 'Hairfolio/src/helpers';
 
 class TagItem {
   @observable name = '';

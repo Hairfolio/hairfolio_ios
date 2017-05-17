@@ -9,31 +9,24 @@
 
 #import "AppDelegate.h"
 
-#import "RCTBundleURLProvider.h"
-#import "RCTRootView.h"
-#import "RCTUtils.h"
-#import "RCTLinkingManager.h"
+#import <React/RCTBundleURLProvider.h>
+#import <React/RCTRootView.h>
+#import <React/RCTLinkingManager.h>
+#import <React/RCTLog.h>
+#import <React/RCTUtils.h>
+#import <asl.h>
 
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
-
+#import <FBSDKLoginKit/FBSDKLoginKit.h> 
 #import <Fabric/Fabric.h>
 #import <TwitterKit/TwitterKit.h>
-
 #import "PDKClient.h"
-
-
 #import <Crashlytics/Crashlytics.h>
-
-//Add the following lines
-#import <asl.h>
-#import "RCTLog.h"
-
 
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-  
   // facebook sdk
   [[FBSDKApplicationDelegate sharedInstance] application:application
                            didFinishLaunchingWithOptions:launchOptions];
@@ -42,30 +35,20 @@
   
   // Pinterest configuration
   [PDKClient configureSharedInstanceWithAppId:@"4881270499925049265"];
-
-
   
-  //Add the following lines
-  RCTSetLogThreshold(RCTLogLevelInfo);
-  RCTSetLogFunction(CrashlyticsReactLogFunction);
+  
+  
   
   NSURL *jsCodeLocation;
 
-  [[RCTBundleURLProvider sharedSettings] setDefaults];
-  
-#if DEBUG
-  jsCodeLocation = [NSURL URLWithString:@"http://localhost:8081/index.ios.bundle?platform=ios&dev=true"];
-#else
-  jsCodeLocation = [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
-#endif
-  
+  jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index.ios" fallbackResource:nil];
+
   RCTRootView *rootView = [[RCTRootView alloc] initWithBundleURL:jsCodeLocation
-                                                      moduleName:@"hairfolio"
-                                               initialProperties:@{
-                                                  @"lng": [[[NSBundle mainBundle] preferredLocalizations] objectAtIndex:0],
-                                                }
-                                                launchOptions:launchOptions];
-  
+                                                      moduleName:@"Hairfolio"
+                                               initialProperties:nil
+                                                   launchOptions:launchOptions];
+  rootView.backgroundColor = [[UIColor alloc] initWithRed:1.0f green:1.0f blue:1.0f alpha:1];
+
   // Get launch image
   NSString *launchImageName = nil;
   if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
@@ -75,21 +58,40 @@
     else if (height == 667) launchImageName = @"Default-667h@2x.png"; // iPhone 6
     else if (height == 736) launchImageName = @"Default-736h@3x.png"; // iPhone 6+
   } else if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-    CGFloat scale = RCTScreenScale();
-    if (scale == 1) launchImageName = @"LaunchImage-700-Portrait~ipad.png"; // iPad
-    else if (scale == 2) launchImageName = @"LaunchImage-700-Portrait@2x~ipad.png"; // Retina iPad
+//    CGFloat scale = RCTScreenScale();
+//    if (scale == 1) launchImageName = @"LaunchImage-700-Portrait~ipad.png"; // iPad
+//    else if (scale == 2) launchImageName = @"LaunchImage-700-Portrait@2x~ipad.png"; // Retina iPad
   }
   
   UIImage *image = [UIImage imageNamed:launchImageName];
   
   rootView.backgroundColor = [UIColor colorWithPatternImage:image];
-
+  
   self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
   UIViewController *rootViewController = [UIViewController new];
   rootViewController.view = rootView;
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
   return YES;
+//  self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+//  UIViewController *rootViewController = [UIViewController new];
+//  rootViewController.view = rootView;
+//  self.window.rootViewController = rootViewController;
+//  [self.window makeKeyAndVisible];
+//  return YES;
+}
+
+- (BOOL)application:(UIApplication *)application
+            openURL:(NSURL *)url
+            options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options {
+  
+  BOOL handled = [[FBSDKApplicationDelegate sharedInstance] application:application
+                                                                openURL:url
+                                                      sourceApplication:options[UIApplicationOpenURLOptionsSourceApplicationKey]
+                                                             annotation:options[UIApplicationOpenURLOptionsAnnotationKey]
+                  ];
+  // Add any custom logic here.
+  return handled;
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
@@ -101,7 +103,7 @@
   sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
 {
   if ([url.absoluteString hasPrefix:@"pdk"] || [url.absoluteString hasPrefix:@"pinterest"]) {
-      return [[PDKClient sharedInstance] handleCallbackURL:url];
+    return [[PDKClient sharedInstance] handleCallbackURL:url];
   }
   
   if ([url.absoluteString hasPrefix:@"fb"]) {

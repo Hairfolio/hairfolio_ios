@@ -15,7 +15,7 @@ import {
   Modal,
   ScrollView,
   PickerIOS, Picker, StatusBar, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet
-} from 'hairfolio/src/helpers.js';
+} from 'Hairfolio/src/helpers.js';
 
 import PostDetailStore from 'stores/PostDetailStore.js'
 import StarGiversStore from 'stores/StarGiversStore.js'
@@ -27,7 +27,7 @@ import PostStar from 'components/feed/PostStar.js'
 import PostSave from 'components/feed/PostSave.js'
 import VideoPreview from 'components/VideoPreview.js'
 
-import * as routes from 'hairfolio/src/routes.js'
+import * as routes from 'Hairfolio/src/routes.js'
 
 import WriteMessageStore from 'stores/WriteMessageStore'
 

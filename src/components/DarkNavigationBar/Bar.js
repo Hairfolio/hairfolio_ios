@@ -1,5 +1,5 @@
 import React from 'react';
-import {Navigator} from 'react-native';
+import {Navigator} from 'react-native-deprecated-custom-components';
 import ChannelResponder from '../Channel/ChannelResponder';
 import TopNavigationIcon from './TopNavigationIcon';
 import TopNavigationText from './TopNavigationText';

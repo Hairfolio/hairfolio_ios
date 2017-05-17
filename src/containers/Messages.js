@@ -12,7 +12,7 @@ import connect from '../lib/connect';
 import {app} from '../selectors/app';
 import {post} from '../selectors/post';
 import {postActions} from '../actions/post';
-import {COLORS, FONTS, h, SCALE} from 'hairfolio/src/style';
+import {COLORS, FONTS, h, SCALE} from 'Hairfolio/src/style';
 import NavigationSetting from '../navigation/NavigationSetting';
 import {observer} from 'mobx-react/native';
 import autobind from 'autobind-decorator'
@@ -27,7 +27,7 @@ import StarGiversStore from 'stores/StarGiversStore.js'
 
 import {appStack, gallery, postFilter, albumPage} from '../routes';
 
-import * as routes from 'hairfolio/src/routes.js'
+import * as routes from 'Hairfolio/src/routes.js'
 
 import {STATUSBAR_HEIGHT, POST_INPUT_MODE} from '../constants';
 
@@ -39,7 +39,7 @@ import CommentsStore from 'stores/CommentsStore.js'
 import MessagesStore from 'stores/MessagesStore.js'
 
 
-import Swipeout from 'hairfolio/react-native-swipeout/index.js';
+import Swipeout from 'Hairfolio/react-native-swipeout/index.js';
 
 const MessageRow = observer(({store}) => {
   let pictureElement;

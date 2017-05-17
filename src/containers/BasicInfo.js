@@ -130,7 +130,7 @@ export default class BasicInfo extends PureComponent {
       }}
       title={this.props.title}
     >
-      <BannerErrorContainer ref="ebc">
+      <BannerErrorContainer style={{flex: 1}} ref="ebc">
         <KeyboardScrollView
           scrollEnabled={false}
           scrollToTopOnBlur

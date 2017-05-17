@@ -15,14 +15,14 @@ import {
   Modal,
   ScrollView,
   PickerIOS, Picker, StatusBar, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet
-} from 'hairfolio/src/helpers.js';
+} from 'Hairfolio/src/helpers.js';
 
 import PostHeader from 'components/feed/PostHeader.js'
 import PostPicture from 'components/feed/PostPicture.js'
 import PostActionButtons from 'components/feed/PostActionButtons.js'
 import PostDescription from 'components/feed/PostDescription.js'
 
-import * as routes from 'hairfolio/src/routes.js'
+import * as routes from 'Hairfolio/src/routes.js'
 
 
 const Post = observer(({post}) => {

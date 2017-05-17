@@ -2,7 +2,7 @@ import {observable, computed, action} from 'mobx';
 
 import ServiceBackend from 'backend/ServiceBackend.js'
 
-import {_, moment, React, Text} from 'hairfolio/src/helpers';
+import {_, moment, React, Text} from 'Hairfolio/src/helpers';
 
 import {PostGridStore} from 'stores/PostStore'
 

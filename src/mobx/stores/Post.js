@@ -18,15 +18,15 @@ import {
   Modal,
   ScrollView,
   PickerIOS, Picker, StatusBar, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet
-} from 'hairfolio/src/helpers.js';
+} from 'Hairfolio/src/helpers.js';
 
-import utils from 'hairfolio/src/utils.js'
+import utils from 'Hairfolio/src/utils.js'
 import EnvironmentStore from 'stores/EnvironmentStore.js'
 
 import User from 'stores/User.js';
 
 
-import Service from 'hairfolio/src/services/index.js'
+import Service from 'Hairfolio/src/services/index.js'
 import FavoriteStore from 'stores/FavoriteStore.js'
 
 import ServiceBackend from 'backend/ServiceBackend.js'

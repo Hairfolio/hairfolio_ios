@@ -16,7 +16,7 @@ import {
   ScrollView,
   ActionSheetIOS,
   PickerIOS, Picker, StatusBar, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet
-} from 'hairfolio/src/helpers.js';
+} from 'Hairfolio/src/helpers.js';
 
 import StarGiversStore from 'stores/StarGiversStore'
 import CommentsStore from 'stores/CommentsStore'
@@ -28,7 +28,7 @@ import Communications from 'react-native-communications';
 import {starGivers, comments, appStack} from '../../routes';
 var KDSocialShare = require('NativeModules').KDSocialShare;
 
-import * as routes from 'hairfolio/src/routes';
+import * as routes from 'Hairfolio/src/routes';
 
 import PostDetailStore from 'stores/PostDetailStore'
 

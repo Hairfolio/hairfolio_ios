@@ -9,7 +9,7 @@ import {user, users} from '../selectors/user';
 import {environment} from '../selectors/environment';
 import {COLORS, FONTS, SCALE} from '../style';
 import UserProfileNavigationBar from '../components/UserProfile/Bar';
-import Service from 'hairfolio/src/services/index.js'
+import Service from 'Hairfolio/src/services/index.js'
 
 import WrappingScrollView from 'components/WrappingScrollView.js'
 
@@ -27,11 +27,11 @@ import Channel from '../components/Channel/Channel';
 import {registrationActions} from '../actions/registration';
 import MessageDetailsStore from 'stores/MessageDetailsStore';
 
-import * as routes from 'hairfolio/src/routes.js'
+import * as routes from 'Hairfolio/src/routes.js'
 
 import {
   h
-} from 'hairfolio/src/helpers.js';
+} from 'Hairfolio/src/helpers.js';
 
 import {STATUSBAR_HEIGHT} from '../constants';
 

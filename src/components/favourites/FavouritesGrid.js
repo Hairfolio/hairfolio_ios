@@ -20,7 +20,7 @@ import {
   ScrollView,
   ListView,
   PickerIOS, Picker, StatusBar, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet
-} from 'hairfolio/src/helpers.js';
+} from 'Hairfolio/src/helpers.js';
 
 import FavoriteStore from 'stores/FavoriteStore';
 import GridPost from 'components/favourites/GridPost'

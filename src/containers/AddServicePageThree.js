@@ -14,7 +14,7 @@ import {
   Modal,
   ScrollView,
   PickerIOS, StatusBar, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet
-} from 'hairfolio/src/helpers.js';
+} from 'Hairfolio/src/helpers.js';
 
 import SlimHeader from 'components/SlimHeader.js'
 import AlbumStore from 'stores/AlbumStore.js'
@@ -242,7 +242,7 @@ export default class AddServicePageThree extends Component {
     let store = AddServiceStore;
 
     return (
-      <View style={{paddingTop: 20, backgroundColor: 'white'}}>
+      <View style={{paddingTop: 20, backgroundColor: 'white', flex: 1}}>
         <SlimHeader
           leftText='Back'
           titleWidth={140}

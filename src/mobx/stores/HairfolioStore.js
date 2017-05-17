@@ -10,9 +10,9 @@ import {v4} from 'uuid';
 
 
 import ServiceBackend from 'backend/ServiceBackend.js'
-import Service from 'hairfolio/src/services/index.js'
+import Service from 'Hairfolio/src/services/index.js'
 
-import {_, moment, React, Text} from 'hairfolio/src/helpers';
+import {_, moment, React, Text} from 'Hairfolio/src/helpers';
 
 class Hairfolio {
 
@@ -48,10 +48,7 @@ export class HairfolioStore {
   constructor() {
   }
 
-  async addHairfolio() {
-
-    let name  = this.textInput._lastNativeText;
-
+  async addHairfolio(name) {
     if (name.length > 0) {
       let res = await ServiceBackend.post('folios', {folio: {name: name}});
       this.hairfolios.push(new Hairfolio(res.folio));
@@ -99,4 +96,3 @@ export class HairfolioStore {
 const store = new HairfolioStore();
 
 export default store;
-

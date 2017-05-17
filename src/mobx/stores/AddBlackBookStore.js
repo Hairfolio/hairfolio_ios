@@ -4,11 +4,11 @@ import Camera from 'react-native-camera';
 import Picture from 'stores/Picture.js'
 import ServiceBackend from 'backend/ServiceBackend.js'
 
-import {_, v4, moment, React, Text} from 'hairfolio/src/helpers';
+import {_, v4, moment, React, Text} from 'Hairfolio/src/helpers';
 
 import User from 'stores/User.js'
 
-import * as routes from 'hairfolio/src/routes.js'
+import * as routes from 'Hairfolio/src/routes.js'
 
 class SelectableUser {
   @observable user;

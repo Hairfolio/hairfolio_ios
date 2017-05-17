@@ -1,11 +1,11 @@
 import {observable, computed, action} from 'mobx';
-import {_, jpg, v4, Text} from 'hairfolio/src/helpers';
+import {_, jpg, v4, Text} from 'Hairfolio/src/helpers';
 
 import LinkTag from 'stores/tags/LinkTag.js'
 import HashTag from 'stores/tags/HashTag.js'
 import ServiceTag from 'stores/tags/ServiceTag.js'
 import {ImageEditor} from 'react-native';
-import Service from 'hairfolio/src/services/index.js'
+import Service from 'Hairfolio/src/services/index.js'
 import ImageResizer from 'react-native-image-resizer';
 import RNFetchBlob from 'react-native-fetch-blob'
 
@@ -32,7 +32,7 @@ export default class Picture {
   }
 
   async resizeImage(uri) {
-    return ImageResizer.createResizedImage(uri, 2 * 250, 2 * 250, 'JPEG', 90, 0, null);
+    return ImageResizer.createResizedImage(uri, 2 * 250, 2 * 250, 'JPEG', 90, 0);
   }
 
   async cropImage(uri) {
@@ -112,7 +112,7 @@ export default class Picture {
 
   async uploadPicture() {
     // TODO just for testing whether this is the course
-    let uri = await this.resizeImage(this.source.uri);
+    const uri = await ImageResizer.createResizedImage(this.source.uri, 1024, 1024, 'JPEG', 100, 0);
 
     let formdata = new FormData();
     formdata.append('file', {

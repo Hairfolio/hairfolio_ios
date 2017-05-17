@@ -15,7 +15,7 @@ import Icon from './Icon';
 
 import {
   windowWidth
-} from 'hairfolio/src/helpers.js';
+} from 'Hairfolio/src/helpers.js';
 
 export default class Picker extends PureComponent {
   static propTypes = {

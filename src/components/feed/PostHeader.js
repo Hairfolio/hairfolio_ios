@@ -15,9 +15,9 @@ import {
   Modal,
   ScrollView,
   PickerIOS, Picker, StatusBar, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet
-} from 'hairfolio/src/helpers.js';
+} from 'Hairfolio/src/helpers.js';
 
-import {profile, profileExternal, appStack} from 'hairfolio/src/routes';
+import {profile, profileExternal, appStack} from 'Hairfolio/src/routes';
 
 import PostDetailStore from 'stores/PostDetailStore.js'
 import TagPostStore from 'stores/TagPostStore.js'

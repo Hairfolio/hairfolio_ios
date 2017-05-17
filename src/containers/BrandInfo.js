@@ -11,7 +11,7 @@ import NavigationSetting from '../navigation/NavigationSetting';
 
 import states from '../states.json';
 
-import Service from 'hairfolio/src/services/index.js'
+import Service from 'Hairfolio/src/services/index.js'
 
 import MultilineTextInput from '../components/Form/MultilineTextInput';
 import InlineTextInput from '../components/Form/InlineTextInput';

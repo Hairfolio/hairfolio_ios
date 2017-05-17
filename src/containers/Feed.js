@@ -38,7 +38,7 @@ import {
   ScrollView,
   ActivityIndicator,
   PickerIOS, Picker, StatusBar, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet
-} from 'hairfolio/src/helpers.js';
+} from 'Hairfolio/src/helpers.js';
 
 
 import NewMessageStore from 'stores/NewMessageStore.js'
@@ -144,7 +144,7 @@ export default class Feed extends PureComponent {
 
     if (store.isLoading) {
       content = (
-        <View style={{height: h(188), justifyContent: 'center'}}>
+        <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
           <ActivityIndicator size='large' />
         </View>
       );

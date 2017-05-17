@@ -12,7 +12,7 @@ import connect from '../lib/connect';
 import {app} from '../selectors/app';
 import {post} from '../selectors/post';
 import {postActions} from '../actions/post';
-import {COLORS, FONTS, h, SCALE} from 'hairfolio/src/style';
+import {COLORS, FONTS, h, SCALE} from 'Hairfolio/src/style';
 import NavigationSetting from '../navigation/NavigationSetting';
 import {observer} from 'mobx-react/native';
 import autobind from 'autobind-decorator'
@@ -25,7 +25,7 @@ import LoadingPage from 'components/LoadingPage'
 
 import {appStack, gallery, postFilter, albumPage} from '../routes';
 
-import * as routes from 'hairfolio/src/routes.js'
+import * as routes from 'Hairfolio/src/routes.js'
 
 import MessageDetailsStore from 'stores/MessageDetailsStore.js';
 
@@ -37,7 +37,7 @@ import BlackHeader from 'components/BlackHeader.js'
 import WriteMessageStore from 'stores/WriteMessageStore.js'
 
 
-import Swipeout from 'hairfolio/react-native-swipeout/index.js';
+import Swipeout from 'Hairfolio/react-native-swipeout/index.js';
 ;
 
 import {SelectPeople, ToInput} from 'components/SelectPeople.js'

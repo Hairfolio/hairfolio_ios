@@ -1,5 +1,5 @@
-#import "RCTBridge.h"
-
+#import <React/RCTBridgeModule.h>
+#include <UIKit/UIKit.h>
 
 @interface RNInstagramShare : NSObject <RCTBridgeModule>
 

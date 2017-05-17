@@ -101,7 +101,7 @@ export default class KeyboardScrollView extends PureComponent {
   render() {
     return (
       <ScrollView
-        keyboardShouldPersistTaps
+        keyboardShouldPersistTaps="always"
         {...this.props}
         // ensure compatibility with KeyboardPaddingView
         onLayout={(e) => {

@@ -4,12 +4,12 @@ import Camera from 'react-native-camera';
 import Picture from 'stores/Picture.js'
 import ServiceBackend from 'backend/ServiceBackend.js'
 
-import {_, v4, jpg, getUserId,  moment, React, Text} from 'hairfolio/src/helpers';
+import {_, v4, jpg, getUserId,  moment, React, Text} from 'Hairfolio/src/helpers';
 
 import User from 'stores/User.js'
-import Service from 'hairfolio/src/services/index.js'
+import Service from 'Hairfolio/src/services/index.js'
 
-import * as routes from 'hairfolio/src/routes.js'
+import * as routes from 'Hairfolio/src/routes.js'
 
 class Message {
   @observable user;

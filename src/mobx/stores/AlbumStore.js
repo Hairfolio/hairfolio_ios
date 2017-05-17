@@ -23,7 +23,7 @@ class Album {
   constructor(title, count, uri) {
     this.title = title;
     this.count = count;
-    // this.uri = uri.substring(0, 36);
+    uri = uri.substring(0, 36);
     this.uri = `assets-library://asset/asset.JPG?id=${uri}&ext=JPG`;
     this.key = albumCounter++;
   }
@@ -50,6 +50,3 @@ class AlbumStore {
 const albumStore = new AlbumStore();
 
 export default albumStore;
-
-
-

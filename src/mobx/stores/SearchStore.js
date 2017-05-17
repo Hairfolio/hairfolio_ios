@@ -6,13 +6,13 @@ import FilterStore from 'stores/FilterStore.js'
 import Picture from 'stores/Picture.js'
 
 import ServiceBackend from 'backend/ServiceBackend.js'
-import Service from 'hairfolio/src/services/index.js'
+import Service from 'Hairfolio/src/services/index.js'
 
 let PhotoAlbum = NativeModules.PhotoAlbum;
 
 import {v4} from 'uuid';
 
-import {_, moment, React, Text, StatusBar} from 'hairfolio/src/helpers';
+import {_, moment, React, Text, StatusBar} from 'Hairfolio/src/helpers';
 
 import Post from 'stores/Post.js'
 

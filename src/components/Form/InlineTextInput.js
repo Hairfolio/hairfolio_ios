@@ -70,7 +70,6 @@ export default class FormInlineTextInput extends PureComponent {
           paddingLeft: SCALE.w(26),
           paddingRight: SCALE.w(26),
           height: SCALE.h(80),
-          flex: 1,
           borderWidth: 0,
           textAlignVertical: 'center',
           fontFamily: FONTS.ROMAN,

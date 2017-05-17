@@ -2,14 +2,14 @@ import {observable, computed, action} from 'mobx';
 
 import ServiceBackend from 'backend/ServiceBackend.js'
 
-import {_, moment, React, Text} from 'hairfolio/src/helpers';
+import {_, moment, React, Text} from 'Hairfolio/src/helpers';
 
 import PostListStore from 'stores/PostListStore'
 
 
 import {PostGridStore} from 'stores/PostStore'
 
-import * as routes from 'hairfolio/src/routes';
+import * as routes from 'Hairfolio/src/routes';
 
 class TagPostModel extends PostGridStore {
   @observable title = '#myTag'

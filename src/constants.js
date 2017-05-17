@@ -1,4 +1,5 @@
-import {Navigator, Platform, Dimensions, NativeModules} from 'react-native';
+import {Platform, Dimensions, NativeModules} from 'react-native';
+import {Navigator} from 'react-native-deprecated-custom-components';
 import {SCALE} from './style';
 
 export const EMPTY = 'EMPTY';

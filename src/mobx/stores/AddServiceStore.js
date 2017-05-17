@@ -7,7 +7,7 @@ let PhotoAlbum = NativeModules.PhotoAlbum;
 
 import {v4} from 'uuid';
 
-import {_, Alert} from 'hairfolio/src/helpers';
+import {_, Alert} from 'Hairfolio/src/helpers';
 
 class SimpleSelector {
   @observable data=[];

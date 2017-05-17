@@ -15,7 +15,8 @@
     "setTimeout": true,
     "requestAnimationFrame": true,
     "__DEV__": true,
-    "process": true
+    "process": true,
+    "Promise": true
   },
   "rules": {
     "brace-style": [1, "1tbs", {"allowSingleLine": true}],

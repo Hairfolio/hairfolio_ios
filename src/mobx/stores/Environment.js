@@ -1,11 +1,11 @@
 import {observable, computed, action} from 'mobx';
-import {_, v4, Text} from 'hairfolio/src/helpers';
+import {_, v4, Text} from 'Hairfolio/src/helpers';
 
 import LinkTag from 'stores/tags/LinkTag.js'
 import HashTag from 'stores/tags/HashTag.js'
 import ServiceTag from 'stores/tags/ServiceTag.js'
 import {ImageEditor} from 'react-native';
-import Service from 'hairfolio/src/services/index.js'
+import Service from 'Hairfolio/src/services/index.js'
 import ImageResizer from 'react-native-image-resizer';
 
 export default class Environment {

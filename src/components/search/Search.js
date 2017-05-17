@@ -20,9 +20,9 @@ import {
   Modal,
   ScrollView,
   PickerIOS, Picker, StatusBar, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet
-} from 'hairfolio/src/helpers.js';
+} from 'Hairfolio/src/helpers.js';
 
-import {BOTTOMBAR_HEIGHT, STATUSBAR_HEIGHT} from 'hairfolio/src/constants.js';
+import {BOTTOMBAR_HEIGHT, STATUSBAR_HEIGHT} from 'Hairfolio/src/constants.js';
 
 import TagPostStore from 'stores/TagPostStore'
 
@@ -47,7 +47,7 @@ const MyFooter = observer(({store}) => {
   }
 });
 
-import * as routes from 'hairfolio/src/routes.js'
+import * as routes from 'Hairfolio/src/routes.js'
 
 const TagFooter = observer(({store}) => {
 
@@ -253,8 +253,8 @@ const Search = observer(() => {
   return (
     <ListView
       style={{
-        paddingTop: 20,
-        height: windowHeight - 20 - BOTTOMBAR_HEIGHT
+        marginTop: 20,
+        flex: 1,
       }}
       bounces={false}
       enableEmptySections

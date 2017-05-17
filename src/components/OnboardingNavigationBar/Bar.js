@@ -1,5 +1,6 @@
 import React from 'react';
-import {Navigator, View} from 'react-native';
+import {Navigator} from 'react-native-deprecated-custom-components';
+import {View} from 'react-native';
 import ChannelResponder from '../Channel/ChannelResponder';
 import TopNavigationButton from './TopNavigationButton';
 import PureComponent from '../PureComponent';

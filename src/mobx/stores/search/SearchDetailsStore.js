@@ -81,8 +81,8 @@ class SearchNearbyStore extends SearchUserFollowStore {
 
     let url = `salons?latitude=${position.coords.latitude}&longitude=${position.coords.longitude}`;
 
-    if (name && name.length == '') {
-      url += '&q=${name}';
+    if (name && name.length != '') {
+      url += `&q=${name}`;
     }
 
     return await ServiceBackend.get(url);

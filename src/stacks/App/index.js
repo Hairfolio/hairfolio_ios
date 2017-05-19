@@ -71,6 +71,10 @@ export default class AppStack extends PureComponent {
     this._nav.jumpTo(profileExternal);
   }
 
+  goToFeed() {
+    this._nav.jumpTo(feed);
+  }
+
   onLogout() {
     InteractionManager.runAfterInteractions(() => this._nav.jumpTo(search));
   }

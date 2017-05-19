@@ -16,7 +16,6 @@ let myfetch = function(input, opts) {
   });
 }
 
-
 class ServiceBackend extends Backend {
   async getServices() {
     return (await this.get('services')).services;
@@ -126,6 +125,7 @@ class ServiceBackend extends Backend {
         FeedStore.load();
         // SearchStore.refresh();
 
+        routes.appStack.scene().goToFeed();
         window.navigators[1].jumpTo(routes.createPost)
         window.navigators[0].jumpTo(routes.appStack);
         setTimeout(() => CreatePostStore.reset(), 1000);

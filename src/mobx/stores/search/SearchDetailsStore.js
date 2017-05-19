@@ -79,12 +79,21 @@ class SearchNearbyStore extends SearchUserFollowStore {
   async backendSearch(name) {
     let position = await this.getUserLocation();
 
-    let url = `salons?latitude=${position.coords.latitude}&longitude=${position.coords.longitude}&q=${name}`;
+    let url = `salons?latitude=${position.coords.latitude}&longitude=${position.coords.longitude}`;
 
-
+    if (name && name.length == '') {
+      url += '&q=${name}';
+    }
 
     return await ServiceBackend.get(url);
   }
+
+  reset() {
+    console.log('mysearch');
+    this.wasLoaded = false;
+    this.search('');
+  }
+
 }
 
 class Tag {

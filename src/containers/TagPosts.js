@@ -38,7 +38,9 @@ const Content = observer(({store}) => {
     }}>
       <WhiteHeader
         onLeft={() => store.myBack()}
-        title={store.title} />
+        title={store.title}
+        numberOfLines={1}
+      />
       <GridList
         onBack={
           () => window.navigators[0].jumpTo(routes.tagPosts)

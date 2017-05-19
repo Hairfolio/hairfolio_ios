@@ -16,7 +16,7 @@ import {
   PickerIOS, Picker, StatusBar, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet
 } from 'Hairfolio/src/helpers.js';
 
-const WhiteHeader = observer(({title, onLeft, onRenderRight}) => {
+const WhiteHeader = observer(({title, numberOfLines, onLeft, onRenderRight}) => {
 
   let renderRight = () => null;
   if (onRenderRight) {
@@ -68,6 +68,7 @@ const WhiteHeader = observer(({title, onLeft, onRenderRight}) => {
           color: '#393939',
           textAlign: 'center',
         }}
+        numberOfLines={numberOfLines}
       >
         {title}
       </Text>

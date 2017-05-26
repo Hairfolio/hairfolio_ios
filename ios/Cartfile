@@ -1,0 +1,6 @@
+# facebook sdk
+github "facebook/facebook-ios-sdk" "sdk-version-4.21.0"
+
+# pintrest dependencies
+github "AFNetworking/AFNetworking"
+github "soffes/SAMKeychain"

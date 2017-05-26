@@ -1,0 +1,6 @@
+apple_id ENV["APPLE_ID"]
+
+app_identifier "com.hairfolio.hairfolio"
+
+team_id "NBCQ5976BP" # Developer Portal Team ID
+itc_team_id "118181998"

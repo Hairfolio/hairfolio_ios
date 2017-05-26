@@ -19,15 +19,24 @@ platform :ios do
   before_all do
   end
 
-  desc "Build an ipa"
-  lane :build do |options|
+  desc "Bootstrap the build"
+  lane :bootstrap do |options|
+    yarn
     carthage(
+      project_directory: "ios",
       command: "bootstrap",
       platform: "iOS",
       cache_builds: true
     )
-    increment_build_number
+  end
+
+  desc "Build an ipa"
+  lane :build do |options|
+    increment_build_number(
+      xcodeproj: './ios/Hairfolio.xcodeproj'
+    )
     gym(
+      project: './ios/Hairfolio.xcodeproj',
       scheme: "hairfolio",
       clean: true,
       silent: true,
@@ -37,9 +46,6 @@ platform :ios do
 
   desc "Submit a new Beta Build to Apple TestFlight"
   lane :beta do
-    increment_version_number(
-      bump_type: "patch" # Automatically increment patch version number
-    )
     build
     pilot
   end
@@ -48,9 +54,6 @@ platform :ios do
   lane :release do
     # match(type: "appstore")
     # snapshot
-    increment_version_number(
-      bump_type: "minor" # Automatically increment patch version number
-    )
     build
     deliver(force: true)
     # frameit

@@ -1,5 +1,0 @@
-app_identifier "com.hairfolio.hairfolio" # The bundle identifier of your app
-apple_id "kevin@oneill.id.au" # Your Apple email address
-
-team_id "NBCQ5976BP" # Developer Portal Team ID
-itc_team_id "118181998"

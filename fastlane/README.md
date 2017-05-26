@@ -30,6 +30,11 @@ xcode-select --install
 
 # Available Actions
 ## iOS
+### ios bootstrap
+```
+fastlane ios bootstrap
+```
+Bootstrap the build
 ### ios build
 ```
 fastlane ios build

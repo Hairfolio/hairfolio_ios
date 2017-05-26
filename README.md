@@ -61,5 +61,40 @@ Project structure :
 cd node_modules && ln -nsf ../app
 
 
-Refrences:
+References:
 https://dev.twitter.com/rest/reference/post/statuses/update
+
+
+
+### Getting started
+
+#### Install the basics.
+
+```sh
+> brew update
+> brew install carthage ruby yarn fastlane
+> gem install bundle
+```
+
+### Prepare to build
+
+Create a `.env` file containing your authorised apple id.
+
+```
+APPLE_ID=bob@example.com
+```
+
+Bootstrap the dependencies
+
+```sh
+> bundle install
+> fastlane bootstrap
+```
+
+### Build Targets
+
+Once you're bootstrapped the three main commands are:
+
+* `fastlane build` bumps the build number and builds a local .ipa
+* `fastlane beta` bumps the build number, builds the ipa and deploys to test flight
+* `fastlane release` bumps the build number, builds the ipa and submits for release

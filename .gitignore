@@ -48,11 +48,13 @@ buck-out/
 # For more information about the recommended setup visit:
 # https://github.com/fastlane/fastlane/blob/master/fastlane/docs/Gitignore.md
 
-fastlane/report.xml
-fastlane/Preview.html
-fastlane/screenshots
+ios/fastlane/report.xml
+io/fastlane/Preview.html
+io/fastlane/screenshots
 
 # Carthage
 
 ios/Carthage
+
+# dSYM
 Hairfolio.app.dSYM.zip

@@ -81,7 +81,14 @@
 		<key>NSAllowsArbitraryLoadsInWebContent</key>
 		<true/>
 		<key>NSExceptionDomains</key>
-		<dict>
+    <dict>
+      <key>pinit</key>
+      <dict>
+        <key>NSIncludesSubdomains</key>
+        <true/>
+        <key>NSThirdPartyExceptionRequiresForwardSecrecy</key>
+        <false/>
+      </dict>
 			<key>cloudinary.com</key>
 			<dict>
 				<key>NSExceptionAllowsInsecureHTTPLoads</key>

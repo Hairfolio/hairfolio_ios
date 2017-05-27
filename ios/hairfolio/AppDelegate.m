@@ -58,9 +58,7 @@
     else if (height == 667) launchImageName = @"Default-667h@2x.png"; // iPhone 6
     else if (height == 736) launchImageName = @"Default-736h@3x.png"; // iPhone 6+
   } else if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-//    CGFloat scale = RCTScreenScale();
-//    if (scale == 1) launchImageName = @"LaunchImage-700-Portrait~ipad.png"; // iPad
-//    else if (scale == 2) launchImageName = @"LaunchImage-700-Portrait@2x~ipad.png"; // Retina iPad
+
   }
   
   UIImage *image = [UIImage imageNamed:launchImageName];
@@ -73,25 +71,6 @@
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
   return YES;
-//  self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
-//  UIViewController *rootViewController = [UIViewController new];
-//  rootViewController.view = rootView;
-//  self.window.rootViewController = rootViewController;
-//  [self.window makeKeyAndVisible];
-//  return YES;
-}
-
-- (BOOL)application:(UIApplication *)application
-            openURL:(NSURL *)url
-            options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options {
-  
-  BOOL handled = [[FBSDKApplicationDelegate sharedInstance] application:application
-                                                                openURL:url
-                                                      sourceApplication:options[UIApplicationOpenURLOptionsSourceApplicationKey]
-                                                             annotation:options[UIApplicationOpenURLOptionsAnnotationKey]
-                  ];
-  // Add any custom logic here.
-  return handled;
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {

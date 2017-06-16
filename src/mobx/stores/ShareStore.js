@@ -376,7 +376,7 @@ class FacebookShareButton extends ShareButtonStore {
       contentType: 'link',
       contentUrl: 'http://hairfolioapp.com/',
       contentTitle: 'Hairfolio',
-      contentDescription: 'Hairfolio is nice :)',
+      contentDescription: '',
       imageUrl: imageUrl
     };
 
@@ -407,7 +407,9 @@ class FacebookShareButton extends ShareButtonStore {
 
     let token = await AccessToken.getCurrentAccessToken();
 
-    if (token == null) {
+    window.token = token;
+
+    if (token == null || !token.permissions.includes('publish_actions')) {
       let result = await LoginManager.logInWithPublishPermissions(['publish_actions']);
 
       if (!result.isCancelled) {

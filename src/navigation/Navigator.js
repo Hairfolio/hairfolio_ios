@@ -122,7 +122,7 @@ export default class CustomNavigator extends PureComponent {
       configureScene={(route, routeStack) => {
         // console.log('route', route, routeStack);
         // console.log('route', routeStack);
-        console.log('route', 'changed');
+        // console.log('route', 'changed');
         return route.configureScene();
       }}
       renderScene={(route, navigator) => {

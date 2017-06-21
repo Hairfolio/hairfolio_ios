@@ -15,12 +15,15 @@ import {
   ScrollView,
   WebView,
   ActivityIndicator,
+
   PickerIOS, Picker, StatusBar, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet
 } from 'Hairfolio/src/helpers.js';
 
 import SlimHeader from 'components/SlimHeader.js'
 import AlbumStore from 'stores/AlbumStore.js'
 import CreatePostStore from 'stores/CreatePostStore.js'
+
+import { FlatList} from 'react-native'
 
 import {appStack, createPost, onPress, postFilter, albumPage, addServiceTwo, gallery} from '../routes';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
@@ -145,17 +148,41 @@ const CatalogResults = observer(({catalog}) => {
   if (catalog.items == null) {
     return <View />;
   } else if (catalog.items.length == 0) {
-    return <View>
-      <Text style={{flex: 1, textAlign: 'center', fontSize: h(40), marginTop: 25}} > No results found </Text>
-    </View>
+    return (
+      <View>
+        <Text style={{flex: 1, textAlign: 'center', fontSize: h(40), marginTop: 25}} > No results found </Text>
+      </View>
+    )
   }
 
-  return <ScrollView bounces={false}>
-    {catalog.items.map(el =>
-        <CatalogResultItem key={el.key} item={el} />
-    )}
-  </ScrollView>
+  return (
+    <FlatList
+      data={catalog.items}
+      renderItem={({item}) => <CatalogResultItem key={item.key} item={item} /> }
 
+
+      onEndReached={() => {
+        catalog.loadNextPage();
+      }}
+
+      ListFooterComponent={() => {
+        if (catalog.nextPage != null) {
+          return (
+            <View
+              style={{
+                height: h(172),
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}>
+              <ActivityIndicator size='large' />
+            </View>
+          );
+        } else {
+          return <View />;
+        }
+      }}
+    />
+  )
 });
 
 const CatalogPage = observer(() => {

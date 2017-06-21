@@ -34,24 +34,61 @@ class Catalog {
   @observable items = null;
   @observable isLoading = false;
 
+
+  @observable nextPage;
+
   async search() {
     let term = this.searchText;
+
+    this.items = [];
     this.isLoading = true;
+    this.isLoadingNextPage = false;
 
-    try {
+    this.nextPage = 1;
 
-      let results = await ServiceBackend.getCatalogItems(term);
-      results = results.filter(i => i.cloudinary_url && i.cloudinary_url.length > 0);
+    await this.loadNextPage();
 
-      this.items = results.map(n => new CatalogItem(n));
+    this.isLoading = false;
 
-    } catch(error) {
-      Alert.alert('Query failed', 'The query failed, please check your internet conection and try again');
-    } finally {
-      this.isLoading = false;
+
+
+
+
+
+
+
+
+
+
+  }
+
+  async loadNextPage() {
+    console.log('load next page');
+    if (!this.isLoadingNextPage && this.nextPage != null) {
+      console.log('loadNextPage', this.nextPage);
+      this.isLoadingNextPage = true;
+      let res = (await ServiceBackend.get(`products?q=${this.searchText}&page=${this.nextPage}`));
+
+      window.queryRes = res;
+      console.log('query res', res);
+
+      let {products, meta} = res;
+
+
+      products = products.filter(i => i.cloudinary_url && i.cloudinary_url.length > 0);
+
+
+      for (let a = 0; a < products.length; a++)  {
+        let item = new CatalogItem(products[a]);
+        this.items.push(item);
+      }
+
+      this.nextPage = meta.next_page
+      this.isLoadingNextPage = false;
     }
   }
 }
+
 
 class Browse {
   @observable title;

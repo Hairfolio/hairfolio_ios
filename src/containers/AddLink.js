@@ -288,7 +288,6 @@ const ManualPage = observer(() => {
 
       <TouchableOpacity
         style={{
-          flex: 1,
           marginTop: 30,
           height: h(86),
           backgroundColor: '#3E3E3E',

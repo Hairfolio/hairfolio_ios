@@ -284,7 +284,10 @@ const ShareSummary = observer(() => {
   );
 });
 
-const ShareButton = observer(({color, store, isLeft = true, imageSource, text}) => {
+const ShareButton = observer(({color, hide, store, isLeft = true, imageSource, text}) => {
+
+  if (hide) { return <View style={{flex: 1 }} />}
+
   return (
     <TouchableWithoutFeedback
       onPress={() => store.enableDisable()}
@@ -377,11 +380,6 @@ const ShareNetworks = observer(() => {
           flexDirection: 'row'
         }}
       >
-        <ShareButton
-          text='Pinterest'
-          store={ShareStore.sharePinterestStore}
-          color='#BD081C'
-          imageSource={require('img/share_pinterest.png')} />
 
         <ShareButton
           text='Facebook'
@@ -389,6 +387,15 @@ const ShareNetworks = observer(() => {
           isLeft={false}
           color='#3B5997'
           imageSource={require('img/share_facebook.png')} />
+
+
+        <ShareButton
+          text='Pinterest'
+          store={ShareStore.sharePinterestStore}
+          color='#BD081C'
+          hide
+          imageSource={require('img/share_pinterest.png')} />
+
       </View>
 
     </View>

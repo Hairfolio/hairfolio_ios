@@ -7,7 +7,7 @@ let PhotoAlbum = NativeModules.PhotoAlbum;
 
 import {v4} from 'uuid';
 
-import {_, Alert} from 'Hairfolio/src/helpers';
+import {_, Alert, convertFraction, ozConv} from 'Hairfolio/src/helpers';
 
 class SimpleSelector {
   @observable data=[];
@@ -139,6 +139,25 @@ class Selector {
 
 }
 
+
+
+let getPossibleValues = (unit, space = true) => {
+
+  let ozValue;
+
+  if (space) {
+    if (unit == 'g') {
+      return _.times(500, (n) => `${n + 1} ${unit}`);
+    } else {
+      return _.times(8 * 8, (n) => `${ozConv(n + 1)} ${unit}`);
+    }
+  } else if (unit == 'g') {
+    return _.times(500, (n) => `${n + 1}${unit}`);
+  } else {
+    return _.times(8 * 8, (n) => `${ozConv(n + 1)}/8${unit}`);
+  }
+}
+
 class ColorField {
   @observable name;
   @observable color;
@@ -169,20 +188,24 @@ class ColorField {
     this.isSelected = false;
     this.mainStore = mainStore;
     this.isSelected = isSelected;
-    this.amount = amount ? amount : 0;
+    this.amount = amount ? amount : 1;
+
+    let data = [];
 
     this.amountSelector2 = new SimpleSelector(
-      _.times(301, (n) => `${n} ${unit}`),
-      amount ? `${amount} ${unit}` : `0 ${unit}`
+      getPossibleValues(unit, true),
+      getPossibleValues(unit, true)[((amount - 1) ? (amount - 1) : 0)]
     );
 
     this.amountSelector = new Selector(
       mainStore,
-      amount ? `${amount}${unit}` : `0${unit}`,
-      _.times(100, (n) => `${n + 1}${unit}`),
+      getPossibleValues(unit, false)[((amount - 1) ? (amount - 1) : 0)],
+      getPossibleValues(unit, false),
       true,
       'Amount'
     );
+
+    this.unit = unit;
   }
 
   @computed get borderStyle() {
@@ -236,7 +259,7 @@ class ColorField {
 
   toJSON() {
 
-    let amount = parseInt(this.amountSelector2.selectedValue.split(' ')[0], 10);
+    let amount = convertFraction(this.unit, this.amountSelector2.selectedValue);
 
     return {
       amount: amount,
@@ -311,7 +334,7 @@ class AddServiceStore {
   );
 
   @observable vlWeightSelector = new SimpleSelector(
-    _.times(301, (n) => `${n} g`),
+    _.times(501, (n) => `${n} g`),
     '0 g'
   );
 
@@ -377,15 +400,15 @@ class AddServiceStore {
     this.colorGrid.setColors(res, unit);
 
     this.vlWeightSelector = new SimpleSelector(
-      _.times(301, (n) => `${n} ${unit}`),
-      `0 ${unit}`
+      getPossibleValues(unit, true),
+      getPossibleValues(unit, true)[0]
     );
 
     if (this.initStore) {
       if (this.initStore.developerAmount) {
         this.vlWeightSelector = new SimpleSelector(
-          _.times(301, (n) => `${n} ${unit}`),
-          `${this.initStore.developerAmount} ${unit}`
+          getPossibleValues(unit, true),
+          getPossibleValues(unit, true)[this.initStore.developerAmount - 1]
         );
 
       }

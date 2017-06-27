@@ -40,6 +40,56 @@ let s = (el) => (a) => el = a;
 
 let jpg = (url) => url.substr(0, url.lastIndexOf('.')) + '.jpg';
 
+let ozConv = (n) => {
+  if (n == 0) {
+    return '0';
+  } else {
+    let whole = Math.floor(n / 8);
+    let rem = n % 8;
+    let down = 8;
+
+    if (rem == 0) {
+      return `${whole}`;
+    }
+
+    for (let k = 7; k > 1; k--) {
+      if (rem % k == 0 && down % k == 0) {
+        rem = Math.floor(rem / k);
+        down = Math.floor(down / k);
+      }
+    }
+
+    if (whole == 0) {
+      return `${rem}/${down}`;
+    }
+
+    return `${whole} ${rem}/${down}`;
+  }
+};
+
+let convertFraction = (unit, amount) => {
+
+  if(unit == 'oz') {
+    let help = amount.replace(' oz', '').split(' ');
+
+    let num = 0;
+
+    for (let el of help) {
+      let s = el.split('/');
+      if (s.length == 1) {
+        num += parseInt(el, 10) * 8;
+      } else {
+        num += parseInt(s[0], 10) * (Math.floor(8 / parseInt(s[1], 10)));
+      }
+    }
+
+    return num;
+  } else {
+    return parseInt(amount.split(' ')[0], 10);
+  }
+}
+
+
 export {
   _, // lodash
   observer, // mobx
@@ -49,6 +99,7 @@ export {
   autobind,
   React, // react
   Component,
+  convertFraction,
   AlertIOS,
   Alert,
   COLORS,
@@ -56,6 +107,7 @@ export {
   windowHeight,
   moment,
   v4,
+  ozConv,
   // mobx
   observable, computed, action,
   Linking,

@@ -97,6 +97,8 @@ class ServiceBackend extends Backend {
       CreatePostStore.loadingText = 'Uploading pictures ..';
       let data = await CreatePostStore.gallery.toJSON();
 
+      window.postData = data;
+
 
       CreatePostStore.loadingText = 'Publishing the post';
 
@@ -104,10 +106,13 @@ class ServiceBackend extends Backend {
 
       let res = await this.post('posts', data);
 
+      window.postRes = res;
+
       if (res.status != 201) {
         alert('A backend error occured: ' + JSON.stringify(res));
         alert('The data was : ' + JSON.stringify(data));
       } else {
+
 
         for (let hairfolio of  ShareStore.selectedHairfolios) {
           this.pinHairfolio(hairfolio, res.post);

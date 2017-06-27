@@ -1,5 +1,5 @@
 import {observable, computed, action} from 'mobx';
-import {_, v4, Text} from 'Hairfolio/src/helpers';
+import {_, v4, Text, convertFraction} from 'Hairfolio/src/helpers';
 
 export default class ServiceTag {
   constructor(x, y, obj) {
@@ -63,7 +63,7 @@ export default class ServiceTag {
 
 
       if (el.amountSelector2) {
-        amount = parseInt(el.amountSelector2.selectedValue.split(' ')[0], 10);
+        amount = convertFraction(this.unit, el.amountSelector2.selectedValue);
       }
 
       let colorId = el.id ? el.id : el.color.id;

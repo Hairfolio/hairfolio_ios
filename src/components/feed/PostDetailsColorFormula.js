@@ -15,7 +15,7 @@ import {
   Modal,
   getUserId,
   ScrollView,
-  PickerIOS, Picker, StatusBar, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet
+  PickerIOS, Picker, StatusBar, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet, ozConv
 } from 'Hairfolio/src/helpers.js';
 
 import LinearGradient from 'react-native-linear-gradient';
@@ -73,7 +73,7 @@ const ColorInfo = observer(({store, unit, textStyle, style}) => {
           }}
 
         >
-          {store.weight}{unit}
+          {unit == 'oz' ? ozConv(store.weight) : store.weight}{unit}
         </Text>
       </View>
       <LinearGradient

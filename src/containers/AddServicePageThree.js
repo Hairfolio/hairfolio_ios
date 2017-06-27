@@ -13,7 +13,8 @@ import {
   AlertIOS,
   Modal,
   ScrollView,
-  PickerIOS, StatusBar, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet
+  PickerIOS, StatusBar, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet,
+  convertFraction
 } from 'Hairfolio/src/helpers.js';
 
 import SlimHeader from 'components/SlimHeader.js'
@@ -256,6 +257,9 @@ export default class AddServicePageThree extends Component {
           rightText='Done'
           onRight={() => {
 
+            let unit = AddServiceStore.colorNameSelector.selectedData.unit;
+            let developerWeight =  convertFraction(unit, AddServiceStore.vlWeightSelector.selectedValue);
+
             let storeObj = {
               unit: AddServiceStore.colorNameSelector.selectedData.unit,
               service_id: AddServiceStore.serviceSelector.selectedData.id,
@@ -265,7 +269,7 @@ export default class AddServicePageThree extends Component {
               brand_name: AddServiceStore.brandSelector.selectedData.name,
               post_item_tag_colors: AddServiceStore.selectedColors,
               developer_volume: parseInt(AddServiceStore.vlSelector.selectedValue.split(' ')[0], 10),
-              developer_amount: parseInt(AddServiceStore.vlWeightSelector.selectedValue.split(' ')[0], 10),
+              developer_amount: developerWeight,
               developer_time: parseInt(AddServiceStore.selectedMinutes.split(' ')[0], 10)
             }
 

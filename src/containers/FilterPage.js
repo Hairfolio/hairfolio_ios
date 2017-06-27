@@ -46,7 +46,7 @@ const FilterImage = observer(({item}) => {
           style={{height: h(200), width: h(200)}}
           source={item.source}
         />
-        <Text style={{paddingTop: h(5), width: h(200), textAlign: 'center'}}>{item.filterName}</Text>
+        <Text style={{paddingTop: h(5), width: h(200), textAlign: 'center'}}>{item.displayName}</Text>
       </View>
     </TouchableWithoutFeedback>
 

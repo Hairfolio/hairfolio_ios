@@ -162,14 +162,18 @@ if (process.env.NODE_ENV == 'production') {
   ]
 }
 
+newFilters = newFilters.map((e, index) => {return {...e, displayName: index + 1}});
+
 class FilterImage {
 
   @observable source;
 
-  constructor(parent, originalSource, {name, params}) {
+  constructor(parent, originalSource, {name, displayName, params}) {
+    console.log('displayName', displayName);
     this.parent = parent;
     this.originalSource = originalSource;
     this.filterName = name;
+    this.displayName = displayName;
     this.isLoading = true;
     this.key = v4();
 

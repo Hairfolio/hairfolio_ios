@@ -6,6 +6,7 @@ import {
   FONTS,
   COLORS,
   autobind,
+  Alert,
   React, // react
   Component,
   windowWidth,
@@ -18,12 +19,17 @@ import {
   PickerIOS, Picker, StatusBar, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet
 } from 'Hairfolio/src/helpers.js';
 
+import ServiceBackend from 'backend/ServiceBackend.js'
+
+import globalStore from 'Hairfolio/src/store.js';
 import StarGiversStore from 'stores/StarGiversStore'
 import CommentsStore from 'stores/CommentsStore'
 
 import WriteMessageStore from 'stores/WriteMessageStore'
 
 import Communications from 'react-native-communications';
+
+import FeedStore from 'stores/FeedStore.js'
 
 import {starGivers, comments, appStack} from '../../routes';
 var KDSocialShare = require('NativeModules').KDSocialShare;
@@ -40,14 +46,24 @@ const PostActionButtons = observer(({post}) => {
     let imageLink =  post.pictures[0].source.uri;
 
     ActionSheetIOS.showActionSheetWithOptions({
-      options: ['Report', 'Cancel'],
-      destructiveButtonIndex: 0,
-      cancelButtonIndex: 1,
+      options: ['Report', 'Block User', 'Cancel'],
+      destructiveButtonIndex: 1,
+      cancelButtonIndex: 2,
     },
     (buttonIndex) => {
       if (buttonIndex == 0) {
         // report abuse
         Communications.email(['stephen@hairfolioapp.com'], null, null, 'Abusive Post', 'The post from  ' + post.creator.name + ', created on ' + post.createdTime + ' is abusive, please check. id: ' + post.id)
+      } else if (buttonIndex == 1) {
+
+        ServiceBackend.delete(`users/${post.creator.id}/follows`).then(() => {
+
+          Alert.alert('User Blocked', 'The user has been successfully blocked');
+
+          FeedStore.reset();
+          FeedStore.load();
+
+        });
       }
     });
   }

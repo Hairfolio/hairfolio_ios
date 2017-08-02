@@ -56,7 +56,7 @@ const PostActionButtons = observer(({post}) => {
         Communications.email(['stephen@hairfolioapp.com'], null, null, 'Abusive Post', 'The post from  ' + post.creator.name + ', created on ' + post.createdTime + ' is abusive, please check. id: ' + post.id)
       } else if (buttonIndex == 1) {
 
-        ServiceBackend.delete(`users/${post.creator.id}/follows`).then(() => {
+        ServiceBackend.post(`users/${post.creator.id}/blocks`).then(() => {
 
           Alert.alert('User Blocked', 'The user has been successfully blocked');
 

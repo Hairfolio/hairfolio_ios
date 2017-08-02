@@ -30,6 +30,7 @@ import WriteMessageStore from 'stores/WriteMessageStore'
 import Communications from 'react-native-communications';
 
 import FeedStore from 'stores/FeedStore.js'
+import SearchStore from 'stores/SearchStore.js';
 
 import {starGivers, comments, appStack} from '../../routes';
 var KDSocialShare = require('NativeModules').KDSocialShare;
@@ -62,6 +63,7 @@ const PostActionButtons = observer(({post}) => {
 
           FeedStore.reset();
           FeedStore.load();
+          SearchStore.reset();
 
         });
       }

@@ -18,7 +18,8 @@ const initialState = new (Record({
   services: new List([]),
   categories: new List([]),
   certificates: new List([]),
-  experiences: new List([])
+  experiences: new List([]),
+  experiencesNextPage: 1,
 }));
 
 const revive = environment => initialState.merge({
@@ -129,9 +130,13 @@ export default function registrationReducer(state = initialState, action) {
     }
 
     case registrationTypes.GET_EXPERIENCES_SUCCESS.toString(): {
+      let newExperiences = action.experiences;
+      let experiences = state.experiences || new List([]);
+      experiences = action.meta.current_page === 1 ? newExperiences : experiences.concat(newExperiences);
       return state.mergeDeep({
         experiencesState: READY,
-        experiences: action.experiences
+        experiences: experiences,
+        experiencesNextPage: action.meta.next_page
       });
     }
 

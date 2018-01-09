@@ -134,6 +134,8 @@ export default class SafeList extends PureComponent {
         if (this.props.onScroll)
           this.props.onScroll(e);
       }}
+      onEndReached={this.props.onEndReached}
+      onEndReachedThreshold={10}
       ref="listView"
     />);
   }

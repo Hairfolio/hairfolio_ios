@@ -150,7 +150,8 @@ export const registrationActions = {
       };
     };
   },
-  getExperiences() {
+
+  getExperiences(pageNumber) {
     return ({getState, services: {fetch}}) => {
       return {
         type: registrationTypes.GET_EXPERIENCES,
@@ -159,7 +160,7 @@ export const registrationActions = {
           immediateAsyncResult: true
         },
         payload: {
-          promise: fetch.fetch('/experiences')
+          promise: fetch.fetch(`/experiences?page=${pageNumber || 1}`)
         }
       };
     };

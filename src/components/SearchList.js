@@ -173,6 +173,7 @@ export default class SearchList extends PureComponent {
           flex: 1,
           backgroundColor: 'transparent'
         }}
+        onEndReached={this.props.onEndReached}
       />
     </View>);
   }

@@ -1,6 +1,6 @@
 import React from 'react';
 import _ from 'lodash';
-import {OrderedMap} from 'immutable';
+import {OrderedMap, Map} from 'immutable';
 import PureComponent from '../components/PureComponent';
 import {autobind} from 'core-decorators';
 import {View, Text} from 'react-native';
@@ -42,7 +42,11 @@ export default class StylistProductExperience extends PureComponent {
 
   @autobind
   onWillFocus() {
-    this.props.dispatch(registrationActions.getExperiences());
+    this.props.dispatch(
+      registrationActions.getExperiences(
+        this.props.experiencesNextPage
+      )
+    );
   }
 
   getValue() {
@@ -63,8 +67,21 @@ export default class StylistProductExperience extends PureComponent {
       this._searchList.clear();
   }
 
-  render() {
+  getNextPage() {
+    if (this.props.experiencesNextPage) {
+      this.props.dispatch(
+        registrationActions.getExperiences(this.props.experiencesNextPage)
+      )
+    }
+  }
 
+  render () {
+    let newExperiences = this.props.experiences
+      .filter((experience) => Map.isMap(experience) && experience.has('id'))
+      .map(experience =>
+        [experience.get('id'), experience]
+      );
+    let experiences = new OrderedMap(newExperiences);
     return (<NavigationSetting
       leftAction={() => {
         _.last(this.context.navigators).jumpTo(this.props.backTo);
@@ -79,11 +96,8 @@ export default class StylistProductExperience extends PureComponent {
       }}
       title={this.props.title}
     >
-      <LoadingContainer state={[this.props.experiencesState]} style={{flex: 1}}>
-        {() => <SearchList
-          items={new OrderedMap(this.props.experiences.map(experience =>
-            [experience.get('id'), experience]
-          ))}
+      <SearchList
+          items={experiences}
           placeholder="Search for products"
           ref={sL => {
             this._searchList = sL;
@@ -97,8 +111,8 @@ export default class StylistProductExperience extends PureComponent {
           style={{
             flex: 1
           }}
-        />}
-      </LoadingContainer>
+          onEndReached={this.getNextPage.bind(this)}
+        />
     </NavigationSetting>);
   }
 };

@@ -30,6 +30,7 @@ import WriteMessageStore from 'stores/WriteMessageStore'
 import Communications from 'react-native-communications';
 
 import FeedStore from 'stores/FeedStore.js'
+import SearchStore from 'stores/SearchStore.js';
 
 import {starGivers, comments, appStack} from '../../routes';
 var KDSocialShare = require('NativeModules').KDSocialShare;
@@ -56,12 +57,13 @@ const PostActionButtons = observer(({post}) => {
         Communications.email(['stephen@hairfolioapp.com'], null, null, 'Abusive Post', 'The post from  ' + post.creator.name + ', created on ' + post.createdTime + ' is abusive, please check. id: ' + post.id)
       } else if (buttonIndex == 1) {
 
-        ServiceBackend.delete(`users/${post.creator.id}/follows`).then(() => {
+        ServiceBackend.post(`users/${post.creator.id}/blocks`).then(() => {
 
           Alert.alert('User Blocked', 'The user has been successfully blocked');
 
           FeedStore.reset();
           FeedStore.load();
+          SearchStore.reset();
 
         });
       }

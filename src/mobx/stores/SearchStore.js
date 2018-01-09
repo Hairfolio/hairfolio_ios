@@ -108,6 +108,13 @@ class SearchStore {
       this.loaded = true;
     }
   }
+
+  reset() {
+    this.elements = [];
+    this.loaded = false;
+    this.topTags = new TopTags();
+    this.popularPosts = new PopularPosts();
+  }
 }
 
 const store = new SearchStore();

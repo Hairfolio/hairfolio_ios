@@ -10,5 +10,6 @@ export const environment = ({environment}) => ({
   certificatesState: environment.certificatesState,
   certificates: environment.certificates,
   experiencesState: environment.experiencesState,
-  experiences: environment.experiences
+  experiences: environment.experiences,
+  experiencesNextPage: environment.experiencesNextPage,
 });

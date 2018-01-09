@@ -10,8 +10,8 @@ import ImageResizer from 'react-native-image-resizer';
 
 export default class Environment {
 
-    return ImageResizer.createResizedImage(uri, 250, 250, 'JPEG', 90, 0, null);
-  }
+  //   return ImageResizer.createResizedImage(uri, 250, 250, 'JPEG', 90, 0, null);
+  // }
 
 
   async toJSON() {

@@ -36,7 +36,7 @@ const utils = {
     return response;
   },
   getCloudinaryPicFromId(id, environment) {
-    return `http://res.cloudinary.com/${environment.get('cloud_name')}/image/upload/${id}.jpg`;
+    return `http://res.cloudinary.com/${environment.cloud_name}/image/upload/${id}.jpg`;
   },
   getUserProfilePicURI(user, environment) {
     if (user.get('avatar_cloudinary_id'))

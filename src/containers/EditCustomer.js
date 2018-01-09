@@ -6,8 +6,6 @@ import {View, Text, StyleSheet, InteractionManager} from 'react-native';
 import connect from '../lib/connect';
 import {app} from '../selectors/app';
 import {user} from '../selectors/user';
-import {cloudinary} from '../selectors/cloudinary';
-import {environment} from '../selectors/environment';
 import {COLORS, FONTS, SCALE} from '../style';
 import NavigationSetting from '../navigation/NavigationSetting';
 import validator from 'validator';
@@ -18,7 +16,9 @@ import Communications from 'react-native-communications'
 import appEmitter from '../appEmitter';
 
 import {registrationActions} from '../actions/registration';
-import {cloudinaryActions} from '../actions/cloudinary';
+
+import EnvironmentStore from '../mobx/stores/EnvironmentStore';
+import CloudinaryStore from '../mobx/stores/CloudinaryStore';
 
 import {NAVBAR_HEIGHT} from '../constants';
 
@@ -42,15 +42,12 @@ import Categorie from '../components/Form/Categorie';
 import KeyboardScrollView from '../components/KeyboardScrollView';
 import BannerErrorContainer from '../components/BannerErrorContainer';
 
-@connect(app, user, cloudinary, environment)
+@connect(app, user)
 @mixin(formMixin)
 export default class EditCustomer extends PureComponent {
   static propTypes = {
     appVersion: React.PropTypes.string.isRequired,
-    cloudinaryStates: React.PropTypes.object.isRequired,
     dispatch: React.PropTypes.func.isRequired,
-    environment: React.PropTypes.object.isRequired,
-    environmentState: React.PropTypes.string.isRequired,
     user: React.PropTypes.object.isRequired,
     userState: React.PropTypes.string.isRequired
   };
@@ -354,7 +351,7 @@ export default class EditCustomer extends PureComponent {
   }
 
   render() {
-    var isLoading = this.state.submitting || utils.isLoading([this.props.cloudinaryStates.get('edit-user-pick')]);
+    var isLoading = this.state.submitting || utils.isLoading(CloudinaryStore.states['edit-user-pick']);
 
     return (<NavigationSetting
       forceUpdateEvents={['login', 'user-edited']}
@@ -432,18 +429,16 @@ export default class EditCustomer extends PureComponent {
           }}>
             <PictureInput
               disabled={isLoading}
-              emptyStatePictureURI={utils.getUserProfilePicURI(this.props.user, this.props.environment)}
+              emptyStatePictureURI={utils.getUserProfilePicURI(this.props.user, EnvironmentStore.getEnv())}
               getPictureURIFromValue={(value) => {
-                return utils.getCloudinaryPicFromId(value, this.props.environment);
+                return utils.getCloudinaryPicFromId(value, EnvironmentStore.getEnv());
               }}
               onError={(error) => {
                 this.refs.ebc.error(error);
               }}
               ref={(r) => this.addFormItem(r, 'avatar_cloudinary_id')}
               transform={(uri, metas) =>
-                this.props.dispatch(registrationActions.getEnvironment())
-                  .then(throwOnFail)
-                  .then(() => this.props.dispatch(cloudinaryActions.upload(uri, metas, {maxHW: 512}, 'edit-user-pick')))
+                 CloudinaryStore.upload(uri, metas, {maxHW: 512}, 'edit-user-pick')
                   .then(throwOnFail)
                   .then(({public_id}) => public_id)
               }

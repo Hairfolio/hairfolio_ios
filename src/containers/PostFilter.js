@@ -3,8 +3,6 @@ import PureComponent from '../components/PureComponent';
 import {View, Text, Image, Dimensions, StatusBar, TouchableOpacity, TouchableWithoutFeedback} from 'react-native';
 import connect from '../lib/connect';
 import {app} from '../selectors/app';
-import {post} from '../selectors/post';
-import {postActions} from '../actions/post';
 import {COLORS, FONTS, SCALE} from '../style';
 import NavigationSetting from '../navigation/NavigationSetting';
 import {observer} from 'mobx-react/native';
@@ -28,7 +26,7 @@ import {
 } from '../routes';
 
 
-@connect(app, post)
+@connect(app)
 @observer
 @autobind
 export default class PostFilter extends PureComponent {

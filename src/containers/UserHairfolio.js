@@ -1,8 +1,6 @@
 import React from 'react';
 import PureComponent from '../components/PureComponent';
 import {View, Text, TouchableHighlight} from 'react-native';
-import connect from '../lib/connect';
-import {app} from '../selectors/app';
 import {COLORS, FONTS, SCALE} from '../style';
 import NavigationSetting from '../navigation/NavigationSetting';
 
@@ -202,10 +200,8 @@ const HairfolioList = observer(() => {
   }
 });
 
-@connect(app)
 export default class UserHairfolio extends PureComponent {
   static propTypes = {
-    appVersion: React.PropTypes.string.isRequired,
     onLayout: React.PropTypes.func.isRequired
   };
 

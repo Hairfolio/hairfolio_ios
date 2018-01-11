@@ -1,8 +1,6 @@
 import React from 'react';
 import PureComponent from '../components/PureComponent';
 import {View, ListView, Text} from 'react-native';
-import connect from '../lib/connect';
-import {app} from '../selectors/app';
 import {COLORS, FONTS, SCALE} from '../style';
 import NavigationSetting from '../navigation/NavigationSetting';
 

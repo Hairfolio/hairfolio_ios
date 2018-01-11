@@ -6,8 +6,6 @@ import {
   StatusBar,
   ImageEditor,
   View, Text, Dimensions, TouchableOpacity, TouchableWithoutFeedback, Image} from 'react-native';
-import connect from '../lib/connect';
-import {app} from '../selectors/app';
 import {COLORS, FONTS, h, SCALE} from 'Hairfolio/src/style';
 import NavigationSetting from '../navigation/NavigationSetting';
 import {observer} from 'mobx-react/native';
@@ -226,7 +224,6 @@ const LibraryHeader = observer(({onLeft, onRight, onTitle, store}) => {
   );
 });
 
-@connect(app)
 @observer
 @autobind
 export default class CreatePost extends PureComponent {

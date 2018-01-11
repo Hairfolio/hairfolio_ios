@@ -1,21 +1,17 @@
 import React from 'react';
 import PureComponent from '../components/PureComponent';
 import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
-import connect from '../lib/connect';
-import {app} from '../selectors/app';
-import {user} from '../selectors/user';
-import {environment} from '../selectors/environment';
 import {COLORS, FONTS, SCALE} from '../style';
 import NavigationSetting from '../navigation/NavigationSetting';
-import {registrationActions} from '../actions/registration';
-
+import UserStore from '../mobx/stores/UsersStore';
+import AppStore from '../mobx/stores/AppStore';
+import EnvironmentStore from '../mobx/stores/EnvironmentStore';
 import FollowButton from '../components/Buttons/Follow';
 
 import utils from '../utils';
 
 import {appStack} from '../routes';
 
-@connect(app, user, environment)
 export default class UserStylist extends PureComponent {
   static propTypes = {
     appVersion: React.PropTypes.string.isRequired,
@@ -32,18 +28,18 @@ export default class UserStylist extends PureComponent {
   };
 
   renderFollowButton(stylist) {
-    if (stylist.get('id') === this.props.user.get('id'))
+    if (stylist.id === this.props.user.id)
       return null;
 
     return (<FollowButton
-      disabled={utils.isLoading(this.props.followingStates.get(stylist.get('id')))}
-      icon={utils.isFollowing(this.props.user, stylist) ? 'check' : null}
-      label={utils.isFollowing(this.props.user, stylist) ? 'FOLLOWED' : 'FOLLOW'}
+      disabled={utils.isLoading(UserStore.followingStates[stylist.id])}
+      icon={utils.isFollowing(UserStore.user, stylist) ? 'check' : null}
+      label={utils.isFollowing(UserStore.user, stylist) ? 'FOLLOWED' : 'FOLLOW'}
       onPress={() => {
-        if (utils.isFollowing(this.props.user, stylist))
-          this.props.dispatch(registrationActions.unfollowUser(stylist.get('id')));
+        if (utils.isFollowing(UserStore.user, stylist))
+          this.props.dispatch(registrationActions.unfollowUser(stylist.id));
         else
-          this.props.dispatch(registrationActions.followUser(stylist.get('id')));
+          this.props.dispatch(registrationActions.followUser(stylist.id));
       }}
     />);
   }

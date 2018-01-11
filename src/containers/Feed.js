@@ -1,7 +1,4 @@
 import PureComponent from '../components/PureComponent';
-import connect from '../lib/connect';
-import {app} from '../selectors/app';
-import {user} from '../selectors/user';
 import NavigationSetting from '../navigation/NavigationSetting';
 import {BOTTOMBAR_HEIGHT, STATUSBAR_HEIGHT} from '../constants';
 

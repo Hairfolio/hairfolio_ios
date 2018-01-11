@@ -1,8 +1,6 @@
 import React from 'react';
 import PureComponent from '../components/PureComponent';
 import {View, Text} from 'react-native';
-import connect from '../lib/connect';
-import {app} from '../selectors/app';
 import {COLORS, FONTS, SCALE} from '../style';
 import NavigationSetting from '../navigation/NavigationSetting';
 import FavoriteStore from 'stores/FavoriteStore.js';
@@ -25,8 +23,6 @@ import ActivityFollowing from 'components/favourites/ActivityFollowing.js'
 import ActivityYouStore from 'stores/ActivityYouStore'
 import ActivityFollowingStore from 'stores/ActivityFollowingStore'
 
-
-@connect(app)
 export default class Favourites extends PureComponent {
   static propTypes = {
     appVersion: React.PropTypes.string.isRequired

@@ -5,8 +5,6 @@ import {
   ScrollView,
   StatusBar,
   View, Text, Dimensions, TouchableOpacity, TouchableWithoutFeedback, Image} from 'react-native';
-import connect from '../lib/connect';
-import {app} from '../selectors/app';
 import {COLORS, FONTS, h, SCALE} from 'Hairfolio/src/style';
 import NavigationSetting from '../navigation/NavigationSetting';
 import {observer} from 'mobx-react/native';
@@ -26,7 +24,6 @@ import BlackHeader from 'components/BlackHeader.js'
 
 import FollowUserList from 'components/FollowUserList.js'
 
-@connect(app)
 export default class StarGivers extends PureComponent {
 
   static contextTypes = {

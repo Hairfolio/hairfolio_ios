@@ -3,10 +3,6 @@ import _ from 'lodash';
 import {BlurView} from 'react-native-blur';
 import PureComponent from '../components/PureComponent';
 import {View, Text, Image, TouchableOpacity, ScrollView, StatusBar} from 'react-native';
-import connect from '../lib/connect';
-import {app} from '../selectors/app';
-import {user, users} from '../selectors/user';
-import {environment} from '../selectors/environment';
 import {COLORS, FONTS, SCALE} from '../style';
 import UserProfileNavigationBar from '../components/UserProfile/Bar';
 import Service from 'Hairfolio/src/services/index.js'
@@ -24,8 +20,10 @@ import BannerErrorContainer from '../components/BannerErrorContainer';
 import ChannelResponder from '../components/Channel/ChannelResponder';
 import Channel from '../components/Channel/Channel';
 
-import {registrationActions} from '../actions/registration';
 import MessageDetailsStore from 'stores/MessageDetailsStore';
+import UserStore from '../mobx/stores/UserStore';
+import EnvironmentStore from '../mobx/stores/EnvironmentStore';
+
 
 import * as routes from 'Hairfolio/src/routes.js'
 
@@ -39,15 +37,9 @@ import BlackBookStore from 'stores/BlackBookStore'
 
 import {editCustomerStack, appStack, blackBook, createPostStack} from '../routes';
 
-@connect(app, user, users, environment)
 export default class Profile extends PureComponent {
   static propTypes = {
-    appVersion: React.PropTypes.string.isRequired,
-    dispatch: React.PropTypes.func.isRequired,
-    environment: React.PropTypes.object.isRequired,
-    followingStates: React.PropTypes.object.isRequired,
     profile: React.PropTypes.object.isRequired,
-    user: React.PropTypes.object.isRequired
   };
 
   static contextTypes = {
@@ -57,7 +49,7 @@ export default class Profile extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      followed: this.props.profile.get('is_followed_by_me')
+      followed: this.props.profile.is_followed_by_me
     }
   }
 
@@ -65,20 +57,20 @@ export default class Profile extends PureComponent {
 
   getName() {
 
-    if (this.props.profile.get('account_type') == 'ambassador') {
-      return this.props.profile.get('brand').get('name');
+    if (this.props.profile.account_type == 'ambassador') {
+      return this.props.profile.brand.name;
     }
 
-    if (this.props.profile.get('account_type') == 'owner') {
-      return this.props.profile.get('salon').get('name');
+    if (this.props.profile.account_type == 'owner') {
+      return this.props.profile.salon.name;
     }
 
-    return `${this.props.profile.get('first_name')} ${this.props.profile.get('last_name')}`;
+    return `${this.props.profile.first_name} ${this.props.profile.last_name}`;
   }
 
   renderAccountIcon() {
     var icon, iconColor, iconSize;
-    switch (this.props.profile.get('account_type')) {
+    switch (this.props.profile.account_type) {
       case 'stylist':
         icon = 'stylist';
         iconColor = COLORS.STYLIST;
@@ -123,7 +115,7 @@ export default class Profile extends PureComponent {
     this.height = (this.props.profile === this.props.user ? 183.5 : 223.5) + 40;
 
     window.profile = this.props.profile;
-    window.user2 = this.props.user;
+    window.user2 = UserStore.user;
 
     window.profileState = this;
 
@@ -135,7 +127,7 @@ export default class Profile extends PureComponent {
         <Image
           ref="headerImageWrapper"
           resizeMode="cover"
-          source={{uri: utils.getUserProfilePicURI(this.props.profile, this.props.environment)}}
+          source={{uri: utils.getUserProfilePicURI(this.props.profile, EnvironmentStore.environment)}}
           style={{
             position: 'absolute',
             left: 0,
@@ -256,7 +248,7 @@ export default class Profile extends PureComponent {
                   position: 'relative'
                 }}>
                   <Image
-                    source={{uri: utils.getUserProfilePicURI(this.props.profile, this.props.environment)}}
+                    source={{uri: utils.getUserProfilePicURI(this.props.profile, EnvironmentStore.environment)}}
                     style={{
                       height: SCALE.h(130),
                       width: SCALE.h(130),
@@ -264,7 +256,7 @@ export default class Profile extends PureComponent {
                       backgroundColor: 'rgba(0, 0, 0, 0.3)'
                     }}
                   />
-                  {this.props.profile.get('account_type') !== 'consumer' ? <View style={{
+                  {this.props.profile.account_type !== 'consumer' ? <View style={{
                     height: SCALE.h(46),
                     width: SCALE.h(46),
                     borderRadius: SCALE.h(23),
@@ -297,7 +289,7 @@ export default class Profile extends PureComponent {
                       fontSize: SCALE.h(28),
                       textAlign: 'center',
                       backgroundColor: 'transparent'
-                    }}>{this.props.profile.get('likes_count')} Stars</Text>
+                    }}>{this.props.profile.likes_count} Stars</Text>
                     <View style={{width: 10}} />
                     <Text style={{
                       color: COLORS.WHITE,
@@ -305,12 +297,12 @@ export default class Profile extends PureComponent {
                       fontSize: SCALE.h(28),
                       textAlign: 'center',
                       backgroundColor: 'transparent'
-                    }}>{this.props.profile.get('followers_count')} Followers</Text>
+                    }}>{this.props.profile.followers_count} Followers</Text>
 
 
                 </View>
 
-                  {this.props.profile.get('id') !== this.props.user.get('id') ? <View style={{
+                  {this.props.profile.id !== this.props.user.id ? <View style={{
                     flexDirection: 'row',
                     justifyContent: 'center',
                     marginTop: SCALE.h(20)
@@ -318,19 +310,19 @@ export default class Profile extends PureComponent {
                     <View>
                       {!this.state.followed ?
                         <ProfileButton
-                          disabled={utils.isLoading(this.props.followingStates.get(this.props.profile.get('id')))}
+                          disabled={utils.isLoading(this.props.followingStates[this.props.profile.i])}
                           label="FOLLOW"
                           onPress={() => {
-                            this.props.dispatch(registrationActions.followUser(this.props.profile.get('id')));
+                            UserStore.followUser(this.props.profile.id);
                           }}
                         />
                       :
                         <ProfileButton
                           color={COLORS.FOLLOWING}
-                          disabled={utils.isLoading(this.props.followingStates.get(this.props.profile.get('id')))}
+                          disabled={utils.isLoading(UserStore.followingStates.get(this.props.profile.id))}
                           label="FOLLOWING"
                           onPress={() => {
-                            this.props.dispatch(registrationActions.unfollowUser(this.props.profile.get('id')));
+                            UserStore.unfollowUser(this.props.profile.id);
                           }}
                         />
                       }
@@ -387,18 +379,18 @@ export default class Profile extends PureComponent {
                   navigator: 'navigator'
                 }}
               >
-                {this.props.profile.get('account_type') && <UserProfileNavigationBar color={COLORS[this.props.profile.get('account_type').toUpperCase()]} />}
+                {this.props.profile.account_type && <UserProfileNavigationBar color={COLORS[this.props.profile.account_type.toUpperCase()]} />}
               </ChannelResponder>
             </View>
             <ProfileStack
               channel={this.channel}
-              key={this.props.profile.get('id')}
+              key={this.props.profile.id}
               profile={this.props.profile}
               scrollToFakeTop={() => this.scrollToFakeTop()}
             />
           </WrappingScrollView>
 
-          {this.props.profile === this.props.user ? <View ref="settings" style={{
+          {this.props.profile === UserStore.user ? <View ref="settings" style={{
             position: 'absolute',
             top: STATUSBAR_HEIGHT + 5,
             right: 10
@@ -418,7 +410,7 @@ export default class Profile extends PureComponent {
             </TouchableOpacity>
           </View> : null}
 
-          {this.props.profile === this.props.user ?
+          {this.props.profile === UserStore.user ?
               <View
                 style = {{
                   position: 'absolute',

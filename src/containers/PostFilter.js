@@ -1,8 +1,6 @@
 import React from 'react';
 import PureComponent from '../components/PureComponent';
 import {View, Text, Image, Dimensions, StatusBar, TouchableOpacity, TouchableWithoutFeedback} from 'react-native';
-import connect from '../lib/connect';
-import {app} from '../selectors/app';
 import {COLORS, FONTS, SCALE} from '../style';
 import NavigationSetting from '../navigation/NavigationSetting';
 import {observer} from 'mobx-react/native';
@@ -25,8 +23,6 @@ import {
   gallery
 } from '../routes';
 
-
-@connect(app)
 @observer
 @autobind
 export default class PostFilter extends PureComponent {

@@ -4,8 +4,6 @@ import validator from 'validator';
 import {mixin} from 'core-decorators';
 import PureComponent from '../components/PureComponent';
 import {View, Text, StyleSheet} from 'react-native';
-import connect from '../lib/connect';
-import {app} from '../selectors/app';
 import {COLORS, FONTS, SCALE} from '../style';
 import NavigationSetting from '../navigation/NavigationSetting';
 
@@ -25,11 +23,9 @@ import formMixin from '../mixins/form';
 import {NAVBAR_HEIGHT} from '../constants';
 import appEmitter from '../appEmitter';
 
-@connect(app)
 @mixin(formMixin)
 export default class StylistInfo extends PureComponent {
   static propTypes = {
-    appVersion: React.PropTypes.string.isRequired,
     dispatch: React.PropTypes.func.isRequired
   };
 

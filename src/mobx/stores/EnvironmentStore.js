@@ -3,7 +3,6 @@ import {_, v4, Text} from 'Hairfolio/src/helpers';
 
 import {EMPTY, LOADING, LOADING_ERROR, READY} from '../../constants';
 import ServiceBackend from 'backend/ServiceBackend.js'
-import { environment } from '../../selectors/environment';
 
 class EnvironmentStore {
   @observable environmentState;
@@ -43,14 +42,16 @@ class EnvironmentStore {
       return this.environment;
     } else {
       this.environmentState = LOADING;
-      try {
-        let res = await ServiceBackend.get('/sessions/environment');
+      return ServiceBackend.get('/sessions/environment')
+      .then(res => {
         this.environmentState = READY;
         this.environment = res;
         return res;
-      } catch(error) {
+      })
+      .catch(error => {
         this.environmentState = LOADING_ERROR;
-      }
+        throw error;
+      });
     }
   }
 
@@ -61,7 +62,7 @@ class EnvironmentStore {
   @action getDegrees = () => {
     // TODO: Wire up user id
     this.degreesState = LOADING;
-    fetch.fetch('/degrees')
+    return fetch.fetch('/degrees')
       .then(response => {
         this.degrees = response;
         this.degreesState = READY;

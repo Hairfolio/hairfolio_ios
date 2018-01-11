@@ -38,7 +38,7 @@ class UserStore {
     this.registrationMethod = method;
   }
 
-  @action editUser = async (values = {}, type) => {
+  @action editUser = (values = {}, type) => {
     this.userState = LOADING;
     if (values.experience_ids) {
       values.experience_ids = values.experience_ids.split(',').map(e => Math.floor(e));
@@ -87,17 +87,20 @@ class UserStore {
         if(!_.isEmpty(user)) {
           body.user = user;
         }
-        user = await fetch.fetch(`/users/${this.user.id})}`, {
+        return fetch.fetch(`/users/${this.user.id})}`, {
           method: 'PATCH',
           body
-        });
-        this.user = {
-          ...this.user,
-          ...user,
-        };
-        this.userState = READY;
+        })
+          .then(user => {
+            this.user = {
+              ...this.user,
+              ...user,
+            };
+            this.userState = READY;
+          });
       } catch (error) {
         this.userState = LOADING_ERROR;
+        throw error;
       }
     }
 
@@ -381,8 +384,10 @@ class UserStore {
       this.user = user;
       await this.loadUserInformation();
       this.userState = READY;
+      return this.user;
     } catch (error) {
       this.userState = LOADING_ERROR;
+      throw error;
     }
   }
 

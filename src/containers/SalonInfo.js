@@ -4,8 +4,6 @@ import validator from 'validator';
 import {mixin} from 'core-decorators';
 import PureComponent from '../components/PureComponent';
 import {View, Text, StyleSheet} from 'react-native';
-import connect from '../lib/connect';
-import {app} from '../selectors/app';
 import {COLORS, FONTS, SCALE} from '../style';
 import NavigationSetting from '../navigation/NavigationSetting';
 
@@ -22,8 +20,6 @@ import states from '../states.json';
 
 import {throwOnFail} from '../lib/reduxPromiseMiddleware';
 
-import {registrationActions} from '../actions/registration';
-
 import {salonStylists, salonSP, salonProductExperience} from '../routes';
 
 import formMixin from '../mixins/form';
@@ -32,11 +28,9 @@ import {NAVBAR_HEIGHT} from '../constants';
 import appEmitter from '../appEmitter';
 import {appStack} from '../routes';
 
-@connect(app)
 @mixin(formMixin)
 export default class SalonInfo extends PureComponent {
   static propTypes = {
-    appVersion: React.PropTypes.string.isRequired,
     dispatch: React.PropTypes.func.isRequired
   };
 

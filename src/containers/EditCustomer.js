@@ -3,19 +3,15 @@ import _ from 'lodash';
 import PureComponent from '../components/PureComponent';
 import {mixin, autobind} from 'core-decorators';
 import {View, Text, StyleSheet, InteractionManager} from 'react-native';
-import connect from '../lib/connect';
-import {app} from '../selectors/app';
-import {user} from '../selectors/user';
 import {COLORS, FONTS, SCALE} from '../style';
 import NavigationSetting from '../navigation/NavigationSetting';
 import validator from 'validator';
 import FeedStore from 'stores/FeedStore.js'
+import UserStore from '../mobx/stores/UserStore';
 
 import Communications from 'react-native-communications'
 
 import appEmitter from '../appEmitter';
-
-import {registrationActions} from '../actions/registration';
 
 import EnvironmentStore from '../mobx/stores/EnvironmentStore';
 import CloudinaryStore from '../mobx/stores/CloudinaryStore';
@@ -42,16 +38,8 @@ import Categorie from '../components/Form/Categorie';
 import KeyboardScrollView from '../components/KeyboardScrollView';
 import BannerErrorContainer from '../components/BannerErrorContainer';
 
-@connect(app, user)
 @mixin(formMixin)
 export default class EditCustomer extends PureComponent {
-  static propTypes = {
-    appVersion: React.PropTypes.string.isRequired,
-    dispatch: React.PropTypes.func.isRequired,
-    user: React.PropTypes.object.isRequired,
-    userState: React.PropTypes.string.isRequired
-  };
-
   static contextTypes = {
     navigators: React.PropTypes.array.isRequired
   };
@@ -69,7 +57,7 @@ export default class EditCustomer extends PureComponent {
   }
 
   componentDidMount() {
-    if (utils.isReady(this.props.userState))
+    if (utils.isReady(UserStore.userState))
       this.onLogin();
   }
 
@@ -78,12 +66,12 @@ export default class EditCustomer extends PureComponent {
   }
 
   initValues() {
-    var rawValues = {...this.props.user.toJS()};
+    var rawValues = {...UserStore.user.toJS()};
 
 
     let business;
     let salonUserId;
-    if (this.props.user.get('account_type') === 'ambassador') {
+    if (this.props.user.account_type === 'ambassador') {
       business = rawValues.brand;
     } else {
       business = rawValues.salon;
@@ -118,7 +106,7 @@ export default class EditCustomer extends PureComponent {
     }
 
 
-    if (this.props.user.get('account_type') === 'stylist') {
+    if (UserStore.user.account_type === 'stylist') {
       rawValues.business_info = rawValues.description;
     }
 
@@ -343,7 +331,7 @@ export default class EditCustomer extends PureComponent {
     return (<View>
       <ProfileTextInput
         autoCorrect={false}
-        placeholder={(this.props.user.get('account_type' === 'ambassador') ? 'Brand' : 'Salon') + ' name'}
+        placeholder={(UserStore.user.account_type === 'ambassador') ? 'Brand' : 'Salon' + ' name'}
         ref={(r) => this.addFormItem(r, 'business_name')}
         validation={(v) => !!v}
       />
@@ -370,7 +358,7 @@ export default class EditCustomer extends PureComponent {
 
         let business = {};
 
-        if (this.props.user.get('account_type') == 'stylist') {
+        if (UserStore.user.account_type == 'stylist') {
           formData.description = formData.business_info;
           delete formData.business_info;
         }
@@ -391,7 +379,7 @@ export default class EditCustomer extends PureComponent {
         formData['business'] = business;
 
         this.setState({'submitting': true});
-        this.props.dispatch(registrationActions.editUser(formData, this.props.user.get('account_type')))
+        UserStore.editUser(formData, this.props.user.account_type)
         .then((r) => {
           this.setState({submitting: false});
           return r;
@@ -429,7 +417,7 @@ export default class EditCustomer extends PureComponent {
           }}>
             <PictureInput
               disabled={isLoading}
-              emptyStatePictureURI={utils.getUserProfilePicURI(this.props.user, EnvironmentStore.getEnv())}
+              emptyStatePictureURI={utils.getUserProfilePicURI(UserStore.user, EnvironmentStore.getEnv())}
               getPictureURIFromValue={(value) => {
                 return utils.getCloudinaryPicFromId(value, EnvironmentStore.getEnv());
               }}
@@ -442,16 +430,16 @@ export default class EditCustomer extends PureComponent {
                   .then(throwOnFail)
                   .then(({public_id}) => public_id)
               }
-              validation={(v) => !!v || this.props.user.get('instagram_id') || this.props.user.get('facebook_id')}
+              validation={(v) => !!v || UserStore.user.instagram_id || UserStore.user.facebook_id}
             />
           </View>
 
           <Categorie name="BASIC" />
 
-          {(this.props.user.get('account_type') === 'consumer' || this.props.user.get('account_type') === 'stylist') ?
+          {(UserStore.user.account_type === 'consumer' || UserStore.user.account_type === 'stylist') ?
             this.renderIndividualBasics() : null
           }
-          {(this.props.user.get('account_type') === 'owner' || this.props.user.get('account_type') === 'ambassador') ?
+          {(UserStore.user.account_type === 'owner' || UserStore.user.account_type === 'ambassador') ?
             this.renderBusinessBasics() : null
           }
 
@@ -459,7 +447,7 @@ export default class EditCustomer extends PureComponent {
           <ProfileTextInput
             autoCapitalize="none"
             autoCorrect={false}
-            editable={!this.props.user.get('facebook_id') && !this.props.user.get('instagram_id')}
+            editable={!UserStore.user.facebook_id && !UserStore.user.instagram_id}
             keyboardType="email-address"
             placeholder="Email"
             ref={(r) => this.addFormItem(r, 'email')}
@@ -471,15 +459,15 @@ export default class EditCustomer extends PureComponent {
             placeholder="Change Password"
           />
 
-          {this.props.user.get('account_type') === 'owner' ?
+          {UserStore.user.account_type === 'owner' ?
             this.renderSalonSpecifics() : null
           }
 
-          {this.props.user.get('account_type') === 'ambassador' ?
+          {UserStore.user.account_type === 'ambassador' ?
             this.renderBrandSpecifics() : null
           }
 
-          {this.props.user.get('account_type') === 'stylist' ?
+          {UserStore.user.account_type === 'stylist' ?
             this.renderStylistSpecifics() : null
           }
 
@@ -515,7 +503,7 @@ export default class EditCustomer extends PureComponent {
             label="LOG OUT"
             onPress={() => {
               FeedStore.reset();
-              this.props.dispatch(registrationActions.logout());
+              UserStore.logout();
               appEmitter.emit('logout');
               _.first(this.context.navigators).jumpTo(loginStack);
             }}
@@ -525,8 +513,8 @@ export default class EditCustomer extends PureComponent {
             label="DESTROY"
             onPress={() => {
               FeedStore.reset();
-              this.props.dispatch(registrationActions.logout());
-              this.props.dispatch(registrationActions.destroy());
+              UserStore.logout();
+              UserStore.destroy();
               appEmitter.emit('logout', {destroy: true});
               _.first(this.context.navigators).jumpTo(loginStack);
             }}

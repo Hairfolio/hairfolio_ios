@@ -4,8 +4,6 @@ import validator from 'validator';
 import {mixin} from 'core-decorators';
 import PureComponent from '../components/PureComponent';
 import RN, {View, Text} from 'react-native';
-import connect from '../lib/connect';
-import {app} from '../selectors/app';
 import {COLORS, FONTS, SCALE} from '../style';
 import NavigationSetting from '../navigation/NavigationSetting';
 
@@ -21,13 +19,10 @@ import Categorie from '../components/Form/Categorie';
 
 import {throwOnFail} from '../lib/reduxPromiseMiddleware';
 
-import {registrationActions} from '../actions/registration';
-
 import formMixin from '../mixins/form';
 
 import {NAVBAR_HEIGHT} from '../constants';
 
-@connect(app)
 @mixin(formMixin)
 export default class ForgottenPassword extends PureComponent {
   static propTypes = {

@@ -8,7 +8,6 @@ import { batchedSubscribe } from './lib/reduxBatchedSubscribe';
 import {InteractionManager} from 'react-native';
 
 // Top level reducer
-import rootReducer from './reducers';
 import services from './services';
 
 // Dependencies middleware detects all actionsCreators that return function
@@ -61,4 +60,4 @@ const finalStore = compose(
 // Store can now be imported from any file,
 // e.g. import store from '../store';
 // const isLoggedIn = !!store.getState().user.token;
-export default finalStore(rootReducer);
+export default finalStore(() => "hello");

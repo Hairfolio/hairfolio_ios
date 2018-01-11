@@ -1,6 +1,4 @@
 import PureComponent from '../components/PureComponent';
-import connect from '../lib/connect';
-import {app} from '../selectors/app';
 import {COLORS, FONTS, SCALE} from '../style';
 import NavigationSetting from '../navigation/NavigationSetting';
 
@@ -86,12 +84,7 @@ const SampleActions = observer(() => {
   );
 });
 
-@connect(app)
 export default class SearchDetails extends PureComponent {
-  static propTypes = {
-    appVersion: React.PropTypes.string.isRequired
-  };
-
   static contextTypes = {
     navigators: React.PropTypes.array.isRequired
   };

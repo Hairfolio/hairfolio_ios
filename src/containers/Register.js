@@ -2,9 +2,6 @@ import React from 'react';
 import _ from 'lodash';
 import PureComponent from '../components/PureComponent';
 import {View, Text, TouchableOpacity} from 'react-native';
-import connect from '../lib/connect';
-import {registrationActions} from '../actions/registration';
-import {app} from '../selectors/app';
 import {COLORS, FONTS, SCALE} from '../style';
 import NavigationSetting from '../navigation/NavigationSetting';
 
@@ -12,10 +9,8 @@ import SimpleButton from '../components/Buttons/Simple';
 
 import {login, hello, register2} from '../routes';
 
-@connect(app)
 export default class Register extends PureComponent {
   static propTypes = {
-    appVersion: React.PropTypes.string.isRequired,
     dispatch: React.PropTypes.func.isRequired
   };
 

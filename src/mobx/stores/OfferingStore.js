@@ -21,7 +21,7 @@ class OfferingStore {
 
   @action addOffering = (offering) => {
     this.addOfferingState = LOADING;
-    fetch.fetch(
+    return fetch.fetch(
       `/users/${UserStore.user.id}/offerings`,
       {
         method: 'POST',
@@ -39,7 +39,7 @@ class OfferingStore {
 
   @action editOffering = (id, offering) => {
     this.editOfferingState = LOADING;
-    fetch.fetch(
+    return fetch.fetch(
       `/users/${UserStore.user.id}/offerings/${id}`,
       {
         method: 'PUT',
@@ -57,7 +57,7 @@ class OfferingStore {
 
   @action deleteOffering = (id) => {
     this.deleteOfferingState = LOADING;
-    fetch.fetch(`/users/${UserStore.user.id}/offerings`, { method: 'POST' })
+    return fetch.fetch(`/users/${UserStore.user.id}/offerings`, { method: 'POST' })
       .then(response => {
         UserStore.deleteOffering(id);
         this.deleteOfferingState = READY;

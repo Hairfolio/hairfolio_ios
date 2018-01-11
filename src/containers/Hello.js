@@ -2,11 +2,8 @@ import React from 'react';
 import {autobind} from 'core-decorators';
 import PureComponent from '../components/PureComponent';
 import {View, StatusBar} from 'react-native';
-import connect from '../lib/connect';
 import _ from 'lodash';
 import NavigationSetting from '../navigation/NavigationSetting';
-
-import {app} from '../selectors/app';
 
 import SimpleButton from '../components/Buttons/Simple';
 
@@ -14,7 +11,6 @@ import {signupStylistStack, stylistInfo, signupSalonStack, salonInfo, signupBran
 
 import {COLORS, SCALE} from '../style';
 
-@connect(app)
 export default class Hello extends PureComponent {
   static propTypes = {
     appVersion: React.PropTypes.string.isRequired

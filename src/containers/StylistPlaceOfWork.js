@@ -4,8 +4,6 @@ import validator from 'validator';
 import {mixin, debounce} from 'core-decorators';
 import PureComponent from '../components/PureComponent';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
-import connect from '../lib/connect';
-import {app} from '../selectors/app';
 import {COLORS, FONTS, SCALE} from '../style';
 import NavigationSetting from '../navigation/NavigationSetting';
 
@@ -20,17 +18,13 @@ import states from '../states.json';
 
 import {throwOnFail} from '../lib/reduxPromiseMiddleware';
 
-import {registrationActions} from '../actions/registration';
-
 import formMixin from '../mixins/form';
 
 import {NAVBAR_HEIGHT, LOADING, READY, LOADING_ERROR} from '../constants';
 
-@connect(app)
 @mixin(formMixin)
 export default class StylistPlaceOfWork extends PureComponent {
   static propTypes = {
-    appVersion: React.PropTypes.string.isRequired,
     backTo: React.PropTypes.object.isRequired,
     dispatch: React.PropTypes.func.isRequired
   };

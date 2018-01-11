@@ -3,9 +3,8 @@ import _ from 'lodash';
 import PureComponent from '../components/PureComponent';
 import {List, OrderedMap} from 'immutable';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
-import connect from '../lib/connect';
-import {app} from '../selectors/app';
-import {user} from '../selectors/user';
+
+import UserStore from '../mobx/stores/UserStore';
 import {COLORS, FONTS, SCALE} from '../style';
 import NavigationSetting from '../navigation/NavigationSetting';
 
@@ -14,15 +13,10 @@ import LoadingContainer from '../components/LoadingContainer';
 
 import {NAVBAR_HEIGHT} from '../constants';
 
-@connect(app, user)
 export default class StylistEducation extends PureComponent {
   static propTypes = {
     addEducation: React.PropTypes.object.isRequired,
-    appVersion: React.PropTypes.string.isRequired,
     backTo: React.PropTypes.object.isRequired,
-    dispatch: React.PropTypes.func.isRequired,
-    user: React.PropTypes.object.isRequired,
-    userState: React.PropTypes.string.isRequired
   };
 
   static contextTypes = {
@@ -54,29 +48,29 @@ export default class StylistEducation extends PureComponent {
         fontFamily: FONTS.HEAVY,
         fontSize: SCALE.h(30),
         color: COLORS.DARK
-      }}>{education.get('name')}</Text>
+      }}>{education.name}</Text>
       <Text style={{
         fontFamily: FONTS.ROMAN,
         fontSize: SCALE.h(30),
         color: COLORS.DARK2
-      }}>{education.get('degree').get('name')}</Text>
+      }}>{education.degree.name}</Text>
       <Text style={{
         fontFamily: FONTS.BOOK,
         fontSize: SCALE.h(30),
         color: COLORS.LIGHT3
-      }}>{education.get('year_from')} - {education.get('year_to')}</Text>
+      }}>{education.year_from} - {education.year_to}</Text>
     </TouchableOpacity>);
   }
 
   renderContent() {
-    var education = new OrderedMap(this.props.user.get('educations').map(education => [education.get('id'), education]));
+    var education = new OrderedMap(UserStore.user.educations.map(education => [education.id, education]));
 
-    window.user = this.props.user;
+    window.user = UserStore.user;
 
     return (<View style={{
       flex: 1
     }}>
-      {!this.props.user.get('educations').count() ?
+      {!UserStore.user.educations.count() ?
         <Text style={{
           marginTop: SCALE.h(35),
           marginLeft: SCALE.w(25),
@@ -121,7 +115,7 @@ export default class StylistEducation extends PureComponent {
       }}
       title="Education"
     >
-      <LoadingContainer state={[this.props.userState]}>
+      <LoadingContainer state={[UserStore.userState]}>
         {() => this.renderContent()}
       </LoadingContainer>
     </NavigationSetting>);

@@ -3,12 +3,11 @@ import _ from 'lodash';
 import {autobind} from 'core-decorators';
 import PureComponent from '../components/PureComponent';
 import {View, Text, TouchableOpacity, Linking, Image, StyleSheet} from 'react-native';
-import connect from '../lib/connect';
-import {app} from '../selectors/app';
-import {user} from '../selectors/user';
 import {COLORS, FONTS, SCALE} from '../style';
 import NavigationSetting from '../navigation/NavigationSetting';
 import Communications from 'react-native-communications';
+import UserStore from '../mobx/stores/UsersStore';
+import AppStore from '../mobx/stores/AppStore';
 
 import appEmitter from '../appEmitter';
 
@@ -17,13 +16,10 @@ import Icon from '../components/Icon';
 
 import {editCustomerStack} from '../routes';
 
-@connect(app, user)
 export default class UserAbout extends PureComponent {
   static propTypes = {
-    appVersion: React.PropTypes.string.isRequired,
     onLayout: React.PropTypes.func.isRequired,
     profile: React.PropTypes.object.isRequired,
-    user: React.PropTypes.object.isRequired
   };
 
   static contextTypes = {
@@ -31,7 +27,7 @@ export default class UserAbout extends PureComponent {
   };
 
   renderEmpty() {
-    if (this.profile.get('id') !== this.props.user.get('id'))
+    if (this.profile.get('id') !== UserStore.user.id)
       return (<Text style={{
         fontFamily: FONTS.OBLIQUE,
         fontSize: SCALE.h(26),
@@ -419,10 +415,10 @@ export default class UserAbout extends PureComponent {
     // comme profile n'est pas updaté lorsqu'il y a une modification interne
     // alors qu'on est deja sur la page,
     // on switche sur user qui de toute façon est le seul qui risque d'etre updaté
-    this.profile = this.props.profile.get('id') === this.props.user.get('id') ? this.props.user : this.props.profile;
+    this.profile = this.props.profile.get('id') === UserStore.user.get('id') ? UserStore.user : this.props.profile;
 
     return (<NavigationSetting
-      forceUpdateEvents={this.profile === this.props.user ? ['user-edited'] : null}
+      forceUpdateEvents={this.profile === UserStore.user ? ['user-edited'] : null}
       style={{
         backgroundColor: COLORS.WHITE,
         flex: 1

@@ -3,9 +3,8 @@ import _ from 'lodash';
 import PureComponent from '../components/PureComponent';
 import {List, OrderedMap} from 'immutable';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
-import connect from '../lib/connect';
-import {app} from '../selectors/app';
-import {user} from '../selectors/user';
+
+import UserStore from '../mobx/stores/UsersStore';
 import {COLORS, FONTS, SCALE} from '../style';
 import NavigationSetting from '../navigation/NavigationSetting';
 
@@ -14,15 +13,10 @@ import LoadingContainer from '../components/LoadingContainer';
 
 import {NAVBAR_HEIGHT} from '../constants';
 
-@connect(app, user)
 export default class SalonSP extends PureComponent {
   static propTypes = {
     addSP: React.PropTypes.object.isRequired,
-    appVersion: React.PropTypes.string.isRequired,
     backTo: React.PropTypes.object.isRequired,
-    dispatch: React.PropTypes.func.isRequired,
-    user: React.PropTypes.object.isRequired,
-    userState: React.PropTypes.string.isRequired
   };
 
   static contextTypes = {
@@ -42,7 +36,7 @@ export default class SalonSP extends PureComponent {
     window.sp = sp;
     return (<TouchableOpacity
       onPress={() => {
-        this.props.addSP.scene().setEditing(sp.get('offering'));
+        this.props.addSP.scene().setEditing(sp.offering);
         _.last(this.context.navigators).jumpTo(this.props.addSP);
       }}
       style={{
@@ -56,23 +50,23 @@ export default class SalonSP extends PureComponent {
         fontFamily: FONTS.HEAVY,
         fontSize: SCALE.h(30),
         color: COLORS.DARK
-      }}>{sp.get('service').get('name')}</Text>
+      }}>{sp.service.name}</Text>
       <Text style={{
         fontFamily: FONTS.ROMAN,
         fontSize: SCALE.h(30),
         color: COLORS.DARK2
-      }}>${sp.get('price')}</Text>
+      }}>${sp.price}</Text>
     </TouchableOpacity>);
   }
 
   renderContent() {
-    window.myuser = this.props.user;
-    var offerings = new OrderedMap(this.props.user.get('offerings').map(offerings => [offerings.get('id'), offerings]));
+    window.myuser = UserStore.user;
+    var offerings = new OrderedMap(UserStore.user.offerings.map(offerings => [offerings.id, offerings]));
 
     return (<View style={{
       flex: 1
     }}>
-      {!this.props.user.get('offerings').count() ?
+      {!UserStore.user.offerings.count() ?
         <Text style={{
           marginTop: SCALE.h(35),
           marginLeft: SCALE.w(25),
@@ -117,7 +111,7 @@ export default class SalonSP extends PureComponent {
       }}
       title="Services & Prices"
     >
-      <LoadingContainer state={[this.props.userState]}>
+      <LoadingContainer state={[UserStore.userState]}>
         {() => this.renderContent()}
       </LoadingContainer>
     </NavigationSetting>);

@@ -3,12 +3,12 @@ import _ from 'lodash';
 import PureComponent from '../components/PureComponent';
 import {View, StyleSheet} from 'react-native';
 import validator from 'validator';
-import connect from '../lib/connect';
-import {app} from '../selectors/app';
-import {environment} from '../selectors/environment';
-import {offeringsActions} from '../actions/offerings';
 import {COLORS, FONTS, SCALE} from '../style';
 import NavigationSetting from '../navigation/NavigationSetting';
+
+import EnvironmentStore from '../mobx/stores/EnvironmentsStore';
+import EducationStore from '../mobx/stores/EducationStore';
+import OfferingStore from '../mobx/stores/OfferingStore';
 
 import {mixin, autobind} from 'core-decorators';
 import InlineTextInput from '../components/Form/InlineTextInput';
@@ -25,7 +25,6 @@ import appEmitter from '../appEmitter';
 
 import formMixin from '../mixins/form';
 
-@connect(app, environment)
 @mixin(formMixin)
 export default class SalonAddSP extends PureComponent {
   static propTypes = {
@@ -45,11 +44,9 @@ export default class SalonAddSP extends PureComponent {
     editing: false
   };
 
-  loadData() {
-    return Promise.all([
-      this.props.dispatch(offeringsActions.getServices()).then(throwOnFail),
-      this.props.dispatch(offeringsActions.getCategories()).then(throwOnFail)
-    ]);
+  async loadData() {
+    await EnvironmentStore.getServices();
+    await EnvironmentStore.getCategories();
   }
 
   @autobind
@@ -69,8 +66,8 @@ export default class SalonAddSP extends PureComponent {
       this.loadData().then(() => {
         this.setFormValue({
           ...sp.toJS(),
-          'category_id': sp.get('category').get('id'),
-          'service_id': sp.get('service').get('id')
+          'category_id': sp.category.id,
+          'service_id': sp.service.id
         });
 
         if (this._deleteButton)
@@ -121,10 +118,10 @@ export default class SalonAddSP extends PureComponent {
         this.setState({'submitting': true});
 
         var action = this.state.editing === false ?
-          offeringsActions.addOffer(this.getFormValue()) :
-          offeringsActions.editOffer(this.state.editing.get('id'), this.getFormValue());
+          OfferingStore.addOffer(this.getFormValue()) :
+          OfferingStore.editOffer(this.state.editing.get('id'), this.getFormValue());
 
-        this.props.dispatch(action)
+        action
           .then((r) => {
             this.setState({submitting: false});
             return r;
@@ -162,12 +159,12 @@ export default class SalonAddSP extends PureComponent {
           <View style={{
             height: SCALE.h(34)
           }} />
-          <LoadingContainer state={[this.props.servicesState, this.props.categoriesState]}>
+          <LoadingContainer state={[EnvironmentStore.servicesState, EnvironmentStore.categoriesState]}>
             {() => (<View>
               <PickerInput
-                choices={this.props.categories.map(category => ({
-                  id: category.get('id'),
-                  label: category.get('name')}
+                choices={EnvironmentStore.categories.map(category => ({
+                  id: category.id,
+                  label: category.name}
                 )).toJS()}
                 placeholder="Category"
                 ref={(r) => this.addFormItem(r, 'category_id')}
@@ -176,10 +173,10 @@ export default class SalonAddSP extends PureComponent {
               />
               <View style={{height: StyleSheet.hairlineWidth}} />
               <PickerInput
-                choices={this.props.services.map(service => {
+                choices={EnvironmentStore.services.map(service => {
                   return {
-                    id: service.get('id'),
-                    label: service.get('name')
+                    id: service.id,
+                    label: service.name
                   };
                 }).toJS()}
                 placeholder="Service"
@@ -205,7 +202,7 @@ export default class SalonAddSP extends PureComponent {
                   onPress={() => {
                     this.setState({submitting: true});
 
-                    this.props.dispatch(offeringsActions.deleteOffer(this.state.editing.get('id')))
+                    this.props.dispatch(OfferingStore.deleteOffer(this.state.editing.id))
                       .then((r) => {
                         this.setState({submitting: false});
                         return r;

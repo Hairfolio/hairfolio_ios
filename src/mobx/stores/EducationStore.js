@@ -18,7 +18,7 @@ class EducationStore {
 
   @action addEducation = (education) => {
     this.addEducationState = LOADING;
-    fetch.fetch(
+    return fetch.fetch(
       `/users/${UserStore.user.id}/educations`,
       {
         method: 'POST',
@@ -36,7 +36,7 @@ class EducationStore {
 
   @action editEducation = (id, education) => {
     this.editEducationState = LOADING;
-    fetch.fetch(
+    return fetch.fetch(
       `/users/${UserStore.user.id}/educations/${id}`,
       {
         method: 'PUT',
@@ -54,7 +54,7 @@ class EducationStore {
 
   @action deleteEducation = (id) => {
     this.deleteEducationState = LOADING;
-    fetch.fetch(`/users/${UserStore.user.id}/educations/${id}`, { method: 'DELETE' })
+    return fetch.fetch(`/users/${UserStore.user.id}/educations/${id}`, { method: 'DELETE' })
     .then(response => {
       UserStore.deleteEducation(id);
       this.deleteEducationState = READY

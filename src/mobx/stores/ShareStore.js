@@ -4,7 +4,7 @@ import Camera from 'react-native-camera';
 
 import FilterStore from 'stores/FilterStore.js'
 import Picture from 'stores/Picture.js'
-
+import UserStore from './UserStore';
 import ServiceBackend from 'backend/ServiceBackend.js'
 import Service from 'Hairfolio/src/services/index.js'
 
@@ -106,7 +106,7 @@ class SendStore {
     this.inputText = '';
     this.users = [];
 
-    let userId = Service.fetch.store.getState().user.data.get('id')
+    let userId = UserStore.user.id;
 
     console.log('userId', userId);
 

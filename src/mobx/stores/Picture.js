@@ -8,6 +8,7 @@ import {ImageEditor} from 'react-native';
 import Service from 'Hairfolio/src/services/index.js'
 import ImageResizer from 'react-native-image-resizer';
 import RNFetchBlob from 'react-native-fetch-blob'
+import EnvironmentStore from './EnvironmentStore';
 
 import {CameraRoll, NativeModules} from 'react-native';
 
@@ -88,8 +89,8 @@ export default class Picture {
       name: 'upload.mp4'
     });
 
-    let preset = Service.fetch.store.getState().environment.environment.get('cloud_preset');
-    let cloudName = Service.fetch.store.getState().environment.environment.get('cloud_name');
+    let preset = EnvironmentStore.environment.cloud_preset;
+    let cloudName = EnvironmentStore.environment.cloud_name;
 
     // load pictures from library
     if (this.identifier) {
@@ -121,8 +122,8 @@ export default class Picture {
       name: 'upload.jpg'
     });
 
-    let preset = Service.fetch.store.getState().environment.environment.get('cloud_preset');
-    let cloudName = Service.fetch.store.getState().environment.environment.get('cloud_name');
+    let preset = EnvironmentStore.environment.cloud_preset;
+    let cloudName = EnvironmentStore.environment.cloud_name;
 
     formdata.append('upload_preset', preset);
     let res = await fetch(

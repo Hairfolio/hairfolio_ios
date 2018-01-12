@@ -14,13 +14,8 @@ import {appStack} from '../routes';
 
 export default class UserStylist extends PureComponent {
   static propTypes = {
-    appVersion: React.PropTypes.string.isRequired,
-    dispatch: React.PropTypes.func.isRequired,
-    environment: React.PropTypes.object.isRequired,
-    followingStates: React.PropTypes.object.isRequired,
     onLayout: React.PropTypes.func.isRequired,
     profile: React.PropTypes.object.isRequired,
-    user: React.PropTypes.object.isRequired
   };
 
   static contextTypes = {
@@ -37,9 +32,9 @@ export default class UserStylist extends PureComponent {
       label={utils.isFollowing(UserStore.user, stylist) ? 'FOLLOWED' : 'FOLLOW'}
       onPress={() => {
         if (utils.isFollowing(UserStore.user, stylist))
-          this.props.dispatch(registrationActions.unfollowUser(stylist.id));
+          UserStore.unfollowUser(stylist.id);
         else
-          this.props.dispatch(registrationActions.followUser(stylist.id));
+          UserStore.followUser(stylist.id);
       }}
     />);
   }
@@ -63,11 +58,11 @@ export default class UserStylist extends PureComponent {
       <View
         onLayout={this.props.onLayout}
       >
-        {this.props.profile.get('stylists') && this.props.profile.get('stylists').count() ?
-          this.props.profile.get('stylists').map(stylist => <TouchableOpacity
-            key={stylist.get('id')}
+        {this.props.profile.stylists && this.props.profile.stylists.count() ?
+          this.props.profile.stylists.map(stylist => <TouchableOpacity
+            key={stylist.id}
             onPress={() => {
-              appStack.scene().goToProfile(stylist.get('id'));
+              appStack.scene().goToProfile(stylist.id);
             }}
             style={{
               flexDirection: 'row'
@@ -81,7 +76,7 @@ export default class UserStylist extends PureComponent {
               marginRight: 5
             }}>
               <Image
-                source={{uri: utils.getUserProfilePicURI(this.props.profile, this.props.environment)}}
+                source={{uri: utils.getUserProfilePicURI(this.props.profile, EnvironmentStore.environment)}}
                 style={{
                   backgroundColor: 'rgba(0, 0, 0, 0.25)',
                   width: SCALE.h(80),
@@ -103,7 +98,7 @@ export default class UserStylist extends PureComponent {
                 fontFamily: FONTS.MEDIUM,
                 fontSize: SCALE.h(28),
                 color: COLORS.DARK
-              }}>{stylist.get('first_name')} {stylist.get('last_name')}</Text>
+              }}>{stylist.first_name} {stylist.last_name}</Text>
 
               {this.renderFollowButton(stylist)}
             </View>

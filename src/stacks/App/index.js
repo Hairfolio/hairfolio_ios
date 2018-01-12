@@ -29,7 +29,7 @@ export default class AppStack extends PureComponent {
 
   constructor(props) {
     super(props);
-    EnvironmentStore.get();
+    EnvironmentStore.loadEnv();
   }
 
   componentWillMount() {

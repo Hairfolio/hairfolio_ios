@@ -8,15 +8,17 @@ import {
   observer, // mobx
 } from 'Hairfolio/src/helpers.js';
 import { READY, EMPTY, LOADING, LOADING_ERROR } from '../../constants';
+import { persist } from 'mobx-persist';
+import hydrate from './hydrate';
 
 class UserStore {
-  @observable token;
-  @observable user;
-  @observable userState;
-  @observable followingStates;
-  @observable changePasswordState;
-  @observable forgotPasswordState;
-  @observable registrationMethod;
+  @persist @observable token;
+  @persist('object') @observable user;
+  @persist @observable userState;
+  @persist('object') @observable followingStates;
+  @persist @observable changePasswordState;
+  @persist @observable forgotPasswordState;
+  @persist @observable registrationMethod;
 
   constructor() {
     this.user = {
@@ -34,7 +36,7 @@ class UserStore {
     this.user = user;
   }
 
-  @action changeRegistrationMethod = (method) => {
+  @action setMethod = (method) => {
     this.registrationMethod = method;
   }
 
@@ -404,7 +406,8 @@ class UserStore {
   }
 }
 
-const store = new UserStore();
+const store =  new UserStore();
+hydrate('user', store);
 
 window.userStore = store;
 

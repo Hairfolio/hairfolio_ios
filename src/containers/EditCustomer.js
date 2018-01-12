@@ -20,7 +20,6 @@ import {NAVBAR_HEIGHT} from '../constants';
 
 import {loginStack, appStack, changePassword, salonStylistsEU, salonSPEU, editCustomerAddress, stylistCertificatesEU, stylistPlaceOfWorkEU, stylistProductExperienceEU, stylistEducationEU, salonProductExperienceEU} from '../routes';
 
-import {throwOnFail} from '../lib/reduxPromiseMiddleware';
 
 import formMixin from '../mixins/form';
 import utils from '../utils';
@@ -339,7 +338,7 @@ export default class EditCustomer extends PureComponent {
   }
 
   render() {
-    var isLoading = this.state.submitting || utils.isLoading(CloudinaryStore.states['edit-user-pick']);
+    var isLoading = this.state.submitting || utils.isLoading(CloudinaryStore.cloudinaryStates['edit-user-pick']);
 
     return (<NavigationSetting
       forceUpdateEvents={['login', 'user-edited']}
@@ -384,7 +383,6 @@ export default class EditCustomer extends PureComponent {
           this.setState({submitting: false});
           return r;
         })
-        .then(throwOnFail)
         .then(
           () => {
             appEmitter.emit('user-edited', 'edit-page');
@@ -427,7 +425,6 @@ export default class EditCustomer extends PureComponent {
               ref={(r) => this.addFormItem(r, 'avatar_cloudinary_id')}
               transform={(uri, metas) =>
                  CloudinaryStore.upload(uri, metas, {maxHW: 512}, 'edit-user-pick')
-                  .then(throwOnFail)
                   .then(({public_id}) => public_id)
               }
               validation={(v) => !!v || UserStore.user.instagram_id || UserStore.user.facebook_id}

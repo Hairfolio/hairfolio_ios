@@ -12,10 +12,7 @@ import PickerInput from '../components/Form/PickerInput';
 import PageInput from '../components/Form/PageInput';
 import BannerErrorContainer from '../components/BannerErrorContainer';
 
-import {throwOnFail} from '../lib/reduxPromiseMiddleware';
-
-import {registrationActions} from '../actions/registration';
-
+import UserStore from '../mobx/stores/UserStore';
 import {stylistEducation, stylistCertificates, stylistPlaceOfWork, stylistProductExperience, appStack, stylistSP} from '../routes';
 
 import formMixin from '../mixins/form';
@@ -25,10 +22,6 @@ import appEmitter from '../appEmitter';
 
 @mixin(formMixin)
 export default class StylistInfo extends PureComponent {
-  static propTypes = {
-    dispatch: React.PropTypes.func.isRequired
-  };
-
   static contextTypes = {
     navigators: React.PropTypes.array.isRequired
   };
@@ -44,12 +37,11 @@ export default class StylistInfo extends PureComponent {
           return;
 
         this.setState({'submitting': true});
-        this.props.dispatch(registrationActions.editUser(this.getFormValue(), 'stylist'))
+        UserStore.editUser(this.getFormValue(), 'stylist')
         .then((r) => {
           this.setState({submitting: false});
           return r;
         })
-        .then(throwOnFail)
         .then(
           () => {
             appEmitter.emit('user-edited');

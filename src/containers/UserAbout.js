@@ -415,7 +415,7 @@ export default class UserAbout extends PureComponent {
     // comme profile n'est pas updaté lorsqu'il y a une modification interne
     // alors qu'on est deja sur la page,
     // on switche sur user qui de toute façon est le seul qui risque d'etre updaté
-    this.profile = this.props.profile.get('id') === UserStore.user.get('id') ? UserStore.user : this.props.profile;
+    this.profile = this.props.profile.id === UserStore.user.id ? UserStore.user : this.props.profile;
 
     return (<NavigationSetting
       forceUpdateEvents={this.profile === UserStore.user ? ['user-edited'] : null}

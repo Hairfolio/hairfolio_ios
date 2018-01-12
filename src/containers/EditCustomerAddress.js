@@ -13,6 +13,7 @@ import PickerInput from '../components/Form/PickerInput';
 import BannerErrorContainer from '../components/BannerErrorContainer';
 import states from '../states.json';
 
+import UserStore from '../mobx/stores/UserStore';
 import {editCustomer} from '../routes';
 
 import formMixin from '../mixins/form';
@@ -21,11 +22,6 @@ import {NAVBAR_HEIGHT} from '../constants';
 
 @mixin(formMixin)
 export default class EditCustomerAddress extends PureComponent {
-  static propTypes = {
-    appVersion: React.PropTypes.string.isRequired,
-    dispatch: React.PropTypes.func.isRequired
-  };
-
   static contextTypes = {
     navigators: React.PropTypes.array.isRequired
   };

@@ -1,7 +1,6 @@
 const BASE_URL = 'http://api.hairfolio.tech/';
 
-import Service from 'Hairfolio/src/services/index.js'
-import UserStore from 'stores/UserStore.js';
+import UserStore from '../mobx/stores/UserStore';
 
 let myfetch = function(input, opts) {
   return new Promise((resolve, reject) => {
@@ -12,7 +11,6 @@ let myfetch = function(input, opts) {
 
 export default class Backend {
 
-
   getHeaders() {
     let headers = {
       'Accept': 'application/json',
@@ -21,7 +19,7 @@ export default class Backend {
 
     let token = UserStore.token;
 
-    let token2 = Service.fetch.store.getState().user.data.get('auth_token')
+    let token2 = UserStore.user.auth_token;
 
     console.log('userToken', token);
 
@@ -87,7 +85,6 @@ export default class Backend {
   }
 
   async get(url) {
-
     let queryUrl = BASE_URL + url;
 
     let response = await myfetch(queryUrl, {

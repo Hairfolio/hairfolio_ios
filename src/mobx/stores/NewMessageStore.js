@@ -3,6 +3,7 @@ import {CameraRoll, NativeModules} from 'react-native';
 import Camera from 'react-native-camera';
 
 import FilterStore from 'stores/FilterStore.js'
+import UserStore from './UserStore';
 import Picture from 'stores/Picture.js'
 import Service from 'Hairfolio/src/services/index.js'
 
@@ -25,7 +26,7 @@ class NewMessageStore {
 
   async load() {
     // TODO backend integration
-    let userId = Service.fetch.store.getState().user.data.get('id');
+    let userId = UserStore.user.id;
 
     let res = (await ServiceBackend.get(`users/${userId}`)).user;
 

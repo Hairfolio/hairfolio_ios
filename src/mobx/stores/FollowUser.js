@@ -7,8 +7,7 @@ import ServiceBackend from 'backend/ServiceBackend.js'
 import {_, v4, moment, React, Text} from 'Hairfolio/src/helpers';
 
 import User from 'stores/User.js'
-import globalStore from 'Hairfolio/src/store.js';
-
+import UserStore from 'stores/UserStore.js';
 import FeedStore from 'stores/FeedStore.js'
 
 export default class FollowUser {
@@ -36,14 +35,14 @@ export default class FollowUser {
   }
 
   @computed get showFollowButton() {
-    let myId = globalStore.getState().user.data.get('id')
+    let myId = UserStore.user.id;
     return this.user.id != myId;
   }
 
   async follow() {
     this.followLoading = true;
 
-    let myId = globalStore.getState().user.data.get('id')
+    let myId = UserStore.user.data.id;
 
 
     let res = await ServiceBackend.post(`users/${this.user.id}/follows`, { });
@@ -56,7 +55,7 @@ export default class FollowUser {
   async unfollow() {
     this.followLoading = true;
 
-    let myId = globalStore.getState().user.data.get('id')
+    let myId = UserStore.user.data.id;
 
     let res = await ServiceBackend.delete(`users/${this.user.id}/follows`);
 

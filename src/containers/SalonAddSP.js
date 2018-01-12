@@ -6,7 +6,7 @@ import validator from 'validator';
 import {COLORS, FONTS, SCALE} from '../style';
 import NavigationSetting from '../navigation/NavigationSetting';
 
-import EnvironmentStore from '../mobx/stores/EnvironmentsStore';
+import EnvironmentStore from '../mobx/stores/EnvironmentStore';
 import EducationStore from '../mobx/stores/EducationStore';
 import OfferingStore from '../mobx/stores/OfferingStore';
 
@@ -20,21 +20,12 @@ import DeleteButton from '../components/Buttons/Delete';
 
 import {NAVBAR_HEIGHT} from '../constants';
 
-import {throwOnFail} from '../lib/reduxPromiseMiddleware';
 import appEmitter from '../appEmitter';
 
 import formMixin from '../mixins/form';
 
 @mixin(formMixin)
 export default class SalonAddSP extends PureComponent {
-  static propTypes = {
-    appVersion: React.PropTypes.string.isRequired,
-    categories: React.PropTypes.object.isRequired,
-    categoriesState: React.PropTypes.string.isRequired,
-    dispatch: React.PropTypes.func.isRequired,
-    services: React.PropTypes.object.isRequired,
-    servicesState: React.PropTypes.string.isRequired
-  };
 
   static contextTypes = {
     navigators: React.PropTypes.array.isRequired
@@ -126,7 +117,6 @@ export default class SalonAddSP extends PureComponent {
             this.setState({submitting: false});
             return r;
           })
-          .then(throwOnFail)
           .then(
             () => {
               appEmitter.emit('user-edited');
@@ -202,12 +192,11 @@ export default class SalonAddSP extends PureComponent {
                   onPress={() => {
                     this.setState({submitting: true});
 
-                    this.props.dispatch(OfferingStore.deleteOffer(this.state.editing.id))
+                    OfferingStore.deleteOffer(this.state.editing.id)
                       .then((r) => {
                         this.setState({submitting: false});
                         return r;
                       })
-                      .then(throwOnFail)
                       .then(
                         () => {
                           appEmitter.emit('user-edited');

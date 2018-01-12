@@ -69,7 +69,7 @@ export default class User {
       this.name = `${data.first_name} ${data.last_name}`;
     }
 
-    let environment = await EnvironmentStore.get();
+    let environment = await EnvironmentStore.loadEnv();
 
     let picObj = {uri: utils.getUserProfilePicURI(new GetObj(data), new GetObj(environment))};
 

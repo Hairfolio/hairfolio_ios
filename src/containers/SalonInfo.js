@@ -7,8 +7,6 @@ import {View, Text, StyleSheet} from 'react-native';
 import {COLORS, FONTS, SCALE} from '../style';
 import NavigationSetting from '../navigation/NavigationSetting';
 
-import Service from 'Hairfolio/src/services/index.js'
-
 import MultilineTextInput from '../components/Form/MultilineTextInput';
 import InlineTextInput from '../components/Form/InlineTextInput';
 import PickerInput from '../components/Form/PickerInput';
@@ -18,8 +16,6 @@ import KeyboardScrollView from '../components/KeyboardScrollView';
 
 import states from '../states.json';
 
-import {throwOnFail} from '../lib/reduxPromiseMiddleware';
-
 import {salonStylists, salonSP, salonProductExperience} from '../routes';
 
 import formMixin from '../mixins/form';
@@ -27,13 +23,10 @@ import formMixin from '../mixins/form';
 import {NAVBAR_HEIGHT} from '../constants';
 import appEmitter from '../appEmitter';
 import {appStack} from '../routes';
+import UserStore from '../mobx/stores/UserStore';
 
 @mixin(formMixin)
 export default class SalonInfo extends PureComponent {
-  static propTypes = {
-    dispatch: React.PropTypes.func.isRequired
-  };
-
   static contextTypes = {
     navigators: React.PropTypes.array.isRequired
   };
@@ -49,15 +42,14 @@ export default class SalonInfo extends PureComponent {
           return;
 
         let formData = this.getFormValue();
-        formData.business.name = Service.fetch.store.getState().user.data.get('salon').get('name');
+        formData.business.name = UserStore.user.salon.name;
 
         this.setState({'submitting': true});
-        this.props.dispatch(registrationActions.editUser(formData))
+        UserStore.editUser(formData)
         .then((r) => {
           this.setState({submitting: false});
           return r;
         })
-        .then(throwOnFail)
         .then(
           () => {
             appEmitter.emit('user-edited');

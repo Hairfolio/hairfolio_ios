@@ -4,6 +4,7 @@ import Camera from 'react-native-camera';
 
 import FilterStore from 'stores/FilterStore.js'
 import Picture from 'stores/Picture.js'
+import UserStore from './UserStore';
 
 import ServiceBackend from 'backend/ServiceBackend.js'
 import Service from 'Hairfolio/src/services/index.js'
@@ -44,7 +45,7 @@ class TopTags extends PostStore {
       console.log('loadNextPage', this.nextPage);
       this.isLoadingNextPage = true;
 
-      let myId = Service.fetch.store.getState().user.data.get('id')
+      let myId = UserStore.user.id;
 
       let res = (await ServiceBackend.get(`tags?popular=true&page=${this.nextPage}`));
 

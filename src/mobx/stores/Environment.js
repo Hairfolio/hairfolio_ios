@@ -5,14 +5,10 @@ import LinkTag from 'stores/tags/LinkTag.js'
 import HashTag from 'stores/tags/HashTag.js'
 import ServiceTag from 'stores/tags/ServiceTag.js'
 import {ImageEditor} from 'react-native';
-import Service from 'Hairfolio/src/services/index.js'
+import EnvironmentStore from './EnvironmentStore';
 import ImageResizer from 'react-native-image-resizer';
 
 export default class Environment {
-
-  //   return ImageResizer.createResizedImage(uri, 250, 250, 'JPEG', 90, 0, null);
-  // }
-
 
   async toJSON() {
     let uri = await this.resizeImage(this.source.uri);
@@ -24,8 +20,8 @@ export default class Environment {
       name: 'upload.jpg'
     });
 
-    let preset = Service.fetch.store.getState().environment.environment.get('cloud_preset');
-    let cloudName = Service.fetch.store.getState().environment.environment.get('cloud_name');
+    let preset = EnvironmentStore.environment.cloud_preset;
+    let cloudName = EnvironmentStore.environment.cloud_name;
 
     formdata.append('upload_preset', preset);
     let res = await fetch(

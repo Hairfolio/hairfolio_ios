@@ -13,9 +13,7 @@ import CustomTouchableOpacity from '../components/CustomTouchableOpacity';
 import utils from '../utils';
 import appEmitter from '../appEmitter';
 
-import {throwOnFail} from '../lib/reduxPromiseMiddleware';
-
-import EnvironmentStore from '../mobx/stores/EnvironmentsStore';
+import EnvironmentStore from '../mobx/stores/EnvironmentStore';
 import UserStore from '../mobx/stores/UserStore';
 
 import oauthMixin from '../mixins/oauth';
@@ -56,11 +54,11 @@ export default class Login extends PureComponent {
               icon="facebook"
               label="Sign In with Facebook"
               onPress={() =>
-                EnvironmentStore.get().then(throwOnFail)
+                EnvironmentStore.loadEnv()
                   .then(() => LoginManager.logInWithReadPermissions(['email']))
                   .then(() => AccessToken.getCurrentAccessToken())
                   .then(data => data.accessToken.toString())
-                  .then(token => UserStore.loginWithFacebook(token).then(throwOnFail))
+                  .then(token => UserStore.loginWithFacebook(token))
                   .then(
                     () => {
                       appEmitter.emit('login');
@@ -81,7 +79,7 @@ export default class Login extends PureComponent {
               icon="instagram"
               label="Sign In with Instagram"
               onPress={() =>
-                EnvironmentStore.get().then(throwOnFail)
+                EnvironmentStore.loadEnv()
                   .then(() => this.oauth(loginStack, {
                     authorize: 'https://api.instagram.com/oauth/authorize/',
                     clientId: EnvironmentStore.environment.insta_client_id,
@@ -89,7 +87,7 @@ export default class Login extends PureComponent {
                     type: 'Instagram',
                     scope: 'basic'
                   }))
-                  .then(token => UserStore.loginWithInstagram(token).then(throwOnFail))
+                  .then(token => UserStore.loginWithInstagram(token))
                   .then(
                     () => {
                       appEmitter.emit('login');

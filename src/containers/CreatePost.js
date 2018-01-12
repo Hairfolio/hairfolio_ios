@@ -227,10 +227,6 @@ const LibraryHeader = observer(({onLeft, onRight, onTitle, store}) => {
 @observer
 @autobind
 export default class CreatePost extends PureComponent {
-  static propTypes = {
-    appVersion: React.PropTypes.string.isRequired
-  };
-
   static contextTypes = {
     navigators: React.PropTypes.array.isRequired
   };

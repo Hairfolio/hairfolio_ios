@@ -24,10 +24,6 @@ import ActivityYouStore from 'stores/ActivityYouStore'
 import ActivityFollowingStore from 'stores/ActivityFollowingStore'
 
 export default class Favourites extends PureComponent {
-  static propTypes = {
-    appVersion: React.PropTypes.string.isRequired
-  };
-
   static contextTypes = {
     navigators: React.PropTypes.array.isRequired
   };

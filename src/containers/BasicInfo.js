@@ -1,6 +1,7 @@
 import React from 'react';
 import _ from 'lodash';
 import {mixin} from 'core-decorators';
+import { observer } from 'mobx-react';
 import validator from 'validator';
 import PureComponent from '../components/PureComponent';
 import RN, {View, StyleSheet} from 'react-native';
@@ -15,8 +16,6 @@ import Icon from '../components/Icon';
 
 import {loginStack} from '../routes';
 
-import {throwOnFail} from '../lib/reduxPromiseMiddleware';
-
 import utils from '../utils';
 import appEmitter from '../appEmitter';
 import formMixin from '../mixins/form';
@@ -27,12 +26,12 @@ import CloudinaryStore from '../mobx/stores/CloudinaryStore';
 
 import {NAVBAR_HEIGHT} from '../constants';
 
+@observer
 @mixin(formMixin)
 export default class BasicInfo extends PureComponent {
   static propTypes = {
     accountType: React.PropTypes.string.isRequired,
     detailFields: React.PropTypes.array.isRequired,
-    dispatch: React.PropTypes.func.isRequired,
     nextRoute: React.PropTypes.object,
     title: React.PropTypes.string.isRequired,
   };
@@ -99,13 +98,14 @@ export default class BasicInfo extends PureComponent {
           var value = this.getFormValue();
           value['password_confirmation'] = value.password;
 
-          EnvironmentStore.get().then(throwOnFail)
-            .then(() => UserStore.signupWithEmail(value, this.props.accountType).then(throwOnFail))
+          EnvironmentStore.loadEnv()
+            .then(() => UserStore.signupWithEmail(value, this.props.accountType))
             .then(() => {
               appEmitter.emit('login');
               this.jumpToNext(() => this.clearValues());
             }, (e) => {
               console.log(e);
+              debugger;
               this.refs.ebc.error(e);
             });
         }
@@ -143,10 +143,8 @@ export default class BasicInfo extends PureComponent {
               }}
               ref={(r) => this.addFormItem(r, 'avatar_cloudinary_id')}
               transform={(uri, metas) =>
-                EnvironmentStore.get()
-                  .then(throwOnFail)
+                EnvironmentStore.loadEnv()
                   .then(() => CloudinaryStore.upload(uri, metas, {maxHW: 512}, 'register-pick'))
-                  .then(throwOnFail)
                   .then(({public_id}) => public_id)
               }
               validation={(v) => !!v}

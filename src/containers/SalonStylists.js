@@ -18,7 +18,6 @@ import {NAVBAR_HEIGHT, READY, LOADING, LOADING_ERROR} from '../constants';
 export default class SalonStylist extends PureComponent {
   static propTypes = {
     backTo: React.PropTypes.object.isRequired,
-    dispatch: React.PropTypes.func.isRequired
   };
 
   static contextTypes = {

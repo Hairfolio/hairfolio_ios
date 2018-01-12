@@ -6,7 +6,7 @@ import validator from 'validator';
 import {COLORS, FONTS, SCALE} from '../style';
 import NavigationSetting from '../navigation/NavigationSetting';
 import UserStore from '../mobx/stores/UsersStore';
-import EnvironmentStore from '../mobx/stores/EnvironmentsStore';
+import EnvironmentStore from '../mobx/stores/EnvironmentStore';
 import EducationStore from '../mobx/stores/EducationStore';
 
 import {mixin, autobind} from 'core-decorators';
@@ -19,7 +19,6 @@ import DeleteButton from '../components/Buttons/Delete';
 
 import {NAVBAR_HEIGHT} from '../constants';
 
-import {throwOnFail} from '../lib/reduxPromiseMiddleware';
 import appEmitter from '../appEmitter';
 
 import formMixin from '../mixins/form';
@@ -48,7 +47,7 @@ export default class StylistAddEducation extends PureComponent {
 
   setEditing(education) {
     if (this.state.editing !== education)
-      EnvironmentStore.getDegrees().then(throwOnFail).then(() => {
+      EnvironmentStore.getDegrees().then(() => {
         this.setFormValue({
           ...education.toJS(),
           'year_from': education.year_from.toString(),
@@ -109,7 +108,6 @@ export default class StylistAddEducation extends PureComponent {
             this.setState({submitting: false});
             return r;
           })
-          .then(throwOnFail)
           .then(
             () => {
               appEmitter.emit('user-edited');
@@ -211,7 +209,6 @@ export default class StylistAddEducation extends PureComponent {
                         this.setState({submitting: false});
                         return r;
                       })
-                      .then(throwOnFail)
                       .then(
                         () => {
                           appEmitter.emit('user-edited');

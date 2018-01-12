@@ -156,7 +156,7 @@ export default class UserPosts extends PureComponent {
         backgroundColor: COLORS.WHITE,
       }}
       onWillFocus={() => {
-        let userId = this.props.profile.get('id');
+        let userId = this.props.profile.id;
         if (window.lastUserId != userId) {
           window.lastUserId = userId;
           UserPostStore.load(userId);

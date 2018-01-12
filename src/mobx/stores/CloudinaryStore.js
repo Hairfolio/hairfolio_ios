@@ -10,15 +10,15 @@ import utils from '../../utils';
 import EnvironmentStore from './EnvironmentStore';
 
 class CloudinaryStore {
-  @observable states;
+  @observable cloudinaryStates;
 
   constructor() {
-    this.states = {};
+    this.cloudinaryStates = {};
   }
 
   @action upload = async (uri, {width, height}, opts = {}, handle) => {
-    let environment = await EnvironmentStore.get();
-    this.states[handle] = LOADING;
+    await EnvironmentStore.loadEnv();
+    this.cloudinaryStates[handle] = LOADING;
     return new Promise((resolve, reject) => {
       ImageEditor.cropImage(uri, {
         offset: {
@@ -35,7 +35,7 @@ class CloudinaryStore {
         } : null,
         resizeMode: 'cover'
       }, resolve, () => {
-        this.states[handle] = LOADING_ERROR;
+        this.cloudinaryStates[handle] = LOADING_ERROR;
         reject('resize failed')
       });
     }).then((uri) => {
@@ -46,9 +46,11 @@ class CloudinaryStore {
         name: 'upload.jpg'
       });
 
-      formdata.append('upload_preset', environment.get('cloud_preset'));
+      formdata.append('upload_preset', EnvironmentStore.environment.cloud_preset);
+      console.log(EnvironmentStore.environment);
+      debugger;
       return window.fetch(
-        `https://api.cloudinary.com/v1_1/${environment.get('cloud_name')}/image/upload`,
+        `https://api.cloudinary.com/v1_1/${EnvironmentStore.environment.cloud_name}/image/upload`,
         {
           method: 'POST',
           headers: {
@@ -65,13 +67,13 @@ class CloudinaryStore {
           var error = new Error('Cloudinary Error');
           error.data = response.jsonData;
           error.handle = handle;
-          this.states[handle] = LOADING_ERROR;
+          this.cloudinaryStates[handle] = LOADING_ERROR;
           throw error;
         }
       })
       .then((response) => {
         var r = response.jsonData;
-        this.states[handle] = READY;
+        this.cloudinaryStates[handle] = READY;
         return {
           handle,
           'public_id': r.public_id

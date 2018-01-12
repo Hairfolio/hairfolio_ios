@@ -10,7 +10,7 @@ import {v4} from 'uuid';
 
 
 import ServiceBackend from 'backend/ServiceBackend.js'
-import Service from 'Hairfolio/src/services/index.js'
+import UserStore from './UserStore';
 
 import {_, moment, React, Text} from 'Hairfolio/src/helpers';
 
@@ -67,7 +67,7 @@ export class HairfolioStore {
 
     let results;
 
-    let currentUserId = Service.fetch.store.getState().user.data.get('id')
+    let currentUserId = UserStore.user.id;
 
     if (!id || id == currentUserId) {
       results = await ServiceBackend.get('folios');

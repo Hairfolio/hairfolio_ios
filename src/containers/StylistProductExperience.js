@@ -9,8 +9,6 @@ import {COLORS} from '../style';
 import NavigationSetting from '../navigation/NavigationSetting';
 import SearchList from '../components/SearchList';
 
-import {throwOnFail} from '../lib/reduxPromiseMiddleware';
-
 import LoadingContainer from '../components/LoadingContainer';
 
 import {NAVBAR_HEIGHT} from '../constants';
@@ -18,7 +16,6 @@ import {NAVBAR_HEIGHT} from '../constants';
 export default class StylistProductExperience extends PureComponent {
   static propTypes = {
     backTo: React.PropTypes.object.isRequired,
-    dispatch: React.PropTypes.func.isRequired,
     title: React.PropTypes.string.isRequired
   };
 
@@ -63,7 +60,7 @@ export default class StylistProductExperience extends PureComponent {
 
   render() {
     let newExperiences = EnvironmentStore.experiences
-      .filter((experience) => Map.isMap(experience) && experience.id !== null)
+      .filter((experience) => experience.id !== null)
       .map(experience =>
         [experience.id, experience]
       );

@@ -7,10 +7,11 @@ import autobind from 'autobind-decorator'
 import {v4} from 'uuid';
 import {h, FONTS, COLORS} from 'Hairfolio/src/style.js'
 import {Alert, PickerIOS, Linking, Animated, Picker, Dimensions, Modal, StatusBar, ActivityIndicator, ListView, WebView, AlertIOS, ScrollView, Platform, View, TextInput, Text, Image, TouchableHighlight, ActionSheetIOS, TouchableOpacity, TouchableWithoutFeedback, StyleSheet } from 'react-native'
+import UserStore from './mobx/stores/UserStore';
 
 import Service from 'Hairfolio/src/services/index.js'
 
-let getUserId = () => Service.fetch.store.getState().user.data.get('id');
+let getUserId = () => UserStore.user.id;
 
 let moment = require('moment');
 

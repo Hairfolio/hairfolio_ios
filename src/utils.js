@@ -39,15 +39,17 @@ const utils = {
     return `http://res.cloudinary.com/${environment.cloud_name}/image/upload/${id}.jpg`;
   },
   getUserProfilePicURI(user, environment) {
-    if (user.get('avatar_cloudinary_id'))
-      return utils.getCloudinaryPicFromId(user.get('avatar_cloudinary_id'), environment);
-    else if (user.get('facebook_id'))
+    if (!user)
+      return '';
+    if (user.avatar_cloudinary_id)
+      return utils.getCloudinaryPicFromId(user.avatar_cloudinary_id, environment);
+    else if (user.facebook_id)
       return `http://res.cloudinary.com/${environment.cloud_name}/image/facebook/${user.facebook_id}.jpg`;
     else if (user.instagram_id)
       return `http://res.cloudinary.com/${environment.cloud_name}/image/instagram_name/${user.instagram_username}.jpg`;
   },
   isFollowing(me, profile) {
-    return me.get('is_following_me') && !!me.get('following').find((user) => user.get('id') === profile.get('id'));
+    return me.is_following_me && !!me.following.find((user) => user.id === profile.id);
   }
 };
 

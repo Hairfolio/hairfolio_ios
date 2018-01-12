@@ -9,8 +9,6 @@ import NavigationSetting from '../navigation/NavigationSetting';
 import EnvironmentStore from '../mobx/stores/EnvironmentStore';
 import LoadingContainer from '../components/LoadingContainer';
 
-import {throwOnFail} from '../lib/reduxPromiseMiddleware';
-
 import SearchList from '../components/SearchList';
 
 import {NAVBAR_HEIGHT} from '../constants';

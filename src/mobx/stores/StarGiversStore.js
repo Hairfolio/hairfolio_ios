@@ -7,7 +7,6 @@ import ServiceBackend from 'backend/ServiceBackend.js'
 import {_, v4, moment, React, Text} from 'Hairfolio/src/helpers';
 
 import User from 'stores/User.js'
-import globalStore from 'Hairfolio/src/store.js';
 
 import FollowUser from 'stores/FollowUser.js'
 

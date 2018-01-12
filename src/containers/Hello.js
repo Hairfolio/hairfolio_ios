@@ -12,10 +12,6 @@ import {signupStylistStack, stylistInfo, signupSalonStack, salonInfo, signupBran
 import {COLORS, SCALE} from '../style';
 
 export default class Hello extends PureComponent {
-  static propTypes = {
-    appVersion: React.PropTypes.string.isRequired
-  };
-
   static contextTypes = {
     navigators: React.PropTypes.array.isRequired
   };

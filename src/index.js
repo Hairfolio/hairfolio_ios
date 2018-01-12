@@ -2,17 +2,14 @@ import React from 'react';
 import {autobind} from 'core-decorators';
 import _ from 'lodash';
 import PureComponent from './components/PureComponent';
-import {Provider} from 'react-redux';
 import {View, TextInput, NativeModules, Animated, StatusBar} from 'react-native';
+import { observer } from 'mobx-react';
 import dismissKeyboard from 'react-native/Libraries/Utilities/dismissKeyboard';
 import ServiceBackend from 'backend/ServiceBackend.js'
 
 import Navigator from './navigation/Navigator';
 
 import messages from './intl/messages';
-import store from './store';
-import storecache from './storecache';
-import storecacheConfig from './storecache.config';
 import services from './services';
 
 import utils from './utils';
@@ -24,7 +21,7 @@ import {getHairfolios} from 'backend/HairfolioBackend';
 import {hello, comments, starGivers, oauthStack, loginStack, forgottenPasswordStack, signupConsumerStack, signupStylistStack, signupSalonStack, signupBrandStack, appStack, editCustomerStack, createPostStack, postDetails,
   searchDetails, tagPosts, hairfolioPosts, messagesRoute, writeMessageRoute, messageDetailsRoute, blackBook, contactDetails, addServiceOne, addServiceTwo, addServiceThree } from './routes';
 
-import UserStore from 'stores/UserStore.js';
+import UserStore from './mobx/stores/UserStore';
 import FeedStore from 'stores/FeedStore.js';
 import FavoriteStore from 'stores/FavoriteStore.js';
 
@@ -35,6 +32,7 @@ let PhotoAlbum = NativeModules.PhotoAlbum;
 
 global.ENABLE_RENDER_DEBUG = false;
 
+@observer
 export default class Root extends PureComponent {
 
   static propTypes = {
@@ -67,24 +65,8 @@ export default class Root extends PureComponent {
 
   @autobind
   onReady() {
-    NativeModules.StoreManager.get(initialState => {
-      storecache(store, initialState, storecacheConfig, appActions.reviveState);
-
-      // prepare services
-      _.each(services, service => service.setStore(store));
-      _.each(services, service => service.ready());
-
-
-      this.initialRoute = loginStack;
-
-      if (utils.isReady(store.getState().user.state)) {
-        this.initialRoute = appStack;
-      }
-
-        // this.initialRoute = hello;
-
-      this.setState({ready: true});
-    });
+    this.initialRoute = utils.isReady(UserStore.userState) ? appStack : loginStack;
+    this.setState({ready: true});
   }
 
   render() {
@@ -123,42 +105,38 @@ export default class Root extends PureComponent {
               backgroundColor: 'white'
             }}
           >
-            <Provider store={store}>
-              <Navigator
-                ref='nav'
-                backgroundStyle={{flex: 1}}
-
-
-                initialRoute={this.initialRoute}
-                initialRouteStack={[
-                  postDetails,
-                  hello,
-                  loginStack,
-                  forgottenPasswordStack,
-                  signupConsumerStack,
-                  signupBrandStack,
-                  signupSalonStack,
-                  signupStylistStack,
-                  appStack,
-                  oauthStack,
-                  editCustomerStack,
-                  createPostStack,
-                  starGivers,
-                  comments,
-                  searchDetails,
-                  tagPosts,
-                  hairfolioPosts,
-                  messagesRoute,
-                  writeMessageRoute,
-                  messageDetailsRoute,
-                  blackBook,
-                  contactDetails,
-                  addServiceOne,
-                  addServiceTwo,
-                  addServiceThree
-                ]}
-              />
-            </Provider>
+            <Navigator
+              ref='nav'
+              backgroundStyle={{flex: 1}}
+              initialRoute={this.initialRoute}
+              initialRouteStack={[
+                postDetails,
+                hello,
+                loginStack,
+                forgottenPasswordStack,
+                signupConsumerStack,
+                signupBrandStack,
+                signupSalonStack,
+                signupStylistStack,
+                appStack,
+                oauthStack,
+                editCustomerStack,
+                createPostStack,
+                starGivers,
+                comments,
+                searchDetails,
+                tagPosts,
+                hairfolioPosts,
+                messagesRoute,
+                writeMessageRoute,
+                messageDetailsRoute,
+                blackBook,
+                contactDetails,
+                addServiceOne,
+                addServiceTwo,
+                addServiceThree
+              ]}
+            />
           </Animated.View>
         }
       </View>

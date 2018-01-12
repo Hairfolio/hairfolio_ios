@@ -16,8 +16,6 @@ import KeyboardScrollView from '../components/KeyboardScrollView';
 import LoadingContainer from '../components/LoadingContainer';
 import states from '../states.json';
 
-import {throwOnFail} from '../lib/reduxPromiseMiddleware';
-
 import formMixin from '../mixins/form';
 
 import {NAVBAR_HEIGHT, LOADING, READY, LOADING_ERROR} from '../constants';
@@ -26,7 +24,6 @@ import {NAVBAR_HEIGHT, LOADING, READY, LOADING_ERROR} from '../constants';
 export default class StylistPlaceOfWork extends PureComponent {
   static propTypes = {
     backTo: React.PropTypes.object.isRequired,
-    dispatch: React.PropTypes.func.isRequired
   };
 
   static contextTypes = {

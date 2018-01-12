@@ -16,9 +16,7 @@ import formMixin from '../mixins/form';
 import utils from '../utils';
 import appEmitter from '../appEmitter';
 
-import {throwOnFail} from '../lib/reduxPromiseMiddleware';
-
-import EnvironmentStore from '../mobx/stores/EnvironmentsStore';
+import EnvironmentStore from '../mobx/stores/EnvironmentStore';
 import UserStore from '../mobx/stores/UserStore';
 
 import {login, register, forgottenPasswordStack, appStack} from '../routes';
@@ -85,8 +83,8 @@ export default class LoginEmail extends PureComponent {
                 if (!this.checkErrors()) {
                   var value = this.getFormValue();
 
-                  EnvironmentStore.get().then(throwOnFail)
-                    .then(() => UserStore.loginWithEmail(value, 'consumer').then(throwOnFail))
+                  EnvironmentStore.loadEnv()
+                    .then(() => UserStore.loginWithEmail(value, 'consumer'))
                     .then(() => {
                       this.clearValues();
                       appEmitter.emit('login');

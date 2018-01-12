@@ -220,7 +220,7 @@ export default class UserHairfolio extends PureComponent {
         backgroundColor: COLORS.WHITE,
       }}
       onWillFocus={() => {
-        HairfolioStore.load(this.props.profile.get('id'));
+        HairfolioStore.load(this.props.profile.id);
       }}
     >
       <View

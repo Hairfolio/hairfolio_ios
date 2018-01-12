@@ -1,13 +1,13 @@
-import Backend from './Backend.js'
+import Backend from './Backend';
 const BASE_URL = 'http://api.hairfolio.tech/';
 
-import CreatePostStore from 'stores/CreatePostStore.js'
-import FeedStore from 'stores/FeedStore.js'
-import SearchStore from 'stores/SearchStore.js'
+import CreatePostStore from '../mobx/stores/CreatePostStore';
+import FeedStore from '../mobx/stores/FeedStore';
+import SearchStore from '../mobx/stores/SearchStore';
+import UserStore from '../mobx/stores/UserStore';
+import ShareStore from '../mobx/stores/ShareStore';
 
-import * as routes from 'Hairfolio/src/routes.js'
-import ShareStore from 'stores/ShareStore.js'
-import Service from 'Hairfolio/src/services/index.js'
+import * as routes from 'Hairfolio/src/routes';
 
 let myfetch = function(input, opts) {
   return new Promise((resolve, reject) => {
@@ -17,6 +17,10 @@ let myfetch = function(input, opts) {
 }
 
 class ServiceBackend extends Backend {
+  constructor() {
+    super();
+  }
+
   async getServices() {
     return (await this.get('services')).services;
   }
@@ -50,7 +54,7 @@ class ServiceBackend extends Backend {
   }
 
   async sendPostMessage(user, post) {
-    let userId = Service.fetch.store.getState().user.data.get('id')
+    let userId = UserStore.user.id;
     let ids = [userId, user.id];
 
     let postData = {
@@ -144,5 +148,5 @@ class ServiceBackend extends Backend {
   }
 }
 
-const serviceBackend = new ServiceBackend()
-export default serviceBackend
+
+export default new ServiceBackend();

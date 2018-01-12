@@ -2,25 +2,28 @@ import {observable, computed, action} from 'mobx';
 import {_, v4, Text} from 'Hairfolio/src/helpers';
 
 import {EMPTY, LOADING, LOADING_ERROR, READY} from '../../constants';
-import ServiceBackend from 'backend/ServiceBackend.js'
+import hydrate from './hydrate';
+import { persist } from 'mobx-persist';
+import ServiceBackend from '../../backend/ServiceBackend';
+import Backend from '../../backend/Backend';
 
 class EnvironmentStore {
-  @observable environmentState;
-  @observable degreesState;
-  @observable categoriesState;
-  @observable experiencesState;
-  @observable servicesState;
-  @observable certificatesState;
-  @observable environment;
-  @observable degrees;
-  @observable certificates;
-  @observable services;
-  @observable categories;
-  @observable experiences;
-  @observable experiencesNextPage;
+  @persist @observable environmentState;
+  @persist @observable degreesState;
+  @persist @observable categoriesState;
+  @persist @observable experiencesState;
+  @persist @observable servicesState;
+  @persist @observable certificatesState;
+  @persist('object') @observable environment;
+  @persist('list') @observable degrees;
+  @persist('list') @observable certificates;
+  @persist('list') @observable services;
+  @persist('list') @observable categories;
+  @persist('list') @observable experiences;
+  @persist @observable experiencesNextPage;
 
   constructor() {
-    this.get();
+    this.loadEnv();
     this.environmentState = EMPTY;
     this.degreesState = EMPTY;
     this.categoriesState = EMPTY;
@@ -36,22 +39,21 @@ class EnvironmentStore {
     this.experiencesNextPage = 1;
   }
 
-  @action async get() {
+  @action async loadEnv() {
     if (this.environment) {
       this.environmentState = READY;
       return this.environment;
     } else {
       this.environmentState = LOADING;
-      return ServiceBackend.get('/sessions/environment')
-      .then(res => {
+      try {
+        let res = await ServiceBackend.get('/sessions/environment');
         this.environmentState = READY;
         this.environment = res;
-        return res;
-      })
-      .catch(error => {
+        return this.environment;
+      } catch(error) {
         this.environmentState = LOADING_ERROR;
         throw error;
-      });
+      }
     }
   }
 
@@ -124,4 +126,5 @@ class EnvironmentStore {
 }
 
 const store = new EnvironmentStore();
+hydrate('environment', store);
 export default store;

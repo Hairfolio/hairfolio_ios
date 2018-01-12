@@ -21,7 +21,6 @@ import {
 
 import ServiceBackend from 'backend/ServiceBackend.js'
 
-import globalStore from 'Hairfolio/src/store.js';
 import StarGiversStore from 'stores/StarGiversStore'
 import CommentsStore from 'stores/CommentsStore'
 

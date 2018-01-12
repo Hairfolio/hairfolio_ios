@@ -3,6 +3,7 @@ import {CameraRoll, NativeModules} from 'react-native';
 import Camera from 'react-native-camera';
 import Service from 'Hairfolio/src/services/index.js'
 
+import UserStore from './UserStore';
 import FilterStore from 'stores/FilterStore.js'
 import Picture from 'stores/Picture.js'
 import Post from 'stores/Post.js'
@@ -43,7 +44,7 @@ class Message {
 
   async init(obj) {
 
-    let isMe = obj.user.id == Service.fetch.store.getState().user.data.get('id');
+    let isMe = obj.user.id == UserStore.user.id;
 
     if (!isMe) {
       let user = new User();
@@ -151,11 +152,11 @@ class MessageDetailsStore {
 
     let ids = users.map(e => e.user.id);
 
-    let userId = Service.fetch.store.getState().user.data.get('id');
+    let userId = UserStore.user.id;
     ids.push(userId);
 
     let postData = {
-      sender: Service.fetch.store.getState().user.data.get('id'),
+      sender: UserStore.user.id,
       conversation: {
         sender_id: userId,
         recipient_ids: ids

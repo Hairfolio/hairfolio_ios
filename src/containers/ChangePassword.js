@@ -15,9 +15,7 @@ import SimpleButton from '../components/Buttons/Simple';
 import {editCustomer} from '../routes';
 
 import Categorie from '../components/Form/Categorie';
-
-
-import {throwOnFail} from '../lib/reduxPromiseMiddleware';
+import UserStore from '../mobx/stores/UserStore';
 
 import formMixin from '../mixins/form';
 
@@ -25,11 +23,6 @@ import {NAVBAR_HEIGHT} from '../constants';
 
 @mixin(formMixin)
 export default class ForgottenPassword extends PureComponent {
-  static propTypes = {
-    appVersion: React.PropTypes.string.isRequired,
-    dispatch: React.PropTypes.func.isRequired
-  };
-
   static contextTypes = {
     navigators: React.PropTypes.array.isRequired
   };
@@ -112,12 +105,11 @@ export default class ForgottenPassword extends PureComponent {
                   return;
 
                 this.setState({'submitting': true});
-                this.props.dispatch(registrationActions.changePassword(this.getFormValue()))
+                UserStore.changePassword(this.getFormValue())
                   .then((r) => {
                     this.setState({submitting: false});
                     return r;
                   })
-                  .then(throwOnFail)
                   .then(
                     () => {
                       this.clearValues();

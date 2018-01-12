@@ -11,9 +11,7 @@ import InlineTextInput from '../components/Form/InlineTextInput';
 import BannerErrorContainer from '../components/BannerErrorContainer';
 
 import {loginStack} from '../routes';
-
-
-import {throwOnFail} from '../lib/reduxPromiseMiddleware';
+import UserStore from '../mobx/stores/UserStore';
 
 import formMixin from '../mixins/form';
 
@@ -21,11 +19,6 @@ import {NAVBAR_HEIGHT} from '../constants';
 
 @mixin(formMixin)
 export default class ForgottenPassword extends PureComponent {
-  static propTypes = {
-    appVersion: React.PropTypes.string.isRequired,
-    dispatch: React.PropTypes.func.isRequired
-  };
-
   static contextTypes = {
     navigators: React.PropTypes.array.isRequired
   };
@@ -46,13 +39,12 @@ export default class ForgottenPassword extends PureComponent {
           return;
 
         this.setState({'submitting': true});
-        this.props.dispatch(registrationActions.forgotPassword(this.getFormValue().email))
+        UserStore.forgotPassword(this.getFormValue().email)
         .then((r) => {
           this.clearValues();
           this.setState({submitting: false});
           return r;
         })
-        .then(throwOnFail)
         .then(
           () => {
             this.setState({success: true});

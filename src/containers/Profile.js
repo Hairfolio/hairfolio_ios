@@ -302,7 +302,7 @@ export default class Profile extends PureComponent {
 
                 </View>
 
-                  {this.props.profile.id !== this.props.user.id ? <View style={{
+                  {this.props.profile.id !== UserStore.user.id ? <View style={{
                     flexDirection: 'row',
                     justifyContent: 'center',
                     marginTop: SCALE.h(20)
@@ -310,7 +310,7 @@ export default class Profile extends PureComponent {
                     <View>
                       {!this.state.followed ?
                         <ProfileButton
-                          disabled={utils.isLoading(this.props.followingStates[this.props.profile.i])}
+                          disabled={utils.isLoading(UserStore.followingStates[this.props.profile.i])}
                           label="FOLLOW"
                           onPress={() => {
                             UserStore.followUser(this.props.profile.id);
@@ -341,7 +341,7 @@ export default class Profile extends PureComponent {
                             let userObjects = [
                               {
                                 user : {
-                                  id: this.props.profile.get('id')
+                                  id: this.props.profile.id
                                 }
                               }
                             ];

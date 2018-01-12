@@ -13,8 +13,6 @@ import Picker from '../components/Picker';
 import utils from '../utils';
 import appEmitter from '../appEmitter';
 
-import {throwOnFail} from '../lib/reduxPromiseMiddleware';
-
 import UserStore from '../mobx/stores/UserStore';
 import EnvironmentStore from '../mobx/stores/EnvironmentStore';
 import CloudinaryStore from '../mobx/stores/CloudinaryStore';
@@ -91,17 +89,16 @@ export default class Register2 extends PureComponent {
               var login;
 
               if (this.props.registrationMethod === 'facebook')
-                login = EnvironmentStore.get().then(throwOnFail)
+                login = EnvironmentStore.loadEnv()
                   .then(() => LoginManager.logInWithReadPermissions(['email']))
                   .then(() => AccessToken.getCurrentAccessToken())
                   .then(data => data.accessToken.toString())
                   .then(token =>
                     UserStore.signupWithFacebook(token, type)
-                      .then(throwOnFail)
                   );
 
               if (UserStore.registrationMethod === 'instagram')
-                login = EnvironmentStore.get().then(throwOnFail)
+                login = EnvironmentStore.loadEnv()
                   .then(() => this.oauth(loginStack, {
                     authorize: 'https://api.instagram.com/oauth/authorize/',
                     clientId: EnvironmentStore.environment.insta_client_id,
@@ -109,9 +106,7 @@ export default class Register2 extends PureComponent {
                     type: 'Instagram',
                     scope: 'basic'
                   }))
-                  .then(token => UserStore.signupWithInstagram(token, type)
-                    .then(throwOnFail)
-                  );
+                  .then(token => UserStore.signupWithInstagram(token, type));
 
               login
                 .then(

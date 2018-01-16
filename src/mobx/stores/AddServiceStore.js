@@ -1,7 +1,7 @@
 import {observable, computed, action} from 'mobx';
 import {CameraRoll, NativeModules} from 'react-native';
 
-import ServiceBackend from '../backend/ServiceBackend';
+import ServiceBackend from '../../backend/ServiceBackend';
 
 let PhotoAlbum = NativeModules.PhotoAlbum;
 

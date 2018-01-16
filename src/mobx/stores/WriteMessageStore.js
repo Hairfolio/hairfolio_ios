@@ -90,7 +90,7 @@ class WriteMessageStore {
       let users = this.selectedItems.map(e => e.user);
 
       for (let user of users) {
-        ServiceBackend.sendPostMessage(user, this.post);
+        ServiceBackend.sendPostMessage(UserStore.user.id, user, this.post);
       }
       this.myBack();
     }

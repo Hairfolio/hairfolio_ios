@@ -97,15 +97,13 @@ export default class BasicInfo extends PureComponent {
         if (!this.checkErrors()) {
           var value = this.getFormValue();
           value['password_confirmation'] = value.password;
-
           EnvironmentStore.loadEnv()
-            .then(() => UserStore.signupWithEmail(value, this.props.accountType))
+            .then(() => UserStore.signUpWithEmail(value, this.props.accountType))
             .then(() => {
               appEmitter.emit('login');
               this.jumpToNext(() => this.clearValues());
             }, (e) => {
               console.log(e);
-              debugger;
               this.refs.ebc.error(e);
             });
         }

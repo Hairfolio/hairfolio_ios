@@ -2,7 +2,7 @@ import {observable, computed, action} from 'mobx';
 
 import Picture from './Picture';
 
-import ServiceBackend from '../.../backend/ServiceBackend';
+import ServiceBackend from '../../backend/ServiceBackend';
 
 import {v4} from 'uuid';
 

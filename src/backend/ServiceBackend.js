@@ -1,10 +1,4 @@
 import Backend from './Backend';
-import CreatePostStore from '../mobx/stores/CreatePostStore';
-import FeedStore from '../mobx/stores/FeedStore';
-import SearchStore from '../mobx/stores/SearchStore';
-import UserStore from '../mobx/stores/UserStore';
-import ShareStore from '../mobx/stores/ShareStore';
-import * as routes from '../routes';
 
 const BASE_URL = 'http://api.hairfolio.tech/';
 
@@ -52,8 +46,7 @@ class ServiceBackend extends Backend {
 
   }
 
-  async sendPostMessage(user, post) {
-    let userId = UserStore.user.id;
+  async sendPostMessage(userId, user, post) {
     let ids = [userId, user.id];
 
     let postData = {
@@ -89,60 +82,6 @@ class ServiceBackend extends Backend {
 
     await this.put(`contacts/${contact.user.id}`, postData);
 
-  }
-
-  async postPost() {
-
-    try {
-      CreatePostStore.isLoading = true;
-
-      CreatePostStore.loadingText = 'Uploading pictures ..';
-      let data = await CreatePostStore.gallery.toJSON();
-
-      window.postData = data;
-
-
-      CreatePostStore.loadingText = 'Publishing the post';
-
-      ShareStore.share(data.post.photos_attributes[0].asset_url);
-
-      let res = await this.post('posts', data);
-
-      window.postRes = res;
-
-      if (res.status != 201) {
-        alert('A backend error occured: ' + JSON.stringify(res));
-        alert('The data was : ' + JSON.stringify(data));
-      } else {
-
-
-        for (let hairfolio of  ShareStore.selectedHairfolios) {
-          this.pinHairfolio(hairfolio, res.post);
-        }
-
-        // console.log(ShareStore.selectedUsers);
-        for (let user of ShareStore.selectedUsers) {
-          this.sendPostMessage(user.user, res.post);
-        }
-
-        for (let contact of ShareStore.contacts) {
-          this.addPostToBlackBook(contact, res.post);
-        }
-
-        FeedStore.load();
-        // SearchStore.refresh();
-
-        routes.appStack.scene().goToFeed();
-        window.navigators[1].jumpTo(routes.createPost)
-        window.navigators[0].jumpTo(routes.appStack);
-        setTimeout(() => CreatePostStore.reset(), 1000);
-      }
-
-      CreatePostStore.isLoading = false
-    } catch(err) {
-      CreatePostStore.isLoading = false;
-      alert('An error occured ' + err.toString());
-    }
   }
 
   async getEnvironment() {

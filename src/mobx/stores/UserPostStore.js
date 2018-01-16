@@ -1,6 +1,6 @@
 import {observable, computed, action} from 'mobx';
 
-import ServiceBackend from '../backend/ServiceBackend';
+import ServiceBackend from '../../backend/ServiceBackend';
 
 import {_, moment, React, Text} from 'Hairfolio/src/helpers';
 

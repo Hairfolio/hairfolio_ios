@@ -1,6 +1,6 @@
 import {observable, computed, action} from 'mobx';
 import {_, v4, Text} from 'Hairfolio/src/helpers';
-import ServiceBackend from '../../backend/ServiceBackend';
+import ServiceBackend from '../../../backend/ServiceBackend';
 
 export default class HashTag {
   constructor(x, y, hashtag) {

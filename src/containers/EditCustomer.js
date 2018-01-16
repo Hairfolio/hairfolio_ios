@@ -3,6 +3,7 @@ import _ from 'lodash';
 import PureComponent from '../components/PureComponent';
 import {mixin, autobind} from 'core-decorators';
 import {View, Text, StyleSheet, InteractionManager} from 'react-native';
+import { toJS } from 'mobx';
 import {COLORS, FONTS, SCALE} from '../style';
 import NavigationSetting from '../navigation/NavigationSetting';
 import validator from 'validator';
@@ -65,12 +66,10 @@ export default class EditCustomer extends PureComponent {
   }
 
   initValues() {
-    var rawValues = {...UserStore.user.toJS()};
-
-
+    var rawValues = toJS(UserStore.user);
     let business;
     let salonUserId;
-    if (this.props.user.account_type === 'ambassador') {
+    if (UserStore.user.account_type === 'ambassador') {
       business = rawValues.brand;
     } else {
       business = rawValues.salon;

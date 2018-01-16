@@ -4,7 +4,6 @@ import {
   action,
   observer,
 } from 'mobx';
-import {fetch} from '../../services';
 import { READY, EMPTY, LOADING, LOADING_ERROR } from '../../constants';
 import UserStore from './UserStore';
 
@@ -21,13 +20,10 @@ class OfferingStore {
 
   @action addOffering = (offering) => {
     this.addOfferingState = LOADING;
-    return fetch.fetch(
+    return ServiceBackend.post(
       `/users/${UserStore.user.id}/offerings`,
       {
-        method: 'POST',
-        body: {
-          offering
-        }
+        offering
       }
     )
       .then(response => {
@@ -39,13 +35,10 @@ class OfferingStore {
 
   @action editOffering = (id, offering) => {
     this.editOfferingState = LOADING;
-    return fetch.fetch(
+    return ServiceBackend.put(
       `/users/${UserStore.user.id}/offerings/${id}`,
       {
-        method: 'PUT',
-        body: {
-          offering
-        }
+        offering
       }
     )
       .then(response => {
@@ -57,7 +50,7 @@ class OfferingStore {
 
   @action deleteOffering = (id) => {
     this.deleteOfferingState = LOADING;
-    return fetch.fetch(`/users/${UserStore.user.id}/offerings`, { method: 'POST' })
+    return fetch(`/users/${UserStore.user.id}/offerings`, { method: 'POST' })
       .then(response => {
         UserStore.deleteOffering(id);
         this.deleteOfferingState = READY;

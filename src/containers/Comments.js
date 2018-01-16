@@ -196,7 +196,7 @@ const CommentInput = observer(({store}) => {
   );
 });
 
-import LoadingPage from './LoadingPage'
+import LoadingPage from '../components/LoadingPage';
 
 @observer
 export default class Comments extends PureComponent {

@@ -60,7 +60,7 @@ class EnvironmentStore {
 
   @action getDegrees = () => {
     this.degreesState = LOADING;
-    return fetch.fetch('/degrees')
+    return ServiceBackend.get('/degrees')
       .then(response => {
         this.degrees = response;
         this.degreesState = READY;
@@ -72,7 +72,7 @@ class EnvironmentStore {
 
   @action getCertificates= () => {
     this.certificatesState = LOADING;
-    fetch.fetch('/certificates')
+    ServiceBackend.get('/certificates')
       .then(response => {
         this.certificates = response;
         this.certificatesState = READY;
@@ -84,7 +84,7 @@ class EnvironmentStore {
 
   @action getServices = () => {
     this.servicesState = LOADING;
-    fetch.fetch('/services')
+    ServiceBackend.get('/services')
       .then(response => {
         this.services = response;
         this.servicesState = READY;
@@ -96,7 +96,7 @@ class EnvironmentStore {
 
   @action getCategories = () => {
     this.categoriesState = LOADING;
-    fetch.fetch('/categories')
+    ServiceBackend.get('/categories')
       .then(response => {
         this.categories = response;
         this.categoriesState = READY;
@@ -108,7 +108,7 @@ class EnvironmentStore {
 
   @action getExperiences = (pageNumber) => {
     this.experiencesState = LOADING;
-    fetch.fetch(`/experiences?page=${pageNumber || 1}`)
+    ServiceBackend.get(`/experiences?page=${pageNumber || 1}`)
       .then(response => {
         this.experiences.concat(response.experiences);
         this.experiencesNextPage = response.meta.next_page;

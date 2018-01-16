@@ -10,6 +10,7 @@ import {
 import { READY, EMPTY, LOADING, LOADING_ERROR } from '../../constants';
 import { persist } from 'mobx-persist';
 import hydrate from './hydrate';
+import ServiceBackend from '../../backend/ServiceBackend';
 
 class UserStore {
   @persist @observable token;
@@ -89,14 +90,11 @@ class UserStore {
         if(!_.isEmpty(user)) {
           body.user = user;
         }
-        return fetch.fetch(`/users/${this.user.id})}`, {
-          method: 'PATCH',
-          body
-        })
-          .then(user => {
+        return ServiceBackend.patch(`/users/${this.user.id})}`, body)
+          .then(res => {
             this.user = {
               ...this.user,
-              ...user,
+              ...res.user,
             };
             this.userState = READY;
           });
@@ -109,7 +107,7 @@ class UserStore {
   }
 
   @action logout = () => {
-    fetch.fetch(`/sessions/${this.user.auth_token}`, {method: 'DELETE'});
+    ServiceBackend.delete(`/sessions/${this.user.auth_token}`);
     this.user = {
       educations: [],
       offerings: [],
@@ -167,13 +165,10 @@ class UserStore {
 
   @action followUser = (id) => {
     this.followingStates[id] = LOADING;
-    fetch.fetch(
+    ServiceBackend.post(
       `/users/${id}/follows`,
       {
-        method: 'POST',
-        body: {
-          user: {id}
-        }
+        user: {id}
       }
     )
       .then(({followers_count}) => {
@@ -188,7 +183,7 @@ class UserStore {
 
   @action unfollowUser = (id) => {
     this.followingStates[id] = LOADING;
-    fetch.fetch(`/users/${id}/follows`, { method: 'DELETE' })
+    ServiceBackend.delete(`/users/${id}/follows`)
       .then(response => {
         this.user.following = this.user.following.filter(user => user.id !== id);
         this.user.follow_count = this.user.follow_count - 1;
@@ -200,26 +195,23 @@ class UserStore {
   }
 
   getUserEducations = () => {
-    return fetch.fetch(`/users/${this.user.id}/educations`);
+    return ServiceBackend.get(`/users/${this.user.id}/educations`);
   }
 
   getUserOfferings = () => {
-    return fetch.fetch(`/users/${this.user.id}/offerings`);
+    return ServiceBackend.get(`/users/${this.user.id}/offerings`);
   }
 
   getUserFollowing = () => {
-    return fetch.fetch(`/users/${this.user.id}/follows`);
+    return ServiceBackend.get(`/users/${this.user.id}/follows`);
   }
 
   @action forgotPassword = async (email) => {
     try {
       this.forgotPasswordState = LOADING;
-      const response = await fetch.fetch(
+      const response = await ServiceBackend.post(
         '/sessions/recover',
-        {
-          method: 'POST',
-          body: {email}
-        }
+        { email }
       );
       this.forgotPasswordState = READY;
     } catch(error) {
@@ -229,13 +221,10 @@ class UserStore {
   @action changePassword = async (value) => {
     try {
       this.changePasswordState = LOADING;
-      const response = await fetch.fetch(
+      const response = await ServiceBackend.post(
         `/users/${this.user.id}/change_password`,
         {
-          method: 'POST',
-          body: {
-            user: value
-          }
+          user: value
         }
       )
       this.changePasswordState = READY;
@@ -246,8 +235,11 @@ class UserStore {
 
   loadUserInformation = async () => {
     const educations = await this.getUserEducations();
+    debugger;
     const offerings = await this.getUserOfferings();
+    debugger;
     const following = await this.getUserFollowing();
+    debugger;
     this.user.following = following;
     this.user.educations = educations;
     this.user.offerings = offerings;
@@ -256,16 +248,13 @@ class UserStore {
   @action loginWithFacebook = async (token) => {
     this.userState = LOADING;
     try {
-      const user = await fetch.fetch(
+      const res = await ServiceBackend.post(
         '/sessions/facebook',
         {
-          method: 'POST',
-          body: {
-            'facebook_token': token
-          }
+          'facebook_token': token
         }
       );
-      this.user = user;
+      this.user = res.user;
       await this.loadUserInformation();
       this.userState = READY;
     } catch(error) {
@@ -276,16 +265,13 @@ class UserStore {
   @action signupWithFacebook = async (token, type) => {
     this.userState = LOADING;
     try {
-      const user = await fetch.fetch(
+      const res = await ServiceBackend.post(
         '/sessions/facebook',
         {
-          method: 'POST',
-          body: {
-            'facebook_token': token
-          }
+          'facebook_token': token
         }
       );
-      this.user = user;
+      this.user = res.user;
       this.userState = READY;
     } catch(error) {
       this.userState = LOADING_ERROR;
@@ -295,16 +281,13 @@ class UserStore {
   @action loginWithInstagram = async (token) => {
     this.userState = LOADING;
     try {
-      const user = await fetch.fetch(
+      const res = await ServiceBackend.post(
         '/sessions/instagram',
         {
-          method: 'POST',
-          body: {
-            'instagram_token': token
-          }
+          'instagram_token': token
         }
       );
-      this.user = user;
+      this.user = res.user;
       await this.loadUserInformation();
       this.userState = READY;
     } catch(error) {
@@ -315,16 +298,13 @@ class UserStore {
   @action signupWithInstagram = async (token, type) => {
     this.userState = LOADING;
     try {
-      const user = await fetch.fetch(
+      const res = await ServiceBackend.post(
         '/sessions/instagram',
         {
-          method: 'POST',
-          body: {
-            'instragram_token': token
-          }
+          'instragram_token': token
         }
       );
-      this.user = user;
+      this.user = res.user;
       this.userState = READY;
     } catch(error) {
       this.userState = LOADING_ERROR;
@@ -353,37 +333,39 @@ class UserStore {
       type = 'owner'
     }
     try {
-      const user = await fetch.fetch('/users', {
-        method: 'POST',
-        body: {
+      const res = await ServiceBackend.post(
+        '/users',
+        {
           user: {
             ...value,
             'account_type': type
           }
         }
-      })
-      this.user = user;
+      );
+      if(res.status != 201) {
+        throw res.errors.first();
+      }
+      this.user = res.user;
       this.userState = READY;
     } catch (error) {
       this.userState = LOADING_ERROR;
+      throw error;
     }
   }
 
   @action loginWithEmail = async (value, type) => {
     this.userState = LOADING;
     try {
-      const user = await fetch.fetch(
+      const res = await ServiceBackend.post(
         '/sessions',
         {
-          method: 'POST',
-          body: {
-            session: {
-              ...value
-            }
+          session: {
+            ...value
           }
         }
       );
-      this.user = user;
+      this.user = res.user;
+      debugger;
       await this.loadUserInformation();
       this.userState = READY;
       return this.user;
@@ -394,7 +376,7 @@ class UserStore {
   }
 
   @action destroy = async () => {
-    fetch.fetch(`/users/${this.user.id}`, {method: 'DELETE'})
+    ServiceBackend.delete(`/users/${this.user.id}`)
         .catch(e => console.log(e));
     this.user = {
       educations: [],
@@ -407,7 +389,7 @@ class UserStore {
 }
 
 const store =  new UserStore();
-hydrate('user', store);
+// hydrate('user', store);
 
 window.userStore = store;
 

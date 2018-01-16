@@ -24,7 +24,7 @@ import {
   addBlackBook
 } from '../../routes';
 
-import CreatePostStore from '../mobx/stores/CreatePostStore';
+import CreatePostStore from '../../mobx/stores/CreatePostStore';
 
 export default class EditCustomerStack extends PureComponent {
   static propTypes = {};

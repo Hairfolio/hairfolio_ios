@@ -1,18 +1,16 @@
 import {observable, computed, action} from 'mobx';
 import {CameraRoll, ListView, NativeModules} from 'react-native';
-import Camera from 'react-native-camera';
-
-import FilterStore from './FilterStore';
-
-import Picture from './Picture';
-
-let PhotoAlbum = NativeModules.PhotoAlbum;
-
-import AlbumStore from './AlbumStore';
-
-import {v4} from 'uuid';
-
 import {_, React, Text} from 'Hairfolio/src/helpers';
+import {v4} from 'uuid';
+import Camera from 'react-native-camera';
+let PhotoAlbum = NativeModules.PhotoAlbum;
+import routes from '../../routes';
+import Picture from './Picture';
+import FilterStore from './FilterStore';
+import AlbumStore from './AlbumStore';
+import ShareStore from './ShareStore';
+import FeedStore from './FeedStore';
+import UserStore from './UserStore';
 
 var counter = 0;
 const COLORS = ['blue', 'orange', 'red'];
@@ -596,12 +594,62 @@ class CreatePostStore {
         }
       }
     }
-
-
     return text;
-
   }
 
+  @action async postPost() {
+
+    try {
+      this.isLoading = true;
+
+      this.loadingText = 'Uploading pictures ..';
+      let data = await this.gallery.toJSON();
+
+      window.postData = data;
+
+
+      this.loadingText = 'Publishing the post';
+
+      ShareStore.share(data.post.photos_attributes[0].asset_url);
+
+      let res = await this.post('posts', data);
+
+      window.postRes = res;
+
+      if (res.status != 201) {
+        alert('A backend error occured: ' + JSON.stringify(res));
+        alert('The data was : ' + JSON.stringify(data));
+      } else {
+
+
+        for (let hairfolio of  ShareStore.selectedHairfolios) {
+          this.pinHairfolio(hairfolio, res.post);
+        }
+
+        // console.log(ShareStore.selectedUsers);
+        for (let user of ShareStore.selectedUsers) {
+          this.sendPostMessage(UserStore.user.id, user.user, res.post);
+        }
+
+        for (let contact of ShareStore.contacts) {
+          this.addPostToBlackBook(contact, res.post);
+        }
+
+        FeedStore.load();
+        // SearchStore.refresh();
+
+        routes.appStack.scene().goToFeed();
+        window.navigators[1].jumpTo(routes.createPost)
+        window.navigators[0].jumpTo(routes.appStack);
+        setTimeout(() => this.reset(), 1000);
+      }
+
+      this.isLoading = false
+    } catch(err) {
+      this.isLoading = false;
+      alert('An error occured ' + err.toString());
+    }
+  }
 
 
 

@@ -3,15 +3,15 @@ import { ImageEditor, CameraRoll, NativeModules } from 'react-native';
 import ImageResizer from 'react-native-image-resizer';
 import RNFetchBlob from 'react-native-fetch-blob';
 import { _, jpg, v4 } from 'Hairfolio/src/helpers';
-import LinkTag from '../stores/tags/LinkTag';
-import HashTag from '../stores/tags/HashTag';
-import ServiceTag from '../stores/tags/ServiceTag';
+import LinkTag from './tags/LinkTag';
+import HashTag from './tags/HashTag';
+import ServiceTag from './tags/ServiceTag';
 import Service from '../../services/index';
 import EnvironmentStore from './EnvironmentStore';
 
 let PhotoAlbum = NativeModules.PhotoAlbum;
 
-export default class Picture {
+class Picture {
 
   @observable parent;
   @observable tags = [];
@@ -288,4 +288,4 @@ export default class Picture {
   }
 }
 
-// export default Picture;
+export default Picture;

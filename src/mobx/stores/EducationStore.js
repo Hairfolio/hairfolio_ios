@@ -1,6 +1,5 @@
 import {observable, computed, action} from 'mobx';
 import {_, v4, Text} from 'Hairfolio/src/helpers';
-import {fetch} from '../../services';
 import {EMPTY, LOADING, LOADING_ERROR, READY} from '../../constants';
 import ServiceBackend from '../../backend/ServiceBackend';
 import UserStore from './UserStore';
@@ -18,13 +17,10 @@ class EducationStore {
 
   @action addEducation = (education) => {
     this.addEducationState = LOADING;
-    return fetch.fetch(
+    return ServiceBackend.post(
       `/users/${UserStore.user.id}/educations`,
       {
-        method: 'POST',
-        body: {
-          education
-        }
+        education
       }
     )
       .then(response =>{
@@ -36,13 +32,10 @@ class EducationStore {
 
   @action editEducation = (id, education) => {
     this.editEducationState = LOADING;
-    return fetch.fetch(
+    return ServiceBackend.put(
       `/users/${UserStore.user.id}/educations/${id}`,
       {
-        method: 'PUT',
-        body: {
-          education
-        }
+        education
       }
     )
     .then(response => {
@@ -54,7 +47,7 @@ class EducationStore {
 
   @action deleteEducation = (id) => {
     this.deleteEducationState = LOADING;
-    return fetch.fetch(`/users/${UserStore.user.id}/educations/${id}`, { method: 'DELETE' })
+    return ServiceBackend.delete(`/users/${UserStore.user.id}/educations/${id}`)
     .then(response => {
       UserStore.deleteEducation(id);
       this.deleteEducationState = READY

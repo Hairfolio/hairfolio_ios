@@ -22,7 +22,7 @@ import {
   PickerIOS, Picker, StatusBar, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet
 } from 'Hairfolio/src/helpers';
 
-import FavoriteStore from '../mobx/stores/FavoriteStore';
+import FavoriteStore from '../../mobx/stores/FavoriteStore';
 import GridPost from './GridPost';
 
 const MyFooter = observer(({store}) => {

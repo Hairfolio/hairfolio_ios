@@ -66,7 +66,7 @@ export default class StylistPlaceOfWork extends PureComponent {
     if (!value)
       return this.setState({autocompleteList: []});
     this.setState({autocompleteState: LOADING});
-    this.context.services.fetch.fetch(`/users?account_type=owner&q=${value/*.toLowerCase()*/}`)
+    this.context.services.fetch(`/users?account_type=owner&q=${value/*.toLowerCase()*/}`)
       .then((autocompleteList) => {
 
         this.setState({

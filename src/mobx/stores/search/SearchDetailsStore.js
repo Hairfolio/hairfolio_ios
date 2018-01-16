@@ -1,9 +1,9 @@
 import {observable, computed, action} from 'mobx';
-import ServiceBackend from '../../backend/ServiceBackend';
+import ServiceBackend from '../../../backend/ServiceBackend';
 
 import {_, v4, moment} from 'Hairfolio/src/helpers';
 
-import FollowUser from './FollowUser';
+import FollowUser from '../FollowUser';
 
 import {GeoLocation} from 'react-native';
 

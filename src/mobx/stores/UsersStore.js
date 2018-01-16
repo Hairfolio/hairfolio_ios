@@ -21,10 +21,10 @@ class UsersStore {
   @action getUser = async (userId) => {
     try {
       this.usersStates[userId] = LOADING;
-      const user = await fetch.fetch(`/users/${userId}`);
-      const offerings = await fetch.fetch(`/users/${userId}/offerings`);
+      const res = await ServiceBackend.get(`/users/${userId}`);
+      const offerings = await ServiceBackend.get(`/users/${userId}/offerings`);
       this.users.push[{
-        ...user,
+        ...res.user,
         offerings,
       }];
       this.usersStates[userId] = READY;

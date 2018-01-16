@@ -18,9 +18,9 @@ import {
   Modal,
   ScrollView,
   PickerIOS, Picker, StatusBar, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet
-} from 'Hairfolio/src/helpers.js';
+} from 'Hairfolio/src/helpers';
 
-import PostDetailStore from 'stores/PostDetailStore'
+import PostDetailStore from '../../mobx/stores/PostDetailStore'
 import Triangle from 'react-native-triangle';
 
 

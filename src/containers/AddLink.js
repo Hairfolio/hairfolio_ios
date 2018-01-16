@@ -17,29 +17,29 @@ import {
   ActivityIndicator,
 
   PickerIOS, Picker, StatusBar, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet
-} from 'Hairfolio/src/helpers.js';
+} from 'Hairfolio/src/helpers';
 
-import SlimHeader from 'components/SlimHeader.js'
-import AlbumStore from 'stores/AlbumStore.js'
-import CreatePostStore from 'stores/CreatePostStore.js'
+import SlimHeader from '../components/SlimHeader';
+import AlbumStore from '../mobx/stores/AlbumStore';
+import CreatePostStore from '../mobx/stores/CreatePostStore';
 
-import { FlatList} from 'react-native'
+import { FlatList} from 'react-native';
 
 import {appStack, createPost, onPress, postFilter, albumPage, addServiceTwo, gallery} from '../routes';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
-var RCTUIManager = require('NativeModules').UIManager;
 
-import MyPicker from 'components/MyPicker.js'
+import MyPicker from '../components/MyPicker';
 
-import AddLinkStore from 'stores/AddLinkStore.js'
+import AddLinkStore from '../mobx/stores/AddLinkStore';
 
 
-import ReactNative from 'react-native';
+import ReactNative, { NativeModules } from 'react-native';
+const RCTUIManager = NativeModules.UIManager;
 
 import ScrollableTabView from 'react-native-scrollable-tab-view'
 
-import LinkTabBar from 'components/post/LinkTabBar.js'
+import LinkTabBar from '../components/post/LinkTabBar';
 
 const SearchBar = observer(({catalog}) => {
   return (

@@ -9,7 +9,7 @@ import Icon from '../Icon';
 
 import {search, feed, gallery, createPost, createPostStack, editCustomerStack, favourites, profile} from '../../routes';
 
-import CreatePostStore from '../../mobx/stores/CreatePostStore.js'
+import CreatePostStore from '../../mobx/stores/CreatePostStore';
 
 export default class LoginNavigationbar extends PureComponent {
 

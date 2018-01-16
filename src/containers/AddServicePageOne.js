@@ -15,24 +15,24 @@ import {
   ScrollView,
   ActivityIndicator,
   Picker, StatusBar, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet
-} from 'Hairfolio/src/helpers.js';
+} from 'Hairfolio/src/helpers';
 
-import SlimHeader from 'components/SlimHeader.js'
-import AlbumStore from 'stores/AlbumStore.js'
-import CreatePostStore from 'stores/CreatePostStore.js'
+import SlimHeader from '../components/SlimHeader';
+import AlbumStore from '../mobx/stores/AlbumStore';
+import CreatePostStore from '../mobx/stores/CreatePostStore';
 
 import {appStack, createPost, onPress, postFilter, albumPage, addServiceTwo, gallery} from '../routes';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
-var RCTUIManager = require('NativeModules').UIManager;
+import MyPicker from '../components/MyPicker';
 
-import MyPicker from 'components/MyPicker.js'
-
-import AddServiceStore from 'stores/AddServiceStore.js'
+import AddServiceStore from '../mobx/stores/AddServiceStore';
 
 
-import ReactNative from 'react-native';
-import LoadingScreen from 'components/LoadingScreen.js'
+import ReactNative, { NativeModules } from 'react-native';
+
+var RCTUIManager = NativeModules.UIManager;
+import LoadingScreen from '../components/LoadingScreen';
 
 
 const BoxSelector = observer(({selector}) => {

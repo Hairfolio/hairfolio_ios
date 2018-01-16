@@ -5,7 +5,7 @@ import PureComponent from './components/PureComponent';
 import {View, TextInput, NativeModules, Animated, StatusBar} from 'react-native';
 import { observer } from 'mobx-react';
 import dismissKeyboard from 'react-native/Libraries/Utilities/dismissKeyboard';
-import ServiceBackend from 'backend/ServiceBackend.js'
+import ServiceBackend from './backend/ServiceBackend';
 
 import Navigator from './navigation/Navigator';
 
@@ -16,14 +16,14 @@ import utils from './utils';
 
 import Intro from './components/Intro';
 
-import {getHairfolios} from 'backend/HairfolioBackend';
+import {getHairfolios} from './backend/HairfolioBackend';
 
 import {hello, comments, starGivers, oauthStack, loginStack, forgottenPasswordStack, signupConsumerStack, signupStylistStack, signupSalonStack, signupBrandStack, appStack, editCustomerStack, createPostStack, postDetails,
   searchDetails, tagPosts, hairfolioPosts, messagesRoute, writeMessageRoute, messageDetailsRoute, blackBook, contactDetails, addServiceOne, addServiceTwo, addServiceThree } from './routes';
 
 import UserStore from './mobx/stores/UserStore';
-import FeedStore from 'stores/FeedStore.js';
-import FavoriteStore from 'stores/FavoriteStore.js';
+import FeedStore from './mobx/stores/FeedStore';
+import FavoriteStore from './mobx/stores/FavoriteStore';
 
 NativeModules.UIManager.setLayoutAnimationEnabledExperimental &&
   NativeModules.UIManager.setLayoutAnimationEnabledExperimental(true);

@@ -12,12 +12,12 @@ import {
   h,
   getUserId,
   v4
-} from 'Hairfolio/src/helpers.js';
+} from 'Hairfolio/src/helpers';
 
-import HairfolioStore from 'stores/HairfolioStore.js'
-import Swipeout from 'Hairfolio/react-native-swipeout/index.js';
-import * as routes from 'Hairfolio/src/routes.js'
-import HairfolioPostStore from 'stores/HairfolioPostStore'
+import HairfolioStore from '../mobx/stores/HairfolioStore';
+import Swipeout from 'Hairfolio/react-native-swipeout/index';
+import * as routes from 'Hairfolio/src/routes';
+import HairfolioPostStore from '../mobx/stores/HairfolioPostStore';
 
 const HairfolioItem = observer(({store, isEditable}) => {
 

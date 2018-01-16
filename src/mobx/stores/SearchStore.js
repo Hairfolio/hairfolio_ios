@@ -2,12 +2,12 @@ import {observable, computed, action} from 'mobx';
 import {CameraRoll, ListView, NativeModules} from 'react-native';
 import Camera from 'react-native-camera';
 
-import FilterStore from 'stores/FilterStore.js'
-import Picture from 'stores/Picture.js'
+import FilterStore from './FilterStore';
+import Picture from './Picture';
 import UserStore from './UserStore';
 
-import ServiceBackend from 'backend/ServiceBackend.js'
-import Service from 'Hairfolio/src/services/index.js'
+import ServiceBackend from '../../backend/ServiceBackend';
+import Service from 'Hairfolio/src/services/index';
 
 let PhotoAlbum = NativeModules.PhotoAlbum;
 
@@ -15,9 +15,9 @@ import {v4} from 'uuid';
 
 import {_, moment, React, Text, StatusBar} from 'Hairfolio/src/helpers';
 
-import Post from 'stores/Post.js'
+import Post from './Post';
 
-import PostStore, {PostGridStore} from 'stores/PostStore.js'
+import PostStore, {PostGridStore} from './PostStore';
 
 class TagItem {
 

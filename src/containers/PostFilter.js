@@ -10,10 +10,10 @@ import _ from 'lodash';
 
 import {STATUSBAR_HEIGHT, POST_INPUT_MODE} from '../constants';
 
-import CreatePostStore from '../mobx/stores/CreatePostStore.js';
+import CreatePostStore from '../mobx/stores/CreatePostStore';
 
 import Camera from 'react-native-camera';
-import SlimHeader from '../components/SlimHeader.js'
+import SlimHeader from '../components/SlimHeader';
 
 
 import {

@@ -6,7 +6,7 @@ import {View, Text, StyleSheet, InteractionManager} from 'react-native';
 import {COLORS, FONTS, SCALE} from '../style';
 import NavigationSetting from '../navigation/NavigationSetting';
 import validator from 'validator';
-import FeedStore from 'stores/FeedStore.js'
+import FeedStore from '../mobx/stores/FeedStore';
 import UserStore from '../mobx/stores/UserStore';
 
 import Communications from 'react-native-communications'

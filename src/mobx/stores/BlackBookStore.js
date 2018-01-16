@@ -1,8 +1,8 @@
 import {observable, computed, action} from 'mobx';
 
-import Picture from 'stores/Picture.js'
+import Picture from './Picture';
 
-import ServiceBackend from 'backend/ServiceBackend.js'
+import ServiceBackend from '../.../backend/ServiceBackend';
 
 import {v4} from 'uuid';
 

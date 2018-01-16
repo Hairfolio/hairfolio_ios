@@ -16,14 +16,14 @@ import {appStack, gallery, postFilter, albumPage} from '../routes';
 
 import {STATUSBAR_HEIGHT, POST_INPUT_MODE} from '../constants';
 
-import CreatePostStore from '../mobx/stores/CreatePostStore.js';
+import CreatePostStore from '../mobx/stores/CreatePostStore';
 
 import Camera from 'react-native-camera';
 
 import {CameraKitCamera} from 'react-native-camera-kit'
 
-import SlimHeader from '../components/SlimHeader.js'
-import LibraryListView from 'components/post/LibraryListView'
+import SlimHeader from '../components/SlimHeader';
+import LibraryListView from '../components/post/LibraryListView'
 
 import Recorder from 'react-native-screcorder'
 

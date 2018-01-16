@@ -1,16 +1,13 @@
-import {observable, computed, action} from 'mobx';
-import {_, jpg, v4, Text} from 'Hairfolio/src/helpers';
-
-import LinkTag from 'stores/tags/LinkTag.js'
-import HashTag from 'stores/tags/HashTag.js'
-import ServiceTag from 'stores/tags/ServiceTag.js'
-import {ImageEditor} from 'react-native';
-import Service from 'Hairfolio/src/services/index.js'
+import { observable, computed, action } from 'mobx';
+import { ImageEditor, CameraRoll, NativeModules } from 'react-native';
 import ImageResizer from 'react-native-image-resizer';
-import RNFetchBlob from 'react-native-fetch-blob'
+import RNFetchBlob from 'react-native-fetch-blob';
+import { _, jpg, v4 } from 'Hairfolio/src/helpers';
+import LinkTag from '../stores/tags/LinkTag';
+import HashTag from '../stores/tags/HashTag';
+import ServiceTag from '../stores/tags/ServiceTag';
+import Service from '../../services/index';
 import EnvironmentStore from './EnvironmentStore';
-
-import {CameraRoll, NativeModules} from 'react-native';
 
 let PhotoAlbum = NativeModules.PhotoAlbum;
 
@@ -290,3 +287,5 @@ export default class Picture {
     this.tags.push(new HashTag(x, y, hashtag));
   }
 }
+
+// export default Picture;

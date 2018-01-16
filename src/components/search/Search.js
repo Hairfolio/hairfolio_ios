@@ -20,19 +20,19 @@ import {
   Modal,
   ScrollView,
   PickerIOS, Picker, StatusBar, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet
-} from 'Hairfolio/src/helpers.js';
+} from 'Hairfolio/src/helpers';
 
-import {BOTTOMBAR_HEIGHT, STATUSBAR_HEIGHT} from 'Hairfolio/src/constants.js';
+import {BOTTOMBAR_HEIGHT, STATUSBAR_HEIGHT} from 'Hairfolio/src/constants';
 
-import TagPostStore from 'stores/TagPostStore'
+import TagPostStore from '../../mobx/stores/TagPostStore';
 
-import SearchStore from 'stores/SearchStore';
+import SearchStore from '../../mobx/stores/SearchStore';
 
-import GridView from 'components/GridView.js';
+import GridView from '../GridView';
 
-import GridPost from 'components/favourites/GridPost'
+import GridPost from '../favourites/GridPost';
 
-import SearchModeSearch from 'components/search/SearchModeSearch.js'
+import SearchModeSearch from '../search/SearchModeSearch';
 
 const MyFooter = observer(({store}) => {
 
@@ -47,7 +47,7 @@ const MyFooter = observer(({store}) => {
   }
 });
 
-import * as routes from 'Hairfolio/src/routes.js'
+import * as routes from 'Hairfolio/src/routes'
 
 const TagFooter = observer(({store}) => {
 

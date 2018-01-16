@@ -6,7 +6,7 @@ import {
   moment,
   action,
   observer, // mobx
-} from 'Hairfolio/src/helpers.js';
+} from 'Hairfolio/src/helpers';
 import { READY, EMPTY, LOADING, LOADING_ERROR } from '../../constants';
 
 class UsersStore {

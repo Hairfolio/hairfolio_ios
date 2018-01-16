@@ -18,15 +18,15 @@ import {
   Modal,
   ScrollView,
   PickerIOS, Picker, StatusBar, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet
-} from 'Hairfolio/src/helpers.js';
+} from 'Hairfolio/src/helpers';
 
-import utils from 'Hairfolio/src/utils.js'
-import EnvironmentStore from 'stores/EnvironmentStore.js'
+import utils from 'Hairfolio/src/utils';
+import EnvironmentStore from './EnvironmentStore';
 
 
-import FavoriteStore from 'stores/FavoriteStore.js'
+import FavoriteStore from './FavoriteStore';
 
-import Picture from 'stores/Picture.js'
+import Picture from './Picture';
 
 class GetObj {
   constructor(obj) {

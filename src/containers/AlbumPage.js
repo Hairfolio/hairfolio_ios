@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
 import { ScrollView, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet } from 'react-native'
 
-import {h, FONTS} from '../style.js'
-import {observer} from 'mobx-react/native'
-import autobind from 'autobind-decorator'
-import SlimHeader from '../components/SlimHeader.js'
-import AlbumStore from '../mobx/stores/AlbumStore.js'
-import CreatePostStore from '../mobx/stores/CreatePostStore.js'
+import {h, FONTS} from '../style';
+import {observer} from 'mobx-react/native';
+import autobind from 'autobind-decorator';
+import SlimHeader from '../components/SlimHeader';
+import AlbumStore from '../mobx/stores/AlbumStore';
+import CreatePostStore from '../mobx/stores/CreatePostStore';
 
 import _ from 'lodash';
 

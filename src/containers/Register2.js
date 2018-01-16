@@ -5,8 +5,8 @@ import PureComponent from '../components/PureComponent';
 import {View} from 'react-native';
 import { LoginManager, AccessToken } from 'react-native-fbsdk';
 import NavigationSetting from '../navigation/NavigationSetting';
-import Service from 'Hairfolio/src/services/index.js'
-import ServiceBackend from 'backend/ServiceBackend.js'
+import Service from 'Hairfolio/src/services/index';
+import ServiceBackend from '../backend/ServiceBackend';
 
 import Picker from '../components/Picker';
 

@@ -1,11 +1,8 @@
 import {observable, computed, action} from 'mobx';
-import {_, v4, Text} from 'Hairfolio/src/helpers';
-
-import {EMPTY, LOADING, LOADING_ERROR, READY} from '../../constants';
-import hydrate from './hydrate';
 import { persist } from 'mobx-persist';
+import hydrate from './hydrate';
+import {EMPTY, LOADING, LOADING_ERROR, READY} from '../../constants';
 import ServiceBackend from '../../backend/ServiceBackend';
-import Backend from '../../backend/Backend';
 
 class EnvironmentStore {
   @persist @observable environmentState;
@@ -39,14 +36,14 @@ class EnvironmentStore {
     this.experiencesNextPage = 1;
   }
 
-  @action async loadEnv() {
+  @action loadEnv = async () => {
     if (this.environment) {
       this.environmentState = READY;
       return this.environment;
     } else {
       this.environmentState = LOADING;
       try {
-        let res = await ServiceBackend.get('/sessions/environment');
+        let res = await ServiceBackend.getEnvironment();
         this.environmentState = READY;
         this.environment = res;
         return this.environment;
@@ -57,12 +54,11 @@ class EnvironmentStore {
     }
   }
 
-  getEnv() {
+  getEnv = () => {
     return this.environment || {};
   }
 
   @action getDegrees = () => {
-    // TODO: Wire up user id
     this.degreesState = LOADING;
     return fetch.fetch('/degrees')
       .then(response => {
@@ -74,7 +70,7 @@ class EnvironmentStore {
       });
   }
 
-  @action getCertificates() {
+  @action getCertificates= () => {
     this.certificatesState = LOADING;
     fetch.fetch('/certificates')
       .then(response => {
@@ -86,7 +82,7 @@ class EnvironmentStore {
       });
   }
 
-  @action getServices() {
+  @action getServices = () => {
     this.servicesState = LOADING;
     fetch.fetch('/services')
       .then(response => {
@@ -98,7 +94,7 @@ class EnvironmentStore {
       });
   }
 
-  @action getCategories() {
+  @action getCategories = () => {
     this.categoriesState = LOADING;
     fetch.fetch('/categories')
       .then(response => {

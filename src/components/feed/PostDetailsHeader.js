@@ -15,21 +15,21 @@ import {
   Modal,
   ScrollView,
   PickerIOS, Picker, StatusBar, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet
-} from 'Hairfolio/src/helpers.js';
+} from 'Hairfolio/src/helpers';
 
-import PostDetailStore from 'stores/PostDetailStore.js'
-import StarGiversStore from 'stores/StarGiversStore.js'
-import CommentsStore from 'stores/CommentsStore.js'
+import PostDetailStore from '../../mobx/stores/PostDetailStore';
+import StarGiversStore from '../../mobx/stores/StarGiversStore';
+import CommentsStore from '../../mobx/stores/CommentsStore';
 
-import PostTags from 'components/feed/PostTags.js'
+import PostTags from './PostTags';
 
-import PostStar from 'components/feed/PostStar.js'
-import PostSave from 'components/feed/PostSave.js'
-import VideoPreview from 'components/VideoPreview.js'
+import PostStar from './PostStar';
+import PostSave from './PostSave';
+import VideoPreview from '../VideoPreview';
 
-import * as routes from 'Hairfolio/src/routes.js'
+import * as routes from 'Hairfolio/src/routes';
 
-import WriteMessageStore from 'stores/WriteMessageStore'
+import WriteMessageStore from '../../mobx/stores/WriteMessageStore';
 
 const PostDetailsActionButtons = observer(({store}) => {
 

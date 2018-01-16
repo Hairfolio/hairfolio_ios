@@ -15,18 +15,18 @@ import {
   ScrollView,
   ActivityIndicator,
   PickerIOS, Picker, StatusBar, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet
-} from 'Hairfolio/src/helpers.js';
+} from 'Hairfolio/src/helpers';
 
-import SlimHeader from 'components/SlimHeader.js'
-import AlbumStore from 'stores/AlbumStore.js'
-import CreatePostStore from 'stores/CreatePostStore.js'
-import AddTagStore from 'stores/AddTagStore.js'
-import AddServiceStore from 'stores/AddServiceStore.js'
+import SlimHeader from '../components/SlimHeader';
+import AlbumStore from '../mobx/stores/AlbumStore';
+import CreatePostStore from '../mobx/stores/CreatePostStore';
+import AddTagStore from '../mobx/stores/AddTagStore';
+import AddServiceStore from '../mobx/stores/AddServiceStore';
 
-import ShareStore from 'stores/ShareStore.js'
+import ShareStore from '../mobx/stores/ShareStore';
 
-import ServiceBackend from 'backend/ServiceBackend.js'
-import LoadingScreen from 'components/LoadingScreen.js'
+import ServiceBackend from '../backend/ServiceBackend';
+import LoadingScreen from '../components/LoadingScreen';
 import Video from 'react-native-video'
 
 
@@ -34,24 +34,22 @@ import LinearGradient from 'react-native-linear-gradient';
 
 import {appStack, createPost, onPress, postFilter, albumPage, addServiceOne, filter, addLink, addServiceTwo, addServiceThree} from '../routes';
 
-import * as routes from '../routes.js'
+import * as routes from '../routes';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
-var RCTUIManager = require('NativeModules').UIManager;
+import ReactNative, { NativeModules } from 'react-native';
+const RCTUIManager = NativeModules.UIManager;
+const ImageFilter = NativeModules.ImageFilter;
 
-var ImageFilter = require('NativeModules').ImageFilter;
-
-import MyPicker from 'components/MyPicker.js'
+import MyPicker from '../components/MyPicker';
 
 import {Dimensions} from 'react-native';
 
-import ReactNative from 'react-native';
+import ServiceBox from '../components/post/ServiceBox';
 
-import ServiceBox from 'components/post/ServiceBox.js'
+import AddTagModal from '../components/post/AddTagModal';
 
-import AddTagModal from 'components/post/AddTagModal.js'
-
-import VideoPreview from 'components/VideoPreview.js'
+import VideoPreview from '../components/VideoPreview';
 
 import Triangle from 'react-native-triangle';
 

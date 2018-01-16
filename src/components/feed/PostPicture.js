@@ -15,14 +15,14 @@ import {
   Modal,
   ScrollView,
   PickerIOS, Picker, StatusBar, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet
-} from 'Hairfolio/src/helpers.js';
+} from 'Hairfolio/src/helpers';
 
 import * as routes from 'Hairfolio/src/routes';
 
-import PostDetailStore from 'stores/PostDetailStore';
+import PostDetailStore from '../../mobx/stores/PostDetailStore';
 
-import PostStar from 'components/feed/PostStar.js'
-import PostSave from 'components/feed/PostSave.js'
+import PostStar from './PostStar';
+import PostSave from './PostSave';
 
 import Swiper from 'react-native-swiper';
 

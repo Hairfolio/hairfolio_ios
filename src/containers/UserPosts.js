@@ -4,9 +4,9 @@ import {View, ListView, Text} from 'react-native';
 import {COLORS, FONTS, SCALE} from '../style';
 import NavigationSetting from '../navigation/NavigationSetting';
 
-import UserPostStore from 'stores/UserPostStore.js'
+import UserPostStore from '../mobx/stores/UserPostStore';
 
-import GridPost from 'components/favourites/GridPost'
+import GridPost from '../components/favourites/GridPost';
 
 import {
   _, // lodash
@@ -27,9 +27,9 @@ import {
   ActivityIndicator,
   ScrollView,
   PickerIOS, Picker, StatusBar, Platform, TextInput,  Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet
-} from 'Hairfolio/src/helpers.js';
+} from 'Hairfolio/src/helpers';
 
-import ScrollViewProxy from 'components/ScrollViewProxy.js'
+import ScrollViewProxy from '../components/ScrollViewProxy';
 
 
 

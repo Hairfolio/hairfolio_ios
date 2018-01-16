@@ -36,7 +36,7 @@
     "react-native-linear-gradient": "2.0.0",
     "react-native-modal-picker": "^0.0.16",
     "react-native-prompt": "^1.0.0",
-    "react-native-screcorder": "git+https://github.com/kevinejohn/react-native-screcorder.git",
+    "react-native-screcorder": "git+https://github.com/plantvsbirds/react-native-screcorder.git",
     "react-native-scrollable-tab-view": "^0.6.0",
     "react-native-social-share": "^1.0.0",
     "react-native-spinkit": "1.0.2",

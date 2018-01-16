@@ -19,14 +19,14 @@ import {
   ActivityIndicator,
   ScrollView,
   PickerIOS, Picker, StatusBar, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet
-} from 'Hairfolio/src/helpers.js';
+} from 'Hairfolio/src/helpers';
 
-import ShareStore from 'stores/ShareStore.js'
-import * as routes from 'Hairfolio/src/routes.js'
-import AddBlackBookStore from 'stores/AddBlackBookStore.js'
-import CreatePostStore from 'stores/CreatePostStore.js'
+import ShareStore from '../mobx/stores/ShareStore';
+import * as routes from 'Hairfolio/src/routes'
+import AddBlackBookStore from '../mobx/stores/AddBlackBookStore';
+import CreatePostStore from '../mobx/stores/CreatePostStore';
 
-import ModalPicker from 'Hairfolio/react-native-modal-picker'
+import ModalPicker from 'Hairfolio/react-native-modal-picker';
 
 import Prompt from 'react-native-prompt';
 

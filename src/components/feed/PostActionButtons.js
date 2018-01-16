@@ -17,27 +17,28 @@ import {
   ScrollView,
   ActionSheetIOS,
   PickerIOS, Picker, StatusBar, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet
-} from 'Hairfolio/src/helpers.js';
+} from 'Hairfolio/src/helpers';
 
-import ServiceBackend from 'backend/ServiceBackend.js'
+import ServiceBackend from '../../backend/ServiceBackend';
 
-import StarGiversStore from 'stores/StarGiversStore'
-import CommentsStore from 'stores/CommentsStore'
+import StarGiversStore from '../../mobx/stores/StarGiversStore';
+import CommentsStore from '../../mobx/stores/CommentsStore';
 
-import WriteMessageStore from 'stores/WriteMessageStore'
+import WriteMessageStore from '../../mobx/stores/WriteMessageStore';
 
 import Communications from 'react-native-communications';
 
-import FeedStore from 'stores/FeedStore.js'
-import SearchStore from 'stores/SearchStore.js';
+import FeedStore from '../../mobx/stores/FeedStore';
+import SearchStore from '../../mobx/stores/SearchStore';
 
 import {starGivers, comments, appStack} from '../../routes';
-var KDSocialShare = require('NativeModules').KDSocialShare;
+import { NativeModules } from 'react-native';
 
 import * as routes from 'Hairfolio/src/routes';
 
-import PostDetailStore from 'stores/PostDetailStore'
+import PostDetailStore from '../../mobx/stores/PostDetailStore';
 
+const KDSocialShare = NativeModules.KDSocialShare;
 const PostActionButtons = observer(({post}) => {
 
   let openMore = () => {

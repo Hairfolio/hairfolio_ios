@@ -1,9 +1,9 @@
 import {observable, computed, action} from 'mobx';
 import {_, v4, Text} from 'Hairfolio/src/helpers';
 
-import LinkTag from 'stores/tags/LinkTag.js'
-import HashTag from 'stores/tags/HashTag.js'
-import ServiceTag from 'stores/tags/ServiceTag.js'
+import LinkTag from './tags/LinkTag';
+import HashTag from './tags/HashTag';
+import ServiceTag from './tags/ServiceTag';
 import {ImageEditor} from 'react-native';
 import EnvironmentStore from './EnvironmentStore';
 import ImageResizer from 'react-native-image-resizer';

@@ -1,18 +1,18 @@
 import {observable, computed, action} from 'mobx';
 import {CameraRoll, NativeModules} from 'react-native';
 import Camera from 'react-native-camera';
-import Picture from 'stores/Picture.js'
-import ServiceBackend from 'backend/ServiceBackend.js'
+import Picture from './Picture';
+import ServiceBackend from '../../backend/ServiceBackend';
 
-import Service from 'Hairfolio/src/services/index.js'
+import Service from 'Hairfolio/src/services/index';
 
 import {_, v4, moment, React, Text} from 'Hairfolio/src/helpers';
 
-import User from 'stores/User.js'
+import User from './User';
 import UserStore from './UserStore';
 
-import * as routes from 'Hairfolio/src/routes.js'
-import MessageDetailsStore from 'stores/MessageDetailsStore.js';
+import * as routes from 'Hairfolio/src/routes'
+import MessageDetailsStore from './MessageDetailsStore';
 
 
 export class SelectableUser {

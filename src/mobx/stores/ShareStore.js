@@ -2,15 +2,15 @@ import {observable, computed, action} from 'mobx';
 import {CameraRoll, AsyncStorage, Clipboard, AlertIOS, NativeModules} from 'react-native';
 import Camera from 'react-native-camera';
 
-import FilterStore from 'stores/FilterStore.js'
-import Picture from 'stores/Picture.js'
+import FilterStore from './FilterStore';
+import Picture from './Picture';
 import UserStore from './UserStore';
-import ServiceBackend from 'backend/ServiceBackend.js'
-import Service from 'Hairfolio/src/services/index.js'
+import ServiceBackend from '../../backend/ServiceBackend';
+import Service from 'Hairfolio/src/services/index';
 
-import CreatePostStore from 'stores/CreatePostStore.js'
+import CreatePostStore from './CreatePostStore';
 
-import User from 'stores/User.js'
+import User from './User';
 
 let PhotoAlbum = NativeModules.PhotoAlbum;
 let InstagramShare = NativeModules.RNInstagramShare;
@@ -18,18 +18,17 @@ let InstagramShare = NativeModules.RNInstagramShare;
 let TwitterHelper = NativeModules.TwitterHelper;
 let PinterestHelper = NativeModules.PinterestHelper;
 
-const FBSDK = require('react-native-fbsdk');
-const {
+import {
   ShareApi,
   LoginManager,
   AccessToken
-} = FBSDK;
+} from 'react-native-fbsdk';
 
 import {v4} from 'uuid';
 
 import {_, moment, React, Text} from 'Hairfolio/src/helpers';
 
-import {SelectableUser as SelectableUserBase} from 'stores/WriteMessageStore.js'
+import {SelectableUser as SelectableUserBase} from './WriteMessageStore';
 
 class Hairfolio {
   @observable name;

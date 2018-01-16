@@ -2,13 +2,13 @@ import {observable, computed, action} from 'mobx';
 import {CameraRoll, ListView, NativeModules} from 'react-native';
 import Camera from 'react-native-camera';
 
-import FilterStore from 'stores/FilterStore.js'
+import FilterStore from './FilterStore';
 
-import Picture from 'stores/Picture.js'
+import Picture from './Picture';
 
 let PhotoAlbum = NativeModules.PhotoAlbum;
 
-import AlbumStore from 'stores/AlbumStore.js';
+import AlbumStore from './AlbumStore';
 
 import {v4} from 'uuid';
 

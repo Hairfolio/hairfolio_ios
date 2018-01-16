@@ -8,10 +8,10 @@ import {profile, profileExternal, appStack} from '../routes';
 
 import SimpleButton from '../components/Buttons/Simple';
 
-import SearchDetailsElement from 'components/search/SearchDetailsElement.js'
-import SearchStore from 'stores/SearchStore.js'
+import SearchDetailsElement from '../components/search/SearchDetailsElement';
+import SearchStore from '../mobx/stores/SearchStore';
 
-import SearchDetailsStore from 'stores/search/SearchDetailsStore.js';
+import SearchDetailsStore from '../mobx/stores/search/SearchDetailsStore';
 
 import {
   _, // lodash
@@ -33,7 +33,7 @@ import {
   Modal,
   ScrollView,
   PickerIOS, Picker, StatusBar, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet
-} from 'Hairfolio/src/helpers.js';
+} from 'Hairfolio/src/helpers';
 
 const SampleActions = observer(() => {
   return (

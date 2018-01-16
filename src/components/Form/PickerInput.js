@@ -15,7 +15,7 @@ import dismissKeyboard from 'react-native/Libraries/Utilities/dismissKeyboard';
 
 import {
   windowWidth,
-} from 'Hairfolio/src/helpers.js';
+} from 'Hairfolio/src/helpers';
 
 export default class Picker extends PureComponent {
   static propTypes = {

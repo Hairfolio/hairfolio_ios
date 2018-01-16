@@ -33,9 +33,9 @@ import FilterPage from './containers/FilterPage';
 import UserPosts from './containers/UserPosts';
 import UserHairfolio from './containers/UserHairfolio';
 
-import AddServicePageOne from 'containers/AddServicePageOne';
-import AddServicePageTwo from 'containers/AddServicePageTwo';
-import AddServicePageThree from 'containers/AddServicePageThree';
+import AddServicePageOne from './containers/AddServicePageOne';
+import AddServicePageTwo from './containers/AddServicePageTwo';
+import AddServicePageThree from './containers/AddServicePageThree';
 import Feed from './containers/Feed';
 import Search from './containers/Search';
 import CreatePost from './containers/CreatePost';
@@ -50,7 +50,7 @@ import ContactDetails from './containers/ContactDetails';
 import Messages from './containers/Messages';
 import MessageDetails from './containers/MessageDetails';
 import WriteMessage from './containers/WriteMessage';
-import AddBlackBook from './containers/AddBlackBook.js';
+import AddBlackBook from './containers/AddBlackBook';
 import OnboardingStack from './stacks/Onboarding';
 import ForgottenPasswordStack from './stacks/ForgottenPassword';
 import CreatePostStack from './stacks/CreatePost';
@@ -65,12 +65,12 @@ import OAuthStack from './stacks/OAuth';
 
 // Feed
 import StarGivers from './containers/StarGivers';
-import PostDetails from './containers/PostDetails.js';
-import TagPosts from './containers/TagPosts.js';
-import HairfolioPosts from './containers/HairfolioPosts.js';
+import PostDetails from './containers/PostDetails';
+import TagPosts from './containers/TagPosts';
+import HairfolioPosts from './containers/HairfolioPosts';
 
 // search
-import SearchDetails from './containers/SearchDetails.js';
+import SearchDetails from './containers/SearchDetails';
 
 // post
 import PostFilter from './containers/PostFilter';

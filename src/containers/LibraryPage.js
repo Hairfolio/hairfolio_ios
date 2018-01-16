@@ -3,7 +3,7 @@ import { ScrollView, Platform, View, TextInput, Text, Image, TouchableHighlight,
 
 import {observer} from 'mobx-react/native'
 import autobind from 'autobind-decorator'
-import SlimHeader from '../components/SlimHeader.js'
+import SlimHeader from '../components/SlimHeader';
 
 export default class LibraryPage extends Component {
   render() {

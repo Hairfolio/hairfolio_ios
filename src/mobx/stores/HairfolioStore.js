@@ -2,14 +2,14 @@ import {observable, computed, action} from 'mobx';
 import {CameraRoll, NativeModules} from 'react-native';
 import Camera from 'react-native-camera';
 
-import FilterStore from 'stores/FilterStore.js'
-import Picture from 'stores/Picture.js'
+import FilterStore from './FilterStore';
+import Picture from './Picture';
 let PhotoAlbum = NativeModules.PhotoAlbum;
 
 import {v4} from 'uuid';
 
 
-import ServiceBackend from 'backend/ServiceBackend.js'
+import ServiceBackend from '../../backend/ServiceBackend';
 import UserStore from './UserStore';
 
 import {_, moment, React, Text} from 'Hairfolio/src/helpers';

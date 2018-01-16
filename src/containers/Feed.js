@@ -4,17 +4,17 @@ import {BOTTOMBAR_HEIGHT, STATUSBAR_HEIGHT} from '../constants';
 
 import SimpleButton from '../components/Buttons/Simple';
 
-import FeedStore from 'stores/FeedStore.js'
-import MessagesStore from 'stores/MessagesStore.js'
+import FeedStore from '../mobx/stores/FeedStore';
+import MessagesStore from '../mobx/stores/MessagesStore';
 
 import {profile, profileExternal, appStack} from '../routes';
 
-import * as routes from '../routes'
+import * as routes from '../routes';
 
-import Post from 'components/feed/Post.js'
-import WhiteHeader from 'components/WhiteHeader.js'
+import Post from '../components/feed/Post';
+import WhiteHeader from '../components/WhiteHeader';
 
-import CreatePostStore from 'stores/CreatePostStore.js'
+import CreatePostStore from '../mobx/stores/CreatePostStore';
 
 import {
   _, // lodash
@@ -35,10 +35,10 @@ import {
   ScrollView,
   ActivityIndicator,
   PickerIOS, Picker, StatusBar, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet
-} from 'Hairfolio/src/helpers.js';
+} from 'Hairfolio/src/helpers';
 
 
-import NewMessageStore from 'stores/NewMessageStore.js'
+import NewMessageStore from '../mobx/stores/NewMessageStore';
 
 const NewMessageNumber = observer(() => {
 

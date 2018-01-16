@@ -19,15 +19,15 @@ import {
   ScrollView,
   ActivityIndicator,
   PickerIOS, Picker, StatusBar, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet
-} from 'Hairfolio/src/helpers.js';
+} from 'Hairfolio/src/helpers';
 
-import BlackBookStore from 'stores/BlackBookStore.js'
+import BlackBookStore from '../../mobx/stores/BlackBookStore';
 
-import ContactDetailsStore from 'stores/ContactDetailsStore.js'
+import ContactDetailsStore from '../../mobx/stores/ContactDetailsStore';
 
-import * as routes from 'Hairfolio/src/routes.js'
+import * as routes from 'Hairfolio/src/routes';
 
-import AlphabetListView from 'react-native-alphabetlistview'
+import AlphabetListView from 'react-native-alphabetlistview';
 
 const Header = observer(({title}) => {
   let textStyle = {

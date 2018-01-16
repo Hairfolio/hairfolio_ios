@@ -11,22 +11,22 @@ import {observer} from 'mobx-react/native';
 import autobind from 'autobind-decorator'
 import _ from 'lodash';
 
-import FollowButton from 'components/FollowButton.js'
+import FollowButton from '../components/FollowButton';
 
-import StarGiversStore from 'stores/StarGiversStore.js'
+import StarGiversStore from '../mobx/stores/StarGiversStore';
 
 import {appStack, gallery, postFilter, albumPage} from '../routes';
 
 import {STATUSBAR_HEIGHT, POST_INPUT_MODE} from '../constants';
 
-import LoadingScreen from 'components/LoadingScreen.js'
-import BlackHeader from 'components/BlackHeader.js'
+import LoadingScreen from '../components/LoadingScreen';
+import BlackHeader from '../components/BlackHeader';
 
 
-import GridList from 'components/GridList'
-import HairfolioPostStore from 'stores/HairfolioPostStore.js'
+import GridList from '../components/GridList'
+import HairfolioPostStore from '../mobx/stores/HairfolioPostStore';
 
-import * as routes from 'Hairfolio/src/routes.js'
+import * as routes from 'Hairfolio/src/routes'
 
 const Content = observer(({store}) => {
   return (

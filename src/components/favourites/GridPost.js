@@ -18,10 +18,10 @@ import {
   Modal,
   ScrollView,
   PickerIOS, Picker, StatusBar, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet
-} from 'Hairfolio/src/helpers.js';
+} from 'Hairfolio/src/helpers';
 
-import * as routes from 'Hairfolio/src/routes.js'
-import PostDetailStore from 'stores/PostDetailStore.js'
+import * as routes from 'Hairfolio/src/routes';
+import PostDetailStore from '../../mobx/stores/PostDetailStore';
 
 const ActionButtons = observer(({post}) => {
   return (

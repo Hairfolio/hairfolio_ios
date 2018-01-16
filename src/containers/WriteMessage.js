@@ -11,32 +11,32 @@ import {
 import {COLORS, FONTS, h, SCALE} from 'Hairfolio/src/style';
 import NavigationSetting from '../navigation/NavigationSetting';
 import {observer} from 'mobx-react/native';
-import autobind from 'autobind-decorator'
+import autobind from 'autobind-decorator';
 import _ from 'lodash';
 
-import FollowButton from 'components/FollowButton.js'
+import FollowButton from '../components/FollowButton';
 
-import StarGiversStore from 'stores/StarGiversStore.js'
-import LoadingPage from 'components/LoadingPage'
+import StarGiversStore from '../mobx/stores/StarGiversStore';
+import LoadingPage from '../components/LoadingPage'
 
 import {appStack, gallery, postFilter, albumPage} from '../routes';
 
-import * as routes from 'Hairfolio/src/routes.js'
+import * as routes from 'Hairfolio/src/routes'
 
-import MessageDetailsStore from 'stores/MessageDetailsStore.js';
+import MessageDetailsStore from '../mobx/stores/MessageDetailsStore';
 
 import {STATUSBAR_HEIGHT, POST_INPUT_MODE} from '../constants';
 
-import LoadingScreen from 'components/LoadingScreen.js'
-import BlackHeader from 'components/BlackHeader.js'
+import LoadingScreen from '../components/LoadingScreen';
+import BlackHeader from '../components/BlackHeader';
 
-import WriteMessageStore from 'stores/WriteMessageStore.js'
+import WriteMessageStore from '../mobx/stores/WriteMessageStore';
 
 
-import Swipeout from 'Hairfolio/react-native-swipeout/index.js';
+import Swipeout from 'Hairfolio/react-native-swipeout/index';
 ;
 
-import {SelectPeople, ToInput} from 'components/SelectPeople.js'
+import {SelectPeople, ToInput} from '../components/SelectPeople';
 
 @observer
 export default class WriteMessage extends PureComponent {

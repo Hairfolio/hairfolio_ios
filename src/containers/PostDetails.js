@@ -11,18 +11,18 @@ import {observer} from 'mobx-react/native';
 import autobind from 'autobind-decorator'
 import _ from 'lodash';
 
-import FollowButton from 'components/FollowButton.js'
+import FollowButton from '../components/FollowButton';
 
-import StarGiversStore from 'stores/StarGiversStore.js'
+import StarGiversStore from '../mobx/stores/StarGiversStore';
 
 import {appStack, gallery, postFilter, albumPage} from '../routes';
 
 import {STATUSBAR_HEIGHT, POST_INPUT_MODE} from '../constants';
 
-import LoadingScreen from 'components/LoadingScreen.js'
-import BlackHeader from 'components/BlackHeader.js'
+import LoadingScreen from '../components/LoadingScreen';
+import BlackHeader from '../components/BlackHeader';
 
-import PostDetailsContent from 'components/feed/PostDetailsContent.js'
+import PostDetailsContent from '../components/feed/PostDetailsContent';
 
 export default class PostDetails extends PureComponent {
 

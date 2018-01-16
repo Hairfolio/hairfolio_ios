@@ -14,28 +14,28 @@ import {observer} from 'mobx-react/native';
 import autobind from 'autobind-decorator'
 import _ from 'lodash';
 
-import ContactDetailsStore from 'stores/ContactDetailsStore.js'
+import ContactDetailsStore from '../mobx/stores/ContactDetailsStore';
 
-import FollowButton from 'components/FollowButton.js'
+import FollowButton from '../components/FollowButton';
 
 
 import {appStack, gallery, postFilter, albumPage} from '../routes';
 
-import * as routes from 'Hairfolio/src/routes.js'
+import * as routes from 'Hairfolio/src/routes';
 
 import {STATUSBAR_HEIGHT, POST_INPUT_MODE} from '../constants';
 
-import LoadingScreen from 'components/LoadingScreen.js'
-import BlackHeader from 'components/BlackHeader.js'
+import LoadingScreen from '../components/LoadingScreen';
+import BlackHeader from '../components/BlackHeader';
 
-import BlackBookStore from 'stores/BlackBookStore.js'
+import BlackBookStore from '../mobx/stores/BlackBookStore';
 
-import Swipeout from 'Hairfolio/react-native-swipeout/index.js';
+import Swipeout from 'Hairfolio/react-native-swipeout/index';
 
 
-import LoadingPage from 'components/LoadingPage'
+import LoadingPage from '../components/LoadingPage';
 
-import BlackBookContent from 'components/blackbook/BlackBookContent.js'
+import BlackBookContent from '../components/blackbook/BlackBookContent';
 
 @observer
 export default class BlackBook extends PureComponent {

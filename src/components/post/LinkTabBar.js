@@ -15,7 +15,7 @@ import {
   WebView,
   Animated,
   PickerIOS, Picker, StatusBar, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet
-} from 'Hairfolio/src/helpers.js';
+} from 'Hairfolio/src/helpers';
 
 
 const Button = (props) => {
@@ -113,4 +113,4 @@ const styles = StyleSheet.create({
   },
 });
 
-module.exports = LinkTabBar;
+export default LinkTabBar;

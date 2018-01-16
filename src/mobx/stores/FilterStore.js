@@ -3,7 +3,7 @@ import {CameraRoll, NativeModules} from 'react-native';
 
 import {_, v4} from 'Hairfolio/src/helpers';
 
-import Picture from 'stores/Picture.js';
+import Picture from './Picture';
 
 let ImageFilter = NativeModules.ImageFilter;
 

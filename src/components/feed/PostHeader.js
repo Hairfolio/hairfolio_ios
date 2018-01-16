@@ -15,13 +15,13 @@ import {
   Modal,
   ScrollView,
   PickerIOS, Picker, StatusBar, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet
-} from 'Hairfolio/src/helpers.js';
+} from 'Hairfolio/src/helpers';
 
 import {profile, profileExternal, appStack} from 'Hairfolio/src/routes';
 
-import PostDetailStore from 'stores/PostDetailStore.js'
-import TagPostStore from 'stores/TagPostStore.js'
-import CommentsStore from 'stores/CommentsStore.js'
+import PostDetailStore from '../../mobx/stores/PostDetailStore';
+import TagPostStore from '../../mobx/stores/TagPostStore';
+import CommentsStore from '../../mobx/stores/CommentsStore';
 
 const PostHeader = observer(({post, onPress}) => {
   return (

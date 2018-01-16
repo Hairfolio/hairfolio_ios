@@ -1,12 +1,11 @@
-const React = require('react');
-const ReactNative = require('react-native');
-const {
+import React from 'react';
+import {
   StyleSheet,
   Text,
   View,
   Animated,
-} = ReactNative;
-const Button = require('./Button');
+  Button,
+} from 'react-native';
 
 const DefaultTabBar = React.createClass({
   propTypes: {
@@ -100,4 +99,4 @@ const styles = StyleSheet.create({
   },
 });
 
-module.exports = DefaultTabBar;
+export default DefaultTabBar;

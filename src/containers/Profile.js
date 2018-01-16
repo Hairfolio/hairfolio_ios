@@ -5,9 +5,9 @@ import PureComponent from '../components/PureComponent';
 import {View, Text, Image, TouchableOpacity, ScrollView, StatusBar} from 'react-native';
 import {COLORS, FONTS, SCALE} from '../style';
 import UserProfileNavigationBar from '../components/UserProfile/Bar';
-import Service from 'Hairfolio/src/services/index.js'
+import Service from 'Hairfolio/src/services/index';
 
-import WrappingScrollView from 'components/WrappingScrollView.js'
+import WrappingScrollView from '../components/WrappingScrollView';
 
 import ProfileStack from '../stacks/Profile';
 
@@ -20,20 +20,20 @@ import BannerErrorContainer from '../components/BannerErrorContainer';
 import ChannelResponder from '../components/Channel/ChannelResponder';
 import Channel from '../components/Channel/Channel';
 
-import MessageDetailsStore from 'stores/MessageDetailsStore';
+import MessageDetailsStore from '../mobx/stores/MessageDetailsStore';
 import UserStore from '../mobx/stores/UserStore';
 import EnvironmentStore from '../mobx/stores/EnvironmentStore';
 
 
-import * as routes from 'Hairfolio/src/routes.js'
+import * as routes from 'Hairfolio/src/routes'
 
 import {
   h
-} from 'Hairfolio/src/helpers.js';
+} from 'Hairfolio/src/helpers';
 
 import {STATUSBAR_HEIGHT} from '../constants';
 
-import BlackBookStore from 'stores/BlackBookStore'
+import BlackBookStore from '../mobx/stores/BlackBookStore';
 
 import {editCustomerStack, appStack, blackBook, createPostStack} from '../routes';
 

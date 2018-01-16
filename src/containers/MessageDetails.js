@@ -9,42 +9,42 @@ import {
   TouchableHighlight,
   View, Text, Dimensions, TouchableOpacity, TouchableWithoutFeedback, Image} from 'react-native';
 
-import VideoPreview from 'components/VideoPreview.js'
+import VideoPreview from '../components/VideoPreview';
 import {COLORS, FONTS, h, SCALE} from 'Hairfolio/src/style';
 import NavigationSetting from '../navigation/NavigationSetting';
 import {observer} from 'mobx-react/native';
 import autobind from 'autobind-decorator'
 import _ from 'lodash';
 import * as routes from '../routes'
-import PostDetailStore from 'stores/PostDetailStore.js'
+import PostDetailStore from '../mobx/stores/PostDetailStore';
 
 import ImagePicker from 'react-native-image-picker'
-import MyImage from 'Hairfolio/src/components/MyImage.js'
+import MyImage from 'Hairfolio/src/components/MyImage';
 
-import FollowButton from 'components/FollowButton.js'
+import FollowButton from '../components/FollowButton';
 
-import WriteMessageStore from 'stores/WriteMessageStore'
+import WriteMessageStore from '../mobx/stores/WriteMessageStore'
 
-import StarGiversStore from 'stores/StarGiversStore.js'
+import StarGiversStore from '../mobx/stores/StarGiversStore';
 
 import {appStack, gallery, postFilter, albumPage} from '../routes';
 
 
 import {STATUSBAR_HEIGHT, POST_INPUT_MODE} from '../constants';
 
-import LoadingScreen from 'components/LoadingScreen.js'
-import BlackHeader from 'components/BlackHeader.js'
+import LoadingScreen from '../components/LoadingScreen';
+import BlackHeader from '../components/BlackHeader';
 
-import CommentsStore from 'stores/CommentsStore.js'
+import CommentsStore from '../mobx/stores/CommentsStore';
 
-import MessageDetailsStore from 'stores/MessageDetailsStore.js'
+import MessageDetailsStore from '../mobx/stores/MessageDetailsStore';
 
 import {
   windowWidth,
   windowHeight,
-} from 'Hairfolio/src/helpers.js';
+} from 'Hairfolio/src/helpers';
 
-import Swipeout from 'Hairfolio/react-native-swipeout/index.js';
+import Swipeout from 'Hairfolio/react-native-swipeout/index';;
 
 
 @observer
@@ -277,7 +277,7 @@ class MessagesContent extends React.Component {
   }
 }
 
-import LoadingPage from 'components/LoadingPage'
+import LoadingPage from '../components/LoadingPage'
 
 const MessageInput = observer(() => {
 

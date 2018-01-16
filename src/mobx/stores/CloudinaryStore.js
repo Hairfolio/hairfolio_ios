@@ -47,8 +47,6 @@ class CloudinaryStore {
       });
 
       formdata.append('upload_preset', EnvironmentStore.environment.cloud_preset);
-      console.log(EnvironmentStore.environment);
-      debugger;
       return window.fetch(
         `https://api.cloudinary.com/v1_1/${EnvironmentStore.environment.cloud_name}/image/upload`,
         {

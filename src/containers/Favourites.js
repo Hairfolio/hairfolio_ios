@@ -3,25 +3,25 @@ import PureComponent from '../components/PureComponent';
 import {View, Text} from 'react-native';
 import {COLORS, FONTS, SCALE} from '../style';
 import NavigationSetting from '../navigation/NavigationSetting';
-import FavoriteStore from 'stores/FavoriteStore.js';
+import FavoriteStore from '../mobx/stores/FavoriteStore';
 
 import {BOTTOMBAR_HEIGHT, STATUSBAR_HEIGHT} from '../constants';
 
-import WhiteHeader from 'components/WhiteHeader'
+import WhiteHeader from '../components/WhiteHeader'
 
 
-import LinkTabBar from 'components/post/LinkTabBar.js'
+import LinkTabBar from '../components/post/LinkTabBar';
 
-import FavouritesList from 'components/favourites/FavouritesList.js'
-import FavouritesGrid from 'components/favourites/FavouritesGrid.js'
-import ScrollableTabView from 'react-native-scrollable-tab-view'
+import FavouritesList from '../components/favourites/FavouritesList';
+import FavouritesGrid from '../components/favourites/FavouritesGrid';
+import ScrollableTabView from 'react-native-scrollable-tab-view';
 
-import ActivityYou from 'components/favourites/ActivityYou.js'
-import ActivityFollowing from 'components/favourites/ActivityFollowing.js'
+import ActivityYou from '../components/favourites/ActivityYou';
+import ActivityFollowing from '../components/favourites/ActivityFollowing';
 
 
-import ActivityYouStore from 'stores/ActivityYouStore'
-import ActivityFollowingStore from 'stores/ActivityFollowingStore'
+import ActivityYouStore from '../mobx/stores/ActivityYouStore';
+import ActivityFollowingStore from '../mobx/stores/ActivityFollowingStore';
 
 export default class Favourites extends PureComponent {
   static contextTypes = {

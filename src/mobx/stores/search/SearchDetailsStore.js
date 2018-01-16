@@ -1,11 +1,11 @@
 import {observable, computed, action} from 'mobx';
-import ServiceBackend from 'backend/ServiceBackend.js'
+import ServiceBackend from '../../backend/ServiceBackend';
 
 import {_, v4, moment} from 'Hairfolio/src/helpers';
 
-import FollowUser from 'stores/FollowUser.js'
+import FollowUser from './FollowUser';
 
-import {GeoLocation} from 'react-native'
+import {GeoLocation} from 'react-native';
 
 class SearchUserFollowStore {
   @observable users = [];

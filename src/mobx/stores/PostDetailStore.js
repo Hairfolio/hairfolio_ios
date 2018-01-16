@@ -2,16 +2,16 @@ import {observable, computed, action} from 'mobx';
 import {CameraRoll, NativeModules} from 'react-native';
 import Camera from 'react-native-camera';
 
-import FilterStore from 'stores/FilterStore.js'
-import Picture from 'stores/Picture.js'
+import FilterStore from './FilterStore';
+import Picture from './Picture';
 
-import TagPostStore from 'stores/TagPostStore.js'
+import TagPostStore from './TagPostStore';
 
 let PhotoAlbum = NativeModules.PhotoAlbum;
 
 import {v4} from 'uuid';
 import {_, Linking, moment, React, Text, ActionSheetIOS} from 'Hairfolio/src/helpers';
-import Post from 'stores/Post';
+import Post from './Post';
 
 import * as routes from 'Hairfolio/src/routes';
 

@@ -1,14 +1,14 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 
-import AlbumPage from 'containers/AlbumPage.js'
-import GalleryPage from 'containers/GalleryPage.js'
+import AlbumPage from './containers/AlbumPage';
+import GalleryPage from './containers/GalleryPage';
 
 import {Navigator} from 'react-native-deprecated-custom-components';
 import {
   AppRegistry,
   Text,
   Dimensions
-} from 'react-native'
+} from 'react-native';
 
 
 var {width: windowWidth, height: windowHeight} = Dimensions.get('window');

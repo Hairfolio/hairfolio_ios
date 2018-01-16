@@ -1,36 +1,12 @@
-import Picture from 'stores/Picture.js'
-
+import ReactNative, { NativeModules } from 'react-native';
+import { windowHeight, h } from 'react';
 import Communications from 'react-native-communications';
-import Post from 'stores/Post.js'
+import { observable, action, computed } from 'mobx';
+import Picture from '../stores/Picture';
+import Post from '../stores/Post';
+import ServiceBackend from '../../backend/ServiceBackend';
 
-import {
-  _, // lodash
-  v4,
-  observable,
-  computed,
-  moment,
-  action,
-  observer, // mobx
-  h,
-  FONTS,
-  autobind,
-  React, // react
-  Component,
-  windowWidth,
-  windowHeight,
-  // react-native components
-  AlertIOS,
-  Modal,
-  ScrollView,
-  ActivityIndicator,
-  PickerIOS, Picker, StatusBar, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet
-} from 'Hairfolio/src/helpers.js';
-
-import ReactNative from 'react-native';
-
-import ServiceBackend from 'backend/ServiceBackend.js'
-var RCTUIManager = require('NativeModules').UIManager;
-
+const RCTUIManager = NativeModules.UIManager;
 
 class ContactDetailsStore {
   @observable mode = 'view';
@@ -423,6 +399,5 @@ class ContactDetailsStore {
 }
 
 const store = new ContactDetailsStore();
-
 export default store;
 

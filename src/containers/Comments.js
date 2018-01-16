@@ -13,20 +13,20 @@ import {observer} from 'mobx-react/native';
 import autobind from 'autobind-decorator'
 import _ from 'lodash';
 
-import FollowButton from 'components/FollowButton.js'
+import FollowButton from '../components/FollowButton';
 
-import StarGiversStore from 'stores/StarGiversStore.js'
+import StarGiversStore from '../mobx/stores/StarGiversStore';
 
 import {appStack, gallery, postFilter, albumPage} from '../routes';
 
-import * as routes from 'Hairfolio/src/routes.js'
+import * as routes from 'Hairfolio/src/routes'
 
 import {STATUSBAR_HEIGHT, POST_INPUT_MODE} from '../constants';
 
-import LoadingScreen from 'components/LoadingScreen.js'
-import BlackHeader from 'components/BlackHeader.js'
+import LoadingScreen from '../components/LoadingScreen';
+import BlackHeader from '../components/BlackHeader';
 
-import CommentsStore from 'stores/CommentsStore.js'
+import CommentsStore from '../mobx/stores/CommentsStore';
 
 const CommentRow = observer(({store}) => {
   return (
@@ -196,7 +196,7 @@ const CommentInput = observer(({store}) => {
   );
 });
 
-import LoadingPage from 'components/LoadingPage'
+import LoadingPage from './LoadingPage'
 
 @observer
 export default class Comments extends PureComponent {

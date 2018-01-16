@@ -19,7 +19,7 @@ import {COLORS} from '../../style';
 
 import {search, feed, createPost, favourites, profile, profileExternal, createPostStack } from '../../routes';
 
-import CreatePostStore from '../../mobx/stores/CreatePostStore.js';
+import CreatePostStore from '../../mobx/stores/CreatePostStore';
 
 export default class AppStack extends PureComponent {
 

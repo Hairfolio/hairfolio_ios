@@ -1,13 +1,12 @@
 import Backend from './Backend';
-const BASE_URL = 'http://api.hairfolio.tech/';
-
 import CreatePostStore from '../mobx/stores/CreatePostStore';
 import FeedStore from '../mobx/stores/FeedStore';
 import SearchStore from '../mobx/stores/SearchStore';
 import UserStore from '../mobx/stores/UserStore';
 import ShareStore from '../mobx/stores/ShareStore';
+import * as routes from '../routes';
 
-import * as routes from 'Hairfolio/src/routes';
+const BASE_URL = 'http://api.hairfolio.tech/';
 
 let myfetch = function(input, opts) {
   return new Promise((resolve, reject) => {
@@ -63,7 +62,6 @@ class ServiceBackend extends Backend {
         recipient_ids: ids
       }
     };
-
 
     let conversation = (await this.post('conversations', postData)).conversation;
 
@@ -146,7 +144,10 @@ class ServiceBackend extends Backend {
       alert('An error occured ' + err.toString());
     }
   }
-}
 
+  async getEnvironment() {
+    return this.get('/sessions/environment');
+  }
+}
 
 export default new ServiceBackend();

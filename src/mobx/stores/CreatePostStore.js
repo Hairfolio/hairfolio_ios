@@ -624,16 +624,16 @@ class CreatePostStore {
 
 
         for (let hairfolio of  ShareStore.selectedHairfolios) {
-          this.pinHairfolio(hairfolio, res.post);
+          ServiceBackend.pinHairfolio(hairfolio, res.post);
         }
 
         // console.log(ShareStore.selectedUsers);
         for (let user of ShareStore.selectedUsers) {
-          this.sendPostMessage(UserStore.user.id, user.user, res.post);
+          ServiceBackend.sendPostMessage(UserStore.user.id, user.user, res.post);
         }
 
         for (let contact of ShareStore.contacts) {
-          this.addPostToBlackBook(contact, res.post);
+          ServiceBackend.addPostToBlackBook(contact, res.post);
         }
 
         FeedStore.load();
@@ -650,9 +650,6 @@ class CreatePostStore {
       alert('An error occured ' + err.toString());
     }
   }
-
-
-
 };
 
 const store = new CreatePostStore();

@@ -22,7 +22,6 @@ export default {
 
     _.each(this.fields, ref => {
       if (!ref.isValide()) {
-        console.log(ref);
 
         errs += 1;
 

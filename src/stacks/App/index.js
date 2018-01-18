@@ -3,7 +3,7 @@ import _ from 'lodash';
 import {Platform, BackAndroid, StatusBar, InteractionManager} from 'react-native';
 import {autobind} from 'core-decorators';
 
-import UserStore from '../../mobx/stores/UsersStore';
+import UserStore from '../../mobx/stores/UserStore';
 import EnvironmentStore from '../../mobx/stores/EnvironmentStore';
 import Navigator from '../../navigation/Navigator';
 import NavigationSetting from '../../navigation/NavigationSetting';

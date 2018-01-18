@@ -70,14 +70,14 @@ export default class User {
     }
 
     let environment = await EnvironmentStore.loadEnv();
-
-    let picObj = {uri: utils.getUserProfilePicURI(new GetObj(data), new GetObj(environment))};
+    let picObj = {uri: utils.getUserProfilePicURI(data, environment)};
 
     this.profilePicture = new Picture(
       picObj,
       picObj,
       null
     );
+    this.pictureUrl = picObj;
   }
 
   sample(name = 'First Last Name') {

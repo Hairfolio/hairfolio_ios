@@ -7,7 +7,7 @@ import { LoginManager, AccessToken } from 'react-native-fbsdk';
 import NavigationSetting from '../navigation/NavigationSetting';
 import Service from 'Hairfolio/src/services/index';
 import ServiceBackend from '../backend/ServiceBackend';
-
+import { observer } from 'mobx-react';
 import Picker from '../components/Picker';
 
 import utils from '../utils';
@@ -22,6 +22,7 @@ import oauthMixin from '../mixins/oauth';
 
 import {register, signupConsumerStack, signupStylistStack, signupBrandStack, signupSalonStack, loginStack, appStack} from '../routes';
 
+@observer
 @mixin(oauthMixin)
 export default class Register2 extends PureComponent {
   static contextTypes = {
@@ -76,9 +77,9 @@ export default class Register2 extends PureComponent {
                 Brand: signupBrandStack
               };
 
-              if (UserStore.registrationMethod === 'email')
+              if (UserStore.registrationMethod === 'email') {
                 return _.first(this.context.navigators).jumpTo(stacks[item.label]);
-
+              }
               var type = ({
                 Consumer: 'consumer',
                 Stylist: 'stylist',
@@ -88,16 +89,19 @@ export default class Register2 extends PureComponent {
 
               var login;
 
-              if (this.props.registrationMethod === 'facebook')
+              if (UserStore.registrationMethod === 'facebook') {
                 login = EnvironmentStore.loadEnv()
                   .then(() => LoginManager.logInWithReadPermissions(['email']))
                   .then(() => AccessToken.getCurrentAccessToken())
                   .then(data => data.accessToken.toString())
                   .then(token =>
                     UserStore.signupWithFacebook(token, type)
-                  );
-
-              if (UserStore.registrationMethod === 'instagram')
+                  ).catch(error => {
+                    console.log(error);
+                    debugger;
+                  });
+              }
+              if (UserStore.registrationMethod === 'instagram') {
                 login = EnvironmentStore.loadEnv()
                   .then(() => this.oauth(loginStack, {
                     authorize: 'https://api.instagram.com/oauth/authorize/',
@@ -107,12 +111,11 @@ export default class Register2 extends PureComponent {
                     scope: 'basic'
                   }))
                   .then(token => UserStore.signupWithInstagram(token, type));
-
+              }
+              debugger;
               login
                 .then(
                   () => {
-
-
                     let userId = UserStore.user.id;
 
                     // update type
@@ -123,8 +126,6 @@ export default class Register2 extends PureComponent {
                         }
                       }
                     );
-
-
                     appEmitter.emit('login');
                     if (type === 'consumer')
                       return _.first(this.context.navigators).jumpTo(appStack);

@@ -12,12 +12,11 @@ import {
 import VideoPreview from '../components/VideoPreview';
 import {COLORS, FONTS, h, SCALE} from 'Hairfolio/src/style';
 import NavigationSetting from '../navigation/NavigationSetting';
-import {observer} from 'mobx-react/native';
+import {observer} from 'mobx-react';
 import autobind from 'autobind-decorator'
 import _ from 'lodash';
 import * as routes from '../routes'
 import PostDetailStore from '../mobx/stores/PostDetailStore';
-
 import ImagePicker from 'react-native-image-picker'
 import MyImage from 'Hairfolio/src/components/MyImage';
 

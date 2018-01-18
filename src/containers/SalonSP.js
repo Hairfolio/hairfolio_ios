@@ -3,16 +3,15 @@ import _ from 'lodash';
 import PureComponent from '../components/PureComponent';
 import {List, OrderedMap} from 'immutable';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
-
-import UserStore from '../mobx/stores/UsersStore';
+import { observer } from 'mobx-react';
+import UserStore from '../mobx/stores/UserStore';
 import {COLORS, FONTS, SCALE} from '../style';
 import NavigationSetting from '../navigation/NavigationSetting';
-
 import SafeList from '../components/SafeList';
 import LoadingContainer from '../components/LoadingContainer';
-
 import {NAVBAR_HEIGHT} from '../constants';
 
+@observer
 export default class SalonSP extends PureComponent {
   static propTypes = {
     addSP: React.PropTypes.object.isRequired,
@@ -66,7 +65,7 @@ export default class SalonSP extends PureComponent {
     return (<View style={{
       flex: 1
     }}>
-      {!UserStore.user.offerings.count() ?
+      {!UserStore.user.offerings.length ?
         <Text style={{
           marginTop: SCALE.h(35),
           marginLeft: SCALE.w(25),

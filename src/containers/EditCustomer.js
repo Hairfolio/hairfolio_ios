@@ -3,6 +3,7 @@ import _ from 'lodash';
 import PureComponent from '../components/PureComponent';
 import {mixin, autobind} from 'core-decorators';
 import {View, Text, StyleSheet, InteractionManager} from 'react-native';
+import { observer } from 'mobx-react';
 import { toJS } from 'mobx';
 import {COLORS, FONTS, SCALE} from '../style';
 import NavigationSetting from '../navigation/NavigationSetting';
@@ -38,6 +39,7 @@ import Categorie from '../components/Form/Categorie';
 import KeyboardScrollView from '../components/KeyboardScrollView';
 import BannerErrorContainer from '../components/BannerErrorContainer';
 
+@observer
 @mixin(formMixin)
 export default class EditCustomer extends PureComponent {
   static contextTypes = {
@@ -337,7 +339,7 @@ export default class EditCustomer extends PureComponent {
   }
 
   render() {
-    var isLoading = this.state.submitting || utils.isLoading(CloudinaryStore.cloudinaryStates['edit-user-pick']);
+    var isLoading = this.state.submitting || utils.isLoading(CloudinaryStore.cloudinaryStates.get('edit-user-pick'));
 
     return (<NavigationSetting
       forceUpdateEvents={['login', 'user-edited']}

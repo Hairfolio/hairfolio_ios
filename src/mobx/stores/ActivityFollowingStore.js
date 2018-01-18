@@ -22,7 +22,6 @@ class ActivityFollowingStore {
     this.elements = [];
 
     let arr = (await ServiceBackend.get('notifications?following=true'));
-
     arr = arr.notifications;
     arr = arr.filter(e => e.notifiable_type != 'NilClass');
 

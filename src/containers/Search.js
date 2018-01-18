@@ -1,7 +1,6 @@
 import PureComponent from '../components/PureComponent';
 import {COLORS, FONTS, SCALE} from '../style';
 import NavigationSetting from '../navigation/NavigationSetting';
-
 import {BOTTOMBAR_HEIGHT, STATUSBAR_HEIGHT} from '../constants';
 
 import {profile, profileExternal, appStack} from '../routes';

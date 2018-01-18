@@ -4,7 +4,8 @@ import {_, React, Text} from 'Hairfolio/src/helpers';
 import {v4} from 'uuid';
 import Camera from 'react-native-camera';
 let PhotoAlbum = NativeModules.PhotoAlbum;
-import routes from '../../routes';
+import * as routes from '../../routes';
+import ServiceBackend from '../../backend/ServiceBackend';
 import Picture from './Picture';
 import FilterStore from './FilterStore';
 import AlbumStore from './AlbumStore';
@@ -612,7 +613,7 @@ class CreatePostStore {
 
       ShareStore.share(data.post.photos_attributes[0].asset_url);
 
-      let res = await this.post('posts', data);
+      let res = await ServiceBackend.post('/posts', data);
 
       window.postRes = res;
 
@@ -637,9 +638,8 @@ class CreatePostStore {
 
         FeedStore.load();
         // SearchStore.refresh();
-
         routes.appStack.scene().goToFeed();
-        window.navigators[1].jumpTo(routes.createPost)
+        window.navigators[1].jumpTo(routes.createPost);
         window.navigators[0].jumpTo(routes.appStack);
         setTimeout(() => this.reset(), 1000);
       }

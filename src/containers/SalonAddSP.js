@@ -5,7 +5,7 @@ import {View, StyleSheet} from 'react-native';
 import validator from 'validator';
 import {COLORS, FONTS, SCALE} from '../style';
 import NavigationSetting from '../navigation/NavigationSetting';
-
+import { observer } from 'mobx-react';
 import EnvironmentStore from '../mobx/stores/EnvironmentStore';
 import EducationStore from '../mobx/stores/EducationStore';
 import OfferingStore from '../mobx/stores/OfferingStore';
@@ -24,6 +24,7 @@ import appEmitter from '../appEmitter';
 
 import formMixin from '../mixins/form';
 
+@observer
 @mixin(formMixin)
 export default class SalonAddSP extends PureComponent {
 

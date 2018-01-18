@@ -3,6 +3,8 @@ import _ from 'lodash';
 import PureComponent from '../components/PureComponent';
 import {List, OrderedMap} from 'immutable';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import { observer } from 'mobx-react';
+import { toJS } from 'mobx';
 
 import UserStore from '../mobx/stores/UserStore';
 import {COLORS, FONTS, SCALE} from '../style';
@@ -13,6 +15,7 @@ import LoadingContainer from '../components/LoadingContainer';
 
 import {NAVBAR_HEIGHT} from '../constants';
 
+@observer
 export default class StylistEducation extends PureComponent {
   static propTypes = {
     addEducation: React.PropTypes.object.isRequired,
@@ -63,14 +66,14 @@ export default class StylistEducation extends PureComponent {
   }
 
   renderContent() {
-    var education = new OrderedMap(UserStore.user.educations.map(education => [education.id, education]));
+    const user = toJS(UserStore.user);
+    var education = new OrderedMap(user.educations.map(education => [education.id, education]));
 
-    window.user = UserStore.user;
-
+    window.user = user;
     return (<View style={{
       flex: 1
     }}>
-      {!UserStore.user.educations.count() ?
+      {!user.educations.length === 0 ?
         <Text style={{
           marginTop: SCALE.h(35),
           marginLeft: SCALE.w(25),

@@ -45,7 +45,6 @@ const ActivityItem = observer(({store, isMe}) => {
   }
 
   let infoContent;
-
   if (store.type == 'follow') {
     if (isMe) {
       infoContent = <Text>started following you</Text>

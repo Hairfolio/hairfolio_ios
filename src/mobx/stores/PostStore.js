@@ -36,18 +36,20 @@ export default class PostStore {
       console.log('loadNextPage', this.nextPage);
       this.isLoadingNextPage = true;
       let res = (await this.getPosts(this.nextPage));
-
       let {posts, meta} = res;
+      if (posts) {
+        for (let a = 0; a < posts.length; a++)  {
+          let post = new Post();
+          await post.init(posts[a]);
+          this.elements.push(post);
+        }
 
-      for (let a = 0; a < posts.length; a++)  {
-        let post = new Post();
-        await post.init(posts[a]);
-        this.elements.push(post);
+        this.nextPage = meta.next_page;
+        this.isLoadingNextPage = false;
+      } else {
+        this.isLoadingNextPage = false;
+        throw res.errors;
       }
-
-      this.nextPage = meta.next_page
-
-      this.isLoadingNextPage = false;
     }
   }
 

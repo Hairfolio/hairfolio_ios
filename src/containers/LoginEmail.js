@@ -6,7 +6,7 @@ import PureComponent from '../components/PureComponent';
 import RN, {View, Text} from 'react-native';
 import {COLORS, FONTS, SCALE} from '../style';
 import NavigationSetting from '../navigation/NavigationSetting';
-
+import { observer } from 'mobx-react';
 import TextInput from '../components/Form/TextInput';
 import SimpleButton from '../components/Buttons/Simple';
 import CustomTouchableOpacity from '../components/CustomTouchableOpacity';
@@ -21,6 +21,7 @@ import UserStore from '../mobx/stores/UserStore';
 
 import {login, register, forgottenPasswordStack, appStack} from '../routes';
 
+@observer
 @mixin(formMixin)
 export default class LoginEmail extends PureComponent {
   static contextTypes = {

@@ -18,12 +18,14 @@ import {
 } from 'Hairfolio/src/helpers';
 
 import {profile, profileExternal, appStack} from 'Hairfolio/src/routes';
+import utils from '../../utils';
 
 import PostDetailStore from '../../mobx/stores/PostDetailStore';
 import TagPostStore from '../../mobx/stores/TagPostStore';
 import CommentsStore from '../../mobx/stores/CommentsStore';
+import EnvironmentStore from '../../mobx/stores/EnvironmentStore';
 
-const PostHeader = observer(({post, onPress}) => {
+const PostHeader = observer(({post}) => {
   return (
     <TouchableWithoutFeedback
       onPress={() => {
@@ -44,7 +46,7 @@ const PostHeader = observer(({post, onPress}) => {
 
         <Image
           style={{height: h(70), width: h(70), borderRadius: h(70) / 2, marginLeft: h(13)}}
-          source={post.creator.profilePicture.source}
+          source={post.creator.pictureUrl}
         />
         <Text
           style={{

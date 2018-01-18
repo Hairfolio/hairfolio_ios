@@ -1,5 +1,6 @@
 import React from 'react';
 import _ from 'lodash';
+import { observer } from 'mobx-react';
 import PureComponent from '../components/PureComponent';
 import Communications from 'react-native-communications';
 import {View, Text} from 'react-native';
@@ -15,6 +16,7 @@ import utils from '../utils';
 
 import {NAVBAR_HEIGHT, READY, LOADING, LOADING_ERROR} from '../constants';
 
+@observer
 export default class SalonStylist extends PureComponent {
   static propTypes = {
     backTo: React.PropTypes.object.isRequired,

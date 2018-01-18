@@ -18,7 +18,6 @@ class TagPostModel extends PostGridStore {
     let name = this.initData;
 
     let res = await ServiceBackend.get(`tags/exact?q=${name}`);
-
     let tagId;
 
     if (res == null) {

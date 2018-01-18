@@ -6,7 +6,7 @@ import PureComponent from '../components/PureComponent';
 import {View, Text, StyleSheet} from 'react-native';
 import {COLORS, FONTS, SCALE} from '../style';
 import NavigationSetting from '../navigation/NavigationSetting';
-
+import { observer } from 'mobx-react';
 import MultilineTextInput from '../components/Form/MultilineTextInput';
 import InlineTextInput from '../components/Form/InlineTextInput';
 import PickerInput from '../components/Form/PickerInput';
@@ -25,6 +25,7 @@ import appEmitter from '../appEmitter';
 import {appStack} from '../routes';
 import UserStore from '../mobx/stores/UserStore';
 
+@observer
 @mixin(formMixin)
 export default class SalonInfo extends PureComponent {
   static contextTypes = {

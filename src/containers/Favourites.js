@@ -4,7 +4,7 @@ import {View, Text} from 'react-native';
 import {COLORS, FONTS, SCALE} from '../style';
 import NavigationSetting from '../navigation/NavigationSetting';
 import FavoriteStore from '../mobx/stores/FavoriteStore';
-
+import { observer } from 'mobx-react';
 import {BOTTOMBAR_HEIGHT, STATUSBAR_HEIGHT} from '../constants';
 
 import WhiteHeader from '../components/WhiteHeader'
@@ -23,6 +23,7 @@ import ActivityFollowing from '../components/favourites/ActivityFollowing';
 import ActivityYouStore from '../mobx/stores/ActivityYouStore';
 import ActivityFollowingStore from '../mobx/stores/ActivityFollowingStore';
 
+@observer
 export default class Favourites extends PureComponent {
   static contextTypes = {
     navigators: React.PropTypes.array.isRequired

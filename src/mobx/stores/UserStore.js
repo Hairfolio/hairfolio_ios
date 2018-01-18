@@ -13,10 +13,9 @@ import hydrate from './hydrate';
 import ServiceBackend from '../../backend/ServiceBackend';
 
 class UserStore {
-  @persist @observable token;
   @persist('object') @observable user;
   @persist @observable userState;
-  @persist('object') @observable followingStates;
+  @persist('map') @observable followingStates;
   @persist @observable changePasswordState;
   @persist @observable forgotPasswordState;
   @persist @observable registrationMethod;
@@ -27,10 +26,14 @@ class UserStore {
       offerings: [],
     };
     this.userState = EMPTY;
-    this.followingStates = {};
+    this.followingStates = observable.map();
     this.changePasswordState = EMPTY;
     this.forgotPasswordState = EMPTY;
     this.registrationMethod = null;
+  }
+
+  @computed get token() {
+    return this.user.auth_token;
   }
 
   @action loadUser = (user) => {
@@ -113,12 +116,11 @@ class UserStore {
       offerings: [],
     };
     this.userState = EMPTY;
-    this.followingStates = {};
-    this.token = null;
+    this.followingStates = observable.map();
   }
 
   @action setToken = (val) => {
-    this.token = val;
+    this.user.auth_token = val;
   }
 
   @action addOffering = (offering) => {
@@ -164,7 +166,7 @@ class UserStore {
   }
 
   @action followUser = (id) => {
-    this.followingStates[id] = LOADING;
+    this.followingStates.set(id, LOADING);
     ServiceBackend.post(
       `/users/${id}/follows`,
       {
@@ -174,23 +176,23 @@ class UserStore {
       .then(({followers_count}) => {
         this.user.following.push({id});
         this.user.follow_count = followers_count;
-        this.followingStates[id] = READY;
+        this.followingStates.set(id, READY);
       })
       .catch(error => {
-        this.followingStates[id] = LOADING_ERROR;
+        this.followingStates.set(id, LOADING_ERROR);
       });
   }
 
   @action unfollowUser = (id) => {
-    this.followingStates[id] = LOADING;
+    this.followingStates.set(id, LOADING);
     ServiceBackend.delete(`/users/${id}/follows`)
       .then(response => {
         this.user.following = this.user.following.filter(user => user.id !== id);
         this.user.follow_count = this.user.follow_count - 1;
-        this.followingStates[id] = READY;
+        this.followingStates.set(id, READY);
       })
       .catch(error => {
-        this.followingStates[id] = LOADING_ERROR;
+        this.followingStates.set(id, LOADING_ERROR);
       });
   }
 
@@ -234,12 +236,9 @@ class UserStore {
   }
 
   loadUserInformation = async () => {
-    const educations = await this.getUserEducations();
-    debugger;
-    const offerings = await this.getUserOfferings();
-    debugger;
-    const following = await this.getUserFollowing();
-    debugger;
+    const educations = await this.getUserEducations().educations || [];
+    const offerings = await this.getUserOfferings().offerings || [];
+    const following = await this.getUserFollowing().following || [];
     this.user.following = following;
     this.user.educations = educations;
     this.user.offerings = offerings;
@@ -259,6 +258,7 @@ class UserStore {
       this.userState = READY;
     } catch(error) {
       this.userState = LOADING_ERROR;
+      throw error;
     }
   }
 
@@ -275,6 +275,7 @@ class UserStore {
       this.userState = READY;
     } catch(error) {
       this.userState = LOADING_ERROR;
+      throw error;
     }
   }
 
@@ -292,6 +293,7 @@ class UserStore {
       this.userState = READY;
     } catch(error) {
       this.userState = LOADING_ERROR;
+      throw error;
     }
   }
 
@@ -308,6 +310,7 @@ class UserStore {
       this.userState = READY;
     } catch(error) {
       this.userState = LOADING_ERROR;
+      throw error;
     }
   }
 
@@ -365,7 +368,6 @@ class UserStore {
         }
       );
       this.user = res.user;
-      debugger;
       await this.loadUserInformation();
       this.userState = READY;
       return this.user;
@@ -383,13 +385,12 @@ class UserStore {
       offerings: [],
     };
     this.userState = EMPTY;
-    this.followingStates = {};
-    this.token = null;
+    this.followingStates = observable.map();
   }
 }
 
 const store =  new UserStore();
-// hydrate('user', store);
+hydrate('user', store);
 
 window.userStore = store;
 

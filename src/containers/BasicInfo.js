@@ -89,7 +89,7 @@ export default class BasicInfo extends PureComponent {
       leftAction={() => {
         _.first(this.context.navigators).jumpTo(loginStack);
       }}
-      leftDisabled={utils.isLoading([EnvironmentStore.environmentState, UserStore.userState, CloudinaryStore.cloudinaryStates['register-pick']])}
+      leftDisabled={utils.isLoading([EnvironmentStore.environmentState, UserStore.userState, CloudinaryStore.cloudinaryStates.get('register-pick')])}
       leftIcon="back"
       onWillBlur={this.onWillBlur}
       onWillFocus={this.onWillFocus}
@@ -108,7 +108,7 @@ export default class BasicInfo extends PureComponent {
             });
         }
       }}
-      rightDisabled={utils.isLoading([EnvironmentStore.environmentState, UserStore.userState, CloudinaryStore.cloudinaryStates['register-pick']])}
+      rightDisabled={utils.isLoading([EnvironmentStore.environmentState, UserStore.userState, CloudinaryStore.cloudinaryStates.get('register-pick')])}
       rightLabel="Next"
       style={{
         flex: 1,
@@ -132,7 +132,7 @@ export default class BasicInfo extends PureComponent {
             position: 'relative'
           }}>
             <PictureInput
-              disabled={utils.isLoading([EnvironmentStore.environmentState, UserStore.userState, CloudinaryStore.cloudinaryStates['register-pick']])}
+              disabled={utils.isLoading([EnvironmentStore.environmentState, UserStore.userState, CloudinaryStore.cloudinaryStates.get('register-pick')])}
               // not used here
               // because we never setValue on this input
               getPictureURIFromValue={() => {}}

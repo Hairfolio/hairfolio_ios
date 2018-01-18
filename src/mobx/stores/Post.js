@@ -21,6 +21,7 @@ import {
 } from 'Hairfolio/src/helpers';
 
 import utils from 'Hairfolio/src/utils';
+import { toJS } from 'mobx';
 import EnvironmentStore from './EnvironmentStore';
 
 import User from './User';
@@ -54,6 +55,7 @@ export default class Post {
     if (!data) {
       return;
     }
+    data = toJS(data);
 
     this.id = data.id;
     this.description = data.description;

@@ -6,7 +6,7 @@ import PureComponent from '../components/PureComponent';
 import {View, Text, StyleSheet} from 'react-native';
 import {COLORS, FONTS, SCALE} from '../style';
 import NavigationSetting from '../navigation/NavigationSetting';
-
+import { observer } from 'mobx-react';
 import MultilineTextInput from '../components/Form/MultilineTextInput';
 import InlineTextInput from '../components/Form/InlineTextInput';
 import PickerInput from '../components/Form/PickerInput';
@@ -20,6 +20,7 @@ import formMixin from '../mixins/form';
 
 import {NAVBAR_HEIGHT} from '../constants';
 
+@observer
 @mixin(formMixin)
 export default class EditCustomerAddress extends PureComponent {
   static contextTypes = {

@@ -4,7 +4,8 @@ import PureComponent from '../components/PureComponent';
 import {StatusBar, Text, View} from 'react-native';
 import {COLORS} from '../style';
 import NavigationSetting from '../navigation/NavigationSetting';
-
+import { observer } from 'mobx-react';
+import { toJS } from 'mobx';
 import Profile from './Profile';
 
 import LoadingContainer from '../components/LoadingContainer';
@@ -15,6 +16,7 @@ import UsersStore from '../mobx/stores/UsersStore';
 import {BOTTOMBAR_HEIGHT} from '../constants';
 import utils from '../utils';
 
+@observer
 export default class ProfileWrapper extends PureComponent {
   static contextTypes = {
     navigators: React.PropTypes.array.isRequired
@@ -27,8 +29,6 @@ export default class ProfileWrapper extends PureComponent {
     var style = 'light-content';
     if (this.refs.profile)
       style = this.refs.profile.getStyle();
-
-
     StatusBar.setHidden(false, 'fade');
     StatusBar.setBarStyle(style, true);
   }
@@ -41,10 +41,9 @@ export default class ProfileWrapper extends PureComponent {
   }
 
   render() {
-
-    window.p = this.props.users;
-
-
+    const users = toJS(UsersStore.users);
+    const states = toJS(UsersStore.usersStates);
+    window.p = users;
     return (<NavigationSetting
       forceUpdateEvents={!this.state.userId ? ['login', 'user-edited'] : null}
       onWillFocus={this.onWillFocus}
@@ -64,8 +63,8 @@ export default class ProfileWrapper extends PureComponent {
         }}>
           <LoadingContainer loadingStyle={{
             textAlign: 'center'
-          }} ref="loadingC" state={UsersStore.usersStates[this.state.userId]}>
-            {() => <Profile profile={UsersStore.users[this.state.userId]} ref="profile" />}
+          }} ref="loadingC" state={[states[this.state.userId]]}>
+            {() => <Profile profile={users[this.state.userId]} ref="profile" />}
           </LoadingContainer>
         </View>
       }

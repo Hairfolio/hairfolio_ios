@@ -13,12 +13,12 @@ class CloudinaryStore {
   @observable cloudinaryStates;
 
   constructor() {
-    this.cloudinaryStates = {};
+    this.cloudinaryStates = observable.map();
   }
 
   @action upload = async (uri, {width, height}, opts = {}, handle) => {
     await EnvironmentStore.loadEnv();
-    this.cloudinaryStates[handle] = LOADING;
+    this.cloudinaryStates.set(handle, LOADING);
     return new Promise((resolve, reject) => {
       ImageEditor.cropImage(uri, {
         offset: {
@@ -35,7 +35,7 @@ class CloudinaryStore {
         } : null,
         resizeMode: 'cover'
       }, resolve, () => {
-        this.cloudinaryStates[handle] = LOADING_ERROR;
+        this.cloudinaryStates.set(handle, LOADING_ERROR);
         reject('resize failed')
       });
     }).then((uri) => {
@@ -65,13 +65,13 @@ class CloudinaryStore {
           var error = new Error('Cloudinary Error');
           error.data = response.jsonData;
           error.handle = handle;
-          this.cloudinaryStates[handle] = LOADING_ERROR;
+          this.cloudinaryStates.set(handle, LOADING_ERROR);
           throw error;
         }
       })
       .then((response) => {
         var r = response.jsonData;
-        this.cloudinaryStates[handle] = READY;
+        this.cloudinaryStates.set(handle, READY);
         return {
           handle,
           'public_id': r.public_id

@@ -1,6 +1,6 @@
 import React from 'react';
 import {h, COLORS, FONTS, SCALE} from '../style';
-import {observer} from 'mobx-react/native';
+import {observer} from 'mobx-react';
 
 import {View, Text, Dimensions, TouchableOpacity, TouchableWithoutFeedback, Image} from 'react-native';
 

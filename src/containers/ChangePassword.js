@@ -6,21 +6,18 @@ import PureComponent from '../components/PureComponent';
 import RN, {View, Text} from 'react-native';
 import {COLORS, FONTS, SCALE} from '../style';
 import NavigationSetting from '../navigation/NavigationSetting';
-
+import { observer } from 'mobx-react';
 import InlineTextInput from '../components/Form/InlineTextInput';
 import BannerErrorContainer from '../components/BannerErrorContainer';
 import KeyboardScrollView from '../components/KeyboardScrollView';
 import SimpleButton from '../components/Buttons/Simple';
-
 import {editCustomer} from '../routes';
-
 import Categorie from '../components/Form/Categorie';
 import UserStore from '../mobx/stores/UserStore';
-
 import formMixin from '../mixins/form';
-
 import {NAVBAR_HEIGHT} from '../constants';
 
+@observer
 @mixin(formMixin)
 export default class ForgottenPassword extends PureComponent {
   static contextTypes = {

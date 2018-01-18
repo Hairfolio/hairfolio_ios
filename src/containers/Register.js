@@ -4,11 +4,12 @@ import PureComponent from '../components/PureComponent';
 import {View, Text, TouchableOpacity} from 'react-native';
 import {COLORS, FONTS, SCALE} from '../style';
 import NavigationSetting from '../navigation/NavigationSetting';
-
+import { observer } from 'mobx-react';
 import SimpleButton from '../components/Buttons/Simple';
 import UserStore from '../mobx/stores/UserStore';
 import {login, hello, register2} from '../routes';
 
+@observer
 export default class Register extends PureComponent {
   static contextTypes = {
     navigators: React.PropTypes.array.isRequired

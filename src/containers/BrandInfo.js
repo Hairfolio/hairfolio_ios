@@ -6,7 +6,7 @@ import PureComponent from '../components/PureComponent';
 import {View, Text, StyleSheet} from 'react-native';
 import {COLORS, FONTS, SCALE} from '../style';
 import NavigationSetting from '../navigation/NavigationSetting';
-
+import { observer } from 'mobx-react';
 import states from '../states.json';
 
 import MultilineTextInput from '../components/Form/MultilineTextInput';
@@ -23,6 +23,7 @@ import {NAVBAR_HEIGHT} from '../constants';
 import appEmitter from '../appEmitter';
 import {appStack} from '../routes';
 
+@observer
 @mixin(formMixin)
 export default class BrandInfo extends PureComponent {
   static contextTypes = {

@@ -3,6 +3,8 @@ import _ from 'lodash';
 import {BlurView} from 'react-native-blur';
 import PureComponent from '../components/PureComponent';
 import {View, Text, Image, TouchableOpacity, ScrollView, StatusBar} from 'react-native';
+import { observer } from 'mobx-react';
+import { toJS } from 'mobx';
 import {COLORS, FONTS, SCALE} from '../style';
 import UserProfileNavigationBar from '../components/UserProfile/Bar';
 import Service from 'Hairfolio/src/services/index';
@@ -31,12 +33,13 @@ import {
   h
 } from 'Hairfolio/src/helpers';
 
-import {STATUSBAR_HEIGHT} from '../constants';
+import {STATUSBAR_HEIGHT, EMPTY} from '../constants';
 
 import BlackBookStore from '../mobx/stores/BlackBookStore';
 
 import {editCustomerStack, appStack, blackBook, createPostStack} from '../routes';
 
+@observer
 export default class Profile extends PureComponent {
   static propTypes = {
     profile: React.PropTypes.object.isRequired,
@@ -115,7 +118,7 @@ export default class Profile extends PureComponent {
     this.height = (this.props.profile === this.props.user ? 183.5 : 223.5) + 40;
 
     window.profile = this.props.profile;
-    window.user2 = UserStore.user;
+    window.user2 = toJS(UserStore.user);
 
     window.profileState = this;
 
@@ -310,7 +313,7 @@ export default class Profile extends PureComponent {
                     <View>
                       {!this.state.followed ?
                         <ProfileButton
-                          disabled={utils.isLoading(UserStore.followingStates[this.props.profile.i])}
+                          disabled={utils.isLoading(UserStore.followingStates.get(this.props.profile.i) || EMPTY)}
                           label="FOLLOW"
                           onPress={() => {
                             UserStore.followUser(this.props.profile.id);
@@ -319,7 +322,7 @@ export default class Profile extends PureComponent {
                       :
                         <ProfileButton
                           color={COLORS.FOLLOWING}
-                          disabled={utils.isLoading(UserStore.followingStates.get(this.props.profile.id))}
+                          disabled={utils.isLoading(UserStore.followingStates.get(this.props.profile.id) || EMPTY)}
                           label="FOLLOWING"
                           onPress={() => {
                             UserStore.unfollowUser(this.props.profile.id);
@@ -327,9 +330,6 @@ export default class Profile extends PureComponent {
                         />
                       }
                     </View>
-
-
-
                     <View style={{width: SCALE.w(25)}} />
                     <View>
                       <ProfileButton
@@ -354,15 +354,9 @@ export default class Profile extends PureComponent {
                       />
                     </View>
                   </View> : null}
-
-
                 </View>
               </View>
-
             </View>
-
-
-
             <View>
               <View ref="statusBarCache" style={{
                 height: 10,
@@ -410,7 +404,7 @@ export default class Profile extends PureComponent {
             </TouchableOpacity>
           </View> : null}
 
-          {this.props.profile === UserStore.user ?
+          {this.props.profile === toJS(UserStore.user) ?
               <View
                 style = {{
                   position: 'absolute',

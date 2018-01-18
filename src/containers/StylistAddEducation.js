@@ -5,7 +5,7 @@ import {View, StyleSheet} from 'react-native';
 import validator from 'validator';
 import {COLORS, FONTS, SCALE} from '../style';
 import NavigationSetting from '../navigation/NavigationSetting';
-import UserStore from '../mobx/stores/UsersStore';
+import UserStore from '../mobx/stores/UserStore';
 import EnvironmentStore from '../mobx/stores/EnvironmentStore';
 import EducationStore from '../mobx/stores/EducationStore';
 

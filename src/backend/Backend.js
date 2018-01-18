@@ -17,16 +17,9 @@ export default class Backend {
       'Content-Type': 'application/json'
     };
 
-    let token = UserStore.token;
-
-    let token2 = UserStore.user.auth_token;
+    let token = UserStore.user.auth_token;
 
     console.log('userToken', token);
-
-    if (token2) {
-      token = token2;
-      UserStore.token = token2;
-    }
 
     if (token) {
       headers.Authorization = token;

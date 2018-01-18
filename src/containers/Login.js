@@ -6,7 +6,7 @@ import PureComponent from '../components/PureComponent';
 import {View, Text} from 'react-native';
 import {COLORS, FONTS, SCALE} from '../style';
 import NavigationSetting from '../navigation/NavigationSetting';
-
+import { observer } from 'mobx-react';
 import SimpleButton from '../components/Buttons/Simple';
 import CustomTouchableOpacity from '../components/CustomTouchableOpacity';
 
@@ -20,6 +20,7 @@ import oauthMixin from '../mixins/oauth';
 
 import {register, forgottenPasswordStack, loginEmail, loginStack, appStack} from '../routes';
 
+@observer
 @mixin(oauthMixin)
 export default class Login extends PureComponent {
   static contextTypes = {

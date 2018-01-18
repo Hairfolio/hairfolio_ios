@@ -29,7 +29,6 @@ const ActivityFollowing = observer(() => {
 
   let store = ActivityFollowingStore;
 
-
   if (store.isLoading) {
     return (
       <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>

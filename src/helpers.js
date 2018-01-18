@@ -1,7 +1,7 @@
 // file that includes all the standard things i generally load in one file
 import React, { Component } from 'react'
 import _ from 'lodash';
-import {observer} from 'mobx-react/native'
+import {observer} from 'mobx-react'
 import {observable, computed, action} from 'mobx';
 import autobind from 'autobind-decorator'
 import {v4} from 'uuid';

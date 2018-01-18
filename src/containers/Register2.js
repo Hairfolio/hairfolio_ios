@@ -96,10 +96,7 @@ export default class Register2 extends PureComponent {
                   .then(data => data.accessToken.toString())
                   .then(token =>
                     UserStore.signupWithFacebook(token, type)
-                  ).catch(error => {
-                    console.log(error);
-                    debugger;
-                  });
+                  );
               }
               if (UserStore.registrationMethod === 'instagram') {
                 login = EnvironmentStore.loadEnv()
@@ -112,7 +109,6 @@ export default class Register2 extends PureComponent {
                   }))
                   .then(token => UserStore.signupWithInstagram(token, type));
               }
-              debugger;
               login
                 .then(
                   () => {

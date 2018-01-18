@@ -113,7 +113,6 @@ export default class ForgottenPassword extends PureComponent {
                       _.last(this.context.navigators).jumpTo(editCustomer);
                     },
                     (e) => {
-                      console.log(e);
                       this.refs.ebc.error(e);
                     });
               }}

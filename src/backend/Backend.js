@@ -19,8 +19,6 @@ export default class Backend {
 
     let token = UserStore.user.auth_token;
 
-    console.log('userToken', token);
-
     if (token) {
       headers.Authorization = token;
     }

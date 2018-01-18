@@ -30,8 +30,6 @@ class UsersStore {
       });
       this.usersStates.set(userId, READY);
     } catch (error) {
-      debugger;
-      console.log(error);
       this.usersStates.set(userId, LOADING_ERROR);
       throw error;
     }

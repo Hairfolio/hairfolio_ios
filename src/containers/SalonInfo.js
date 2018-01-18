@@ -57,7 +57,6 @@ export default class SalonInfo extends PureComponent {
             _.first(this.context.navigators).jumpTo(appStack, () => this.clearValues());
           },
           (e) => {
-            console.log(e);
             this.refs.ebc.error(e);
           }
         );

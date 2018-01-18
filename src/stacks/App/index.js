@@ -84,8 +84,6 @@ export default class AppStack extends PureComponent {
   render() {
     var profilePic = utils.getUserProfilePicURI(UserStore.user, EnvironmentStore.environment);
 
-    console.log('profile-pic', profilePic);
-
     return (
       <NavigationSetting
         forceUpdateEvents={['login']}

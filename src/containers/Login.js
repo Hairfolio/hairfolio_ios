@@ -66,7 +66,6 @@ export default class Login extends PureComponent {
                       _.first(this.context.navigators).jumpTo(appStack);
                     },
                     (e) => {
-                      console.log(e);
                       this.context.setBannerError(e);
                     }
                   )
@@ -95,7 +94,6 @@ export default class Login extends PureComponent {
                       _.first(this.context.navigators).jumpTo(appStack);
                     },
                     (e) => {
-                      console.log(e);
                       this.context.setBannerError(e);
                     }
                   )

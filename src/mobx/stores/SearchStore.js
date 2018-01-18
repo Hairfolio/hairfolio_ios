@@ -42,7 +42,6 @@ class TagItem {
 class TopTags extends PostStore {
   async loadNextPage() {
     if (!this.isLoadingNextPage && this.nextPage != null) {
-      console.log('loadNextPage', this.nextPage);
       this.isLoadingNextPage = true;
 
       let myId = UserStore.user.id;

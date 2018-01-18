@@ -89,7 +89,6 @@ class SearchNearbyStore extends SearchUserFollowStore {
   }
 
   reset() {
-    console.log('mysearch');
     this.wasLoaded = false;
     this.search('');
   }

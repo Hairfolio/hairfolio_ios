@@ -69,7 +69,6 @@ export default class Fetch {
         return response.jsonData;
       })
       .catch((e) => {
-        console.log('error received for', uri, e);
         throw e;
       });
   }

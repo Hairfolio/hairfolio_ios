@@ -169,7 +169,6 @@ class FilterImage {
   @observable source;
 
   constructor(parent, originalSource, {name, displayName, params}) {
-    console.log('displayName', displayName);
     this.parent = parent;
     this.originalSource = originalSource;
     this.filterName = name;

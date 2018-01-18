@@ -91,7 +91,6 @@ export default class LoginEmail extends PureComponent {
                       appEmitter.emit('login');
                       _.first(this.context.navigators).jumpTo(appStack);
                     }, (e) => {
-                      console.log(e);
                       this.context.setBannerError(e);
                     });
                 }

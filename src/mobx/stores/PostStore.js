@@ -33,7 +33,6 @@ export default class PostStore {
 
   async loadNextPage() {
     if (!this.isLoadingNextPage && this.nextPage != null) {
-      console.log('loadNextPage', this.nextPage);
       this.isLoadingNextPage = true;
       let res = (await this.getPosts(this.nextPage));
       let {posts, meta} = res;

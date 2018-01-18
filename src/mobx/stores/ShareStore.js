@@ -107,8 +107,6 @@ class SendStore {
 
     let userId = UserStore.user.id;
 
-    console.log('userId', userId);
-
     let res = (await ServiceBackend.get(`users/${userId}/follows?friends=true`)).users;
 
     let myUsers = await Promise.all(res.map(e => {
@@ -132,8 +130,6 @@ class HairfolioStore {
 
   async saveHairfolio(store) {
     let res = await ServiceBackend.post('folios', {folio: {name: store.name}});
-
-    console.log('set id', res.folio.id);
     store.id = res.folio.id;
   }
 
@@ -143,15 +139,11 @@ class HairfolioStore {
     let results = await ServiceBackend.get('folios');
     results = results.folios;
 
-    console.log('folios', results);
-
     if (results.length == 0) {
       // add inspiration
-      console.log('case 1');
       let res = await ServiceBackend.post('folios', {folio: {name: 'Inspiration'}});
       this.hairfolios.push(new Hairfolio(res.folio));
     } else {
-      console.log('case 2');
       this.hairfolios = results.map(e => new Hairfolio(e)).reverse();
     }
     this.isLoading = false;

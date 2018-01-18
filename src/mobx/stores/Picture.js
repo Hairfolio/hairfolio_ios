@@ -190,8 +190,6 @@ class Picture {
 
     for (let tag of this.tags) {
 
-      console.log('tagType', tag.type);
-
       if (tag.type == 'service') {
 
         for (let color of tag.colors) {
@@ -204,9 +202,6 @@ class Picture {
             tagName = color.name.toLowerCase();
           }
 
-
-          console.log('tagName', tagName);
-
           tagName = tagName.replace(/\W/g, '_').toLowerCase();
 
           let numberIndex = 0;
@@ -215,8 +210,6 @@ class Picture {
           }
 
           tagName = tagName.slice(0, numberIndex) + '_' + tagName.slice(numberIndex);
-
-          console.log('tagName2', tagName);
 
           this.tags.push(new HashTag(-100, -100,  '#' + tagName));
         }

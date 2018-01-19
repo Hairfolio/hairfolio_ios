@@ -77,12 +77,9 @@ class Selector {
 
   @action setData(data) {
     this.data = data.map(el => new SelectorData(el));
-
     this.isLoaded = true;
-
-    if (this.isOpen && this.value == this.title) {
+    if (this.isOpen && this.value == this.title && data.length > 0) {
       this.setValue(this.data[~~(this.data.length / 2)].name);
-
     }
   }
 
@@ -381,7 +378,6 @@ class AddServiceStore {
 
     let unit = this.colorNameSelector.selectedData.unit;
     let res = await ServiceBackend.getColors(lineId);
-
 
     if (this.initStore) {
       for (let color of this.initStore.colors) {

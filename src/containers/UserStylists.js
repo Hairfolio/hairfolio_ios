@@ -1,30 +1,21 @@
 import React from 'react';
 import PureComponent from '../components/PureComponent';
 import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
-import connect from '../lib/connect';
-import {app} from '../selectors/app';
-import {user} from '../selectors/user';
-import {environment} from '../selectors/environment';
 import {COLORS, FONTS, SCALE} from '../style';
 import NavigationSetting from '../navigation/NavigationSetting';
-import {registrationActions} from '../actions/registration';
-
+import UserStore from '../mobx/stores/UserStore';
+import AppStore from '../mobx/stores/AppStore';
+import EnvironmentStore from '../mobx/stores/EnvironmentStore';
 import FollowButton from '../components/Buttons/Follow';
 
 import utils from '../utils';
 
 import {appStack} from '../routes';
 
-@connect(app, user, environment)
 export default class UserStylist extends PureComponent {
   static propTypes = {
-    appVersion: React.PropTypes.string.isRequired,
-    dispatch: React.PropTypes.func.isRequired,
-    environment: React.PropTypes.object.isRequired,
-    followingStates: React.PropTypes.object.isRequired,
     onLayout: React.PropTypes.func.isRequired,
     profile: React.PropTypes.object.isRequired,
-    user: React.PropTypes.object.isRequired
   };
 
   static contextTypes = {
@@ -32,18 +23,18 @@ export default class UserStylist extends PureComponent {
   };
 
   renderFollowButton(stylist) {
-    if (stylist.get('id') === this.props.user.get('id'))
+    if (stylist.id === this.props.user.id)
       return null;
 
     return (<FollowButton
-      disabled={utils.isLoading(this.props.followingStates.get(stylist.get('id')))}
-      icon={utils.isFollowing(this.props.user, stylist) ? 'check' : null}
-      label={utils.isFollowing(this.props.user, stylist) ? 'FOLLOWED' : 'FOLLOW'}
+      disabled={utils.isLoading(UserStore.followingStates[stylist.id])}
+      icon={utils.isFollowing(UserStore.user, stylist) ? 'check' : null}
+      label={utils.isFollowing(UserStore.user, stylist) ? 'FOLLOWED' : 'FOLLOW'}
       onPress={() => {
-        if (utils.isFollowing(this.props.user, stylist))
-          this.props.dispatch(registrationActions.unfollowUser(stylist.get('id')));
+        if (utils.isFollowing(UserStore.user, stylist))
+          UserStore.unfollowUser(stylist.id);
         else
-          this.props.dispatch(registrationActions.followUser(stylist.get('id')));
+          UserStore.followUser(stylist.id);
       }}
     />);
   }
@@ -67,11 +58,11 @@ export default class UserStylist extends PureComponent {
       <View
         onLayout={this.props.onLayout}
       >
-        {this.props.profile.get('stylists') && this.props.profile.get('stylists').count() ?
-          this.props.profile.get('stylists').map(stylist => <TouchableOpacity
-            key={stylist.get('id')}
+        {this.props.profile.stylists && this.props.profile.stylists.count() ?
+          this.props.profile.stylists.map(stylist => <TouchableOpacity
+            key={stylist.id}
             onPress={() => {
-              appStack.scene().goToProfile(stylist.get('id'));
+              appStack.scene().goToProfile(stylist.id);
             }}
             style={{
               flexDirection: 'row'
@@ -85,7 +76,7 @@ export default class UserStylist extends PureComponent {
               marginRight: 5
             }}>
               <Image
-                source={{uri: utils.getUserProfilePicURI(this.props.profile, this.props.environment)}}
+                source={{uri: utils.getUserProfilePicURI(this.props.profile, EnvironmentStore.environment)}}
                 style={{
                   backgroundColor: 'rgba(0, 0, 0, 0.25)',
                   width: SCALE.h(80),
@@ -107,7 +98,7 @@ export default class UserStylist extends PureComponent {
                 fontFamily: FONTS.MEDIUM,
                 fontSize: SCALE.h(28),
                 color: COLORS.DARK
-              }}>{stylist.get('first_name')} {stylist.get('last_name')}</Text>
+              }}>{stylist.first_name} {stylist.last_name}</Text>
 
               {this.renderFollowButton(stylist)}
             </View>

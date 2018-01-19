@@ -5,7 +5,7 @@ import {v4} from 'uuid';
 
 import {_, moment, React, Text} from 'Hairfolio/src/helpers';
 
-import Post from 'stores/Post.js'
+import Post from './Post';
 
 export default class PostStore {
   @observable elements = [];
@@ -33,21 +33,22 @@ export default class PostStore {
 
   async loadNextPage() {
     if (!this.isLoadingNextPage && this.nextPage != null) {
-      console.log('loadNextPage', this.nextPage);
       this.isLoadingNextPage = true;
       let res = (await this.getPosts(this.nextPage));
-
       let {posts, meta} = res;
+      if (posts) {
+        for (let a = 0; a < posts.length; a++)  {
+          let post = new Post();
+          await post.init(posts[a]);
+          this.elements.push(post);
+        }
 
-      for (let a = 0; a < posts.length; a++)  {
-        let post = new Post();
-        await post.init(posts[a]);
-        this.elements.push(post);
+        this.nextPage = meta.next_page;
+        this.isLoadingNextPage = false;
+      } else {
+        this.isLoadingNextPage = false;
+        throw res.errors;
       }
-
-      this.nextPage = meta.next_page
-
-      this.isLoadingNextPage = false;
     }
   }
 

@@ -1,13 +1,12 @@
 import {observable, computed, action} from 'mobx';
 import {CameraRoll, NativeModules} from 'react-native';
 import Camera from 'react-native-camera';
-import Picture from 'stores/Picture.js'
-import ServiceBackend from 'backend/ServiceBackend.js'
+import Picture from './Picture';
+import ServiceBackend from '../../backend/ServiceBackend';
 
 import {_, v4, moment, React, Text} from 'Hairfolio/src/helpers';
 
-import User from 'stores/User.js'
-import globalStore from 'Hairfolio/src/store.js';
+import User from './User';
 
 class PostInfo {
   @observable picture;

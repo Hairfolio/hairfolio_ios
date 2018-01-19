@@ -1,5 +1,4 @@
-var React = require('react')
-var {StyleSheet} = React
+import { StyleSheet } from 'react-native';
 
 var styles = StyleSheet.create({
   container: {
@@ -45,4 +44,4 @@ var styles = StyleSheet.create({
   }
 })
 
-module.exports = styles
+export default styles;

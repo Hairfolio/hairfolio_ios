@@ -4,41 +4,27 @@ import {mixin} from 'core-decorators';
 import PureComponent from '../components/PureComponent';
 import {View} from 'react-native';
 import { LoginManager, AccessToken } from 'react-native-fbsdk';
-import connect from '../lib/connect';
-import {app} from '../selectors/app';
-import {registration} from '../selectors/registration';
 import NavigationSetting from '../navigation/NavigationSetting';
-import Service from 'Hairfolio/src/services/index.js'
-import ServiceBackend from 'backend/ServiceBackend.js'
-
+import Service from 'Hairfolio/src/services/index';
+import ServiceBackend from '../backend/ServiceBackend';
+import { observer } from 'mobx-react';
 import Picker from '../components/Picker';
-
-import {user} from '../selectors/user';
-import {environment} from '../selectors/environment';
 
 import utils from '../utils';
 import appEmitter from '../appEmitter';
 
-import {throwOnFail} from '../lib/reduxPromiseMiddleware';
+import UserStore from '../mobx/stores/UserStore';
+import EnvironmentStore from '../mobx/stores/EnvironmentStore';
+import CloudinaryStore from '../mobx/stores/CloudinaryStore';
 
-import {registrationActions} from '../actions/registration';
 
 import oauthMixin from '../mixins/oauth';
 
 import {register, signupConsumerStack, signupStylistStack, signupBrandStack, signupSalonStack, loginStack, appStack} from '../routes';
 
-@connect(app, registration, user, environment)
+@observer
 @mixin(oauthMixin)
 export default class Register2 extends PureComponent {
-  static propTypes = {
-    appVersion: React.PropTypes.string.isRequired,
-    dispatch: React.PropTypes.func.isRequired,
-    environment: React.PropTypes.object.isRequired,
-    environmentState: React.PropTypes.string.isRequired,
-    registrationMethod: React.PropTypes.string,
-    userState: React.PropTypes.string.isRequired
-  };
-
   static contextTypes = {
     navigators: React.PropTypes.array.isRequired,
     setBannerError: React.PropTypes.func.isRequired
@@ -51,7 +37,7 @@ export default class Register2 extends PureComponent {
       leftAction={() => {
         _.last(this.context.navigators).jumpTo(register);
       }}
-      leftDisabled={utils.isLoading([this.props.environmentState, this.props.userState, this.state.oauth])}
+      leftDisabled={utils.isLoading([EnvironmentStore.environmentState, UserStore.userState, this.state.oauth])}
       leftIcon="back"
       onWillBlur={this.onWillBlur}
       onWillFocus={this.onWillFocus}
@@ -78,7 +64,7 @@ export default class Register2 extends PureComponent {
               label: 'Brand'
             }
           ]}
-          disabled={utils.isLoading([this.props.environmentState, this.props.userState, this.state.oauth])}
+          disabled={utils.isLoading([EnvironmentStore.environmentState, UserStore.userState, this.state.oauth])}
           onDone={(item = {}) => {
             setTimeout(() => {
               if (!item)
@@ -91,9 +77,9 @@ export default class Register2 extends PureComponent {
                 Brand: signupBrandStack
               };
 
-              if (this.props.registrationMethod === 'email')
+              if (UserStore.registrationMethod === 'email') {
                 return _.first(this.context.navigators).jumpTo(stacks[item.label]);
-
+              }
               var type = ({
                 Consumer: 'consumer',
                 Stylist: 'stylist',
@@ -103,35 +89,30 @@ export default class Register2 extends PureComponent {
 
               var login;
 
-              if (this.props.registrationMethod === 'facebook')
-                login = this.props.dispatch(registrationActions.getEnvironment()).then(throwOnFail)
+              if (UserStore.registrationMethod === 'facebook') {
+                login = EnvironmentStore.loadEnv()
                   .then(() => LoginManager.logInWithReadPermissions(['email']))
                   .then(() => AccessToken.getCurrentAccessToken())
                   .then(data => data.accessToken.toString())
                   .then(token =>
-                    this.props.dispatch(registrationActions.signupWithFacebook(token, type))
-                      .then(throwOnFail)
+                    UserStore.signupWithFacebook(token, type)
                   );
-
-              if (this.props.registrationMethod === 'instagram')
-                login = this.props.dispatch(registrationActions.getEnvironment()).then(throwOnFail)
+              }
+              if (UserStore.registrationMethod === 'instagram') {
+                login = EnvironmentStore.loadEnv()
                   .then(() => this.oauth(loginStack, {
                     authorize: 'https://api.instagram.com/oauth/authorize/',
-                    clientId: this.props.environment.get('insta_client_id'),
-                    redirectUri: this.props.environment.get('insta_redirect_url'),
+                    clientId: EnvironmentStore.environment.insta_client_id,
+                    redirectUri: EnvironmentStore.environment.insta_redirect_url,
                     type: 'Instagram',
                     scope: 'basic'
                   }))
-                  .then(token => this.props.dispatch(registrationActions.signupWithInstagram(token, type))
-                    .then(throwOnFail)
-                  );
-
+                  .then(token => UserStore.signupWithInstagram(token, type));
+              }
               login
                 .then(
                   () => {
-
-
-                    let userId = Service.fetch.store.getState().user.data.get('id');
+                    let userId = UserStore.user.id;
 
                     // update type
                     ServiceBackend.put('users/' + userId,
@@ -141,8 +122,6 @@ export default class Register2 extends PureComponent {
                         }
                       }
                     );
-
-
                     appEmitter.emit('login');
                     if (type === 'consumer')
                       return _.first(this.context.navigators).jumpTo(appStack);

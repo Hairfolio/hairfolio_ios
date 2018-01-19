@@ -2,7 +2,7 @@
 import {AppRegistry} from 'react-native';
 import Root from './src';
 
-import Player from './src/Player.js';
+import Player from './src/Player';
 
 let debug = false;
 

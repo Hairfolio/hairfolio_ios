@@ -1,7 +1,7 @@
 import {observable, computed, action} from 'mobx';
 import {CameraRoll, NativeModules} from 'react-native';
 
-let React = require('react-native');
+import React from 'react-native';
 let { DeviceEventEmitter } = React;
 
 

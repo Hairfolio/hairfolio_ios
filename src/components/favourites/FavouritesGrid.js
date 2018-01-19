@@ -20,10 +20,10 @@ import {
   ScrollView,
   ListView,
   PickerIOS, Picker, StatusBar, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet
-} from 'Hairfolio/src/helpers.js';
+} from 'Hairfolio/src/helpers';
 
-import FavoriteStore from 'stores/FavoriteStore';
-import GridPost from 'components/favourites/GridPost'
+import FavoriteStore from '../../mobx/stores/FavoriteStore';
+import GridPost from './GridPost';
 
 const MyFooter = observer(({store}) => {
 

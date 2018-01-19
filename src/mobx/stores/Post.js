@@ -18,20 +18,21 @@ import {
   Modal,
   ScrollView,
   PickerIOS, Picker, StatusBar, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet
-} from 'Hairfolio/src/helpers.js';
+} from 'Hairfolio/src/helpers';
 
-import utils from 'Hairfolio/src/utils.js'
-import EnvironmentStore from 'stores/EnvironmentStore.js'
+import utils from 'Hairfolio/src/utils';
+import { toJS } from 'mobx';
+import EnvironmentStore from './EnvironmentStore';
 
-import User from 'stores/User.js';
+import User from './User';
 
 
-import Service from 'Hairfolio/src/services/index.js'
-import FavoriteStore from 'stores/FavoriteStore.js'
+import Service from 'Hairfolio/src/services/index';
+import FavoriteStore from './FavoriteStore';
 
-import ServiceBackend from 'backend/ServiceBackend.js'
+import ServiceBackend from '../../backend/ServiceBackend';
 
-import Picture from 'stores/Picture.js'
+import Picture from './Picture';
 
 export default class Post {
   @observable description
@@ -54,6 +55,7 @@ export default class Post {
     if (!data) {
       return;
     }
+    data = toJS(data);
 
     this.id = data.id;
     this.description = data.description;

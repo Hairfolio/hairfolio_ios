@@ -4,31 +4,25 @@ import validator from 'validator';
 import {mixin} from 'core-decorators';
 import PureComponent from '../components/PureComponent';
 import {View, Text, StyleSheet} from 'react-native';
-import connect from '../lib/connect';
-import {app} from '../selectors/app';
 import {COLORS, FONTS, SCALE} from '../style';
 import NavigationSetting from '../navigation/NavigationSetting';
-
+import { observer } from 'mobx-react';
 import MultilineTextInput from '../components/Form/MultilineTextInput';
 import InlineTextInput from '../components/Form/InlineTextInput';
 import PickerInput from '../components/Form/PickerInput';
 import BannerErrorContainer from '../components/BannerErrorContainer';
 import states from '../states.json';
 
+import UserStore from '../mobx/stores/UserStore';
 import {editCustomer} from '../routes';
 
 import formMixin from '../mixins/form';
 
 import {NAVBAR_HEIGHT} from '../constants';
 
-@connect(app)
+@observer
 @mixin(formMixin)
 export default class EditCustomerAddress extends PureComponent {
-  static propTypes = {
-    appVersion: React.PropTypes.string.isRequired,
-    dispatch: React.PropTypes.func.isRequired
-  };
-
   static contextTypes = {
     navigators: React.PropTypes.array.isRequired
   };

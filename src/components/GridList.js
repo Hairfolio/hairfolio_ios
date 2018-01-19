@@ -19,11 +19,11 @@ import {
   ActivityIndicator,
   ScrollView,
   PickerIOS, Picker, StatusBar, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet
-} from 'Hairfolio/src/helpers.js';
+} from 'Hairfolio/src/helpers';
 
 import {ListView} from 'react-native'
 
-import GridPost from 'components/favourites/GridPost'
+import GridPost from './favourites/GridPost'
 
 const MyFooter = observer(({store}) => {
 

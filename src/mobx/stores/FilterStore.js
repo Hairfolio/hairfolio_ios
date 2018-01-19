@@ -3,7 +3,7 @@ import {CameraRoll, NativeModules} from 'react-native';
 
 import {_, v4} from 'Hairfolio/src/helpers';
 
-import Picture from 'stores/Picture.js';
+import Picture from './Picture';
 
 let ImageFilter = NativeModules.ImageFilter;
 
@@ -169,7 +169,6 @@ class FilterImage {
   @observable source;
 
   constructor(parent, originalSource, {name, displayName, params}) {
-    console.log('displayName', displayName);
     this.parent = parent;
     this.originalSource = originalSource;
     this.filterName = name;

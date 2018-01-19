@@ -1,13 +1,6 @@
-import Backend from './Backend.js'
+import Backend from './Backend';
+
 const BASE_URL = 'http://api.hairfolio.tech/';
-
-import CreatePostStore from 'stores/CreatePostStore.js'
-import FeedStore from 'stores/FeedStore.js'
-import SearchStore from 'stores/SearchStore.js'
-
-import * as routes from 'Hairfolio/src/routes.js'
-import ShareStore from 'stores/ShareStore.js'
-import Service from 'Hairfolio/src/services/index.js'
 
 let myfetch = function(input, opts) {
   return new Promise((resolve, reject) => {
@@ -17,6 +10,10 @@ let myfetch = function(input, opts) {
 }
 
 class ServiceBackend extends Backend {
+  constructor() {
+    super();
+  }
+
   async getServices() {
     return (await this.get('services')).services;
   }
@@ -49,8 +46,7 @@ class ServiceBackend extends Backend {
 
   }
 
-  async sendPostMessage(user, post) {
-    let userId = Service.fetch.store.getState().user.data.get('id')
+  async sendPostMessage(userId, user, post) {
     let ids = [userId, user.id];
 
     let postData = {
@@ -59,7 +55,6 @@ class ServiceBackend extends Backend {
         recipient_ids: ids
       }
     };
-
 
     let conversation = (await this.post('conversations', postData)).conversation;
 
@@ -89,60 +84,9 @@ class ServiceBackend extends Backend {
 
   }
 
-  async postPost() {
-
-    try {
-      CreatePostStore.isLoading = true;
-
-      CreatePostStore.loadingText = 'Uploading pictures ..';
-      let data = await CreatePostStore.gallery.toJSON();
-
-      window.postData = data;
-
-
-      CreatePostStore.loadingText = 'Publishing the post';
-
-      ShareStore.share(data.post.photos_attributes[0].asset_url);
-
-      let res = await this.post('posts', data);
-
-      window.postRes = res;
-
-      if (res.status != 201) {
-        alert('A backend error occured: ' + JSON.stringify(res));
-        alert('The data was : ' + JSON.stringify(data));
-      } else {
-
-
-        for (let hairfolio of  ShareStore.selectedHairfolios) {
-          this.pinHairfolio(hairfolio, res.post);
-        }
-
-        // console.log(ShareStore.selectedUsers);
-        for (let user of ShareStore.selectedUsers) {
-          this.sendPostMessage(user.user, res.post);
-        }
-
-        for (let contact of ShareStore.contacts) {
-          this.addPostToBlackBook(contact, res.post);
-        }
-
-        FeedStore.load();
-        // SearchStore.refresh();
-
-        routes.appStack.scene().goToFeed();
-        window.navigators[1].jumpTo(routes.createPost)
-        window.navigators[0].jumpTo(routes.appStack);
-        setTimeout(() => CreatePostStore.reset(), 1000);
-      }
-
-      CreatePostStore.isLoading = false
-    } catch(err) {
-      CreatePostStore.isLoading = false;
-      alert('An error occured ' + err.toString());
-    }
+  async getEnvironment() {
+    return this.get('/sessions/environment');
   }
 }
 
-const serviceBackend = new ServiceBackend()
-export default serviceBackend
+export default new ServiceBackend();

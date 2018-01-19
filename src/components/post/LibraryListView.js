@@ -8,12 +8,12 @@ import {COLORS, FONTS, h, SCALE} from 'Hairfolio/src/style';
 import {
   windowWidth,
   windowHeight,
-} from 'Hairfolio/src/helpers.js';
+} from 'Hairfolio/src/helpers';
 
 
-import {observer} from 'mobx-react/native'
+import {observer} from 'mobx-react'
 import autobind from 'autobind-decorator'
-import CreatePostStore from 'stores/CreatePostStore.js'
+import CreatePostStore from '../../mobx/stores/CreatePostStore';
 
 const EmptyPicture = observer(() => {
   return (

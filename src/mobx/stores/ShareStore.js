@@ -2,15 +2,15 @@ import {observable, computed, action} from 'mobx';
 import {CameraRoll, AsyncStorage, Clipboard, AlertIOS, NativeModules} from 'react-native';
 import Camera from 'react-native-camera';
 
-import FilterStore from 'stores/FilterStore.js'
-import Picture from 'stores/Picture.js'
+import FilterStore from './FilterStore';
+import Picture from './Picture';
+import UserStore from './UserStore';
+import ServiceBackend from '../../backend/ServiceBackend';
+import Service from 'Hairfolio/src/services/index';
 
-import ServiceBackend from 'backend/ServiceBackend.js'
-import Service from 'Hairfolio/src/services/index.js'
+import CreatePostStore from './CreatePostStore';
 
-import CreatePostStore from 'stores/CreatePostStore.js'
-
-import User from 'stores/User.js'
+import User from './User';
 
 let PhotoAlbum = NativeModules.PhotoAlbum;
 let InstagramShare = NativeModules.RNInstagramShare;
@@ -18,18 +18,17 @@ let InstagramShare = NativeModules.RNInstagramShare;
 let TwitterHelper = NativeModules.TwitterHelper;
 let PinterestHelper = NativeModules.PinterestHelper;
 
-const FBSDK = require('react-native-fbsdk');
-const {
+import {
   ShareApi,
   LoginManager,
   AccessToken
-} = FBSDK;
+} from 'react-native-fbsdk';
 
 import {v4} from 'uuid';
 
 import {_, moment, React, Text} from 'Hairfolio/src/helpers';
 
-import {SelectableUser as SelectableUserBase} from 'stores/WriteMessageStore.js'
+import {SelectableUser as SelectableUserBase} from './WriteMessageStore';
 
 class Hairfolio {
   @observable name;
@@ -106,9 +105,7 @@ class SendStore {
     this.inputText = '';
     this.users = [];
 
-    let userId = Service.fetch.store.getState().user.data.get('id')
-
-    console.log('userId', userId);
+    let userId = UserStore.user.id;
 
     let res = (await ServiceBackend.get(`users/${userId}/follows?friends=true`)).users;
 
@@ -133,8 +130,6 @@ class HairfolioStore {
 
   async saveHairfolio(store) {
     let res = await ServiceBackend.post('folios', {folio: {name: store.name}});
-
-    console.log('set id', res.folio.id);
     store.id = res.folio.id;
   }
 
@@ -144,15 +139,11 @@ class HairfolioStore {
     let results = await ServiceBackend.get('folios');
     results = results.folios;
 
-    console.log('folios', results);
-
     if (results.length == 0) {
       // add inspiration
-      console.log('case 1');
       let res = await ServiceBackend.post('folios', {folio: {name: 'Inspiration'}});
       this.hairfolios.push(new Hairfolio(res.folio));
     } else {
-      console.log('case 2');
       this.hairfolios = results.map(e => new Hairfolio(e)).reverse();
     }
     this.isLoading = false;

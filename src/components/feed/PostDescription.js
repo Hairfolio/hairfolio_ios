@@ -16,10 +16,10 @@ import {
   Modal,
   ScrollView,
   PickerIOS, Picker, StatusBar, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet
-} from 'Hairfolio/src/helpers.js';
+} from 'Hairfolio/src/helpers';
 
-import TagPostStore from 'stores/TagPostStore.js'
-import * as routes from 'Hairfolio/src/routes.js'
+import TagPostStore from '../../mobx/stores/TagPostStore';
+import * as routes from 'Hairfolio/src/routes';
 
 const PostDescription = observer(({post, limitLinesNumbers, currentRoute = routes.postDetails, style = {}}) => {
   return (

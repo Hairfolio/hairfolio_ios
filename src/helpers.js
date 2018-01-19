@@ -1,18 +1,19 @@
 // file that includes all the standard things i generally load in one file
 import React, { Component } from 'react'
 import _ from 'lodash';
-import {observer} from 'mobx-react/native'
+import {observer} from 'mobx-react'
 import {observable, computed, action} from 'mobx';
 import autobind from 'autobind-decorator'
 import {v4} from 'uuid';
-import {h, FONTS, COLORS} from 'Hairfolio/src/style.js'
+import {h, FONTS, COLORS} from 'Hairfolio/src/style';
 import {Alert, PickerIOS, Linking, Animated, Picker, Dimensions, Modal, StatusBar, ActivityIndicator, ListView, WebView, AlertIOS, ScrollView, Platform, View, TextInput, Text, Image, TouchableHighlight, ActionSheetIOS, TouchableOpacity, TouchableWithoutFeedback, StyleSheet } from 'react-native'
+import UserStore from './mobx/stores/UserStore';
 
-import Service from 'Hairfolio/src/services/index.js'
+import Service from 'Hairfolio/src/services/index';
 
-let getUserId = () => Service.fetch.store.getState().user.data.get('id');
+let getUserId = () => UserStore.user.id;
 
-let moment = require('moment');
+import moment from 'moment';
 
 moment.locale('en', {
   relativeTime: {

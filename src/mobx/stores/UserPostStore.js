@@ -1,14 +1,14 @@
 import {observable, computed, action} from 'mobx';
 
-import ServiceBackend from 'backend/ServiceBackend.js'
+import ServiceBackend from '../../backend/ServiceBackend';
 
 import {_, moment, React, Text} from 'Hairfolio/src/helpers';
 
-import PostListStore from 'stores/PostListStore'
+import PostListStore from './PostListStore';
 
 const cache = {};
 
-import {PostGridStore} from 'stores/PostStore'
+import {PostGridStore} from './PostStore';
 
 class UserPostStore extends PostGridStore {
   async getPosts(page) {

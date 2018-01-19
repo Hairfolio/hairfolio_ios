@@ -1,18 +1,17 @@
 import {observable, computed, action} from 'mobx';
 import {CameraRoll, ListView, NativeModules} from 'react-native';
-import Camera from 'react-native-camera';
-
-import FilterStore from 'stores/FilterStore.js'
-
-import Picture from 'stores/Picture.js'
-
-let PhotoAlbum = NativeModules.PhotoAlbum;
-
-import AlbumStore from 'stores/AlbumStore.js';
-
-import {v4} from 'uuid';
-
 import {_, React, Text} from 'Hairfolio/src/helpers';
+import {v4} from 'uuid';
+import Camera from 'react-native-camera';
+let PhotoAlbum = NativeModules.PhotoAlbum;
+import * as routes from '../../routes';
+import ServiceBackend from '../../backend/ServiceBackend';
+import Picture from './Picture';
+import FilterStore from './FilterStore';
+import AlbumStore from './AlbumStore';
+import ShareStore from './ShareStore';
+import FeedStore from './FeedStore';
+import UserStore from './UserStore';
 
 var counter = 0;
 const COLORS = ['blue', 'orange', 'red'];
@@ -596,15 +595,61 @@ class CreatePostStore {
         }
       }
     }
-
-
     return text;
-
   }
 
+  @action async postPost() {
+
+    try {
+      this.isLoading = true;
+
+      this.loadingText = 'Uploading pictures ..';
+      let data = await this.gallery.toJSON();
+
+      window.postData = data;
 
 
+      this.loadingText = 'Publishing the post';
 
+      ShareStore.share(data.post.photos_attributes[0].asset_url);
+
+      let res = await ServiceBackend.post('/posts', data);
+
+      window.postRes = res;
+
+      if (res.status != 201) {
+        alert('A backend error occured: ' + JSON.stringify(res));
+        alert('The data was : ' + JSON.stringify(data));
+      } else {
+
+
+        for (let hairfolio of  ShareStore.selectedHairfolios) {
+          ServiceBackend.pinHairfolio(hairfolio, res.post);
+        }
+
+        // console.log(ShareStore.selectedUsers);
+        for (let user of ShareStore.selectedUsers) {
+          ServiceBackend.sendPostMessage(UserStore.user.id, user.user, res.post);
+        }
+
+        for (let contact of ShareStore.contacts) {
+          ServiceBackend.addPostToBlackBook(contact, res.post);
+        }
+
+        FeedStore.load();
+        // SearchStore.refresh();
+        routes.appStack.scene().goToFeed();
+        window.navigators[1].jumpTo(routes.createPost);
+        window.navigators[0].jumpTo(routes.appStack);
+        setTimeout(() => this.reset(), 1000);
+      }
+
+      this.isLoading = false
+    } catch(err) {
+      this.isLoading = false;
+      alert('An error occured ' + err.toString());
+    }
+  }
 };
 
 const store = new CreatePostStore();

@@ -1,5 +1,7 @@
 import utils from '../utils';
 import _ from 'lodash';
+import UserStore from '../mobx/stores/UserStore';
+import AppStore from '../mobx/stores/AppStore';
 
 export class FetchError {
   constructor(message) {
@@ -43,7 +45,7 @@ export default class Fetch {
       'Content-Type': 'application/json'
     });
 
-    var token = this.store.getState().user.data.get('auth_token');
+    var token = UserStore.user.auth_token;
 
     if (token)
       opts.headers.Authorization = token;
@@ -58,7 +60,7 @@ export default class Fetch {
       opts.body = JSON.stringify(body);
     }
 
-    var uri = this.store.getState().app.host + path;
+    var uri = AppStore.app.host + path;
 
     return window.fetch(uri, opts)
       .then(utils.parseJSON)
@@ -67,7 +69,6 @@ export default class Fetch {
         return response.jsonData;
       })
       .catch((e) => {
-        console.log('error received for', uri, e);
         throw e;
       });
   }

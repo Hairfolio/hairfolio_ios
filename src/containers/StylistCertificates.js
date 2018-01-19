@@ -4,30 +4,18 @@ import {Map, OrderedMap} from 'immutable';
 import PureComponent from '../components/PureComponent';
 import {autobind} from 'core-decorators';
 import {View, Text} from 'react-native';
-import connect from '../lib/connect';
-import {app} from '../selectors/app';
-import {environment} from '../selectors/environment';
 import {COLORS, FONTS, SCALE} from '../style';
 import NavigationSetting from '../navigation/NavigationSetting';
-
+import EnvironmentStore from '../mobx/stores/EnvironmentStore';
 import LoadingContainer from '../components/LoadingContainer';
-
-import {throwOnFail} from '../lib/reduxPromiseMiddleware';
-
-import {registrationActions} from '../actions/registration';
 
 import SearchList from '../components/SearchList';
 
 import {NAVBAR_HEIGHT} from '../constants';
 
-@connect(app, environment)
 export default class StylistCertificates extends PureComponent {
   static propTypes = {
-    appVersion: React.PropTypes.string.isRequired,
     backTo: React.PropTypes.object.isRequired,
-    certificates: React.PropTypes.object.isRequired,
-    certificatesState: React.PropTypes.string.isRequired,
-    dispatch: React.PropTypes.func.isRequired
   };
 
   static contextTypes = {
@@ -38,7 +26,7 @@ export default class StylistCertificates extends PureComponent {
 
   @autobind
   onWillFocus() {
-    this.props.dispatch(registrationActions.getCertificates());
+    EnvironmentStore.getCertificates();
   }
 
   getValue() {
@@ -60,12 +48,6 @@ export default class StylistCertificates extends PureComponent {
   }
 
   render() {
-
-    // console.log('stylist certificates', this.props.certificates);
-
-    // window.certificates = this.props.certificates;
-
-
     return (<NavigationSetting
       leftAction={() => {
         _.last(this.context.navigators).jumpTo(this.props.backTo);
@@ -80,10 +62,10 @@ export default class StylistCertificates extends PureComponent {
       }}
       title="Certificates"
     >
-      <LoadingContainer state={[this.props.certificatesState]}>
+      <LoadingContainer state={[EnvironmentStore.certificatesState]}>
         {() => <SearchList
-          items={new OrderedMap(this.props.certificates.map(certificate => {
-            return [certificate.get('id'), certificate]
+          items={new OrderedMap(EnvironmentStore.certificates.map(certificate => {
+            return [certificate.id, certificate]
           }
           ))}
           placeholder="Search for certificates"

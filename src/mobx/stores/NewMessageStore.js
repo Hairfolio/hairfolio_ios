@@ -2,11 +2,12 @@ import {observable, computed, action} from 'mobx';
 import {CameraRoll, NativeModules} from 'react-native';
 import Camera from 'react-native-camera';
 
-import FilterStore from 'stores/FilterStore.js'
-import Picture from 'stores/Picture.js'
-import Service from 'Hairfolio/src/services/index.js'
+import FilterStore from './FilterStore';
+import UserStore from './UserStore';
+import Picture from './Picture';
+import Service from 'Hairfolio/src/services/index';
 
-import ServiceBackend from 'backend/ServiceBackend.js'
+import ServiceBackend from '../../backend/ServiceBackend';
 
 let PhotoAlbum = NativeModules.PhotoAlbum;
 
@@ -25,7 +26,7 @@ class NewMessageStore {
 
   async load() {
     // TODO backend integration
-    let userId = Service.fetch.store.getState().user.data.get('id');
+    let userId = UserStore.user.id;
 
     let res = (await ServiceBackend.get(`users/${userId}`)).user;
 

@@ -1,10 +1,10 @@
 import {observable, computed, action} from 'mobx';
 
-import ServiceBackend from 'backend/ServiceBackend.js'
+import ServiceBackend from '../../backend/ServiceBackend';
 
 import {_, moment, React, Text} from 'Hairfolio/src/helpers';
 
-import {PostGridStore} from 'stores/PostStore'
+import {PostGridStore} from './PostStore';
 
 class HairfolioPostStore extends PostGridStore {
   @observable title = 'Inspiration'

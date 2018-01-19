@@ -1,19 +1,17 @@
-import {observable, computed, action} from 'mobx';
-import {_, jpg, v4, Text} from 'Hairfolio/src/helpers';
-
-import LinkTag from 'stores/tags/LinkTag.js'
-import HashTag from 'stores/tags/HashTag.js'
-import ServiceTag from 'stores/tags/ServiceTag.js'
-import {ImageEditor} from 'react-native';
-import Service from 'Hairfolio/src/services/index.js'
+import { observable, computed, action } from 'mobx';
+import { ImageEditor, CameraRoll, NativeModules } from 'react-native';
 import ImageResizer from 'react-native-image-resizer';
-import RNFetchBlob from 'react-native-fetch-blob'
-
-import {CameraRoll, NativeModules} from 'react-native';
+import RNFetchBlob from 'react-native-fetch-blob';
+import { _, jpg, v4 } from 'Hairfolio/src/helpers';
+import LinkTag from './tags/LinkTag';
+import HashTag from './tags/HashTag';
+import ServiceTag from './tags/ServiceTag';
+import Service from '../../services/index';
+import EnvironmentStore from './EnvironmentStore';
 
 let PhotoAlbum = NativeModules.PhotoAlbum;
 
-export default class Picture {
+class Picture {
 
   @observable parent;
   @observable tags = [];
@@ -88,8 +86,8 @@ export default class Picture {
       name: 'upload.mp4'
     });
 
-    let preset = Service.fetch.store.getState().environment.environment.get('cloud_preset');
-    let cloudName = Service.fetch.store.getState().environment.environment.get('cloud_name');
+    let preset = EnvironmentStore.environment.cloud_preset;
+    let cloudName = EnvironmentStore.environment.cloud_name;
 
     // load pictures from library
     if (this.identifier) {
@@ -121,8 +119,8 @@ export default class Picture {
       name: 'upload.jpg'
     });
 
-    let preset = Service.fetch.store.getState().environment.environment.get('cloud_preset');
-    let cloudName = Service.fetch.store.getState().environment.environment.get('cloud_name');
+    let preset = EnvironmentStore.environment.cloud_preset;
+    let cloudName = EnvironmentStore.environment.cloud_name;
 
     formdata.append('upload_preset', preset);
     let res = await fetch(
@@ -192,8 +190,6 @@ export default class Picture {
 
     for (let tag of this.tags) {
 
-      console.log('tagType', tag.type);
-
       if (tag.type == 'service') {
 
         for (let color of tag.colors) {
@@ -206,9 +202,6 @@ export default class Picture {
             tagName = color.name.toLowerCase();
           }
 
-
-          console.log('tagName', tagName);
-
           tagName = tagName.replace(/\W/g, '_').toLowerCase();
 
           let numberIndex = 0;
@@ -217,8 +210,6 @@ export default class Picture {
           }
 
           tagName = tagName.slice(0, numberIndex) + '_' + tagName.slice(numberIndex);
-
-          console.log('tagName2', tagName);
 
           this.tags.push(new HashTag(-100, -100,  '#' + tagName));
         }
@@ -289,3 +280,5 @@ export default class Picture {
     this.tags.push(new HashTag(x, y, hashtag));
   }
 }
+
+export default Picture;

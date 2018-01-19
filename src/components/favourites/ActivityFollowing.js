@@ -19,16 +19,15 @@ import {
   ActivityIndicator,
   ScrollView,
   PickerIOS, Picker, StatusBar, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet
-} from 'Hairfolio/src/helpers.js';
+} from 'Hairfolio/src/helpers';
 
-import ActivityFollowingStore from 'stores/ActivityFollowingStore';
+import ActivityFollowingStore from '../../mobx/stores/ActivityFollowingStore';
 
-import ActivityItem from 'components/favourites/ActivityItem.js'
+import ActivityItem from '../favourites/ActivityItem';
 
 const ActivityFollowing = observer(() => {
 
   let store = ActivityFollowingStore;
-
 
   if (store.isLoading) {
     return (

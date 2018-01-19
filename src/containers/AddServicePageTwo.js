@@ -13,25 +13,22 @@ import {
   Modal,
   ScrollView,
   PickerIOS, Picker, StatusBar, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet
-} from 'Hairfolio/src/helpers.js';
+} from 'Hairfolio/src/helpers';
 
 
 import LinearGradient from 'react-native-linear-gradient';
 
-import SlimHeader from 'components/SlimHeader.js'
-import AlbumStore from 'stores/AlbumStore.js'
-import CreatePostStore from 'stores/CreatePostStore.js'
-import AddServiceStore from 'stores/AddServiceStore.js'
+import SlimHeader from '../components/SlimHeader';
+import AlbumStore from '../mobx/stores/AlbumStore';
+import CreatePostStore from '../mobx/stores/CreatePostStore';
+import AddServiceStore from '../mobx/stores/AddServiceStore';
 
 import {appStack, createPost, onPress, postFilter, albumPage, addServiceOne, addServiceThree} from '../routes';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
-var RCTUIManager = require('NativeModules').UIManager;
-
-import MyPicker from 'components/MyPicker.js'
-
-
-import ReactNative from 'react-native';
+import MyPicker from '../components/MyPicker';
+import ReactNative, { NativeModules } from 'react-native';
+const RCTUIManager = NativeModules.UIManager;
 
 const ColorItem = observer(({colorField}) => {
   return (

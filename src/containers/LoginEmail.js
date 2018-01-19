@@ -4,11 +4,9 @@ import validator from 'validator';
 import {mixin} from 'core-decorators';
 import PureComponent from '../components/PureComponent';
 import RN, {View, Text} from 'react-native';
-import connect from '../lib/connect';
-import {app} from '../selectors/app';
 import {COLORS, FONTS, SCALE} from '../style';
 import NavigationSetting from '../navigation/NavigationSetting';
-
+import { observer } from 'mobx-react';
 import TextInput from '../components/Form/TextInput';
 import SimpleButton from '../components/Buttons/Simple';
 import CustomTouchableOpacity from '../components/CustomTouchableOpacity';
@@ -18,25 +16,14 @@ import formMixin from '../mixins/form';
 import utils from '../utils';
 import appEmitter from '../appEmitter';
 
-import {throwOnFail} from '../lib/reduxPromiseMiddleware';
-
-import {user} from '../selectors/user';
-import {environment} from '../selectors/environment';
-
-import {registrationActions} from '../actions/registration';
+import EnvironmentStore from '../mobx/stores/EnvironmentStore';
+import UserStore from '../mobx/stores/UserStore';
 
 import {login, register, forgottenPasswordStack, appStack} from '../routes';
 
-@connect(app, user, environment)
+@observer
 @mixin(formMixin)
 export default class LoginEmail extends PureComponent {
-  static propTypes = {
-    appVersion: React.PropTypes.string.isRequired,
-    dispatch: React.PropTypes.func.isRequired,
-    environmentState: React.PropTypes.string.isRequired,
-    userState: React.PropTypes.string.isRequired
-  };
-
   static contextTypes = {
     navigators: React.PropTypes.array.isRequired,
     setBannerError: React.PropTypes.func.isRequired
@@ -49,7 +36,7 @@ export default class LoginEmail extends PureComponent {
       leftAction={() => {
         _.last(this.context.navigators).jumpTo(login);
       }}
-      leftDisabled={utils.isLoading([this.props.environmentState, this.props.userState])}
+      leftDisabled={utils.isLoading([EnvironmentStore.environmentState, UserStore.userState])}
       leftIcon={this.state.hideBack ? null : 'back'}
       onWillBlur={this.onWillBlur}
       onWillFocus={this.onWillFocus}
@@ -91,20 +78,19 @@ export default class LoginEmail extends PureComponent {
           <View style={{paddingBottom: SCALE.h(54)}}>
             <SimpleButton
               color={COLORS.DARK}
-              disabled={utils.isLoading([this.props.environmentState, this.props.userState])}
+              disabled={utils.isLoading([EnvironmentStore.environmentState, UserStore.userState])}
               label="Sign In"
               onPress={() => {
                 if (!this.checkErrors()) {
                   var value = this.getFormValue();
 
-                  this.props.dispatch(registrationActions.getEnvironment()).then(throwOnFail)
-                    .then(() => this.props.dispatch(registrationActions.loginWithEmail(value, 'consumer')).then(throwOnFail))
+                  EnvironmentStore.loadEnv()
+                    .then(() => UserStore.loginWithEmail(value, 'consumer'))
                     .then(() => {
                       this.clearValues();
                       appEmitter.emit('login');
                       _.first(this.context.navigators).jumpTo(appStack);
                     }, (e) => {
-                      console.log(e);
                       this.context.setBannerError(e);
                     });
                 }
@@ -113,7 +99,7 @@ export default class LoginEmail extends PureComponent {
             />
           </View>
           <CustomTouchableOpacity
-            disabled={utils.isLoading([this.props.environmentState, this.props.userState])}
+            disabled={utils.isLoading([EnvironmentStore.environmentState, UserStore.userState])}
             onPress={() => {
               _.first(this.context.navigators).jumpTo(forgottenPasswordStack);
             }}
@@ -127,7 +113,7 @@ export default class LoginEmail extends PureComponent {
           </CustomTouchableOpacity>
         </View>
         <CustomTouchableOpacity
-          disabled={utils.isLoading([this.props.environmentState, this.props.userState])}
+          disabled={utils.isLoading([EnvironmentStore.environmentState, UserStore.userState])}
           onPress={() => {
             _.last(this.context.navigators).jumpTo(register);
           }}

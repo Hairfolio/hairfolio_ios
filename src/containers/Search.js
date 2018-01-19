@@ -1,17 +1,14 @@
 import PureComponent from '../components/PureComponent';
-import connect from '../lib/connect';
-import {app} from '../selectors/app';
 import {COLORS, FONTS, SCALE} from '../style';
 import NavigationSetting from '../navigation/NavigationSetting';
-
 import {BOTTOMBAR_HEIGHT, STATUSBAR_HEIGHT} from '../constants';
 
 import {profile, profileExternal, appStack} from '../routes';
 
 import SimpleButton from '../components/Buttons/Simple';
 
-import SearchElement from '../components/search/Search.js'
-import SearchStore from 'stores/SearchStore.js'
+import SearchElement from '../components/search/Search';
+import SearchStore from '../mobx/stores/SearchStore';
 
 import {
   _, // lodash
@@ -33,7 +30,7 @@ import {
   Modal,
   ScrollView,
   PickerIOS, Picker, StatusBar, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet
-} from 'Hairfolio/src/helpers.js';
+} from 'Hairfolio/src/helpers';
 
 const SampleActions = observer(() => {
   return (
@@ -84,11 +81,7 @@ const SampleActions = observer(() => {
   );
 });
 
-@connect(app)
 export default class Search extends PureComponent {
-  static propTypes = {
-    appVersion: React.PropTypes.string.isRequired
-  };
 
   static contextTypes = {
     navigators: React.PropTypes.array.isRequired

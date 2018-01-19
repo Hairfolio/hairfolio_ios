@@ -4,8 +4,6 @@ import validator from 'validator';
 import {mixin} from 'core-decorators';
 import PureComponent from '../components/PureComponent';
 import {View, Text, StyleSheet} from 'react-native';
-import connect from '../lib/connect';
-import {app} from '../selectors/app';
 import {COLORS, FONTS, SCALE} from '../style';
 import NavigationSetting from '../navigation/NavigationSetting';
 
@@ -14,10 +12,7 @@ import PickerInput from '../components/Form/PickerInput';
 import PageInput from '../components/Form/PageInput';
 import BannerErrorContainer from '../components/BannerErrorContainer';
 
-import {throwOnFail} from '../lib/reduxPromiseMiddleware';
-
-import {registrationActions} from '../actions/registration';
-
+import UserStore from '../mobx/stores/UserStore';
 import {stylistEducation, stylistCertificates, stylistPlaceOfWork, stylistProductExperience, appStack, stylistSP} from '../routes';
 
 import formMixin from '../mixins/form';
@@ -25,14 +20,8 @@ import formMixin from '../mixins/form';
 import {NAVBAR_HEIGHT} from '../constants';
 import appEmitter from '../appEmitter';
 
-@connect(app)
 @mixin(formMixin)
 export default class StylistInfo extends PureComponent {
-  static propTypes = {
-    appVersion: React.PropTypes.string.isRequired,
-    dispatch: React.PropTypes.func.isRequired
-  };
-
   static contextTypes = {
     navigators: React.PropTypes.array.isRequired
   };
@@ -48,12 +37,11 @@ export default class StylistInfo extends PureComponent {
           return;
 
         this.setState({'submitting': true});
-        this.props.dispatch(registrationActions.editUser(this.getFormValue(), 'stylist'))
+        UserStore.editUser(this.getFormValue(), 'stylist')
         .then((r) => {
           this.setState({submitting: false});
           return r;
         })
-        .then(throwOnFail)
         .then(
           () => {
             appEmitter.emit('user-edited');

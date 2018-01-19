@@ -1,35 +1,27 @@
 import React from 'react';
 import PureComponent from '../components/PureComponent';
 import {View, TouchableOpacity, Text} from 'react-native';
-import connect from '../lib/connect';
-import {app} from '../selectors/app';
 import {COLORS, FONTS, SCALE} from '../style';
 import NavigationSetting from '../navigation/NavigationSetting';
 
 import {BOTTOMBAR_HEIGHT, STATUSBAR_HEIGHT} from '../constants';
 
-import WhiteHeader from 'components/WhiteHeader'
-import LinkTabBar from 'components/post/LinkTabBar.js'
-import ScrollableTabView from 'react-native-scrollable-tab-view'
+import WhiteHeader from '../components/WhiteHeader';
+import LinkTabBar from '../components/post/LinkTabBar';
+import ScrollableTabView from 'react-native-scrollable-tab-view';
 
-import ShareFollowers from 'components/ShareFollowers'
-import ShareMessage from 'components/ShareMessage'
-import AddBlackBookStore from 'stores/AddBlackBookStore'
-import ServiceBackend from 'backend/ServiceBackend.js'
-import LoadingScreen from 'components/LoadingScreen.js'
-import CreatePostStore from 'stores/CreatePostStore.js'
+import ShareFollowers from '../components/ShareFollowers';
+import ShareMessage from '../components/ShareMessage';
+import AddBlackBookStore from '../mobx/stores/AddBlackBookStore';
+import LoadingScreen from '../components/LoadingScreen';
+import CreatePostStore from '../mobx/stores/CreatePostStore';
 
-import ShareStore from 'stores/ShareStore.js'
+import ShareStore from '../mobx/stores/ShareStore';
 import {
   h
-} from 'Hairfolio/src/helpers.js';
+} from 'Hairfolio/src/helpers';
 
-@connect(app)
 export default class Share extends PureComponent {
-  static propTypes = {
-    appVersion: React.PropTypes.string.isRequired
-  };
-
   static contextTypes = {
     navigators: React.PropTypes.array.isRequired
   };
@@ -67,7 +59,7 @@ export default class Share extends PureComponent {
                 alignItems: 'center'
               }}
               onPress={() => {
-                ServiceBackend.postPost();
+                CreatePostStore.postPost();
               }}
             >
               <Text

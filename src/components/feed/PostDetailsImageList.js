@@ -15,9 +15,9 @@ import {
   Modal,
   ScrollView,
   PickerIOS, Picker, StatusBar, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet
-} from 'Hairfolio/src/helpers.js';
+} from 'Hairfolio/src/helpers';
 
-import PostDetailStore from 'stores/PostDetailStore.js'
+import PostDetailStore from '../../mobx/stores/PostDetailStore';
 
 
 const PostDetailsImage = observer(({store, picture, index}) => {

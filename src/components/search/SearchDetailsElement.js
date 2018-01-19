@@ -19,18 +19,18 @@ import {
   ScrollView,
   ActivityIndicator,
   PickerIOS, Picker, StatusBar, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet
-} from 'Hairfolio/src/helpers.js';
+} from 'Hairfolio/src/helpers';
 
-import {BOTTOMBAR_HEIGHT, STATUSBAR_HEIGHT} from 'Hairfolio/src/constants.js';
-import FollowUserList from 'components/FollowUserList.js'
+import {BOTTOMBAR_HEIGHT, STATUSBAR_HEIGHT} from 'Hairfolio/src/constants';
+import FollowUserList from '../FollowUserList';
 
-import TagPostStore from 'stores/TagPostStore.js'
-import ScrollableTabView from 'react-native-scrollable-tab-view'
-import LinkTabBar from 'components/post/LinkTabBar.js'
+import TagPostStore from '../../mobx/stores/TagPostStore';
+import ScrollableTabView from 'react-native-scrollable-tab-view';
+import LinkTabBar from '../post/LinkTabBar';
 
-import * as routes from 'Hairfolio/src/routes.js'
+import * as routes from 'Hairfolio/src/routes'
 
-import SearchDetailsStore from 'stores/search/SearchDetailsStore'
+import SearchDetailsStore from '../../mobx/stores/search/SearchDetailsStore'
 
 const SearchHeader = observer(() => {
   return (

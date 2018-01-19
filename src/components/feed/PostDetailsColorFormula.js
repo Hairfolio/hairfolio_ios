@@ -16,21 +16,21 @@ import {
   getUserId,
   ScrollView,
   PickerIOS, Picker, StatusBar, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet, ozConv
-} from 'Hairfolio/src/helpers.js';
+} from 'Hairfolio/src/helpers';
 
 import LinearGradient from 'react-native-linear-gradient';
 
-import ServiceBackend from 'backend/ServiceBackend.js'
+import ServiceBackend from '../../backend/ServiceBackend';
 
 import Swiper from 'Hairfolio/react-native-swiper';
 
-import ServiceRow from 'components/post/ServiceRow.js'
+import ServiceRow from '../post/ServiceRow';
 
-import AddServiceStore from 'stores/AddServiceStore.js'
+import AddServiceStore from '../../mobx/stores/AddServiceStore';
 
-import * as routes from 'Hairfolio/src/routes.js'
+import * as routes from 'Hairfolio/src/routes';
 
-import PostDetailStore from 'stores/PostDetailStore'
+import PostDetailStore from '../../mobx/stores/PostDetailStore';
 
 const ColorInfo = observer(({store, unit, textStyle, style}) => {
   let colorArray;

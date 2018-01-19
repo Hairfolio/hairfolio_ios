@@ -5,7 +5,7 @@ import {View} from 'react-native';
 
 import Navigator from '../../navigation/Navigator';
 
-import Service from 'Hairfolio/src/services/index.js'
+import Service from 'Hairfolio/src/services/index';
 import ChannelEmitter from '../../components/Channel/ChannelEmitter';
 
 import PureComponent from '../../components/PureComponent';
@@ -29,7 +29,7 @@ export default class BrandProfileStack extends PureComponent {
   componentWillMount() {
     //
     var RoutesCtrs = [];
-    switch (this.props.profile.get('account_type')) {
+    switch (this.props.profile.account_type) {
       case 'consumer':
         RoutesCtrs = [UserPostsRoute, UserHairfolioRoute];
         break;
@@ -108,8 +108,6 @@ export default class BrandProfileStack extends PureComponent {
         ref={(navigator) => {
           this._nav = navigator && navigator.navigator()
           requestAnimationFrame(() => {
-            // this.props.profile.get('account_type')
-            console.log('request animation');
             if (this._nav) {
               this._nav.jumpTo(this.routes[1], () => {
                 requestAnimationFrame(() => {

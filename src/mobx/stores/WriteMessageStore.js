@@ -1,17 +1,18 @@
 import {observable, computed, action} from 'mobx';
 import {CameraRoll, NativeModules} from 'react-native';
 import Camera from 'react-native-camera';
-import Picture from 'stores/Picture.js'
-import ServiceBackend from 'backend/ServiceBackend.js'
+import Picture from './Picture';
+import ServiceBackend from '../../backend/ServiceBackend';
 
-import Service from 'Hairfolio/src/services/index.js'
+import Service from 'Hairfolio/src/services/index';
 
 import {_, v4, moment, React, Text} from 'Hairfolio/src/helpers';
 
-import User from 'stores/User.js'
+import User from './User';
+import UserStore from './UserStore';
 
-import * as routes from 'Hairfolio/src/routes.js'
-import MessageDetailsStore from 'stores/MessageDetailsStore.js';
+import * as routes from 'Hairfolio/src/routes'
+import MessageDetailsStore from './MessageDetailsStore';
 
 
 export class SelectableUser {
@@ -66,7 +67,7 @@ class WriteMessageStore {
 
     // create Conversation
     let postData = {
-      sender: Service.fetch.store.getState().user.data.get('id'),
+      sender: UserStore.user.id,
       conversation: {
         sender_id: myId,
         recipient_ids: [userId]
@@ -89,7 +90,7 @@ class WriteMessageStore {
       let users = this.selectedItems.map(e => e.user);
 
       for (let user of users) {
-        ServiceBackend.sendPostMessage(user, this.post);
+        ServiceBackend.sendPostMessage(UserStore.user.id, user, this.post);
       }
       this.myBack();
     }
@@ -188,7 +189,7 @@ class WriteMessageStore {
     this.inputText = '';
     this.users = [];
 
-    let userId = Service.fetch.store.getState().user.data.get('id')
+    let userId = UserStore.user.id;
 
     let res = (await ServiceBackend.get(`users/${userId}/follows?friends=true`)).users;
 

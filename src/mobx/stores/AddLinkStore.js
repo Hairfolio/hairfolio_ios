@@ -1,7 +1,7 @@
 import {observable, computed, action} from 'mobx';
 import {CameraRoll, NativeModules} from 'react-native';
 
-import ServiceBackend from 'backend/ServiceBackend.js'
+import ServiceBackend from '../../backend/ServiceBackend';
 
 import {v4} from 'uuid';
 
@@ -63,15 +63,11 @@ class Catalog {
   }
 
   async loadNextPage() {
-    console.log('load next page');
     if (!this.isLoadingNextPage && this.nextPage != null) {
-      console.log('loadNextPage', this.nextPage);
       this.isLoadingNextPage = true;
       let res = (await ServiceBackend.get(`products?q=${this.searchText}&page=${this.nextPage}`));
 
       window.queryRes = res;
-      console.log('query res', res);
-
       let {products, meta} = res;
 
 

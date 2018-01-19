@@ -5,35 +5,31 @@ import {
   ScrollView,
   StatusBar,
   View, Text, Dimensions, TouchableOpacity, TouchableWithoutFeedback, Image} from 'react-native';
-import connect from '../lib/connect';
-import {app} from '../selectors/app';
-import {post} from '../selectors/post';
-import {postActions} from '../actions/post';
 import {COLORS, FONTS, h, SCALE} from 'Hairfolio/src/style';
 import NavigationSetting from '../navigation/NavigationSetting';
-import {observer} from 'mobx-react/native';
+import {observer} from 'mobx-react';
 import autobind from 'autobind-decorator'
 import _ from 'lodash';
 
-import FollowButton from 'components/FollowButton.js'
+import FollowButton from './FollowButton';
 
-import StarGiversStore from 'stores/StarGiversStore.js'
+import StarGiversStore from '../mobx/stores/StarGiversStore';
 
 import {appStack, gallery, postFilter, albumPage} from '../routes';
 
 import {STATUSBAR_HEIGHT, POST_INPUT_MODE} from '../constants';
 
-import LoadingScreen from 'components/LoadingScreen.js'
-import BlackHeader from 'components/BlackHeader.js'
+import LoadingScreen from './LoadingScreen';
+import BlackHeader from './BlackHeader';
 
-import PostDetailStore from 'stores/PostDetailStore.js'
-import CommentsStore from 'stores/CommentsStore.js'
-import TagPostStore from 'stores/TagPostStore.js'
+import PostDetailStore from '../mobx/stores/PostDetailStore';
+import CommentsStore from '../mobx/stores/CommentsStore';
+import TagPostStore from '../mobx/stores/TagPostStore';
 
 
 import {
   ActivityIndicator
-} from 'Hairfolio/src/helpers.js';
+} from 'Hairfolio/src/helpers';
 
 const FollowUserRow = observer(({store}) => {
   return (

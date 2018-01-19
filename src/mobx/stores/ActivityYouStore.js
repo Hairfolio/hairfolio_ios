@@ -1,13 +1,13 @@
 import {observable, computed, action} from 'mobx';
 import {CameraRoll, NativeModules} from 'react-native';
 import Camera from 'react-native-camera';
-import ServiceBackend from 'backend/ServiceBackend.js'
+import ServiceBackend from '../../backend/ServiceBackend';
 
 import {v4} from 'uuid';
 
 import {_, moment, React, Text} from 'Hairfolio/src/helpers';
 
-import Activity from 'stores/Activity.js'
+import Activity from './Activity';
 
 class ActivityYouStore {
   @observable isLoading = false;

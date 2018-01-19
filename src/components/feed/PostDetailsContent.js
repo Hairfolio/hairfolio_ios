@@ -15,20 +15,20 @@ import {
   Modal,
   ScrollView,
   PickerIOS, Picker, StatusBar, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet
-} from 'Hairfolio/src/helpers.js';
+} from 'Hairfolio/src/helpers';
 
 
-import PostHeader from 'components/feed/PostHeader.js'
-import PostDetailStore from 'stores/PostDetailStore.js'
+import PostHeader from './PostHeader';
+import PostDetailStore from '../../mobx/stores/PostDetailStore';
 
-import PostDetailsHeader from 'components/feed/PostDetailsHeader.js'
-import PostDetailsImageList from 'components/feed/PostDetailsImageList.js'
+import PostDetailsHeader from './PostDetailsHeader';
+import PostDetailsImageList from './PostDetailsImageList';
 
-import PostDetailsColorFormula from 'components/feed/PostDetailsColorFormula.js'
+import PostDetailsColorFormula from './PostDetailsColorFormula';
 
-import PostDescription from 'components/feed/PostDescription.js'
+import PostDescription from './PostDescription';
 
-import * as routes from 'Hairfolio/src/routes.js'
+import * as routes from 'Hairfolio/src/routes';
 
 const PostDetailsContent = observer(() => {
 

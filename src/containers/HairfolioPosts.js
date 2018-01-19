@@ -5,32 +5,28 @@ import {
   ScrollView,
   StatusBar,
   View, Text, Dimensions, TouchableOpacity, TouchableWithoutFeedback, Image} from 'react-native';
-import connect from '../lib/connect';
-import {app} from '../selectors/app';
-import {post} from '../selectors/post';
-import {postActions} from '../actions/post';
 import {COLORS, FONTS, h, SCALE} from 'Hairfolio/src/style';
 import NavigationSetting from '../navigation/NavigationSetting';
-import {observer} from 'mobx-react/native';
+import {observer} from 'mobx-react';
 import autobind from 'autobind-decorator'
 import _ from 'lodash';
 
-import FollowButton from 'components/FollowButton.js'
+import FollowButton from '../components/FollowButton';
 
-import StarGiversStore from 'stores/StarGiversStore.js'
+import StarGiversStore from '../mobx/stores/StarGiversStore';
 
 import {appStack, gallery, postFilter, albumPage} from '../routes';
 
 import {STATUSBAR_HEIGHT, POST_INPUT_MODE} from '../constants';
 
-import LoadingScreen from 'components/LoadingScreen.js'
-import BlackHeader from 'components/BlackHeader.js'
+import LoadingScreen from '../components/LoadingScreen';
+import BlackHeader from '../components/BlackHeader';
 
 
-import GridList from 'components/GridList'
-import HairfolioPostStore from 'stores/HairfolioPostStore.js'
+import GridList from '../components/GridList'
+import HairfolioPostStore from '../mobx/stores/HairfolioPostStore';
 
-import * as routes from 'Hairfolio/src/routes.js'
+import * as routes from 'Hairfolio/src/routes'
 
 const Content = observer(({store}) => {
   return (
@@ -50,7 +46,6 @@ const Content = observer(({store}) => {
   );
 });
 
-@connect(app)
 export default class TagPosts extends PureComponent {
 
   static contextTypes = {

@@ -1,6 +1,8 @@
 import React from 'react';
 import _ from 'lodash';
 import {View, StyleSheet, TouchableWithoutFeedback, Image} from 'react-native';
+import utils from '../../utils';
+import { observer } from 'mobx-react';
 import PureComponent from '../PureComponent';
 import {BOTTOMBAR_HEIGHT} from '../../constants';
 import {COLORS, FONTS, SCALE} from '../../style';
@@ -9,8 +11,11 @@ import Icon from '../Icon';
 
 import {search, feed, gallery, createPost, createPostStack, editCustomerStack, favourites, profile} from '../../routes';
 
-import CreatePostStore from '../../mobx/stores/CreatePostStore.js'
+import CreatePostStore from '../../mobx/stores/CreatePostStore';
+import UserStore from '../../mobx/stores/UserStore';
+import EnvironmentStore from '../../mobx/stores/EnvironmentStore';
 
+@observer
 export default class LoginNavigationbar extends PureComponent {
 
   static propTypes = {
@@ -142,7 +147,7 @@ export default class LoginNavigationbar extends PureComponent {
 
       )}
       {this.renderItem(favourites, {borders: {right: true}})}
-      {this.renderItem(profile, {picture: this.props.profilePic})}
+      {this.renderItem(profile, {picture: utils.getUserProfilePicURI(UserStore.user, EnvironmentStore.getEnv())})}
     </View>);
   }
 }

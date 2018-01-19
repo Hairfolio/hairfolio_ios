@@ -1,14 +1,12 @@
 import React from 'react';
 import PureComponent from '../components/PureComponent';
 import {View, ListView, Text} from 'react-native';
-import connect from '../lib/connect';
-import {app} from '../selectors/app';
 import {COLORS, FONTS, SCALE} from '../style';
 import NavigationSetting from '../navigation/NavigationSetting';
 
-import UserPostStore from 'stores/UserPostStore.js'
+import UserPostStore from '../mobx/stores/UserPostStore';
 
-import GridPost from 'components/favourites/GridPost'
+import GridPost from '../components/favourites/GridPost';
 
 import {
   _, // lodash
@@ -29,9 +27,9 @@ import {
   ActivityIndicator,
   ScrollView,
   PickerIOS, Picker, StatusBar, Platform, TextInput,  Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet
-} from 'Hairfolio/src/helpers.js';
+} from 'Hairfolio/src/helpers';
 
-import ScrollViewProxy from 'components/ScrollViewProxy.js'
+import ScrollViewProxy from '../components/ScrollViewProxy';
 
 
 
@@ -158,7 +156,7 @@ export default class UserPosts extends PureComponent {
         backgroundColor: COLORS.WHITE,
       }}
       onWillFocus={() => {
-        let userId = this.props.profile.get('id');
+        let userId = this.props.profile.id;
         if (window.lastUserId != userId) {
           window.lastUserId = userId;
           UserPostStore.load(userId);

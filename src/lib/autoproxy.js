@@ -48,4 +48,4 @@ function proxyProperties(target, source) {
   });
 }
 
-module.exports = autoproxy;
+export default autoproxy;

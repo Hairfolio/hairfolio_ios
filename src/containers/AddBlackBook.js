@@ -8,43 +8,37 @@ import {
   TextInput,
   TouchableHighlight,
   View, Text, Dimensions, TouchableOpacity, TouchableWithoutFeedback, Image} from 'react-native';
-import connect from '../lib/connect';
-import {app} from '../selectors/app';
-import {post} from '../selectors/post';
-import {postActions} from '../actions/post';
 import {COLORS, FONTS, h, SCALE} from 'Hairfolio/src/style';
 import NavigationSetting from '../navigation/NavigationSetting';
-import {observer} from 'mobx-react/native';
+import {observer} from 'mobx-react';
 import autobind from 'autobind-decorator'
 import _ from 'lodash';
 
-import FollowButton from 'components/FollowButton.js'
-import ShareStore from 'stores/ShareStore.js'
+import FollowButton from '../components/FollowButton';
+import ShareStore from '../mobx/stores/ShareStore';
 
-import StarGiversStore from 'stores/StarGiversStore.js'
-import LoadingPage from 'components/LoadingPage'
+import StarGiversStore from '../mobx/stores/StarGiversStore';
+import LoadingPage from '../components/LoadingPage';
 
 import {appStack, gallery, postFilter, albumPage} from '../routes';
 
-import * as routes from 'Hairfolio/src/routes.js'
+import * as routes from 'Hairfolio/src/routes';
 
-import MessageDetailsStore from 'stores/MessageDetailsStore.js';
+import MessageDetailsStore from '../mobx/stores/MessageDetailsStore';
 
 import {STATUSBAR_HEIGHT, POST_INPUT_MODE} from '../constants';
 
-import LoadingScreen from 'components/LoadingScreen.js'
-import BlackHeader from 'components/BlackHeader.js'
+import LoadingScreen from '../components/LoadingScreen';
+import BlackHeader from '../components/BlackHeader';
 
-import AddBlackBookStore from 'stores/AddBlackBookStore.js'
+import AddBlackBookStore from '../mobx/stores/AddBlackBookStore';
 
 
-import Swipeout from 'Hairfolio/react-native-swipeout/index.js';
+import Swipeout from 'Hairfolio/react-native-swipeout/index';
 ;
 
-import {SelectPeople, ToInput} from 'components/SelectPeople.js'
+import {SelectPeople, ToInput} from '../components/SelectPeople';
 
-
-@connect(app)
 @observer
 export default class AddBlackBook extends PureComponent {
 

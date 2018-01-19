@@ -1,15 +1,16 @@
 import {observable, computed, action} from 'mobx';
 import {CameraRoll, NativeModules} from 'react-native';
 import Camera from 'react-native-camera';
-import Picture from 'stores/Picture.js'
-import ServiceBackend from 'backend/ServiceBackend.js'
+import Picture from './Picture';
+import ServiceBackend from '../../backend/ServiceBackend';
 
 import {_, v4, jpg, getUserId,  moment, React, Text} from 'Hairfolio/src/helpers';
 
-import User from 'stores/User.js'
-import Service from 'Hairfolio/src/services/index.js'
+import User from './User';
+import UserStore from './UserStore';
+import Service from 'Hairfolio/src/services/index';
 
-import * as routes from 'Hairfolio/src/routes.js'
+import * as routes from 'Hairfolio/src/routes'
 
 class Message {
   @observable user;
@@ -84,7 +85,7 @@ class Message {
       this.text = lastMessage.body;
     }
 
-    if (lastMessage.user.id == Service.fetch.store.getState().user.data.get('id')) {
+    if (lastMessage.user.id == UserStore.user.id) {
       this.text = 'You: ' + this.text;
     }
 

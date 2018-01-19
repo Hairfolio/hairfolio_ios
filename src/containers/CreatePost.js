@@ -6,13 +6,9 @@ import {
   StatusBar,
   ImageEditor,
   View, Text, Dimensions, TouchableOpacity, TouchableWithoutFeedback, Image} from 'react-native';
-import connect from '../lib/connect';
-import {app} from '../selectors/app';
-import {post} from '../selectors/post';
-import {postActions} from '../actions/post';
 import {COLORS, FONTS, h, SCALE} from 'Hairfolio/src/style';
 import NavigationSetting from '../navigation/NavigationSetting';
-import {observer} from 'mobx-react/native';
+import {observer} from 'mobx-react';
 import autobind from 'autobind-decorator'
 import _ from 'lodash';
 
@@ -20,14 +16,14 @@ import {appStack, gallery, postFilter, albumPage} from '../routes';
 
 import {STATUSBAR_HEIGHT, POST_INPUT_MODE} from '../constants';
 
-import CreatePostStore from '../mobx/stores/CreatePostStore.js';
+import CreatePostStore from '../mobx/stores/CreatePostStore';
 
 import Camera from 'react-native-camera';
 
 import {CameraKitCamera} from 'react-native-camera-kit'
 
-import SlimHeader from '../components/SlimHeader.js'
-import LibraryListView from 'components/post/LibraryListView'
+import SlimHeader from '../components/SlimHeader';
+import LibraryListView from '../components/post/LibraryListView'
 
 import Recorder from 'react-native-screcorder'
 
@@ -228,14 +224,9 @@ const LibraryHeader = observer(({onLeft, onRight, onTitle, store}) => {
   );
 });
 
-@connect(app, post)
 @observer
 @autobind
 export default class CreatePost extends PureComponent {
-  static propTypes = {
-    appVersion: React.PropTypes.string.isRequired
-  };
-
   static contextTypes = {
     navigators: React.PropTypes.array.isRequired
   };

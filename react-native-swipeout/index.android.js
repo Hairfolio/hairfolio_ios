@@ -4,23 +4,23 @@
  */
 'use strict';
 
-var React = require('react');
-var {
+import React from 'react';
+import {
   AppRegistry,
   StyleSheet,
   ListView,
   Text,
   View,
-} = require('react-native');
+} from 'react-native';
 
 //  include react-native-swipeout
-var Swipeout = require('./index.js')
+import Swipeout from './index';
 
 //  example row data (see for json structure)
-var rows = require('./example/data.js')
+import rows from './example/data';
 
 //  example styles
-var styles = require('./example/styles.js')
+import styles from './example/styles';
 
 //  example swipout app
 var swipeout = React.createClass({

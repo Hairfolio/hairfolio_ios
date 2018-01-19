@@ -1,11 +1,10 @@
 import React from 'react';
 import _ from 'lodash';
 import {mixin} from 'core-decorators';
+import { observer } from 'mobx-react';
 import validator from 'validator';
 import PureComponent from '../components/PureComponent';
 import RN, {View, StyleSheet} from 'react-native';
-import connect from '../lib/connect';
-import {app} from '../selectors/app';
 import {COLORS, SCALE} from '../style';
 import NavigationSetting from '../navigation/NavigationSetting';
 
@@ -17,35 +16,24 @@ import Icon from '../components/Icon';
 
 import {loginStack} from '../routes';
 
-import {throwOnFail} from '../lib/reduxPromiseMiddleware';
-
 import utils from '../utils';
 import appEmitter from '../appEmitter';
 import formMixin from '../mixins/form';
 
-import {user} from '../selectors/user';
-import {environment} from '../selectors/environment';
-import {cloudinary} from '../selectors/cloudinary';
-
-import {registrationActions} from '../actions/registration';
-import {cloudinaryActions} from '../actions/cloudinary';
+import UserStore from '../mobx/stores/UserStore';
+import EnvironmentStore from '../mobx/stores/EnvironmentStore';
+import CloudinaryStore from '../mobx/stores/CloudinaryStore';
 
 import {NAVBAR_HEIGHT} from '../constants';
 
-@connect(app, user, environment, cloudinary)
+@observer
 @mixin(formMixin)
 export default class BasicInfo extends PureComponent {
   static propTypes = {
     accountType: React.PropTypes.string.isRequired,
-    appVersion: React.PropTypes.string.isRequired,
-    cloudinaryStates: React.PropTypes.object.isRequired,
     detailFields: React.PropTypes.array.isRequired,
-    dispatch: React.PropTypes.func.isRequired,
-    environment: React.PropTypes.object.isRequired,
-    environmentState: React.PropTypes.string.isRequired,
     nextRoute: React.PropTypes.object,
     title: React.PropTypes.string.isRequired,
-    userState: React.PropTypes.string.isRequired
   };
 
   static contextTypes = {
@@ -101,7 +89,7 @@ export default class BasicInfo extends PureComponent {
       leftAction={() => {
         _.first(this.context.navigators).jumpTo(loginStack);
       }}
-      leftDisabled={utils.isLoading([this.props.environmentState, this.props.userState, this.props.cloudinaryStates.get('register-pick')])}
+      leftDisabled={utils.isLoading([EnvironmentStore.environmentState, UserStore.userState, CloudinaryStore.cloudinaryStates.get('register-pick')])}
       leftIcon="back"
       onWillBlur={this.onWillBlur}
       onWillFocus={this.onWillFocus}
@@ -109,9 +97,8 @@ export default class BasicInfo extends PureComponent {
         if (!this.checkErrors()) {
           var value = this.getFormValue();
           value['password_confirmation'] = value.password;
-
-          this.props.dispatch(registrationActions.getEnvironment()).then(throwOnFail)
-            .then(() => this.props.dispatch(registrationActions.signupWithEmail(value, this.props.accountType)).then(throwOnFail))
+          EnvironmentStore.loadEnv()
+            .then(() => UserStore.signUpWithEmail(value, this.props.accountType))
             .then(() => {
               appEmitter.emit('login');
               this.jumpToNext(() => this.clearValues());
@@ -121,7 +108,7 @@ export default class BasicInfo extends PureComponent {
             });
         }
       }}
-      rightDisabled={utils.isLoading([this.props.environmentState, this.props.userState, this.props.cloudinaryStates.get('register-pick')])}
+      rightDisabled={utils.isLoading([EnvironmentStore.environmentState, UserStore.userState, CloudinaryStore.cloudinaryStates.get('register-pick')])}
       rightLabel="Next"
       style={{
         flex: 1,
@@ -145,7 +132,7 @@ export default class BasicInfo extends PureComponent {
             position: 'relative'
           }}>
             <PictureInput
-              disabled={utils.isLoading([this.props.environmentState, this.props.userState, this.props.cloudinaryStates.get('register-pick')])}
+              disabled={utils.isLoading([EnvironmentStore.environmentState, UserStore.userState, CloudinaryStore.cloudinaryStates.get('register-pick')])}
               // not used here
               // because we never setValue on this input
               getPictureURIFromValue={() => {}}
@@ -154,10 +141,8 @@ export default class BasicInfo extends PureComponent {
               }}
               ref={(r) => this.addFormItem(r, 'avatar_cloudinary_id')}
               transform={(uri, metas) =>
-                this.props.dispatch(registrationActions.getEnvironment())
-                  .then(throwOnFail)
-                  .then(() => this.props.dispatch(cloudinaryActions.upload(uri, metas, {maxHW: 512}, 'register-pick')))
-                  .then(throwOnFail)
+                EnvironmentStore.loadEnv()
+                  .then(() => CloudinaryStore.upload(uri, metas, {maxHW: 512}, 'register-pick'))
                   .then(({public_id}) => public_id)
               }
               validation={(v) => !!v}

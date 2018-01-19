@@ -1,23 +1,19 @@
 import React from 'react';
 import PureComponent from '../components/PureComponent';
 import {View, Text, Image, Dimensions, StatusBar, TouchableOpacity, TouchableWithoutFeedback} from 'react-native';
-import connect from '../lib/connect';
-import {app} from '../selectors/app';
-import {post} from '../selectors/post';
-import {postActions} from '../actions/post';
 import {COLORS, FONTS, SCALE} from '../style';
 import NavigationSetting from '../navigation/NavigationSetting';
-import {observer} from 'mobx-react/native';
+import {observer} from 'mobx-react';
 import autobind from 'autobind-decorator'
 
 import _ from 'lodash';
 
 import {STATUSBAR_HEIGHT, POST_INPUT_MODE} from '../constants';
 
-import CreatePostStore from '../mobx/stores/CreatePostStore.js';
+import CreatePostStore from '../mobx/stores/CreatePostStore';
 
 import Camera from 'react-native-camera';
-import SlimHeader from '../components/SlimHeader.js'
+import SlimHeader from '../components/SlimHeader';
 
 
 import {
@@ -27,8 +23,6 @@ import {
   gallery
 } from '../routes';
 
-
-@connect(app, post)
 @observer
 @autobind
 export default class PostFilter extends PureComponent {

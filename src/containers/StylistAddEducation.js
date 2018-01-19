@@ -3,12 +3,11 @@ import _ from 'lodash';
 import PureComponent from '../components/PureComponent';
 import {View, StyleSheet} from 'react-native';
 import validator from 'validator';
-import connect from '../lib/connect';
-import {app} from '../selectors/app';
-import {environment} from '../selectors/environment';
-import {educationActions} from '../actions/education';
 import {COLORS, FONTS, SCALE} from '../style';
 import NavigationSetting from '../navigation/NavigationSetting';
+import UserStore from '../mobx/stores/UserStore';
+import EnvironmentStore from '../mobx/stores/EnvironmentStore';
+import EducationStore from '../mobx/stores/EducationStore';
 
 import {mixin, autobind} from 'core-decorators';
 import InlineTextInput from '../components/Form/InlineTextInput';
@@ -20,21 +19,12 @@ import DeleteButton from '../components/Buttons/Delete';
 
 import {NAVBAR_HEIGHT} from '../constants';
 
-import {throwOnFail} from '../lib/reduxPromiseMiddleware';
 import appEmitter from '../appEmitter';
 
 import formMixin from '../mixins/form';
 
-@connect(app, environment)
 @mixin(formMixin)
 export default class StylistAddEducation extends PureComponent {
-  static propTypes = {
-    appVersion: React.PropTypes.string.isRequired,
-    degrees: React.PropTypes.object.isRequired,
-    degreesState: React.PropTypes.string.isRequired,
-    dispatch: React.PropTypes.func.isRequired
-  };
-
   static contextTypes = {
     navigators: React.PropTypes.array.isRequired
   };
@@ -45,7 +35,7 @@ export default class StylistAddEducation extends PureComponent {
 
   @autobind
   onWillFocus() {
-    this.props.dispatch(educationActions.getDegrees());
+    EnvironmentStore.getDegrees();
   }
 
   getValue() {
@@ -57,12 +47,12 @@ export default class StylistAddEducation extends PureComponent {
 
   setEditing(education) {
     if (this.state.editing !== education)
-      this.props.dispatch(educationActions.getDegrees()).then(throwOnFail).then(() => {
+      EnvironmentStore.getDegrees().then(() => {
         this.setFormValue({
           ...education.toJS(),
-          'year_from': education.get('year_from').toString(),
-          'year_to': education.get('year_to').toString(),
-          'degree_id': education.get('degree').get('id')
+          'year_from': education.year_from.toString(),
+          'year_to': education.year_to.toString(),
+          'degree_id': education.degree.id
         });
 
         if (this._deleteButton)
@@ -110,15 +100,14 @@ export default class StylistAddEducation extends PureComponent {
         this.setState({'submitting': true});
 
         var action = this.state.editing === false ?
-          educationActions.addEducation(this.getFormValue()) :
-          educationActions.editEducation(this.state.editing.get('id'), this.getFormValue());
+          EducationStore.addEducation(this.getFormValue()) :
+          EducationStore.editEducation(this.state.editing.id, this.getFormValue());
 
-        this.props.dispatch(action)
+        action
           .then((r) => {
             this.setState({submitting: false});
             return r;
           })
-          .then(throwOnFail)
           .then(
             () => {
               appEmitter.emit('user-edited');
@@ -151,7 +140,7 @@ export default class StylistAddEducation extends PureComponent {
           <View style={{
             height: SCALE.h(34)
           }} />
-          <LoadingContainer state={[this.props.degreesState]}>
+          <LoadingContainer state={[EnvironmentStore.degreesState]}>
             {() => (<View>
               <InlineTextInput
                 autoCorrect={false}
@@ -188,9 +177,9 @@ export default class StylistAddEducation extends PureComponent {
               <View style={{height: StyleSheet.hairlineWidth}} />
 
               <PickerInput
-                choices={this.props.degrees.map(degree => ({
-                  id: degree.get('id'),
-                  label: degree.get('name')}
+                choices={EnvironmentStore.degrees.map(degree => ({
+                  id: degree.id,
+                  label: degree.name}
                 )).toJS()}
                 placeholder="Degree"
                 ref={(r) => this.addFormItem(r, 'degree_id')}
@@ -215,13 +204,11 @@ export default class StylistAddEducation extends PureComponent {
                   label="DELETE"
                   onPress={() => {
                     this.setState({submitting: true});
-
-                    this.props.dispatch(educationActions.deleteEducation(this.state.editing.get('id')))
+                    EducationStore.deleteEducation(this.state.editing.id)
                       .then((r) => {
                         this.setState({submitting: false});
                         return r;
                       })
-                      .then(throwOnFail)
                       .then(
                         () => {
                           appEmitter.emit('user-edited');

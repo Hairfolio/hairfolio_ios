@@ -2,32 +2,22 @@ import React from 'react';
 import {autobind} from 'core-decorators';
 import PureComponent from '../components/PureComponent';
 import {StatusBar, Text, View} from 'react-native';
-import connect from '../lib/connect';
-import {app} from '../selectors/app';
-import {user, users} from '../selectors/user';
-import {environment} from '../selectors/environment';
-import {usersActions} from '../actions/users';
 import {COLORS} from '../style';
 import NavigationSetting from '../navigation/NavigationSetting';
-
+import { observer } from 'mobx-react';
+import { toJS } from 'mobx';
 import Profile from './Profile';
 
 import LoadingContainer from '../components/LoadingContainer';
 
+import UserStore from '../mobx/stores/UserStore';
+import UsersStore from '../mobx/stores/UsersStore';
+
 import {BOTTOMBAR_HEIGHT} from '../constants';
 import utils from '../utils';
 
-@connect(app, user, environment, users)
+@observer
 export default class ProfileWrapper extends PureComponent {
-  static propTypes = {
-    appVersion: React.PropTypes.string.isRequired,
-    dispatch: React.PropTypes.func.isRequired,
-    environment: React.PropTypes.object.isRequired,
-    user: React.PropTypes.object.isRequired,
-    users: React.PropTypes.object.isRequired,
-    usersStates: React.PropTypes.object.isRequired
-  };
-
   static contextTypes = {
     navigators: React.PropTypes.array.isRequired
   };
@@ -39,8 +29,6 @@ export default class ProfileWrapper extends PureComponent {
     var style = 'light-content';
     if (this.refs.profile)
       style = this.refs.profile.getStyle();
-
-
     StatusBar.setHidden(false, 'fade');
     StatusBar.setBarStyle(style, true);
   }
@@ -49,15 +37,13 @@ export default class ProfileWrapper extends PureComponent {
     this.setState({userId}, () => {
       this.refs.ns.forceUpdateContent();
     });
-    //if (!utils.isLoading(this.props.usersStates.get(userId)))
-    this.props.dispatch(usersActions.getUser(userId));
+    UsersStore.getUser(userId);
   }
 
   render() {
-
-    window.p = this.props.users;
-
-
+    const users = toJS(UsersStore.users);
+    const states = toJS(UsersStore.usersStates);
+    window.p = users;
     return (<NavigationSetting
       forceUpdateEvents={!this.state.userId ? ['login', 'user-edited'] : null}
       onWillFocus={this.onWillFocus}
@@ -69,7 +55,7 @@ export default class ProfileWrapper extends PureComponent {
       }}
     >
       {!this.state.userId ?
-        <Profile profile={this.props.user} ref="profile" />
+        <Profile profile={UserStore.user} ref="profile" />
       :
         <View style={{
           flex: 1,
@@ -77,8 +63,8 @@ export default class ProfileWrapper extends PureComponent {
         }}>
           <LoadingContainer loadingStyle={{
             textAlign: 'center'
-          }} ref="loadingC" state={[this.props.usersStates.get(this.state.userId)]}>
-            {() => <Profile profile={this.props.users.get(this.state.userId)} ref="profile" />}
+          }} ref="loadingC" state={[states[this.state.userId]]}>
+            {() => <Profile profile={users[this.state.userId]} ref="profile" />}
           </LoadingContainer>
         </View>
       }

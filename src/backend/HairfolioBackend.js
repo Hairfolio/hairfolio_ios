@@ -1,4 +1,4 @@
-import ServiceBackend from './ServiceBackend.js'
+import ServiceBackend from './ServiceBackend';
 
 export async function getHairfolios() {
   let val = await ServiceBackend.get('hairfolios');

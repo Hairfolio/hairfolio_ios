@@ -1,15 +1,14 @@
 import {observable, computed, action} from 'mobx';
 import {CameraRoll, NativeModules} from 'react-native';
 import Camera from 'react-native-camera';
-import Picture from 'stores/Picture.js'
-import ServiceBackend from 'backend/ServiceBackend.js'
+import Picture from './Picture';
+import ServiceBackend from '../../backend/ServiceBackend';
 
 import {_, v4, moment, React, Text} from 'Hairfolio/src/helpers';
 
-import User from 'stores/User.js'
-import globalStore from 'Hairfolio/src/store.js';
-
-import FeedStore from 'stores/FeedStore.js'
+import User from './User';
+import UserStore from './UserStore';
+import FeedStore from './FeedStore';
 
 export default class FollowUser {
   @observable user;
@@ -36,14 +35,14 @@ export default class FollowUser {
   }
 
   @computed get showFollowButton() {
-    let myId = globalStore.getState().user.data.get('id')
+    let myId = UserStore.user.id;
     return this.user.id != myId;
   }
 
   async follow() {
     this.followLoading = true;
 
-    let myId = globalStore.getState().user.data.get('id')
+    let myId = UserStore.user.data.id;
 
 
     let res = await ServiceBackend.post(`users/${this.user.id}/follows`, { });
@@ -56,7 +55,7 @@ export default class FollowUser {
   async unfollow() {
     this.followLoading = true;
 
-    let myId = globalStore.getState().user.data.get('id')
+    let myId = UserStore.user.data.id;
 
     let res = await ServiceBackend.delete(`users/${this.user.id}/follows`);
 

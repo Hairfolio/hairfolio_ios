@@ -1,7 +1,6 @@
 const BASE_URL = 'http://api.hairfolio.tech/';
 
-import Service from 'Hairfolio/src/services/index.js'
-import UserStore from 'stores/UserStore.js';
+import UserStore from '../mobx/stores/UserStore';
 
 let myfetch = function(input, opts) {
   return new Promise((resolve, reject) => {
@@ -12,23 +11,13 @@ let myfetch = function(input, opts) {
 
 export default class Backend {
 
-
   getHeaders() {
     let headers = {
       'Accept': 'application/json',
       'Content-Type': 'application/json'
     };
 
-    let token = UserStore.token;
-
-    let token2 = Service.fetch.store.getState().user.data.get('auth_token')
-
-    console.log('userToken', token);
-
-    if (token2) {
-      token = token2;
-      UserStore.token = token2;
-    }
+    let token = UserStore.user.auth_token;
 
     if (token) {
       headers.Authorization = token;
@@ -76,6 +65,25 @@ export default class Backend {
     return json;
   }
 
+  async patch(url, data) {
+    window.head = this.getHeaders();
+    window.data = data;
+    let response = await myfetch(BASE_URL + url, {
+      method: 'PATCH',
+      headers: this.getHeaders(),
+      timeout: 20000, // req/res timeout in ms, 0 to disable, timeout reset on redirect
+      body: JSON.stringify(data)
+    });
+
+    let json = await response.json();
+
+    if (response.status) {
+      json.status = response.status;
+    }
+
+    return json;
+  }
+
   async delete(url) {
     let response = await myfetch(BASE_URL + url, {
       method: 'DELETE',
@@ -87,7 +95,6 @@ export default class Backend {
   }
 
   async get(url) {
-
     let queryUrl = BASE_URL + url;
 
     let response = await myfetch(queryUrl, {

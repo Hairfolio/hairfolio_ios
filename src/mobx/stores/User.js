@@ -18,15 +18,15 @@ import {
   Modal,
   ScrollView,
   PickerIOS, Picker, StatusBar, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet
-} from 'Hairfolio/src/helpers.js';
+} from 'Hairfolio/src/helpers';
 
-import utils from 'Hairfolio/src/utils.js'
-import EnvironmentStore from 'stores/EnvironmentStore.js'
+import utils from 'Hairfolio/src/utils';
+import EnvironmentStore from './EnvironmentStore';
 
 
-import FavoriteStore from 'stores/FavoriteStore.js'
+import FavoriteStore from './FavoriteStore';
 
-import Picture from 'stores/Picture.js'
+import Picture from './Picture';
 
 class GetObj {
   constructor(obj) {
@@ -69,15 +69,15 @@ export default class User {
       this.name = `${data.first_name} ${data.last_name}`;
     }
 
-    let environment = await EnvironmentStore.get();
-
-    let picObj = {uri: utils.getUserProfilePicURI(new GetObj(data), new GetObj(environment))};
+    let environment = await EnvironmentStore.loadEnv();
+    let picObj = {uri: utils.getUserProfilePicURI(data, environment)};
 
     this.profilePicture = new Picture(
       picObj,
       picObj,
       null
     );
+    this.pictureUrl = picObj;
   }
 
   sample(name = 'First Last Name') {

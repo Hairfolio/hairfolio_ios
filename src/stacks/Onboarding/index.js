@@ -14,7 +14,7 @@ import KeyboardScrollView from '../../components/KeyboardScrollView';
 
 import appEmitter from '../../appEmitter';
 
-import store from '../../store';
+import UserStore from '../../mobx/stores/UserStore'
 import utils from '../../utils';
 
 import {COLORS, SCALE} from '../../style';
@@ -23,7 +23,7 @@ import {Dims} from '../../constants';
 
 import {
   h
-} from 'Hairfolio/src/helpers.js';
+} from 'Hairfolio/src/helpers';
 
 export default class OnboardingStack extends PureComponent {
   static propTypes = {};
@@ -43,7 +43,7 @@ export default class OnboardingStack extends PureComponent {
   }
 
   componentWillMount() {
-    this.initialRoute = utils.isReady(store.getState().user.state) ? login : register;
+    this.initialRoute = utils.isReady(UserStore.userState) ? login : register;
 
     this.listeners = [
       appEmitter.addListener('login', () => this.onLogin())

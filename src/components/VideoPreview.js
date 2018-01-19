@@ -15,38 +15,37 @@ import {
   ScrollView,
   ActivityIndicator,
   PickerIOS, Picker, StatusBar, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet
-} from 'Hairfolio/src/helpers.js';
+} from 'Hairfolio/src/helpers';
 
-import SlimHeader from 'components/SlimHeader.js'
-import AlbumStore from 'stores/AlbumStore.js'
-import CreatePostStore from 'stores/CreatePostStore.js'
-import AddServiceStore from 'stores/AddServiceStore.js'
+import SlimHeader from './SlimHeader'
+import AlbumStore from '../mobx/stores/AlbumStore';
+import CreatePostStore from '../mobx/stores/CreatePostStore';
+import AddServiceStore from '../mobx/stores/AddServiceStore';
 
-import ShareStore from 'stores/ShareStore.js'
+import ShareStore from '../mobx/stores/ShareStore';
 
-import ServiceBackend from 'backend/ServiceBackend.js'
-import LoadingScreen from 'components/LoadingScreen.js'
-import Video from 'react-native-video'
+import ServiceBackend from '../backend/ServiceBackend';
+import LoadingScreen from './LoadingScreen';
+import Video from 'react-native-video';
 
 
 import LinearGradient from 'react-native-linear-gradient';
 
 import {appStack, createPost, onPress, postFilter, albumPage, addServiceOne, filter, addLink, addServiceTwo, addServiceThree} from '../routes';
 
-import * as routes from '../routes.js'
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import * as routes from '../routes';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
-var RCTUIManager = require('NativeModules').UIManager;
+import MyPicker from './MyPicker';
 
-var ImageFilter = require('NativeModules').ImageFilter;
-
-import MyPicker from 'components/MyPicker.js'
-
-import {Dimensions} from 'react-native';
+import {Dimensions, NativeModules} from 'react-native';
 
 import ReactNative from 'react-native';
 
-import ServiceBox from 'components/post/ServiceBox.js'
+const RCTUIManager = NativeModules.UIManager;
+const ImageFilter = NativeModules.ImageFilter;
+
+import ServiceBox from './post/ServiceBox';
 
 const PlayButton = observer(({myWidth, pic}) => {
 

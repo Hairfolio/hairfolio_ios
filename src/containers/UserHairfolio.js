@@ -1,8 +1,6 @@
 import React from 'react';
 import PureComponent from '../components/PureComponent';
 import {View, Text, TouchableHighlight} from 'react-native';
-import connect from '../lib/connect';
-import {app} from '../selectors/app';
 import {COLORS, FONTS, SCALE} from '../style';
 import NavigationSetting from '../navigation/NavigationSetting';
 
@@ -14,12 +12,12 @@ import {
   h,
   getUserId,
   v4
-} from 'Hairfolio/src/helpers.js';
+} from 'Hairfolio/src/helpers';
 
-import HairfolioStore from 'stores/HairfolioStore.js'
-import Swipeout from 'Hairfolio/react-native-swipeout/index.js';
-import * as routes from 'Hairfolio/src/routes.js'
-import HairfolioPostStore from 'stores/HairfolioPostStore'
+import HairfolioStore from '../mobx/stores/HairfolioStore';
+import Swipeout from 'Hairfolio/react-native-swipeout/index';
+import * as routes from 'Hairfolio/src/routes';
+import HairfolioPostStore from '../mobx/stores/HairfolioPostStore';
 
 const HairfolioItem = observer(({store, isEditable}) => {
 
@@ -202,10 +200,8 @@ const HairfolioList = observer(() => {
   }
 });
 
-@connect(app)
 export default class UserHairfolio extends PureComponent {
   static propTypes = {
-    appVersion: React.PropTypes.string.isRequired,
     onLayout: React.PropTypes.func.isRequired
   };
 
@@ -224,7 +220,7 @@ export default class UserHairfolio extends PureComponent {
         backgroundColor: COLORS.WHITE,
       }}
       onWillFocus={() => {
-        HairfolioStore.load(this.props.profile.get('id'));
+        HairfolioStore.load(this.props.profile.id);
       }}
     >
       <View

@@ -4,14 +4,10 @@ import validator from 'validator';
 import {mixin} from 'core-decorators';
 import PureComponent from '../components/PureComponent';
 import {View, Text, StyleSheet} from 'react-native';
-import connect from '../lib/connect';
-import {app} from '../selectors/app';
 import {COLORS, FONTS, SCALE} from '../style';
 import NavigationSetting from '../navigation/NavigationSetting';
-
+import { observer } from 'mobx-react';
 import states from '../states.json';
-
-import Service from 'Hairfolio/src/services/index.js'
 
 import MultilineTextInput from '../components/Form/MultilineTextInput';
 import InlineTextInput from '../components/Form/InlineTextInput';
@@ -19,9 +15,7 @@ import PickerInput from '../components/Form/PickerInput';
 import BannerErrorContainer from '../components/BannerErrorContainer';
 import KeyboardScrollView from '../components/KeyboardScrollView';
 
-import {throwOnFail} from '../lib/reduxPromiseMiddleware';
-
-import {registrationActions} from '../actions/registration';
+import UserStore from '../mobx/stores/UserStore';
 
 import formMixin from '../mixins/form';
 
@@ -29,14 +23,9 @@ import {NAVBAR_HEIGHT} from '../constants';
 import appEmitter from '../appEmitter';
 import {appStack} from '../routes';
 
-@connect(app)
+@observer
 @mixin(formMixin)
 export default class BrandInfo extends PureComponent {
-  static propTypes = {
-    appVersion: React.PropTypes.string.isRequired,
-    dispatch: React.PropTypes.func.isRequired
-  };
-
   static contextTypes = {
     navigators: React.PropTypes.array.isRequired
   };
@@ -52,15 +41,14 @@ export default class BrandInfo extends PureComponent {
           return;
 
         let formData = this.getFormValue();
-        formData.business.name = Service.fetch.store.getState().user.data.get('brand').get('name');
+        formData.business.name = UserStore.user.brand.name;
 
         this.setState({'submitting': true});
-        this.props.dispatch(registrationActions.editUser(formData, 'ambassador'))
+        UserStore.editUser(formData, 'ambassador')
         .then((r) => {
           this.setState({submitting: false});
           return r;
         })
-        .then(throwOnFail)
         .then(
           () => {
             appEmitter.emit('user-edited');

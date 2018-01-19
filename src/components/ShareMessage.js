@@ -19,13 +19,13 @@ import {
   ActivityIndicator,
   ScrollView,
   PickerIOS, Picker, StatusBar, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet
-} from 'Hairfolio/src/helpers.js';
+} from 'Hairfolio/src/helpers';
 
-import WriteMessageStore from 'stores/WriteMessageStore.js'
-import LoadingPage from 'components/LoadingPage'
-import {SelectPeople, ToInput} from 'components/SelectPeople.js'
+import WriteMessageStore from '../mobx/stores/WriteMessageStore';
+import LoadingPage from './LoadingPage'
+import {SelectPeople, ToInput} from './SelectPeople';
 
-import ShareStore from 'stores/ShareStore.js'
+import ShareStore from '../mobx/stores/ShareStore';
 
 const ShareMessage = observer(() => {
 

@@ -2,15 +2,15 @@ import {observable, computed, action} from 'mobx';
 import {CameraRoll, NativeModules} from 'react-native';
 import Camera from 'react-native-camera';
 
-import FilterStore from 'stores/FilterStore.js'
-import Picture from 'stores/Picture.js'
+import FilterStore from './FilterStore';
+import Picture from './Picture';
 let PhotoAlbum = NativeModules.PhotoAlbum;
 
 import {v4} from 'uuid';
 
 
-import ServiceBackend from 'backend/ServiceBackend.js'
-import Service from 'Hairfolio/src/services/index.js'
+import ServiceBackend from '../../backend/ServiceBackend';
+import UserStore from './UserStore';
 
 import {_, moment, React, Text} from 'Hairfolio/src/helpers';
 
@@ -67,7 +67,7 @@ export class HairfolioStore {
 
     let results;
 
-    let currentUserId = Service.fetch.store.getState().user.data.get('id')
+    let currentUserId = UserStore.user.id;
 
     if (!id || id == currentUserId) {
       results = await ServiceBackend.get('folios');

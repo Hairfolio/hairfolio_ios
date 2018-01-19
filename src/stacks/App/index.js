@@ -2,8 +2,9 @@ import React from 'React';
 import _ from 'lodash';
 import {Platform, BackAndroid, StatusBar, InteractionManager} from 'react-native';
 import {autobind} from 'core-decorators';
-import connect from '../../lib/connect';
 
+import UserStore from '../../mobx/stores/UserStore';
+import EnvironmentStore from '../../mobx/stores/EnvironmentStore';
 import Navigator from '../../navigation/Navigator';
 import NavigationSetting from '../../navigation/NavigationSetting';
 
@@ -18,21 +19,18 @@ import {COLORS} from '../../style';
 
 import {search, feed, createPost, favourites, profile, profileExternal, createPostStack } from '../../routes';
 
-import {user} from '../../selectors/user';
-import {environment} from '../../selectors/environment';
+import CreatePostStore from '../../mobx/stores/CreatePostStore';
 
-import CreatePostStore from '../../mobx/stores/CreatePostStore.js';
-
-@connect(user, environment)
 export default class AppStack extends PureComponent {
-  static propTypes = {
-    environment: React.PropTypes.object.isRequired,
-    user: React.PropTypes.object.isRequired
-  };
 
   static contextTypes = {
     navigators: React.PropTypes.array.isRequired
   };
+
+  constructor(props) {
+    super(props);
+    EnvironmentStore.loadEnv();
+  }
 
   componentWillMount() {
     this.listeners = [
@@ -63,7 +61,7 @@ export default class AppStack extends PureComponent {
   }
 
   goToProfile(id) {
-    if (this.props.user.get('id') === id) {
+    if (UserStore.user.id === id) {
       return this._nav.jumpTo(profile);
     }
 
@@ -84,9 +82,7 @@ export default class AppStack extends PureComponent {
   }
 
   render() {
-    var profilePic = utils.getUserProfilePicURI(this.props.user, this.props.environment);
-
-    console.log('profile-pic', profilePic);
+    var profilePic = utils.getUserProfilePicURI(UserStore.user, EnvironmentStore.environment);
 
     return (
       <NavigationSetting

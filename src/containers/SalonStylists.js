@@ -1,11 +1,10 @@
 import React from 'react';
 import _ from 'lodash';
+import { observer } from 'mobx-react';
 import PureComponent from '../components/PureComponent';
 import Communications from 'react-native-communications';
 import {View, Text} from 'react-native';
 import {autobind} from 'core-decorators';
-import connect from '../lib/connect';
-import {app} from '../selectors/app';
 import {Map, OrderedMap} from 'immutable';
 import {COLORS, FONTS, SCALE} from '../style';
 import SearchList from '../components/SearchList';
@@ -17,12 +16,10 @@ import utils from '../utils';
 
 import {NAVBAR_HEIGHT, READY, LOADING, LOADING_ERROR} from '../constants';
 
-@connect(app)
+@observer
 export default class SalonStylist extends PureComponent {
   static propTypes = {
-    appVersion: React.PropTypes.string.isRequired,
     backTo: React.PropTypes.object.isRequired,
-    dispatch: React.PropTypes.func.isRequired
   };
 
   static contextTypes = {

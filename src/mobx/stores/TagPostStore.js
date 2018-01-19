@@ -1,13 +1,13 @@
 import {observable, computed, action} from 'mobx';
 
-import ServiceBackend from 'backend/ServiceBackend.js'
+import ServiceBackend from '../../backend/ServiceBackend';
 
 import {_, moment, React, Text} from 'Hairfolio/src/helpers';
 
-import PostListStore from 'stores/PostListStore'
+import PostListStore from './PostListStore';
 
 
-import {PostGridStore} from 'stores/PostStore'
+import {PostGridStore} from './PostStore';
 
 import * as routes from 'Hairfolio/src/routes';
 
@@ -18,7 +18,6 @@ class TagPostModel extends PostGridStore {
     let name = this.initData;
 
     let res = await ServiceBackend.get(`tags/exact?q=${name}`);
-
     let tagId;
 
     if (res == null) {

@@ -4,29 +4,18 @@ import {OrderedMap, Map} from 'immutable';
 import PureComponent from '../components/PureComponent';
 import {autobind} from 'core-decorators';
 import {View, Text} from 'react-native';
-import connect from '../lib/connect';
-import {app} from '../selectors/app';
-import {environment} from '../selectors/environment';
+import EnvironmentStore from '../mobx/stores/EnvironmentStore';
 import {COLORS} from '../style';
 import NavigationSetting from '../navigation/NavigationSetting';
 import SearchList from '../components/SearchList';
 
-import {throwOnFail} from '../lib/reduxPromiseMiddleware';
-
 import LoadingContainer from '../components/LoadingContainer';
-
-import {registrationActions} from '../actions/registration';
 
 import {NAVBAR_HEIGHT} from '../constants';
 
-@connect(app, environment)
 export default class StylistProductExperience extends PureComponent {
   static propTypes = {
-    appVersion: React.PropTypes.string.isRequired,
     backTo: React.PropTypes.object.isRequired,
-    dispatch: React.PropTypes.func.isRequired,
-    experiences: React.PropTypes.object.isRequired,
-    experiencesState: React.PropTypes.string.isRequired,
     title: React.PropTypes.string.isRequired
   };
 
@@ -42,11 +31,7 @@ export default class StylistProductExperience extends PureComponent {
 
   @autobind
   onWillFocus() {
-    this.props.dispatch(
-      registrationActions.getExperiences(
-        this.props.experiencesNextPage
-      )
-    );
+    EnvironmentStore.getExperiences(EnvironmentStore.experiencesNextPage);
   }
 
   getValue() {
@@ -68,18 +53,16 @@ export default class StylistProductExperience extends PureComponent {
   }
 
   getNextPage() {
-    if (this.props.experiencesNextPage) {
-      this.props.dispatch(
-        registrationActions.getExperiences(this.props.experiencesNextPage)
-      )
+    if (EnvironmentStore.experiencesNextPage) {
+      EnvironmentStore.getExperiences(EnvironmentStore.experiencesNextPage);
     }
   }
 
-  render () {
-    let newExperiences = this.props.experiences
-      .filter((experience) => Map.isMap(experience) && experience.has('id'))
+  render() {
+    let newExperiences = EnvironmentStore.experiences
+      .filter((experience) => experience.id !== null)
       .map(experience =>
-        [experience.get('id'), experience]
+        [experience.id, experience]
       );
     let experiences = new OrderedMap(newExperiences);
     return (<NavigationSetting

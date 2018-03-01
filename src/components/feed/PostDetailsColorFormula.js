@@ -17,32 +17,22 @@ import {
   ScrollView,
   PickerIOS, Picker, StatusBar, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet, ozConv
 } from 'Hairfolio/src/helpers';
-
 import LinearGradient from 'react-native-linear-gradient';
-
 import ServiceBackend from '../../backend/ServiceBackend';
-
 import Swiper from 'Hairfolio/react-native-swiper';
-
 import ServiceRow from '../post/ServiceRow';
-
 import AddServiceStore from '../../mobx/stores/AddServiceStore';
-
-import * as routes from 'Hairfolio/src/routes';
-
 import PostDetailStore from '../../mobx/stores/PostDetailStore';
+import NavigatorStyles from '../../common/NavigatorStyles';
 
 const ColorInfo = observer(({store, unit, textStyle, style}) => {
   let colorArray;
-
   if (store.color.start_hex && store.color.end_hex) {
     colorArray = [`#${store.color.start_hex}`, `#${store.color.end_hex}`];
   } else {
     colorArray = [`#${store.color.hex}`, `#${store.color.hex}`];
   }
-
   let code = store.color.code;
-
   if (code.startsWith('0')) {
     code = code.substr(1);
   }
@@ -71,7 +61,6 @@ const ColorInfo = observer(({store, unit, textStyle, style}) => {
             fontFamily: FONTS.BOOK,
             color: '#3C3C3C'
           }}
-
         >
           {unit == 'oz' ? ozConv(store.weight) : store.weight}{unit}
         </Text>
@@ -104,7 +93,6 @@ const ColorInfo = observer(({store, unit, textStyle, style}) => {
 
 
 const ColorFiller = observer(() => {
-
   return (
     <View
       style={{
@@ -120,11 +108,9 @@ const ColorFiller = observer(() => {
 });
 
 const DuratationInfo = observer(({store}) => {
-
   if (!store.developerTime) {
     return null;
   }
-
   return (
     <View
       style={{
@@ -150,61 +136,39 @@ const DuratationInfo = observer(({store}) => {
   );
 });
 
-const ServiceInfo = observer(({canEdit, store}) => {
-
-
-
+const ServiceInfo = observer(({canEdit, store, navigator}) => {
   let editService = () => {
-
-
     window.serviceTag = store;
 
     // AddServiceStore.reset();
     AddServiceStore.init(store);
-
-    // AddServiceStore.posX = a.nativeEvent.locationX;
-    // AddServiceStore.posY = a.nativeEvent.locationY;
-
-    AddServiceStore.myBack = () => {
-      window.navigators[0].jumpTo(routes.postDetails);
-    };
-
+    AddServiceStore.posX = a.nativeEvent.locationX;
+    AddServiceStore.posY = a.nativeEvent.locationY;
     let myId = store.id;
-
     AddServiceStore.save = async (obj) => {
-
       obj.id = myId;
-
-
       if (obj.post_item_tag_colors) {
         let colors = obj.post_item_tag_colors;
-
         let myArr = [];
-
         for (let formula of colors) {
           let col = formula.toJSON();
           myArr.push(col);
         }
-
         obj.post_item_tag_colors = myArr;
       }
-
-
       let store = PostDetailStore.currentStore;
-
       let picture = await store.selectedPicture.toJSON(false, obj);
-
       let res = await ServiceBackend.put('photos/' + store.selectedPicture.id,
         {
           photo: picture
         });
-
-      AddServiceStore.myBack();
+      navigator.dismissModal({ animationType: 'slide-down' });
     };
-
-    window.navigators[0].jumpTo(routes.addServiceOne);
+    navigator.showModal({
+      screen: 'hairfolio.AddServicePageOne',
+      navigatorStyle: NavigatorStyles.tab,
+    });
   };
-
 
   let editButton =  (
     <TouchableOpacity
@@ -234,18 +198,13 @@ const ServiceInfo = observer(({canEdit, store}) => {
   if (!canEdit) {
     editButton = <View />;
   }
-
   let colorNumber = store.colors.length % 4;
-
   let fillers = [];
-
   if (colorNumber > 1) {
     for (let i = 0; i < 4 - colorNumber; i++) {
       fillers.push(<ColorFiller />);
     }
   }
-
-
   let colors = (
     <View
       style = {{
@@ -276,7 +235,6 @@ const ServiceInfo = observer(({canEdit, store}) => {
       <DuratationInfo store={store}/>
   </View>
   );
-
   return (
     <View>
       <View style={{marginTop: h(81)}}>
@@ -288,12 +246,10 @@ const ServiceInfo = observer(({canEdit, store}) => {
             <ServiceRow selector={{title: 'Brand', value: store.brandName}} />
             <ServiceRow selector={{title: 'Color', value: store.lineName}} />
           </View>
-
           <View
             style={{
               width: 60
             }}
-
           >
             {editButton}
           </View>
@@ -304,20 +260,13 @@ const ServiceInfo = observer(({canEdit, store}) => {
   );
 });
 
-
-const PostDetailsColorFormula = observer(({store}) => {
-
+const PostDetailsColorFormula = observer(({store, navigator}) => {
   let creatorId = store.post.creator.id;
-
   let canEdit = getUserId() == store.post.creator.id;
-
-
   let serviceTags =  store.serviceTags;
-
   if (store.serviceTags.length == 0) {
     return null;
   }
-
   return (
     <View
       onLayout={({nativeEvent}) => store.colorFormulaPosY = nativeEvent.layout.y}
@@ -355,12 +304,16 @@ const PostDetailsColorFormula = observer(({store}) => {
         }}
       >
         {store.serviceTags.map(e =>
-            <ServiceInfo canEdit={canEdit} key={e.key} store={e} />
+            <ServiceInfo
+              canEdit={canEdit}
+              key={e.key}
+              store={e}
+              navigator={navigator}
+            />
         )}
       </Swiper>
     </View>
   );
 });
-
 
 export default PostDetailsColorFormula;

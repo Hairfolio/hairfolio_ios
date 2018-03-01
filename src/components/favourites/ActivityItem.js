@@ -20,19 +20,14 @@ import {
   PickerIOS, Picker, StatusBar, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet,
 getUserId
 } from 'Hairfolio/src/helpers';
-
-
-
-import {profile, profileExternal, appStack} from 'Hairfolio/src/routes';
-
+import { toJS } from 'mobx';
 import PostDetailStore from '../../mobx/stores/PostDetailStore';
 import TagPostStore from '../../mobx/stores/TagPostStore';
 import CommentsStore from '../../mobx/stores/CommentsStore';
+import NavigatorStyles from '../../common/NavigatorStyles';
+import UserStore from '../../mobx/stores/UserStore';
 
-
-
-const ActivityItem = observer(({store, isMe}) => {
-
+const ActivityItem = observer(({store, isMe, navigator}) => {
   let postContent;
 
   if (store.post) {
@@ -54,8 +49,13 @@ const ActivityItem = observer(({store, isMe}) => {
           <TouchableWithoutFeedback
             onPress={
               () =>{
-                appStack.scene().goToProfile(store.user2.id);
-                window.navigators[0].jumpTo(appStack);
+                navigator.push({
+                  screen: 'hairfolio.Profile',
+                  navigatorStyle: NavigatorStyles.tab,
+                  passProps: {
+                    userId: store.user2.id,
+                  }
+                });
                 PostDetailStore.clear();
                 TagPostStore.clear();
                 CommentsStore.clear();
@@ -77,8 +77,13 @@ const ActivityItem = observer(({store, isMe}) => {
           <TouchableWithoutFeedback
             onPress={
               () =>{
-                appStack.scene().goToProfile(store.user2.id);
-                window.navigators[0].jumpTo(appStack);
+                navigator.push({
+                  screen: 'hairfolio.Profile',
+                  navigatorStyle: NavigatorStyles.tab,
+                  passProps: {
+                    userId: store.user2.id,
+                  }
+                });
                 PostDetailStore.clear();
                 TagPostStore.clear();
                 CommentsStore.clear();
@@ -92,7 +97,6 @@ const ActivityItem = observer(({store, isMe}) => {
       );
     }
   }
-
 
   return (
     <View
@@ -132,14 +136,20 @@ const ActivityItem = observer(({store, isMe}) => {
         <TouchableWithoutFeedback
           onPress={
             () =>{
-              appStack.scene().goToProfile(store.user.id);
-              window.navigators[0].jumpTo(appStack);
+              navigator.push({
+                screen: 'hairfolio.Profile',
+                navigatorStyle: NavigatorStyles.tab,
+                passProps: {
+                  userId: store.user.id,
+                }
+              });
               PostDetailStore.clear();
               TagPostStore.clear();
               CommentsStore.clear();
             }}
           >
-            <Text         style={{fontFamily: FONTS.MEDIUM, color: '#3E3E3E'}}
+            <Text
+              style={{fontFamily: FONTS.MEDIUM, color: '#3E3E3E'}}
             >
               {store.user.id == getUserId() ? 'You ' : store.user.name + ' '}
             </Text>

@@ -6,6 +6,7 @@ import {
 } from 'mobx';
 import { READY, EMPTY, LOADING, LOADING_ERROR } from '../../constants';
 import UserStore from './UserStore';
+import ServiceBackend from '../../backend/ServiceBackend';
 
 class OfferingStore {
   @observable addOfferingState;
@@ -27,10 +28,13 @@ class OfferingStore {
       }
     )
       .then(response => {
-        UserStore.addOffering(response);
+        UserStore.addOffering(response.offering);
         this.addOfferingState = READY;
       })
-      .catch(error => this.addOfferingState = LOADING_ERROR);
+      .catch(error => {
+        this.addOfferingState = LOADING_ERROR;
+        throw error;
+      });
   }
 
   @action editOffering = (id, offering) => {

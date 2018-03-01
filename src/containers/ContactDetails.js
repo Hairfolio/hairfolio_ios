@@ -10,35 +10,22 @@ import {
   ActivityIndicator,
   View, Text, Dimensions, TouchableOpacity, TouchableWithoutFeedback, Image} from 'react-native';
 import {COLORS, FONTS, h, SCALE} from 'Hairfolio/src/style';
-import NavigationSetting from '../navigation/NavigationSetting';
 import {observer} from 'mobx-react';
 import autobind from 'autobind-decorator'
 import _ from 'lodash';
 import ImagePicker from 'react-native-image-picker'
 import PostDetailStore from '../mobx/stores/PostDetailStore';
-
 import FollowButton from '../components/FollowButton';
-
-import {appStack, gallery, postFilter, albumPage} from '../routes';
-
-import * as routes from 'Hairfolio/src/routes'
-
 import {STATUSBAR_HEIGHT, POST_INPUT_MODE} from '../constants';
-
 import LoadingScreen from '../components/LoadingScreen';
 import BlackHeader from '../components/BlackHeader';
-
 import BlackBookStore from '../mobx/stores/BlackBookStore';
-
 import Swipeout from 'Hairfolio/react-native-swipeout/index';
-
 import ContactDetailsStore from '../mobx/stores/ContactDetailsStore';
-
 import LoadingPage from '../components/LoadingPage'
-
 import BlackBookContent from '../components/blackbook/BlackBookContent';
 
-const ContactsDetailsHeader = observer(({store}) => {
+const ContactsDetailsHeader = observer(({store, navigator}) => {
 
   let renderLeft = null;
 
@@ -66,7 +53,7 @@ const ContactsDetailsHeader = observer(({store}) => {
 
   return (
     <BlackHeader
-      onLeft={() => store.leftHeaderClick()}
+      onLeft={() => navigator.pop({ animated: true }) }
       title={store.title}
       onRenderLeft={renderLeft}
       onRenderRight={() =>
@@ -75,7 +62,7 @@ const ContactsDetailsHeader = observer(({store}) => {
             flexDirection: 'row',
             alignItems: 'center'
           }}
-          onPress={() => store.rightHeaderClick()}
+          onPress={() => store.rightHeaderClick(navigator)}
         >
           <Text
             style={{
@@ -83,7 +70,8 @@ const ContactsDetailsHeader = observer(({store}) => {
               fontFamily: FONTS.Regular,
               fontSize: h(34),
               color: 'white',
-              textAlign: 'right'
+              textAlign: 'right',
+              paddingRight: 10,
             }}
           >
             {store.rightHeaderText}
@@ -288,9 +276,7 @@ const ContactInfoRow = observer(({title, children, onMessage, onPhone}) => {
 const PhoneInfo = observer(({store}) => {
 
   if (store.mode == 'view') {
-
     let elements = [];
-
     if (store.hasMobilePhoneNumber) {
       elements.push(
         <ContactInfoRow
@@ -311,7 +297,6 @@ const PhoneInfo = observer(({store}) => {
         </ContactInfoRow>
       );
     }
-
     if (store.hasHomePhoneNumber) {
       elements.push(
         <ContactInfoRow
@@ -332,7 +317,6 @@ const PhoneInfo = observer(({store}) => {
         </ContactInfoRow>
       );
     }
-
     if (store.hasWorkPhoneNumber) {
       elements.push(
         <ContactInfoRow
@@ -352,17 +336,13 @@ const PhoneInfo = observer(({store}) => {
           <InfoText value={store.formatNumber(store.phoneWork)} />
         </ContactInfoRow>
       );
-
     }
-
     return (
       <View>
         {elements}
       </View>
     );
   }
-
-
   return (
     <View style = {{marginLeft: h(30), marginTop: h(10)}}>
       <Text
@@ -453,7 +433,6 @@ const AddressInfo = observer(({store}) => {
       return null;
     }
 
-
     return (
       <ContactInfoRow
         title='address'
@@ -463,10 +442,8 @@ const AddressInfo = observer(({store}) => {
         <InfoText value={store.addressState + ' ' + store.addressPostCode} />
         <InfoText value={store.addressCountry} />
       </ContactInfoRow>
-        );
+    );
   }
-
-
   return (
     <View style = {{marginLeft: h(30), marginTop: h(10)}}>
       <Text
@@ -487,8 +464,7 @@ const AddressInfo = observer(({store}) => {
   );
 });
 
-const NoteItem = observer(({store}) => {
-
+const NoteItem = observer(({store, navigator}) => {
   return (
     <TouchableOpacity
       onPress={
@@ -496,7 +472,7 @@ const NoteItem = observer(({store}) => {
           PostDetailStore.jump(
             false,
             store,
-            () => window.navigators[0].jumpTo(routes.contactDetails)
+            navigator,
           )
         }
       }
@@ -509,7 +485,7 @@ const NoteItem = observer(({store}) => {
   );
 });
 
-const NotesInfo = observer(({store}) => {
+const NotesInfo = observer(({store, navigator}) => {
 
   if (store.mode == 'view') {
     let elements = [];
@@ -530,7 +506,7 @@ const NotesInfo = observer(({store}) => {
           <ScrollView
             horizontal
           >
-            {store.notes.map((e, index) => <NoteItem key={index} store={e} />)}
+            {store.notes.map((e, index) => <NoteItem key={index} store={e} navigator={navigator} />)}
           </ScrollView>
 
         </View>
@@ -541,13 +517,11 @@ const NotesInfo = observer(({store}) => {
   return <View />;
 });
 
-const ContactDetailsContent = observer(() => {
-
+const ContactDetailsContent = observer(({navigator}) => {
   let store = ContactDetailsStore;
-
   return (
     <View style={{flex: 1}}>
-      <ContactsDetailsHeader store={store} />
+      <ContactsDetailsHeader store={store} navigator={navigator} />
       <ScrollView
         keyboardShouldPersistTaps="always"
         ref={e => store.scrollView = e}
@@ -556,7 +530,7 @@ const ContactDetailsContent = observer(() => {
         <PhoneInfo store={store} />
         <EmailInfo store={store} />
         <AddressInfo store={store} />
-        <NotesInfo store={store} />
+        <NotesInfo store={store} navigator={navigator}/>
       </ScrollView>
       <KeyboardSpacer />
     </View>
@@ -565,24 +539,11 @@ const ContactDetailsContent = observer(() => {
 
 @observer
 export default class ContactDetails extends PureComponent {
-
-  static contextTypes = {
-    navigators: React.PropTypes.array.isRequired
-  };
-
   render() {
-    return (<NavigationSetting
-      style={{
-        flex: 1,
-      }}
-      onWillFocus={() => {
-        StatusBar.setBarStyle('light-content');
-      }}
-    >
+    return (
       <View style={{flex: 1}}>
-        <ContactDetailsContent />
+        <ContactDetailsContent navigator={this.props.navigator}/>
       </View>
-    </NavigationSetting>
     );
   }
 };

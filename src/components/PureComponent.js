@@ -30,6 +30,10 @@ export default class Button extends Component {
   constructor(props) {
     super(props);
 
+    if (this.props.navigator) {
+      this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+    }
+
     this.render = _.wrap(this.render, (render) => {
       let isNode = ('undefined' !== typeof global) && ('[object global]' === Object.prototype.toString.call(global));
       let isWebWorker = !isNode && ('undefined' !== typeof WorkerGlobalScope) && ('function' === typeof importScripts) && (navigator instanceof WorkerNavigator);
@@ -41,5 +45,16 @@ export default class Button extends Component {
 
   shouldComponentUpdate(nextProps, nextState) {
     return !shallowEqual(this.props, nextProps) || !shallowEqual(this.state, nextState);
+  }
+
+  onNavigatorEvent(event) {
+    if (event.type == 'NavBarButtonPress') {
+      if (event.id == 'back') {
+        this.props.navigator.pop({
+          animated: true,
+          animationStyle: 'fade',
+        })
+      }
+    }
   }
 };

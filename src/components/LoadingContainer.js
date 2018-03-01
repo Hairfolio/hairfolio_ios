@@ -1,17 +1,14 @@
 import React from 'react';
-import {Text} from 'react-native';
+import { View, Text } from 'react-native';
 import PureComponent from './PureComponent';
 import Spinner from 'react-native-spinkit';
-
+import { COLORS, SCALE } from '../style';
 import utils from '../utils';
-
-// no animation here !
 
 export default class LoadingContainer extends PureComponent {
 
   static propTypes = {
-    children: React.PropTypes.func.isRequired,
-    loadingStyle: Text.propTypes.style,
+    children: React.PropTypes.func,
     state: React.PropTypes.array.isRequired
   };
 
@@ -22,6 +19,21 @@ export default class LoadingContainer extends PureComponent {
     if (utils.isReady(this.props.state))
       return this.props.children();
 
-    return <Text style={this.props.loadingStyle}>Loading</Text>;
+    return (
+      <View
+        style={{
+          flex: 1,
+          alignSelf: 'stretch',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        <Spinner
+          color={COLORS.DARK}
+          size={SCALE.h(46)}
+          type="FadingCircleAlt"
+        />
+      </View>
+    );
   }
 };

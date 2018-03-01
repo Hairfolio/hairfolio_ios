@@ -21,11 +21,11 @@ import {
   PickerIOS, Picker, StatusBar, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet
 } from 'Hairfolio/src/helpers';
 
-import {BOTTOMBAR_HEIGHT, STATUSBAR_HEIGHT} from 'Hairfolio/src/constants';
+import {STATUSBAR_HEIGHT} from 'Hairfolio/src/constants';
 
 const SearchModeSearch = observer(() => {
   return (
-    <View style={{height: windowHeight - BOTTOMBAR_HEIGHT}}>
+    <View style={{height: windowHeight}}>
       <View
         style = {{
           backgroundColor: '#3E3E3E',

@@ -6,37 +6,33 @@ import {
   StatusBar,
   View, Text, Dimensions, TouchableOpacity, TouchableWithoutFeedback, Image} from 'react-native';
 import {COLORS, FONTS, h, SCALE} from 'Hairfolio/src/style';
-import NavigationSetting from '../navigation/NavigationSetting';
 import {observer} from 'mobx-react';
 import autobind from 'autobind-decorator'
 import _ from 'lodash';
-
 import FollowButton from './FollowButton';
-
 import StarGiversStore from '../mobx/stores/StarGiversStore';
-
-import {appStack, gallery, postFilter, albumPage} from '../routes';
-
 import {STATUSBAR_HEIGHT, POST_INPUT_MODE} from '../constants';
-
 import LoadingScreen from './LoadingScreen';
-import BlackHeader from './BlackHeader';
-
 import PostDetailStore from '../mobx/stores/PostDetailStore';
 import CommentsStore from '../mobx/stores/CommentsStore';
 import TagPostStore from '../mobx/stores/TagPostStore';
-
+import NavigatorStyles from '../common/NavigatorStyles';
 
 import {
   ActivityIndicator
 } from 'Hairfolio/src/helpers';
 
-const FollowUserRow = observer(({store}) => {
+const FollowUserRow = observer(({store, navigator}) => {
   return (
     <TouchableWithoutFeedback
       onPress={() => {
-        appStack.scene().goToProfile(store.user.id);
-        window.navigators[0].jumpTo(appStack);
+        navigator.push({
+          screen: 'hairfolio.Profile',
+          navigatorStyle: NavigatorStyles.tab,
+          passProps: {
+            userId: store.user.id,
+          }
+        });
         PostDetailStore.clear();
         TagPostStore.clear();
         CommentsStore.clear();
@@ -83,7 +79,7 @@ const FollowUserRow = observer(({store}) => {
   );
 });
 
-const FollowUserList = observer(({store, style = {}, noResultText = 'There have been no starrers yet.'}) => {
+const FollowUserList = observer(({store, style = {}, noResultText = 'There have been no starrers yet.', navigator}) => {
   if (store.isLoading) {
     return (
       <View style = {{ marginTop: 20 }}>
@@ -118,7 +114,9 @@ const FollowUserList = observer(({store, style = {}, noResultText = 'There have 
       {store.users.map(e => (
         <FollowUserRow
           store={e}
-          key={e.key} />
+          key={e.key}
+          navigator={navigator}
+        />
       ))}
     </ScrollView>
 

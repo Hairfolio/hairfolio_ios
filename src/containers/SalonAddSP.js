@@ -4,7 +4,7 @@ import PureComponent from '../components/PureComponent';
 import {View, StyleSheet} from 'react-native';
 import validator from 'validator';
 import {COLORS, FONTS, SCALE} from '../style';
-import NavigationSetting from '../navigation/NavigationSetting';
+import { toJS } from 'mobx';
 import { observer } from 'mobx-react';
 import EnvironmentStore from '../mobx/stores/EnvironmentStore';
 import EducationStore from '../mobx/stores/EducationStore';
@@ -17,33 +17,79 @@ import BannerErrorContainer from '../components/BannerErrorContainer';
 import KeyboardScrollView from '../components/KeyboardScrollView';
 import LoadingContainer from '../components/LoadingContainer';
 import DeleteButton from '../components/Buttons/Delete';
-
-import {NAVBAR_HEIGHT} from '../constants';
-
-import appEmitter from '../appEmitter';
-
 import formMixin from '../mixins/form';
+import whiteBack from '../../resources/img/nav_white_back.png';
 
 @observer
 @mixin(formMixin)
 export default class SalonAddSP extends PureComponent {
-
-  static contextTypes = {
-    navigators: React.PropTypes.array.isRequired
-  };
-
   state = {
     editing: false
   };
 
+  constructor(props) {
+    super(props);
+    if (this.props.offering) {
+      this.setFormValue(this.props.offering);
+    }
+    this.loadData();
+  }
+
+  componentDidMount(props) {
+    this.props.navigator.setOnNavigatorEvent((e) => {
+      this.onNavigatorEvent(e);
+    });
+  }
+
+  static navigatorButtons = {
+    leftButtons: [
+      {
+        id: 'back',
+        icon: whiteBack,
+      }
+    ],
+    rightButtons: [
+      {
+        id: 'add',
+        title: 'Add',
+        buttonFontSize: SCALE.h(30),
+        buttonColor: COLORS.WHITE,
+      }
+    ]
+  };
+
+  onNavigatorEvent(event) {
+    if (event.type == 'NavBarButtonPress') {
+      if (event.id == 'back') {
+        this.props.navigator.pop({
+          animated: true,
+        });
+      } else if (event.id == 'add') {
+        if (this.checkErrors())
+          return;
+
+        this.setState({'submitting': true});
+
+        var action = this.state.editing === false ?
+          OfferingStore.addOffering(this.getFormValue()) :
+          OfferingStore.editOffering(this.state.editing.get('id'), this.getFormValue());
+
+        action
+          .then((r) => {
+            this.setState({submitting: false});
+            this.props.navigator.pop({ animated: true });
+            return r;
+          })
+          .catch((e) => {
+            this.refs.ebc.error(e);
+          });
+      }
+    }
+  }
+
   async loadData() {
     await EnvironmentStore.getServices();
     await EnvironmentStore.getCategories();
-  }
-
-  @autobind
-  onWillFocus() {
-    this.loadData();
   }
 
   getValue() {
@@ -93,52 +139,11 @@ export default class SalonAddSP extends PureComponent {
   }
 
   render() {
-
     window.services = this.props.services;
-    return (<NavigationSetting
-      leftAction={() => {
-        _.last(this.context.navigators).jumpBack();
-      }}
-      leftDisabled={this.state.submitting}
-      leftIcon="back"
-      onWillBlur={this.onWillBlur}
-      onWillFocus={this.onWillFocus}
-      rightAction={() => {
-        if (this.checkErrors())
-          return;
-
-        this.setState({'submitting': true});
-
-        var action = this.state.editing === false ?
-          OfferingStore.addOffer(this.getFormValue()) :
-          OfferingStore.editOffer(this.state.editing.get('id'), this.getFormValue());
-
-        action
-          .then((r) => {
-            this.setState({submitting: false});
-            return r;
-          })
-          .then(
-            () => {
-              appEmitter.emit('user-edited');
-              _.last(this.context.navigators).jumpBack();
-            },
-            (e) => {
-              this.refs.ebc.error(e);
-            }
-          );
-      }}
-      rightDisabled={this.state.submitting}
-      rightLabel="Done"
-      style={{
+    return (
+      <BannerErrorContainer ref="ebc" style={{
         flex: 1,
         backgroundColor: COLORS.LIGHT,
-        paddingTop: NAVBAR_HEIGHT
-      }}
-      title={(this.state.editing ? 'Edit' : 'Add') + ' Service'}
-    >
-      <BannerErrorContainer ref="ebc" style={{
-        flex: 1
       }}>
         <KeyboardScrollView
           scrollEnabled={false}
@@ -153,10 +158,10 @@ export default class SalonAddSP extends PureComponent {
           <LoadingContainer state={[EnvironmentStore.servicesState, EnvironmentStore.categoriesState]}>
             {() => (<View>
               <PickerInput
-                choices={EnvironmentStore.categories.map(category => ({
+                choices={toJS(EnvironmentStore.categories).map(category => ({
                   id: category.id,
                   label: category.name}
-                )).toJS()}
+                ))}
                 placeholder="Category"
                 ref={(r) => this.addFormItem(r, 'category_id')}
                 validation={(v) => !!v}
@@ -164,12 +169,12 @@ export default class SalonAddSP extends PureComponent {
               />
               <View style={{height: StyleSheet.hairlineWidth}} />
               <PickerInput
-                choices={EnvironmentStore.services.map(service => {
+                choices={toJS(EnvironmentStore.services).map(service => {
                   return {
                     id: service.id,
                     label: service.name
                   };
-                }).toJS()}
+                })}
                 placeholder="Service"
                 ref={(r) => this.addFormItem(r, 'service_id')}
                 validation={(v) => !!v}
@@ -200,8 +205,7 @@ export default class SalonAddSP extends PureComponent {
                       })
                       .then(
                         () => {
-                          appEmitter.emit('user-edited');
-                          _.last(this.context.navigators).jumpBack();
+                          this.props.navigator.pop({ animated: true });
                         },
                         (e) => {
                           this.refs.ebc.error(e);
@@ -214,6 +218,6 @@ export default class SalonAddSP extends PureComponent {
           </LoadingContainer>
         </KeyboardScrollView>
       </BannerErrorContainer>
-    </NavigationSetting>);
+    );
   }
 };

@@ -13,10 +13,6 @@ export default class Intro extends PureComponent {
     onReady: React.PropTypes.func
   };
 
-  componentDidMount() {
-    setTimeout(this.props.onReady, 300);
-  }
-
   render() {
     return (<View
       style={{flex: 1}}

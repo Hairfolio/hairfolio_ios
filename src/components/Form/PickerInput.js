@@ -24,7 +24,7 @@ export default class Picker extends PureComponent {
     disabled: PropTypes.bool,
     placeholder: PropTypes.string,
     validation: React.PropTypes.func,
-    valueProperty: React.PropTypes.string.isRequired
+    valueProperty: React.PropTypes.string.isRequired,
   };
 
   static defaultProps = {

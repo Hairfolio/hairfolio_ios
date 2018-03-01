@@ -14,6 +14,7 @@
 #import <React/RCTLinkingManager.h>
 #import <React/RCTLog.h>
 #import <React/RCTUtils.h>
+#import "RCCManager.h"
 #import <asl.h>
 
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
@@ -42,34 +43,9 @@
   NSURL *jsCodeLocation;
 
   jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index.ios" fallbackResource:nil];
-
-  RCTRootView *rootView = [[RCTRootView alloc] initWithBundleURL:jsCodeLocation
-                                                      moduleName:@"Hairfolio"
-                                               initialProperties:nil
-                                                   launchOptions:launchOptions];
-  rootView.backgroundColor = [[UIColor alloc] initWithRed:1.0f green:1.0f blue:1.0f alpha:1];
-
-  // Get launch image
-  NSString *launchImageName = nil;
-  if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-    CGFloat height = MAX(RCTScreenSize().width, RCTScreenSize().height);
-    if (height == 480) launchImageName = @"Default@2x.png"; // iPhone 4/4s
-    else if (height == 568) launchImageName = @"Default-568h@2x.png"; // iPhone 5/5s
-    else if (height == 667) launchImageName = @"Default-667h@2x.png"; // iPhone 6
-    else if (height == 736) launchImageName = @"Default-736h@3x.png"; // iPhone 6+
-  } else if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-
-  }
-  
-  UIImage *image = [UIImage imageNamed:launchImageName];
-  
-  rootView.backgroundColor = [UIColor colorWithPatternImage:image];
-  
   self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
-  UIViewController *rootViewController = [UIViewController new];
-  rootViewController.view = rootView;
-  self.window.rootViewController = rootViewController;
-  [self.window makeKeyAndVisible];
+  self.window.backgroundColor = [UIColor whiteColor];
+  [[RCCManager sharedInstance] initBridgeWithBundleURL:jsCodeLocation launchOptions:launchOptions];
   return YES;
 }
 

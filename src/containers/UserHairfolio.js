@@ -2,8 +2,6 @@ import React from 'react';
 import PureComponent from '../components/PureComponent';
 import {View, Text, TouchableHighlight} from 'react-native';
 import {COLORS, FONTS, SCALE} from '../style';
-import NavigationSetting from '../navigation/NavigationSetting';
-
 import {
   observer, // mobx
   ActivityIndicator,
@@ -13,14 +11,12 @@ import {
   getUserId,
   v4
 } from 'Hairfolio/src/helpers';
-
+import NavigatorStyles from '../common/NavigatorStyles';
 import HairfolioStore from '../mobx/stores/HairfolioStore';
 import Swipeout from 'Hairfolio/react-native-swipeout/index';
-import * as routes from 'Hairfolio/src/routes';
 import HairfolioPostStore from '../mobx/stores/HairfolioPostStore';
 
-const HairfolioItem = observer(({store, isEditable}) => {
-
+const HairfolioItem = observer(({store, isEditable, navigator}) => {
   var swipeoutBtns = [
     {
       height: h(220),
@@ -81,17 +77,16 @@ const HairfolioItem = observer(({store, isEditable}) => {
         underlayColor='#ccc'
         onPress= {
           () => {
-
             if (store.name != 'Inspiration') {
               HairfolioPostStore.title = `${store.name}`;
             } else {
               HairfolioPostStore.title = 'Inspo';
             }
             HairfolioPostStore.load(store);
-            HairfolioPostStore.back = () => {
-              window.navigators[0].jumpTo(routes.appStack);
-            }
-            window.navigators[0].jumpTo(routes.hairfolioPosts);
+            navigator.push({
+              screen: 'hairfolio.HairfolioPosts',
+              navigatorStyle: NavigatorStyles.tab,
+            });
           }
         }
       >
@@ -181,7 +176,7 @@ class HairfolioEdit extends React.Component {
   }
 }
 
-const HairfolioList = observer(() => {
+const HairfolioList = observer(({navigator}) => {
   let store = HairfolioStore;
 
   if (store.isLoading) {
@@ -193,7 +188,7 @@ const HairfolioList = observer(() => {
   } else {
     return (
       <View style={{flex: 1}}>
-        {store.hairfolios.map(e => <HairfolioItem isEditable={store.isEditable} key={e.id} store={e} />)}
+        {store.hairfolios.map(e => <HairfolioItem isEditable={store.isEditable} key={e.id} store={e} navigator={navigator} />)}
         {store.isEditable ? <HairfolioEdit /> : <View />}
       </View>
     );
@@ -201,34 +196,25 @@ const HairfolioList = observer(() => {
 });
 
 export default class UserHairfolio extends PureComponent {
-  static propTypes = {
-    onLayout: React.PropTypes.func.isRequired
-  };
-
-  static contextTypes = {
-    navigators: React.PropTypes.array.isRequired
-  };
+  constructor(props) {
+    super(props);
+    HairfolioStore.load(this.props.profile.id);
+  }
 
   state = {
     addNewItemValue: '',
   }
 
   render() {
-    return (<NavigationSetting
-      style={{
-        flex: 1,
-        backgroundColor: COLORS.WHITE,
-      }}
-      onWillFocus={() => {
-        HairfolioStore.load(this.props.profile.id);
-      }}
-    >
+    return (
       <View
-        style={{flex: 1}}
-        onLayout={this.props.onLayout}
+        style={{
+          flex: 1,
+          backgroundColor: COLORS.WHITE,
+        }}
       >
-        <HairfolioList />
+        <HairfolioList  navigator={this.props.navigator}/>
       </View>
-    </NavigationSetting>);
+    );
   }
 };

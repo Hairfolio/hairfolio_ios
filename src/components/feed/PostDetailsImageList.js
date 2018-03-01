@@ -19,7 +19,6 @@ import {
 
 import PostDetailStore from '../../mobx/stores/PostDetailStore';
 
-
 const PostDetailsImage = observer(({store, picture, index}) => {
 
   return (
@@ -38,7 +37,6 @@ const PostDetailsImage = observer(({store, picture, index}) => {
 });
 
 const PostDetailsImageList = observer(({store}) => {
-
   return (
     <ScrollView
       bounces={false}

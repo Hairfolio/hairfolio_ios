@@ -19,8 +19,6 @@ import {
   ScrollView,
   PickerIOS, Picker, StatusBar, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet
 } from 'Hairfolio/src/helpers';
-
-import * as routes from 'Hairfolio/src/routes';
 import PostDetailStore from '../../mobx/stores/PostDetailStore';
 
 const ActionButtons = observer(({post}) => {
@@ -87,16 +85,15 @@ const ActionButtons = observer(({post}) => {
   );
 });
 
-const GridPost = observer(({post, onBack}) => {
+const GridPost = observer(({post, navigator}) => {
   return (
     <TouchableWithoutFeedback
       onPress={
         () => {
-
           PostDetailStore.jump(
             false,
             post,
-            onBack
+            navigator
           );
         }
       }

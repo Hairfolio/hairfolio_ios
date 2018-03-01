@@ -5,46 +5,39 @@ import {mixin} from 'core-decorators';
 import PureComponent from '../components/PureComponent';
 import RN, {View, Text} from 'react-native';
 import {COLORS, FONTS, SCALE} from '../style';
-import NavigationSetting from '../navigation/NavigationSetting';
 import { observer } from 'mobx-react';
 import InlineTextInput from '../components/Form/InlineTextInput';
 import BannerErrorContainer from '../components/BannerErrorContainer';
 import KeyboardScrollView from '../components/KeyboardScrollView';
 import SimpleButton from '../components/Buttons/Simple';
-import {editCustomer} from '../routes';
 import Categorie from '../components/Form/Categorie';
 import UserStore from '../mobx/stores/UserStore';
 import formMixin from '../mixins/form';
-import {NAVBAR_HEIGHT} from '../constants';
+import whiteBack from '../../resources/img/nav_white_back.png';
 
 @observer
 @mixin(formMixin)
 export default class ForgottenPassword extends PureComponent {
-  static contextTypes = {
-    navigators: React.PropTypes.array.isRequired
-  };
-
   state = {};
 
+  static navigatorButtons = {
+    leftButtons: [
+      {
+        id: 'back',
+        icon: whiteBack,
+      }
+    ],
+  };
+
   render() {
-    return (<NavigationSetting
-      leftAction={() => {
-        _.last(this.context.navigators).jumpTo(editCustomer);
-      }}
-      leftDisabled={this.state.submitting}
-      leftIcon="back"
-      onWillBlur={this.onWillBlur}
-      onWillFocus={this.onWillFocus}
-      style={{
-        flex: 1,
-        backgroundColor: COLORS.LIGHT,
-        paddingTop: NAVBAR_HEIGHT
-      }}
-      title="Change Password"
-    >
-      <BannerErrorContainer ref="ebc" style={{
-        flex: 1
-      }}>
+    return (
+      <BannerErrorContainer
+        ref="ebc"
+        style={{
+          flex: 1,
+          backgroundColor: COLORS.LIGHT,
+        }}
+      >
         <KeyboardScrollView
           scrollEnabled={false}
           scrollToTopOnBlur
@@ -52,7 +45,6 @@ export default class ForgottenPassword extends PureComponent {
           space={70}
           style={{flex: 1}}
         >
-
           <Categorie name="OLD PASSWORD" />
           <InlineTextInput
             autoCapitalize="none"
@@ -110,7 +102,7 @@ export default class ForgottenPassword extends PureComponent {
                   .then(
                     () => {
                       this.clearValues();
-                      _.last(this.context.navigators).jumpTo(editCustomer);
+                      this.props.navigator.pop({ animated: true });
                     },
                     (e) => {
                       this.refs.ebc.error(e);
@@ -122,6 +114,6 @@ export default class ForgottenPassword extends PureComponent {
           </View>
         </KeyboardScrollView>
       </BannerErrorContainer>
-    </NavigationSetting>);
+    );
   }
 };

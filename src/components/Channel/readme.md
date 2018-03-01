@@ -1,1 +1,0 @@
-the combinaison ChannelEmitter / ChannelResponder allows to have a component higher in the hierarchy that can be controlled by an other component lower in the view hierarchy

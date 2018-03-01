@@ -6,28 +6,15 @@ import {View, Text, StyleSheet, InteractionManager} from 'react-native';
 import { observer } from 'mobx-react';
 import { toJS } from 'mobx';
 import {COLORS, FONTS, SCALE} from '../style';
-import NavigationSetting from '../navigation/NavigationSetting';
 import validator from 'validator';
 import FeedStore from '../mobx/stores/FeedStore';
 import UserStore from '../mobx/stores/UserStore';
-
 import Communications from 'react-native-communications'
-
-import appEmitter from '../appEmitter';
-
 import EnvironmentStore from '../mobx/stores/EnvironmentStore';
 import CloudinaryStore from '../mobx/stores/CloudinaryStore';
-
-import {NAVBAR_HEIGHT} from '../constants';
-
-import {loginStack, appStack, changePassword, salonStylistsEU, salonSPEU, editCustomerAddress, stylistCertificatesEU, stylistPlaceOfWorkEU, stylistProductExperienceEU, stylistEducationEU, salonProductExperienceEU} from '../routes';
-
-
 import formMixin from '../mixins/form';
 import utils from '../utils';
-
 import DeleteButton from '../components/Buttons/Delete';
-
 import MultilineTextInput from '../components/Form/MultilineTextInput';
 import PickerInput from '../components/Form/PickerInput';
 import InlineTextInput from '../components/Form/InlineTextInput';
@@ -38,33 +25,77 @@ import ProfileTextInput from '../components/Form/ProfileTextInput';
 import Categorie from '../components/Form/Categorie';
 import KeyboardScrollView from '../components/KeyboardScrollView';
 import BannerErrorContainer from '../components/BannerErrorContainer';
+import whiteBack from '../../resources/img/nav_white_back.png';
+import AppStore from '../mobx/stores/AppStore';
 
 @observer
 @mixin(formMixin)
 export default class EditCustomer extends PureComponent {
-  static contextTypes = {
-    navigators: React.PropTypes.array.isRequired
-  };
-
   state = {};
 
-  componentWillMount() {
-    this.listeners = [
-      appEmitter.addListener('login', this.onLogin),
-      appEmitter.addListener('user-edited', (page) => {
-        if (page !== 'edit-page')
-          this.onLogin();
-      })
-    ];
-  }
-
   componentDidMount() {
-    if (utils.isReady(UserStore.userState))
-      this.onLogin();
+    this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
   }
 
-  componentWillUnmount() {
-    _.each(this.listeners, l => l.remove());
+  static navigatorButtons = {
+    leftButtons: [
+      {
+        id: 'cancel',
+        icon: whiteBack,
+      }
+    ],
+    rightButtons: [
+      {
+        id: 'save',
+        title: 'Save',
+        buttonFontSize: SCALE.h(30),
+        buttonColor: COLORS.WHITE,
+      }
+    ]
+  };
+
+  onNavigatorEvent(event) {
+    if (event.type == 'NavBarButtonPress') {
+      if (event.id == 'cancel') {
+        this.props.navigator.pop({
+          animated: true,
+        });
+      } else if (event.id == 'save') {
+        this._save();
+      }
+    }
+  }
+
+  _save = () => {
+    if (this.checkErrors()) {
+      this.refs.ebc.error('Invalid information');
+      return;
+    }
+    let formData = this.getFormValue();
+    let business = {};
+    if (UserStore.user.account_type == 'stylist') {
+      formData.description = formData.business_info;
+      delete formData.business_info;
+    }
+    for (let key in formData) {
+      if (key == 'business') {
+        for (let key2 in formData[key]) {
+          business[key2] = formData[key][key2];
+        }
+      } else if (key.startsWith('business')) {
+        business[key.substr(9)] = formData[key];
+      }
+    }
+    formData['business'] = business;
+    this.setState({'submitting': true});
+    UserStore.editUser(formData, UserStore.user.account_type)
+      .then((r) => {
+        this.setState({submitting: false});
+        return r;
+      })
+      .catch((e) => {
+        this.refs.ebc.error(e);
+      });
   }
 
   initValues() {
@@ -91,8 +122,6 @@ export default class EditCustomer extends PureComponent {
       rawValues.business_website = business.website;
       rawValues.business_phone = business.phone;
       rawValues.salon_user_id = salonUserId;
-
-
       rawValues.business = {
         name: business.name,
         address: business.address,
@@ -104,15 +133,11 @@ export default class EditCustomer extends PureComponent {
         'salon_user_id': salonUserId
       };
     }
-
-
     if (UserStore.user.account_type === 'stylist') {
       rawValues.business_info = rawValues.description;
     }
-
     rawValues['certificate_ids'] = _.map(rawValues.certificates, 'id');
     rawValues['experience_ids'] = _.map(rawValues.experiences, 'id');
-
     this.setFormValue(rawValues);
   }
 
@@ -131,16 +156,28 @@ export default class EditCustomer extends PureComponent {
         autoCorrect={false}
         max={300}
         placeholder="Short professional description…"
-        ref={(r) => this.addFormItem(r, 'business_info')}
+        ref={(r) => {
+          this.addFormItem(r, 'business_info');
+          if (r) {
+            r.setValue(UserStore.user.business_info);
+          }
+        }}
         validation={(v) => !v || validator.isLength(v, {max: 300})}
       />
 
       <View style={{height: StyleSheet.hairlineWidth}} />
 
       <PageInput
-        page={editCustomerAddress}
+        page={'hairfolio.EditCustomerAddress'}
+        navigator={this.props.navigator}
         placeholder="Address"
-        ref={(r) => this.addFormItem(r, 'business')}
+        title="Address"
+        onBack={(r) => {
+          this.addFormItem(r, 'business');
+          if (r) {
+            r.setValue(UserStore.user.business);
+          }
+        }}
         validation={(v) => true}
       />
 
@@ -150,7 +187,12 @@ export default class EditCustomer extends PureComponent {
         autoCorrect={false}
         keyboardType="url"
         placeholder="Website"
-        ref={(r) => this.addFormItem(r, 'business_website')}
+        ref={(r) => {
+          this.addFormItem(r, 'business_website');
+          if (r) {
+            r.setValue(UserStore.user.business_website);
+          }
+        }}
         validation={(v) => true}
       />
       <View style={{height: StyleSheet.hairlineWidth}} />
@@ -159,30 +201,46 @@ export default class EditCustomer extends PureComponent {
         autoCorrect={false}
         keyboardType="numeric"
         placeholder="Phone Number"
-        ref={(r) => this.addFormItem(r, 'business_phone')}
+        ref={(r) => {
+          this.addFormItem(r, 'business_phone');
+          if (r) {
+            r.setValue(UserStore.user.business_phone);
+          }
+        }}
         validation={(v) => true}
       />
       <View style={{height: StyleSheet.hairlineWidth}} />
 
       <PageInput
-        page={salonStylistsEU}
+        page={'hairfolio.SalonStylists'}
         placeholder="Stylists"
+        title="Stylists"
+        navigator={this.props.navigator}
       />
 
       <View style={{height: StyleSheet.hairlineWidth}} />
 
       <PageInput
-        page={salonProductExperienceEU}
+        page={'hairfolio.StylistProductExperience'}
         placeholder="Products"
-        ref={(r) => this.addFormItem(r, 'experience_ids')}
+        ref={(r) => {
+          this.addFormItem(r, 'experience_ids');
+          if (r) {
+            r.setValue(UserStore.user.experiences.map(exp => exp.id));
+          }
+        }}
         validation={(v) => true}
+        title="Products"
+        navigator={this.props.navigator}
       />
 
       <View style={{height: StyleSheet.hairlineWidth}} />
 
       <PageInput
-        page={salonSPEU}
+        page={'hairfolio.SalonSP'}
         placeholder="Services &  Prices"
+        title="Services &  Prices"
+        navigator={this.props.navigator}
       />
 
       <View style={{height: StyleSheet.hairlineWidth}} />
@@ -191,7 +249,12 @@ export default class EditCustomer extends PureComponent {
         autoCorrect={false}
         max={300}
         placeholder="Career opportunities"
-        ref={(r) => this.addFormItem(r, 'career_opportunity')}
+        ref={(r) => {
+          this.addFormItem(r, 'career_opportunity');
+          if (r) {
+            r.setValue(UserStore.user.career_opportunity);
+          }
+        }}
         validation={(v) => !v || validator.isLength(v, {max: 300})}
       />
     </View>);
@@ -206,17 +269,29 @@ export default class EditCustomer extends PureComponent {
         autoCorrect={false}
         max={300}
         placeholder="Short professional description…"
-        ref={(r) => this.addFormItem(r, 'business_info')}
+        ref={(r) => {
+          this.addFormItem(r, 'business_info');
+          if (r) {
+            r.setValue(UserStore.user.business_info);
+          }
+        }}
         validation={(v) => !v || validator.isLength(v, {max: 300})}
       />
 
       <View style={{height: StyleSheet.hairlineWidth}} />
 
       <PageInput
-        page={editCustomerAddress}
+        page={'hairfolio.EditCustomerAddress'}
         placeholder="Address"
-        ref={(r) => this.addFormItem(r, 'business')}
+        ref={(r) => {
+          this.addFormItem(r, 'business');
+          if (r) {
+            r.setValue(UserStore.user.business);
+          }
+        }}
         validation={(v) => true}
+        title="Address"
+        navigator={this.props.navigator}
       />
 
       <View style={{height: StyleSheet.hairlineWidth}} />
@@ -225,7 +300,12 @@ export default class EditCustomer extends PureComponent {
         autoCorrect={false}
         keyboardType="url"
         placeholder="Website"
-        ref={(r) => this.addFormItem(r, 'business_website')}
+        ref={(r) => {
+          this.addFormItem(r, 'business_website');
+          if (r) {
+            r.setValue(UserStore.user.business_website);
+          }
+        }}
         validation={(v) => true}
       />
       <View style={{height: StyleSheet.hairlineWidth}} />
@@ -234,7 +314,12 @@ export default class EditCustomer extends PureComponent {
         autoCorrect={false}
         keyboardType="numeric"
         placeholder="Phone Number"
-        ref={(r) => this.addFormItem(r, 'business_phone')}
+        ref={(r) => {
+          this.addFormItem(r, 'business_phone');
+          if (r) {
+            r.setValue(UserStore.user.business_phone);
+          }
+        }}
         validation={(v) => true}
       />
     </View>);
@@ -243,68 +328,85 @@ export default class EditCustomer extends PureComponent {
   renderStylistSpecifics() {
     return (<View>
       <Categorie name="BRAND INFORMATION" />
-
       <MultilineTextInput
         autoCapitalize="none"
         autoCorrect={false}
         max={300}
         placeholder="Short professional description…"
-        ref={(r) => this.addFormItem(r, 'business_info')}
+        ref={(r) => {
+          this.addFormItem(r, 'business_info');
+          if (r) {
+            r.setValue(UserStore.user.business_info);
+          }
+        }}
         validation={(v) => !v || validator.isLength(v, {max: 300})}
       />
-
       <View style={{height: StyleSheet.hairlineWidth}} />
-
       <PickerInput
         choices={_.map(_.range(0, 46), i => ({
           label: i.toString(),
           value: i
         }))}
         placeholder="Years of experience"
-        ref={(r) => this.addFormItem(r, 'years_exp')}
+        ref={(r) => {
+          this.addFormItem(r, 'years_exp');
+          if (r) {
+            r.setValue(UserStore.user.years_exp);
+          }
+        }}
         validation={(v) => true}
         valueProperty="value"
       />
-
       <View style={{height: StyleSheet.hairlineWidth}} />
-
       <PageInput
-        page={stylistEducationEU}
+        page={'hairfolio.StylistEducation'}
         placeholder="Education"
+        title="Education"
+        navigator={this.props.navigator}
       />
-
       <View style={{height: StyleSheet.hairlineWidth}} />
-
       <PageInput
-        page={stylistCertificatesEU}
+        page={'hairfolio.StylistCertificates'}
         placeholder="Certificates"
-        ref={(r) => this.addFormItem(r, 'certificate_ids')}
+        ref={(r) => {
+          this.addFormItem(r, 'certificate_ids');
+          if (r) {
+            r.setValue(UserStore.user.certificates.map(cert => cert.id));
+          }
+        }}
         validation={(v) => true}
+        title="Certificates"
+        navigator={this.props.navigator}
       />
-
       <View style={{height: StyleSheet.hairlineWidth}} />
-
       <PageInput
-        page={stylistPlaceOfWorkEU}
+        page={'hairfolio.StylistPlaceOfWork'}
         placeholder="Place of work"
         ref={(r) => this.addFormItem(r, 'business')}
         validation={(v) => true}
+        title="Place of work"
+        navigator={this.props.navigator}
       />
-
       <View style={{height: StyleSheet.hairlineWidth}} />
-
       <PageInput
-        page={stylistProductExperienceEU}
+        page={'hairfolio.StylistProductExperience'}
         placeholder="Product experience"
-        ref={(r) => this.addFormItem(r, 'experience_ids')}
+        ref={(r) => {
+          this.addFormItem(r, 'experience_ids');
+          if (r) {
+            r.setValue(UserStore.user.experiences.map(exp => exp.id));
+          }
+        }}
         validation={(v) => true}
+        navigator={this.props.navigator}
+        title="Product Experience"
       />
-
       <View style={{height: StyleSheet.hairlineWidth}} />
-
       <PageInput
-        page={salonSPEU}
+        page={'hairfolio.SalonSP'}
         placeholder="Services &  Prices"
+        title="Services &  Prices"
+        navigator={this.props.navigator}
       />
     </View>);
   }
@@ -314,14 +416,24 @@ export default class EditCustomer extends PureComponent {
       <ProfileTextInput
         autoCorrect={false}
         placeholder="First name"
-        ref={(r) => this.addFormItem(r, 'first_name')}
+        ref={(r) => {
+          this.addFormItem(r, 'first_name');
+          if (r) {
+            r.setValue(UserStore.user.first_name);
+          }
+        }}
         validation={(v) => !!v}
       />
       <View style={{height: StyleSheet.hairlineWidth}} />
       <ProfileTextInput
         autoCorrect={false}
         placeholder="Last name"
-        ref={(r) => this.addFormItem(r, 'last_name')}
+        ref={(r) => {
+          this.addFormItem(r, 'last_name');
+          if (r) {
+            r.setValue(UserStore.user.last_name);
+          }
+        }}
         validation={(v) => !!v}
       />
     </View>);
@@ -340,68 +452,8 @@ export default class EditCustomer extends PureComponent {
 
   render() {
     var isLoading = this.state.submitting || utils.isLoading(CloudinaryStore.cloudinaryStates.get('edit-user-pick'));
-
-    return (<NavigationSetting
-      forceUpdateEvents={['login', 'user-edited']}
-      leftAction={() => {
-        this.initValues();
-        _.first(this.context.navigators).jumpTo(appStack);
-      }}
-      leftDisabled={isLoading}
-      leftIcon="white_x"
-      onWillFocus={this.onWillFocus}
-      rightAction={() => {
-        if (this.checkErrors())
-          return;
-
-        let formData = this.getFormValue();
-
-        let business = {};
-
-        if (UserStore.user.account_type == 'stylist') {
-          formData.description = formData.business_info;
-          delete formData.business_info;
-        }
-
-        for (let key in formData) {
-
-          if (key == 'business') {
-            for (let key2 in formData[key]) {
-              business[key2] = formData[key][key2];
-            }
-          } else if (key.startsWith('business')) {
-            // console.log('key set', key);
-            business[key.substr(9)] = formData[key];
-          }
-        }
-
-        // console.log('business', business);
-        formData['business'] = business;
-
-        this.setState({'submitting': true});
-        UserStore.editUser(formData, this.props.user.account_type)
-        .then((r) => {
-          this.setState({submitting: false});
-          return r;
-        })
-        .then(
-          () => {
-            appEmitter.emit('user-edited', 'edit-page');
-          },
-          (e) => {
-            this.refs.ebc.error(e);
-          }
-        );
-      }}
-      rightDisabled={isLoading}
-      rightLabel="Save"
-      style={{
-        flex: 1,
-        backgroundColor: COLORS.LIGHT,
-        paddingTop: NAVBAR_HEIGHT
-      }}
-      title="Settings"
-    >
+    const userProfileUri = utils.getUserProfilePicURI(UserStore.user, EnvironmentStore.getEnv());
+    return (
       <BannerErrorContainer ref="ebc" style={{flex: 1}}>
         <KeyboardScrollView
           ref="scrollView"
@@ -412,11 +464,12 @@ export default class EditCustomer extends PureComponent {
           <View style={{
             marginTop: SCALE.h(34),
             marginBottom: SCALE.h(34),
+            backgroundColor: COLORS.LIGHT,
             alignSelf: 'center'
           }}>
             <PictureInput
               disabled={isLoading}
-              emptyStatePictureURI={utils.getUserProfilePicURI(UserStore.user, EnvironmentStore.getEnv())}
+              emptyStatePictureURI={userProfileUri}
               getPictureURIFromValue={(value) => {
                 return utils.getCloudinaryPicFromId(value, EnvironmentStore.getEnv());
               }}
@@ -428,7 +481,7 @@ export default class EditCustomer extends PureComponent {
                  CloudinaryStore.upload(uri, metas, {maxHW: 512}, 'edit-user-pick')
                   .then(({public_id}) => public_id)
               }
-              validation={(v) => !!v || UserStore.user.instagram_id || UserStore.user.facebook_id}
+              validation={(v) => userProfileUri || UserStore.user.instagram_id || UserStore.user.facebook_id}
             />
           </View>
 
@@ -448,13 +501,20 @@ export default class EditCustomer extends PureComponent {
             editable={!UserStore.user.facebook_id && !UserStore.user.instagram_id}
             keyboardType="email-address"
             placeholder="Email"
-            ref={(r) => this.addFormItem(r, 'email')}
+            ref={(r) => {
+              this.addFormItem(r, 'email');
+              if (r) {
+                r.setValue(UserStore.user.email);
+              }
+            }}
             validation={(v) => !!v && validator.isEmail(v)}
           />
           <View style={{height: StyleSheet.hairlineWidth}} />
           <PageInput
-            page={changePassword}
+            page={'hairfolio.ChangePassword'}
             placeholder="Change Password"
+            title="Change Password"
+            navigator={this.props.navigator}
           />
 
           {UserStore.user.account_type === 'owner' ?
@@ -502,8 +562,6 @@ export default class EditCustomer extends PureComponent {
             onPress={() => {
               FeedStore.reset();
               UserStore.logout();
-              appEmitter.emit('logout');
-              _.first(this.context.navigators).jumpTo(loginStack);
             }}
           />
           <View style={{height: 10}} />
@@ -513,24 +571,20 @@ export default class EditCustomer extends PureComponent {
               FeedStore.reset();
               UserStore.logout();
               UserStore.destroy();
-              appEmitter.emit('logout', {destroy: true});
-              _.first(this.context.navigators).jumpTo(loginStack);
             }}
           />
           <View style={{height: 20}} />
-
           <Text style={{
             textAlign: 'center',
             fontFamily: FONTS.ROMAN,
             color: COLORS.TEXT,
             fontSize: SCALE.h(28)
           }}>
-            V.{this.props.appVersion}
+            V.{AppStore.appVersion}
           </Text>
-
           <View style={{height: 20}} />
         </KeyboardScrollView>
       </BannerErrorContainer>
-    </NavigationSetting>);
+    );
   }
 };

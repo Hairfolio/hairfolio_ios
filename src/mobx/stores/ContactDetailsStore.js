@@ -1,5 +1,6 @@
 import ReactNative, { NativeModules } from 'react-native';
-import { windowHeight, h } from 'react';
+import { h } from '../../helpers';
+import { windowHeight } from 'react';
 import Communications from 'react-native-communications';
 import { observable, action, computed } from 'mobx';
 import Picture from '../stores/Picture';
@@ -262,7 +263,7 @@ class ContactDetailsStore {
     return data;
   }
 
-  async rightHeaderClick() {
+  async rightHeaderClick(navigator) {
     if (this.mode == 'view') {
       this.mode = 'edit';
 
@@ -285,31 +286,24 @@ class ContactDetailsStore {
 
     } else if (this.mode == 'edit') {
       this.mode = 'view';
-      // TODO save in backend
-
       if (this.firstName.length == 0 || this.lastName.length == 0) {
         alert('Please Fill in a first and lastName');
         return;
       }
-
       let data = this.createData();
-
       let res = await ServiceBackend.put(`contacts/${this.id}`, {contact: data});
-
-    } else { //  created new contact
-
+    } else {
       if (this.firstName.length == 0 || this.lastName.length == 0) {
         alert('Please Fill in a first and lastName');
         return;
       }
-
       let data = this.createData();
-
       let res = await ServiceBackend.post('contacts', {contact: data});
 
-      this.myBack();
+      navigator.pop({ animated: true })
     }
   }
+
   leftHeaderClick() {
     if (this.mode == 'edit') {
       this.mode = 'view';

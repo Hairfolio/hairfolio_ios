@@ -1,66 +1,49 @@
 import React from 'react';
 import _ from 'lodash';
 import validator from 'validator';
+import { observer } from 'mobx-react';
 import {mixin} from 'core-decorators';
 import PureComponent from '../components/PureComponent';
 import {View, Text, StyleSheet} from 'react-native';
 import {COLORS, FONTS, SCALE} from '../style';
-import NavigationSetting from '../navigation/NavigationSetting';
-
 import MultilineTextInput from '../components/Form/MultilineTextInput';
 import PickerInput from '../components/Form/PickerInput';
 import PageInput from '../components/Form/PageInput';
 import BannerErrorContainer from '../components/BannerErrorContainer';
-
 import UserStore from '../mobx/stores/UserStore';
-import {stylistEducation, stylistCertificates, stylistPlaceOfWork, stylistProductExperience, appStack, stylistSP} from '../routes';
-
 import formMixin from '../mixins/form';
+import App from '../App';
 
-import {NAVBAR_HEIGHT} from '../constants';
-import appEmitter from '../appEmitter';
-
+@observer
 @mixin(formMixin)
 export default class StylistInfo extends PureComponent {
-  static contextTypes = {
-    navigators: React.PropTypes.array.isRequired
-  };
-
   state = {};
 
-  render() {
-    return (<NavigationSetting
-      onWillBlur={this.onWillBlur}
-      onWillFocus={this.onWillFocus}
-      rightAction={() => {
-        if (this.checkErrors())
-          return;
+  constructor(props) {
+    super(props);
+    this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+  }
 
-        this.setState({'submitting': true});
-        UserStore.editUser(this.getFormValue(), 'stylist')
-        .then((r) => {
-          this.setState({submitting: false});
-          return r;
-        })
-        .then(
-          () => {
-            appEmitter.emit('user-edited');
-            _.first(this.context.navigators).jumpTo(appStack, () => this.clearValues());
-          },
-          (e) => {
-            this.refs.ebc.error(e);
-          }
-        );
-      }}
-      rightDisabled={this.state.submitting}
-      rightLabel="Next"
-      style={{
-        flex: 1,
-        backgroundColor: COLORS.LIGHT,
-        paddingTop: NAVBAR_HEIGHT
-      }}
-      title="Professional Info"
-    >
+  static navigatorButtons = {
+    rightButtons: [
+      {
+        id: 'submit',
+        title: 'Next',
+        buttonFontSize: SCALE.h(30),
+        buttonColor: COLORS.WHITE,
+      }
+    ]
+  };
+
+  onNavigatorEvent(event) {
+    if (event.type == 'NavBarButtonPress') {
+      UserStore.needsMoreInfo = false
+      App.startApplication();
+    }
+  }
+
+  render() {
+    return (
       <BannerErrorContainer ref="ebc" style={{
         flex: 1
       }}>
@@ -91,24 +74,30 @@ export default class StylistInfo extends PureComponent {
         <View style={{height: StyleSheet.hairlineWidth}} />
 
         <PageInput
-          page={stylistEducation}
+          page={'hairfolio.StylistEducation'}
+          navigator={this.props.navigator}
+          title={'Education'}
           placeholder="Education"
         />
 
         <View style={{height: StyleSheet.hairlineWidth}} />
 
         <PageInput
-          page={stylistCertificates}
+          page={'hairfolio.StylistCertificates'}
           placeholder="Certificates"
           ref={(r) => this.addFormItem(r, 'certificate_ids')}
           validation={(v) => true}
+          title='Certificates'
+          navigator={this.props.navigator}
         />
 
         <View style={{height: StyleSheet.hairlineWidth}} />
 
         <PageInput
-          page={stylistPlaceOfWork}
+          page={'hairfolio.StylistPlaceOfWork'}
           placeholder="Place of work"
+          title='Place of work'
+          navigator={this.props.navigator}
           ref={(r) => this.addFormItem(r, 'business')}
           validation={(v) => true}
         />
@@ -116,18 +105,22 @@ export default class StylistInfo extends PureComponent {
         <View style={{height: StyleSheet.hairlineWidth}} />
 
         <PageInput
-          page={stylistProductExperience}
+          page={'hairfolio.StylistProductExperience'}
           placeholder="Product experience"
           ref={(r) => this.addFormItem(r, 'experience_ids')}
           validation={(v) => true}
+          title='Product Experience'
+          navigator={this.props.navigator}
         />
 
         <View style={{height: StyleSheet.hairlineWidth}} />
 
         <PageInput
-          page={stylistSP}
+          page={'hairfolio.SalonSP'}
           placeholder="Services &  Prices"
           ref={(r) => this.addFormItem(r, 'services')}
+          title="Services &  Prices"
+          navigator={this.props.navigator}
           validation={(v) => true}
         />
 
@@ -140,6 +133,6 @@ export default class StylistInfo extends PureComponent {
           color: COLORS.TEXT
         }}>You can fill all this in later, if you’re feeling lazy.</Text>
       </BannerErrorContainer>
-    </NavigationSetting>);
+    );
   }
 };

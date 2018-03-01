@@ -1,53 +1,46 @@
 import React from 'react';
 import {WebView} from 'react-native';
 import PureComponent from '../components/PureComponent';
-import NavigationSetting from '../navigation/NavigationSetting';
-
-import {NAVBAR_HEIGHT} from '../constants';
+import whiteBack from '../../resources/img/nav_white_back.png';
+import { READY, LOADING_ERROR } from '../constants';
+import OAuthStore from '../mobx/stores/OAuthStore';
 
 export default class LoginOAuth extends PureComponent {
   state = {};
 
+  static navigatorButtons = {
+    leftButtons: [
+      {
+        id: 'back',
+        icon: whiteBack,
+      }
+    ]
+  };
+
   i = 0;
 
-  prepare({authorize, redirectUri, clientId, type, scope}, callback) {
-    this.setState({
-      authorize,
-      redirectUri,
-      clientId,
-      callback: callback,
-      scope,
-      type,
-      i: this.i++
+  _callback(err, token) {
+    if (token) {
+      OAuthStore.updateOatuhStatus(READY);
+      OAuthStore.setOatuhToken(token);
+    } else {
+      console.log(err);
+      OAuthStore.updateOatuhStatus(LOADING_ERROR);
+    }
+    this.props.navigator.pop({
+      animated: true,
+      animationStyle: 'fade',
     });
   }
 
-  callback(err, token) {
-    var callback = this.state.callback;
-    if (!callback)
-      return;
-    this.setState({
-      callback: null
-    }, () => callback(err, token));
-  }
-
   render() {
-    return (<NavigationSetting
-      leftAction={() => {
-        this.callback('cancelled');
-      }}
-      leftIcon="back"
-      ref="ns"
-      style={{
-        flex: 1,
-        paddingTop: NAVBAR_HEIGHT
-      }}
-      title={this.state.type}
-    >
-      {this.state.callback ? <WebView
-        key={this.state.i}
+    this.i = this.i + 1;
+    return (
+      <WebView
+        thirdPartyCookiesEnabled={false}
+        key={this.i}
         onLoadStart={(e) => {
-          var trigger = this.state.redirectUri + '#access_token=';
+          var trigger = OAuthStore.config.redirectUri + '#access_token=';
           var i = e.nativeEvent.url.indexOf(trigger);
           if (i > -1) {
             var token = e.nativeEvent.url.substr(trigger.length);
@@ -55,13 +48,14 @@ export default class LoginOAuth extends PureComponent {
             var next = token.indexOf('&');
             next = next !== -1 ? token = token.substr(0, next) : token;
 
-            return this.callback(null, token);
+            return this._callback(null, token);
           }
         }}
         source={{
-          uri: `${this.state.authorize}?client_id=${this.state.clientId}&redirect_uri=${this.state.redirectUri}&response_type=token&scope=${this.state.scope}`}}
+          uri: `${OAuthStore.config.authorize}?client_id=${OAuthStore.config.clientId}&redirect_uri=${OAuthStore.config.redirectUri}&response_type=token&scope=${OAuthStore.config.scope}`
+        }}
         style={{flex: 1}}
-      /> : null}
-    </NavigationSetting>);
+      />
+    );
   }
 };

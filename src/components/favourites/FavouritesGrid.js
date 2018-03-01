@@ -38,7 +38,7 @@ const MyFooter = observer(({store}) => {
   }
 });
 
-const FavouritesGrid = observer(() => {
+const FavouritesGrid = observer(({navigator}) => {
 
   let store = FavoriteStore;
 
@@ -86,9 +86,9 @@ const FavouritesGrid = observer(() => {
                 flexWrap: 'wrap'
               }}
             >
-              <GridPost key={el[0].key} post={el[0]} />
+              <GridPost key={el[0].key} post={el[0]} navigator={navigator}/>
               {
-                el[1] != null ?  <GridPost key={el[1].key} post={el[1]} /> :
+                el[1] != null ?  <GridPost key={el[1].key} post={el[1]} navigator={navigator} /> :
                 <View
                   style = {{
                     width: windowWidth / 2,

@@ -25,14 +25,10 @@ class NewMessageStore {
   }
 
   async load() {
-    // TODO backend integration
     let userId = UserStore.user.id;
-
     let res = (await ServiceBackend.get(`users/${userId}`)).user;
-
     this.newMessageNumber = res.unread_messages_count;
   }
-
 }
 
 const store = new NewMessageStore();

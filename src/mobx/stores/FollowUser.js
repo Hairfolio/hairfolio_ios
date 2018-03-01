@@ -42,7 +42,7 @@ export default class FollowUser {
   async follow() {
     this.followLoading = true;
 
-    let myId = UserStore.user.data.id;
+    let myId = UserStore.user.id;
 
 
     let res = await ServiceBackend.post(`users/${this.user.id}/follows`, { });
@@ -55,7 +55,7 @@ export default class FollowUser {
   async unfollow() {
     this.followLoading = true;
 
-    let myId = UserStore.user.data.id;
+    let myId = UserStore.user.id;
 
     let res = await ServiceBackend.delete(`users/${this.user.id}/follows`);
 

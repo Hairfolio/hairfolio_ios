@@ -18,34 +18,22 @@ import {
   ActionSheetIOS,
   PickerIOS, Picker, StatusBar, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet
 } from 'Hairfolio/src/helpers';
-
 import ServiceBackend from '../../backend/ServiceBackend';
-
 import StarGiversStore from '../../mobx/stores/StarGiversStore';
 import CommentsStore from '../../mobx/stores/CommentsStore';
-
 import WriteMessageStore from '../../mobx/stores/WriteMessageStore';
-
 import Communications from 'react-native-communications';
-
 import FeedStore from '../../mobx/stores/FeedStore';
 import SearchStore from '../../mobx/stores/SearchStore';
-
-import {starGivers, comments, appStack} from '../../routes';
 import { NativeModules } from 'react-native';
-
-import * as routes from 'Hairfolio/src/routes';
-
 import PostDetailStore from '../../mobx/stores/PostDetailStore';
-
 const KDSocialShare = NativeModules.KDSocialShare;
-const PostActionButtons = observer(({post}) => {
+import NavigatorStyles from '../../common/NavigatorStyles';
+
+const PostActionButtons = observer(({post, navigator}) => {
 
   let openMore = () => {
-
-
     let imageLink =  post.pictures[0].source.uri;
-
     ActionSheetIOS.showActionSheetWithOptions({
       options: ['Report', 'Block User', 'Cancel'],
       destructiveButtonIndex: 1,
@@ -64,7 +52,6 @@ const PostActionButtons = observer(({post}) => {
           FeedStore.reset();
           FeedStore.load();
           SearchStore.reset();
-
         });
       }
     });
@@ -83,9 +70,11 @@ const PostActionButtons = observer(({post}) => {
     >
       <TouchableOpacity
         onPress={() => {
-          StarGiversStore.back = () => window.navigators[0].jumpTo(appStack);
           StarGiversStore.load(post.id);
-          window.navigators[0].jumpTo(starGivers);
+          navigator.push({
+            screen: 'hairfolio.StarGivers',
+            navigatorStyle: NavigatorStyles.tab,
+          });
         }}
         style={{
           flexDirection: 'row',
@@ -109,11 +98,9 @@ const PostActionButtons = observer(({post}) => {
           {post.starNumber}
         </Text>
       </TouchableOpacity>
-
       <TouchableOpacity
-
         onPress={() => {
-          CommentsStore.jump(post.id);
+          CommentsStore.jump(post.id, navigator);
         }}
 
         style={{
@@ -150,7 +137,7 @@ const PostActionButtons = observer(({post}) => {
           PostDetailStore.jump(
             true,
             post,
-            () => window.navigators[0].jumpTo(routes.appStack)
+            navigator,
           );
         }}
       >
@@ -176,10 +163,14 @@ const PostActionButtons = observer(({post}) => {
       <TouchableOpacity
         onPress={
           () => {
-            WriteMessageStore.myBack = () => window.navigators[0].jumpTo(routes.appStack);
+            WriteMessageStore.navigator = navigator;
             WriteMessageStore.mode = 'POST';
             WriteMessageStore.post = post;
-            window.navigators[0].jumpTo(routes.writeMessageRoute);
+            navigator.push({
+              screen: 'hairfolio.WriteMessage',
+              navigatorStyle: NavigatorStyles.basicInfo,
+              title: WriteMessageStore.title,
+            });
           }
         }
         style={{

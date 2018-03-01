@@ -34,7 +34,7 @@ const BlackHeader = observer(({title, onLeft, onRenderRight, onRenderLeft}) => {
       }}
     >
       <Image
-        style={{height: h(18), width: h(30)}}
+        style={{height: 16, width: 28}}
         source={require('img/nav_white_back.png')}
       />
     </View>

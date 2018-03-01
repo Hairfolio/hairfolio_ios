@@ -20,27 +20,42 @@ import {
   ScrollView,
   PickerIOS, Picker, StatusBar, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet
 } from 'Hairfolio/src/helpers';
-
 import ShareStore from '../mobx/stores/ShareStore';
-import * as routes from 'Hairfolio/src/routes'
 import AddBlackBookStore from '../mobx/stores/AddBlackBookStore';
 import CreatePostStore from '../mobx/stores/CreatePostStore';
-
 import ModalPicker from 'Hairfolio/react-native-modal-picker';
-
 import Prompt from 'react-native-prompt';
+import NavigatorStyles from '../common/NavigatorStyles';
+
+let styles = {
+  headerStyleLeft: {
+    fontSize: h(30),
+    color: '#868686',
+    left: h(21),
+    marginBottom: h(15),
+    marginTop: h(44),
+    fontFamily: FONTS.MEDIUM,
+    flex: 1
+  },
+  headerStyleRight: {
+    fontSize: h(30),
+    color: '#B5B5B5',
+    left: h(21),
+    marginBottom: h(15),
+    marginTop: h(44),
+    fontFamily: FONTS.ROMAN,
+    marginRight: h(40),
+  }
+};
 
 const Hairfolio  = observer(({store}) => {
-
   if (store.isInEdit) {
     return (
       <TextInput
         ref={input => ShareStore.input = input}
         value={store.name}
         onChangeText={t => store.name = t}
-        onEndEditing={
-          () => ShareStore.saveHairfolio(store)
-        }
+        onEndEditing={() => ShareStore.saveHairfolio(store)}
         style = {{
           backgroundColor: 'white',
           height: h(86),
@@ -52,9 +67,7 @@ const Hairfolio  = observer(({store}) => {
       />
     );
   }
-
   let checkImage;
-
   if (store.isSelected) {
     checkImage = (
       <Image
@@ -63,8 +76,6 @@ const Hairfolio  = observer(({store}) => {
       />
     );
   }
-
-
   return (
     <TouchableWithoutFeedback
       onPress={
@@ -146,7 +157,7 @@ const ShareHairfolio = observer(() => {
   );
 });
 
-const ShareBlackBook = observer(() => {
+const ShareBlackBook = observer(({navigator}) => {
   return (
     <View>
       <View
@@ -163,8 +174,10 @@ const ShareBlackBook = observer(() => {
         onPress={
           () => {
             AddBlackBookStore.select(ShareStore.contacts);
-            AddBlackBookStore.myBack = () => _.last(window.navigators).jumpTo(routes.share);
-            _.last(window.navigators).jumpTo(routes.addBlackBook);
+            navigator.push({
+              screen: 'hairfolio.AddBlackBook',
+              navigatorStyle: NavigatorStyles.tab,
+            })
           }
         }
         style = {{
@@ -198,33 +211,8 @@ const ShareBlackBook = observer(() => {
   );
 });
 
-let styles = {
-  headerStyleLeft: {
-    fontSize: h(30),
-    color: '#868686',
-    left: h(21),
-    marginBottom: h(15),
-    marginTop: h(44),
-    fontFamily: FONTS.MEDIUM,
-    flex: 1
-  },
-  headerStyleRight: {
-    fontSize: h(30),
-    color: '#B5B5B5',
-    left: h(21),
-    marginBottom: h(15),
-    marginTop: h(44),
-    fontFamily: FONTS.ROMAN,
-    marginRight: h(40),
-  }
-};
-
-
 const ShareSummary = observer(() => {
-
   let img = <View />;
-
-
   if (CreatePostStore.gallery.selectedPicture) {
     img = (
       <Image
@@ -237,7 +225,6 @@ const ShareSummary = observer(() => {
       />
     )
   }
-
 
   return (
     <View
@@ -278,16 +265,12 @@ const ShareSummary = observer(() => {
 
       </Text>
       </View>
-
-
     </View>
   );
 });
 
 const ShareButton = observer(({color, hide, store, isLeft = true, imageSource, text}) => {
-
   if (hide) { return <View style={{flex: 1 }} />}
-
   return (
     <TouchableWithoutFeedback
       onPress={() => store.enableDisable()}
@@ -308,7 +291,6 @@ const ShareButton = observer(({color, hide, store, isLeft = true, imageSource, t
             flexDirection: 'row'
           }}
         >
-
         <View
           style={{
             width: h(100),
@@ -320,7 +302,6 @@ const ShareButton = observer(({color, hide, store, isLeft = true, imageSource, t
             source={imageSource}
           />
         </View>
-
         <View
           style={{
             justifyContent: 'center'
@@ -355,7 +336,6 @@ const ShareNetworks = observer(() => {
           Share on
         </Text>
       </View>
-
       <View
         style={{
           flexDirection: 'row'
@@ -374,36 +354,29 @@ const ShareNetworks = observer(() => {
           color='#CF1662'
           imageSource={require('img/share_instagram.png')} />
       </View>
-
       <View
         style={{
           flexDirection: 'row'
         }}
       >
-
         <ShareButton
           text='Facebook'
           store={ShareStore.shareFacebookStore}
           isLeft={false}
           color='#3B5997'
           imageSource={require('img/share_facebook.png')} />
-
-
         <ShareButton
           text='Pinterest'
           store={ShareStore.sharePinterestStore}
           color='#BD081C'
           hide
           imageSource={require('img/share_pinterest.png')} />
-
       </View>
-
     </View>
   );
 });
 
 const BoardPicker = observer(() => {
-
   if (ShareStore.showBoard) {
     return (
       <ModalPicker
@@ -422,7 +395,7 @@ const BoardPicker = observer(() => {
   }
 });
 
-const ShareFollowers = observer(() => {
+const ShareFollowers = observer(({navigator}) => {
   return (
     <ScrollView
       style = {{
@@ -432,7 +405,7 @@ const ShareFollowers = observer(() => {
       <BoardPicker />
       <ShareSummary />
       <ShareHairfolio />
-      <ShareBlackBook />
+      <ShareBlackBook navigator={navigator} />
       <ShareNetworks />
     </ScrollView>
   );

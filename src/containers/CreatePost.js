@@ -7,34 +7,25 @@ import {
   ImageEditor,
   View, Text, Dimensions, TouchableOpacity, TouchableWithoutFeedback, Image} from 'react-native';
 import {COLORS, FONTS, h, SCALE} from 'Hairfolio/src/style';
-import NavigationSetting from '../navigation/NavigationSetting';
 import {observer} from 'mobx-react';
 import autobind from 'autobind-decorator'
 import _ from 'lodash';
-
-import {appStack, gallery, postFilter, albumPage} from '../routes';
-
 import {STATUSBAR_HEIGHT, POST_INPUT_MODE} from '../constants';
-
 import CreatePostStore from '../mobx/stores/CreatePostStore';
-
 import Camera from 'react-native-camera';
-
 import {CameraKitCamera} from 'react-native-camera-kit'
-
 import SlimHeader from '../components/SlimHeader';
-import LibraryListView from '../components/post/LibraryListView'
-
-import Recorder from 'react-native-screcorder'
+import LibraryListView from '../components/post/LibraryListView';
+import Recorder from 'react-native-screcorder';
+import NavigatorStyles from '../common/NavigatorStyles';
 
 window.myRecorder = Recorder;
 
-const VideoRecorder = observer(({isOpen}) => {
-
+const VideoRecorder = observer(({isOpen, navigator}) => {
   if (!isOpen) {
     return (
       <View
-        style={{backgroundColor: 'transparent', height: Dimensions.get('window').width, width: Dimensions.get('window').width, }}
+        style={{backgroundColor: 'transparent', height: Dimensions.get('window').width * (4/3), width: Dimensions.get('window').width, }}
       />
     );
   }
@@ -55,35 +46,37 @@ const VideoRecorder = observer(({isOpen}) => {
       }}
       device='back'
       onNewSegment={(segment) => {
-        // window.recorder.removeAllSegments()?
-        _.last(window.navigators).jumpTo(gallery)
         CreatePostStore.loadGallery = false;
 
         CreatePostStore.lastTakenPicture = {
           path: segment.thumbnail,
           videoUrl: segment.url,
         };
-        CreatePostStore.addTakenVideoToGallery()
+        CreatePostStore.isRecording = false;
+        CreatePostStore.addTakenVideoToGallery();
       }}
       style={{
         width: windowWidth,
-        height: windowWidth
+        height: windowWidth * (4/3)
       }}>
     </Recorder>
   );
 });
 
 const CameraView = observer(({isOpen}) => {
-
   if (!isOpen) {
     return (
       <View
         style={{backgroundColor: 'transparent', height: Dimensions.get('window').width, width: Dimensions.get('window').width, }}
       />
     );
+  } else if (window.camera) {
+    return (
+      <View>
+        {window.camera}
+      </View>
+    );
   }
-
-
   return (
     <View>
       <CameraKitCamera
@@ -92,13 +85,12 @@ const CameraView = observer(({isOpen}) => {
         }}
         style={{
           width: Dimensions.get('window').width,
-          height: Dimensions.get('window').width
+          height: Dimensions.get('window').width * (4/3)
         }}
         cameraOptions={{
           flashMode: 'off',             // on/off/auto(default)
           focusMode: 'on',               // off/on(default)
           zoomMode: 'on',                // off/on(default)
-          ratioOverlay: '1:1',            // optional, ratio overlay on the camera and crop the image seamlessly
           ratioOverlayColor: '#00000077' // optional
         }}
       />
@@ -107,9 +99,7 @@ const CameraView = observer(({isOpen}) => {
 });
 
 const LibraryPreview = observer(({store}) => {
-
   let windowWidth = Dimensions.get('window').width;
-
   if (store.selectedLibraryPicture != null) {
     return (
       <View
@@ -121,9 +111,7 @@ const LibraryPreview = observer(({store}) => {
         />
       </View>
     );
-
   }
-
   return (
     <View
       style={{height: Dimensions.get('window').width, width: Dimensions.get('window').width, justifyContent: 'center', alignItems: 'center' }}
@@ -136,7 +124,7 @@ const LibraryPreview = observer(({store}) => {
 
 const Footer = ({selectedMode, onSelect}) => {
   return (
-    <View style={{flexDirection: 'row', alignItems: 'center', paddingVertical: SCALE.h(25), paddingHorizontal: SCALE.h(25)}}>
+    <View style={{flexDirection: 'row', alignItems: 'center', paddingVertical: SCALE.h(12), paddingHorizontal: SCALE.h(25)}}>
       <TouchableWithoutFeedback
         onPress={() => onSelect('Library')}
       >
@@ -173,7 +161,6 @@ const Footer = ({selectedMode, onSelect}) => {
   </View>
   );
 };
-
 
 const LibraryHeader = observer(({onLeft, onRight, onTitle, store}) => {
   return (
@@ -227,21 +214,29 @@ const LibraryHeader = observer(({onLeft, onRight, onTitle, store}) => {
 @observer
 @autobind
 export default class CreatePost extends PureComponent {
-  static contextTypes = {
-    navigators: React.PropTypes.array.isRequired
-  };
 
   constructor(props) {
     super(props);
+    this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+  }
+
+  onNavigatorEvent(event) {
+    switch(event.id) {
+      case 'willAppear':
+        CreatePostStore.isOpen = CreatePostStore.inputMethod === 'Video' || CreatePostStore.inputMethod === 'Photo';
+        break;
+      default:
+        break;
+    }
   }
 
   capture() {
-
-    _.last(this.context.navigators).jumpTo(gallery)
+    this.props.navigator.push({
+      screen: 'hairfolio.Gallery',
+      navigatorStyle: NavigatorStyles.tab,
+    });
     StatusBar.setHidden(false);
-
     CreatePostStore.loadGallery = true;
-
     window.camera.capture()
       .then((data) => {
         CreatePostStore.loadGallery = false;
@@ -256,49 +251,64 @@ export default class CreatePost extends PureComponent {
   }
 
   stopRecording() {
-    CreatePostStore.stopRecording();
-
-    _.last(window.navigators).jumpTo(gallery)
+    this.props.navigator.push({
+      screen: 'hairfolio.Gallery',
+      navigatorStyle: NavigatorStyles.tab,
+    });
     CreatePostStore.loadGallery = true;
-
+    CreatePostStore.stopRecording();
   }
 
   render() {
     window.createPost = this;
-
-    let middleElement = (
-      <TouchableOpacity key='photo' onPress={() => this.capture()}>
-        <Image
-          source={require('../../resources/img/post_capture.png')}
-        />
-      </TouchableOpacity>
-    );
-
+    let middleElement = null;
     let cancel = () => {
       if (!CreatePostStore.gallery.wasOpened) {
         CreatePostStore.reset();
-        window.nav = this.context.navigators;
-        _.first(this.context.navigators).jumpTo(appStack);
+        this.props.navigator.switchToTab({
+          tabIndex: 0,
+        });
       } else {
-        _.last(this.context.navigators).jumpTo(gallery)
+        this.props.navigator.push({
+          screen: 'hairfolio.Gallery',
+          navigatorStyle: NavigatorStyles.tab,
+        });
         StatusBar.setHidden(false);
       }
     };
-
     let header = (
       <SlimHeader
         onLeft={cancel}
         leftText='Cancel'
         title={CreatePostStore.title}/>
     );
-
     let mainView = (
       <View>
         <CameraView isOpen={CreatePostStore.isOpen} />
-        <TouchableOpacity onPress={() => CreatePostStore.switchCameraFlashMode()} style={{ position: 'absolute', right: 0, bottom: 0, padding: SCALE.h(40)}}>
+      </View>
+    );
+    middleElement = (
+      <View
+        style={{
+          flex: 1,
+          alignItems: 'center',
+          justifyContent: 'center',
+          alignSelf: 'stretch',
+        }}
+      >
+        <TouchableOpacity onPress={() => CreatePostStore.switchCameraFlashMode()} style={{ position: 'absolute', right: 0, bottom: -5, padding: SCALE.h(40)}}>
           <Image
             style={{height: 35, width: 35}}
             source={CreatePostStore.flashIconSource} />
+        </TouchableOpacity>
+        <TouchableOpacity
+          key='photo'
+          style={{ position: 'absolute', alignSelf: 'center', bottom: 20}}
+          onPress={() => this.capture()}
+        >
+          <Image
+            source={require('../../resources/img/post_capture.png')}
+          />
         </TouchableOpacity>
         <TouchableOpacity onPress={() => CreatePostStore.switchCameraType()} style={{ position: 'absolute', left: 0, bottom: 0, padding: SCALE.h(40)}}>
           <Image
@@ -306,17 +316,19 @@ export default class CreatePost extends PureComponent {
         </TouchableOpacity>
       </View>
     );
-
     if (CreatePostStore.inputMethod === 'Library') {
       middleElement = (
         <LibraryListView store={CreatePostStore} />
       );
-
       mainView = (<LibraryPreview store={CreatePostStore} />);
-
       header = (
         <LibraryHeader
-          onTitle={() => { window.navigators = this.context.navigators; _.last(this.context.navigators).jumpTo(albumPage) }}
+          onTitle={() => {
+            this.props.navigator.push({
+              screen: 'hairfolio.AlbumPage',
+              navigatorStyle: NavigatorStyles.tab,
+            })
+          }}
           store={CreatePostStore}
           onLeft={cancel}
           onRight={() => {
@@ -324,7 +336,10 @@ export default class CreatePost extends PureComponent {
               alert('Select at least one picture');
             } else {
               CreatePostStore.addLibraryPicturesToGallary();
-              _.last(this.context.navigators).jumpTo(gallery)
+              this.props.navigator.push({
+                screen: 'hairfolio.Gallery',
+                navigatorStyle: NavigatorStyles.tab,
+              });
               StatusBar.setHidden(false);
             }
           }}
@@ -333,7 +348,7 @@ export default class CreatePost extends PureComponent {
     } else if (CreatePostStore.inputMethod == 'Video') {
       mainView = (
         <View>
-          <VideoRecorder isOpen={CreatePostStore.isOpen} />
+          <VideoRecorder isOpen={CreatePostStore.isOpen} navigator={this.props.navigator} />
           {/*
           <TouchableOpacity onPress={() => CreatePostStore.switchCameraFlashMode()} style={{ position: 'absolute', right: 0, bottom: 0, padding: SCALE.h(40)}}>
             <Image
@@ -351,7 +366,11 @@ export default class CreatePost extends PureComponent {
 
       if (CreatePostStore.isRecording) {
         middleElement = (
-          <TouchableOpacity key='video-record-on' onPress={() => this.stopRecording()}>
+          <TouchableOpacity
+            key='video-record-on'
+            onPress={() => this.stopRecording()}
+            style={{ position: 'absolute', alignSelf: 'center', bottom: 20}}
+          >
             <Image
               source={require('img/record_on.png')}
             />
@@ -359,36 +378,29 @@ export default class CreatePost extends PureComponent {
         );
       } else {
         middleElement = (
-          <TouchableOpacity  key='video-record-off' onPress={() => this.startRecording()}>
+          <TouchableOpacity
+            key='video-record-off'
+            onPress={() => this.startRecording()}
+            style={{ position: 'absolute', alignSelf: 'center', bottom: 20}}
+          >
             <Image
               source={require('img/record_off.png')}
             />
           </TouchableOpacity>
         );
       }
-
-
     }
 
-    return (<NavigationSetting
-      style={{
-        flex: 1,
-        backgroundColor: COLORS.WHITE,
-      }}
-      navigationBarStyle= {{
-        backgroundColor: 'red'
-      }}
-      titleStyle={{
-        color: 'black'
-      }}
-    >
-      <View style={{
-        flex: 1
-      }}>
-      {header}
-      {mainView}
-
-
+    return (
+      <View
+        style={{
+          flex: 1,
+          backgroundColor: COLORS.WHITE,
+          paddingTop: 20,
+        }}
+      >
+        {header}
+        {mainView}
         <View
           style={{
             flex: 1,
@@ -396,13 +408,15 @@ export default class CreatePost extends PureComponent {
             justifyContent: 'center'
           }}
         >
-        {middleElement}
-                  </View>
+          {middleElement}
+        </View>
         <Footer
-          onSelect={ (value) => { CreatePostStore.changeInputMethod(value) } }
-        selectedMode={CreatePostStore.inputMethod} />
-
-          </View>
-        </NavigationSetting>);
+          onSelect={ (value) => {
+            CreatePostStore.changeInputMethod(value)
+          }}
+          selectedMode={CreatePostStore.inputMethod}
+        />
+      </View>
+    );
   }
 };

@@ -20,14 +20,10 @@ import {
   ActivityIndicator,
   PickerIOS, Picker, StatusBar, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet
 } from 'Hairfolio/src/helpers';
-
 import BlackBookStore from '../../mobx/stores/BlackBookStore';
-
 import ContactDetailsStore from '../../mobx/stores/ContactDetailsStore';
-
-import * as routes from 'Hairfolio/src/routes';
-
 import AlphabetListView from 'react-native-alphabetlistview';
+import NavigatorStyles from '../../common/NavigatorStyles';
 
 const Header = observer(({title}) => {
   let textStyle = {
@@ -66,7 +62,7 @@ const AlphabetItem = observer(({title}) => {
   );
 });
 
-const Cell = observer(({item, showBorder}) => {
+const Cell = observer(({item, showBorder, navigator}) => {
 
   let borderStyle = {};
 
@@ -84,10 +80,10 @@ const Cell = observer(({item, showBorder}) => {
       onPress={
         () => {
           ContactDetailsStore.init(item);
-          ContactDetailsStore.myBack = () => {
-            window.navigators[0].jumpTo(routes.blackBook);
-          }
-          window.navigators[0].jumpTo(routes.contactDetails);
+          navigator.push({
+            screen: 'hairfolio.ContactDetails',
+            navigatorStyle: NavigatorStyles.tab,
+          })
         }
       }
       style={{
@@ -122,7 +118,7 @@ const Cell = observer(({item, showBorder}) => {
   );
 });
 
-const ContactList = observer(({store}) => {
+const ContactList = observer(({store, navigator}) => {
 
   if (store.mode == 'search') {
 
@@ -147,13 +143,17 @@ const ContactList = observer(({store}) => {
         <ScrollView>
           {
             store.filteredContacts.map(e=>
-              <Cell showBorder={true} key={e.key} item={e} />
+              <Cell
+                showBorder={true}
+                key={e.key}
+                item={e}
+                navigator={navigator}
+              />
             )
           }
         </ScrollView>
       </View>
     );
-
   }
 
   if (!store.hasData) {
@@ -187,6 +187,7 @@ const ContactList = observer(({store}) => {
         <Cell
           item={item}
           key={item.key}
+          navigator={navigator}
         />
       );
     }
@@ -218,7 +219,6 @@ const ContactList = observer(({store}) => {
 });
 
 const SearchRow = observer(({store}) => {
-
   if (store.mode == 'search') {
     return (
       <View
@@ -340,11 +340,11 @@ const SearchRow = observer(({store}) => {
   );
 });
 
-const BlackBookContent = observer(({store}) => {
+const BlackBookContent = observer(({store, navigator}) => {
   return (
     <View style={{flex: 1}}>
       <SearchRow store={store} />
-      <ContactList store={store} />
+      <ContactList store={store} navigator={navigator}/>
     </View>
   );
 });

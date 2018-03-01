@@ -27,7 +27,7 @@ class EnvironmentStore {
     this.experiencesState = EMPTY;
     this.servicesState = EMPTY;
     this.certificatesState = EMPTY;
-    this.environment = {};
+    this.environment = null;
     this.degrees = [];
     this.services = [];
     this.categories = [];
@@ -62,7 +62,7 @@ class EnvironmentStore {
     this.degreesState = LOADING;
     return ServiceBackend.get('/degrees')
       .then(response => {
-        this.degrees = response;
+        this.degrees = response.degrees;
         this.degreesState = READY;
       })
       .catch(error => {
@@ -70,23 +70,24 @@ class EnvironmentStore {
       });
   }
 
-  @action getCertificates= () => {
+  @action getCertificates = () => {
     this.certificatesState = LOADING;
-    ServiceBackend.get('/certificates')
+    return ServiceBackend.get('/certificates')
       .then(response => {
-        this.certificates = response;
         this.certificatesState = READY;
+        this.certificates = response.certificates;
       })
       .catch(error => {
+        console.log(error);
         this.certificatesState = LOADING_ERROR;
       });
   }
 
   @action getServices = () => {
     this.servicesState = LOADING;
-    ServiceBackend.get('/services')
+    return ServiceBackend.get('/services')
       .then(response => {
-        this.services = response;
+        this.services = response.services;
         this.servicesState = READY;
       })
       .catch(error => {
@@ -96,9 +97,9 @@ class EnvironmentStore {
 
   @action getCategories = () => {
     this.categoriesState = LOADING;
-    ServiceBackend.get('/categories')
+    return ServiceBackend.get('/categories')
       .then(response => {
-        this.categories = response;
+        this.categories = response.categories;
         this.categoriesState = READY;
       })
       .catch(error => {
@@ -108,7 +109,7 @@ class EnvironmentStore {
 
   @action getExperiences = (pageNumber) => {
     this.experiencesState = LOADING;
-    ServiceBackend.get(`/experiences?page=${pageNumber || 1}`)
+    return ServiceBackend.get(`/experiences?page=${pageNumber || 1}`)
       .then(response => {
         this.experiences.concat(response.experiences);
         this.experiencesNextPage = response.meta.next_page;

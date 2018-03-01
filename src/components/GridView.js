@@ -38,7 +38,7 @@ const MyFooter = observer(({store}) => {
 });
 
 
-const GridView = observer(({store, emptyText = 'No posts have been starred yet.'}) => {
+const GridView = observer(({store, emptyText = 'No posts have been starred yet.', navigator}) => {
 
   if (store.isLoading) {
     return (
@@ -85,9 +85,9 @@ const GridView = observer(({store, emptyText = 'No posts have been starred yet.'
                   flexWrap: 'wrap'
                 }}
               >
-                <GridPost key={el[0].key} post={el[0]} />
+                <GridPost key={el[0].key} post={el[0]} navigator={navigator} />
                 {
-                  el[1] != null ?  <GridPost key={el[1].key} post={el[1]} /> :
+                  el[1] != null ?  <GridPost key={el[1].key} post={el[1]} navigator={navigator} /> :
                     <View
                       style = {{
                         width: windowWidth / 2,
@@ -108,7 +108,6 @@ const GridView = observer(({store, emptyText = 'No posts have been starred yet.'
       </View>
     );
   } else {
-
     return (
       <View
         style = {{
@@ -116,7 +115,7 @@ const GridView = observer(({store, emptyText = 'No posts have been starred yet.'
           flexWrap: 'wrap'
         }}
       >
-        {store.elements.map(p => <GridPost key={p.key} post={p} />)}
+        {store.elements.map(p => <GridPost key={p.key} post={p} navigator={navigator} />)}
       </View>
     );
   }

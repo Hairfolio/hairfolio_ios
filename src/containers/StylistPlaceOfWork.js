@@ -2,11 +2,10 @@ import React from 'react';
 import _ from 'lodash';
 import validator from 'validator';
 import {mixin, debounce} from 'core-decorators';
+import { observer } from 'mobx-react';
 import PureComponent from '../components/PureComponent';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import {COLORS, FONTS, SCALE} from '../style';
-import NavigationSetting from '../navigation/NavigationSetting';
-
 import MultilineTextInput from '../components/Form/MultilineTextInput';
 import InlineTextInput from '../components/Form/InlineTextInput';
 import PickerInput from '../components/Form/PickerInput';
@@ -15,26 +14,27 @@ import BannerErrorContainer from '../components/BannerErrorContainer';
 import KeyboardScrollView from '../components/KeyboardScrollView';
 import LoadingContainer from '../components/LoadingContainer';
 import states from '../states.json';
-
 import formMixin from '../mixins/form';
+import {LOADING, READY, LOADING_ERROR} from '../constants';
+import whiteBack from '../../resources/img/nav_white_back.png';
+import ServiceBackend from '../backend/ServiceBackend'
 
-import {NAVBAR_HEIGHT, LOADING, READY, LOADING_ERROR} from '../constants';
-
+@observer
 @mixin(formMixin)
 export default class StylistPlaceOfWork extends PureComponent {
-  static propTypes = {
-    backTo: React.PropTypes.object.isRequired,
-  };
-
-  static contextTypes = {
-    navigators: React.PropTypes.array.isRequired,
-    services: React.PropTypes.object.isRequired
-  };
-
   state = {
     blocked: false,
     autocompleteState: READY
   };
+
+  static navigatorButtons = {
+    leftButtons: [
+      {
+        id: 'back',
+        icon: whiteBack,
+      }
+    ],
+  }
 
   getValue() {
     var value = this.getFormValue();
@@ -66,9 +66,8 @@ export default class StylistPlaceOfWork extends PureComponent {
     if (!value)
       return this.setState({autocompleteList: []});
     this.setState({autocompleteState: LOADING});
-    this.context.services.fetch(`/users?account_type=owner&q=${value/*.toLowerCase()*/}`)
+    ServiceBackend.get(`/users?account_type=owner&q=${value/*.toLowerCase()*/}`)
       .then((autocompleteList) => {
-
         this.setState({
           autocompleteState: READY,
           autocompleteList: this.lastValue ? autocompleteList.users : []
@@ -79,23 +78,10 @@ export default class StylistPlaceOfWork extends PureComponent {
   }
 
   render() {
-    return (<NavigationSetting
-      leftAction={() => {
-        _.last(this.context.navigators).jumpTo(this.props.backTo);
-      }}
-      leftDisabled={this.state.submitting}
-      leftIcon="back"
-      onWillBlur={this.onWillBlur}
-      onWillFocus={this.onWillFocus}
-      style={{
+    return (
+      <BannerErrorContainer ref="ebc" style={{
         flex: 1,
         backgroundColor: COLORS.LIGHT,
-        paddingTop: NAVBAR_HEIGHT
-      }}
-      title="Place of Work"
-    >
-      <BannerErrorContainer ref="ebc" style={{
-        flex: 1
       }}>
         <KeyboardScrollView
           scrollEnabled={false}
@@ -260,6 +246,6 @@ export default class StylistPlaceOfWork extends PureComponent {
           <View style={{height: StyleSheet.hairlineWidth}} />
         </KeyboardScrollView>
       </BannerErrorContainer>
-    </NavigationSetting>);
+    );
   }
 };

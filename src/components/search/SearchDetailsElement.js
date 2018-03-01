@@ -20,19 +20,14 @@ import {
   ActivityIndicator,
   PickerIOS, Picker, StatusBar, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet
 } from 'Hairfolio/src/helpers';
-
-import {BOTTOMBAR_HEIGHT, STATUSBAR_HEIGHT} from 'Hairfolio/src/constants';
+import {STATUSBAR_HEIGHT} from 'Hairfolio/src/constants';
 import FollowUserList from '../FollowUserList';
-
 import TagPostStore from '../../mobx/stores/TagPostStore';
 import ScrollableTabView from 'react-native-scrollable-tab-view';
 import LinkTabBar from '../post/LinkTabBar';
-
-import * as routes from 'Hairfolio/src/routes'
-
 import SearchDetailsStore from '../../mobx/stores/search/SearchDetailsStore'
 
-const SearchHeader = observer(() => {
+const SearchHeader = observer(({navigator}) => {
   return (
     <View
       style = {{
@@ -86,7 +81,6 @@ const SearchHeader = observer(() => {
           }}
 
         />
-
       <TouchableOpacity
         onPress={() =>{
           SearchDetailsStore.searchString = '';
@@ -106,10 +100,8 @@ const SearchHeader = observer(() => {
         </View>
       </TouchableOpacity>
     </View>
-
-
     <TouchableOpacity
-      onPress={() => window.navigators[0].jumpTo(routes.appStack)}
+      onPress={() => navigator.pop({animated: true})}
     >
       <Text
         style = {{
@@ -136,27 +128,19 @@ const StylistSearch = observer(({store}) => {
       noResultText='Nothing was found'
     />
   );
-
 });
 
-
-
-const TagItem = observer(({item}) => {
+const TagItem = observer(({item, navigator}) => {
   return (
     <TouchableHighlight
       underlayColor='#ccc'
       onPress={
         () => {
           let name = item.name.substring(1);
-
-
           TagPostStore.jump(
             name,
             `#${name}`,
-            () => {
-              SearchDetailsStore.dontReset = true;
-              window.navigators[0].jumpTo(routes.searchDetails);
-            }
+            navigator,
           );
         }
       }
@@ -175,7 +159,7 @@ const TagItem = observer(({item}) => {
   );
 })
 
-const TagSearch = observer(({store}) => {
+const TagSearch = observer(({store, navigator}) => {
 
   if (store.tags.length == 0) {
     return (
@@ -195,37 +179,40 @@ const TagSearch = observer(({store}) => {
 
   return (
     <ScrollView>
-      {store.tags.map(e => <TagItem key={e.key} item={e} />)}
+      {store.tags.map(e => <TagItem key={e.key} item={e} navigator={navigator}/>)}
     </ScrollView>
   );
 });
 
 
 
-const NearbySearch = observer(({store}) => {
+const NearbySearch = observer(({store, navigator}) => {
   return (
     <FollowUserList
       store={store}
+      navigator={navigator}
       noResultText='Nothing was found'
     />
   );
 
 });
 
-const SalonSearch = observer(({store}) => {
+const SalonSearch = observer(({store, navigator}) => {
   return (
     <FollowUserList
       store={store}
+      navigator={navigator}
       noResultText='Nothing was found'
     />
   );
 
 });
 
-const BrandSearch = observer(({store}) => {
+const BrandSearch = observer(({store, navigator}) => {
   return (
     <FollowUserList
       store={store}
+      navigator={navigator}
       noResultText='Nothing was found'
     />
   );
@@ -256,26 +243,25 @@ let SearchPage = (Class, store, props) => observer(() => {
 })
 
 
-const SearchDetailsElement = observer(() => {
-
-  const StylistPage = SearchPage(StylistSearch, SearchDetailsStore.stylistStore);
-  const TagPage = SearchPage(TagSearch, SearchDetailsStore.hashStore);
-  const SalonPage = SearchPage(SalonSearch, SearchDetailsStore.salonStore);
-  const BrandPage = SearchPage(BrandSearch, SearchDetailsStore.brandStore);
-  const NearbyPage = SearchPage(NearbySearch, SearchDetailsStore.nearbyStore);
+const SearchDetailsElement = observer(({navigator}) => {
+  const StylistPage = SearchPage(StylistSearch, SearchDetailsStore.stylistStore, { navigator });
+  const TagPage = SearchPage(TagSearch, SearchDetailsStore.hashStore, { navigator });
+  const SalonPage = SearchPage(SalonSearch, SearchDetailsStore.salonStore, { navigator });
+  const BrandPage = SearchPage(BrandSearch, SearchDetailsStore.brandStore, { navigator });
+  const NearbyPage = SearchPage(NearbySearch, SearchDetailsStore.nearbyStore, { navigator });
 
   return (
     <View style={{height: windowHeight}}>
-      <SearchHeader />
+      <SearchHeader navigator={navigator} />
         <ScrollableTabView
           renderTabBar={() => <LinkTabBar />}
           initialPage={0}
         >
-          <StylistPage tabLabel='Stylists' />
-          <TagPage tabLabel='Tags' />
-          <SalonPage tabLabel='Salon' />
-          <BrandPage tabLabel='Brand' />
-          <NearbyPage tabLabel='Nearby' />
+          <StylistPage tabLabel='Stylists' navigator={navigator} />
+          <TagPage tabLabel='Tags' navigator={navigator} />
+          <SalonPage tabLabel='Salon' navigator={navigator} />
+          <BrandPage tabLabel='Brand' navigator={navigator} />
+          <NearbyPage tabLabel='Nearby' navigator={navigator} />
         </ScrollableTabView>
     </View>
   );

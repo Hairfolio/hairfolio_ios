@@ -22,7 +22,7 @@ export default {
 
     _.each(this.fields, ref => {
       if (!ref.isValide()) {
-
+        debugger;
         errs += 1;
 
         ref.setInError();

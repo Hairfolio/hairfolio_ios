@@ -6,7 +6,7 @@ import {observable, computed, action} from 'mobx';
 import autobind from 'autobind-decorator'
 import {v4} from 'uuid';
 import {h, FONTS, COLORS} from 'Hairfolio/src/style';
-import {Alert, PickerIOS, Linking, Animated, Picker, Dimensions, Modal, StatusBar, ActivityIndicator, ListView, WebView, AlertIOS, ScrollView, Platform, View, TextInput, Text, Image, TouchableHighlight, ActionSheetIOS, TouchableOpacity, TouchableWithoutFeedback, StyleSheet } from 'react-native'
+import {Alert, PickerIOS,  Animated, Picker, Dimensions, Modal, StatusBar, ActivityIndicator, ListView, WebView, AlertIOS, ScrollView, Platform, View, TextInput, Text, Image, TouchableHighlight, ActionSheetIOS, TouchableOpacity, TouchableWithoutFeedback, StyleSheet } from 'react-native';
 import UserStore from './mobx/stores/UserStore';
 
 import Service from 'Hairfolio/src/services/index';
@@ -111,9 +111,26 @@ export {
   ozConv,
   // mobx
   observable, computed, action,
-  Linking,
   // react-native components
-  ActionSheetIOS, PickerIOS, ActivityIndicator, WebView, Picker, Animated, Modal, StatusBar, ScrollView, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet, Dimensions,
+  ActionSheetIOS,
+  PickerIOS,
+  ActivityIndicator,
+  WebView,
+  Picker,
+  Animated,
+  Modal,
+  StatusBar,
+  ScrollView,
+  Platform,
+  View,
+  TextInput,
+  Text,
+  Image,
+  TouchableHighlight,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  StyleSheet,
+  Dimensions,
   getUserId,
   ListView,
   jpg

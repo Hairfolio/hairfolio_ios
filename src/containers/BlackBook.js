@@ -9,69 +9,54 @@ import {
   TouchableHighlight,
   View, Text, Dimensions, TouchableOpacity, TouchableWithoutFeedback, Image} from 'react-native';
 import {COLORS, FONTS, h, SCALE} from 'Hairfolio/src/style';
-import NavigationSetting from '../navigation/NavigationSetting';
 import {observer} from 'mobx-react';
 import autobind from 'autobind-decorator'
 import _ from 'lodash';
-
 import ContactDetailsStore from '../mobx/stores/ContactDetailsStore';
-
 import FollowButton from '../components/FollowButton';
-
-
-import {appStack, gallery, postFilter, albumPage} from '../routes';
-
-import * as routes from 'Hairfolio/src/routes';
-
 import {STATUSBAR_HEIGHT, POST_INPUT_MODE} from '../constants';
-
 import LoadingScreen from '../components/LoadingScreen';
 import BlackHeader from '../components/BlackHeader';
-
 import BlackBookStore from '../mobx/stores/BlackBookStore';
-
 import Swipeout from 'Hairfolio/react-native-swipeout/index';
-
-
 import LoadingPage from '../components/LoadingPage';
-
 import BlackBookContent from '../components/blackbook/BlackBookContent';
+import NavigatorStyles from '../common/NavigatorStyles';
 
 @observer
 export default class BlackBook extends PureComponent {
+  constructor(props) {
+    super(props);
 
-  static contextTypes = {
-    navigators: React.PropTypes.array.isRequired
-  };
+    this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+  }
 
+  onNavigatorEvent(event) {
+    switch(event.id) {
+      case 'willAppear':
+        StatusBar.setBarStyle('light-content');
+        BlackBookStore.reset();
+        break;
+      default:
+        break;
+    }
+  }
 
   render() {
-
     let store = BlackBookStore;
-
     if (!store.show) {
       return false;
     }
-
     let Content = LoadingPage(
       BlackBookContent,
-      store
+      store,
+      { navigator: this.props.navigator },
     );
-
-    return (<NavigationSetting
-      style={{
-        flex: 1,
-      }}
-      onWillFocus={() => {
-        StatusBar.setBarStyle('light-content');
-        BlackBookStore.reset();
-      }}
-    >
-       <View style={{flex: 1}}>
+    return (
+      <View style={{flex: 1}}>
         <BlackHeader
-          onLeft={() => BlackBookStore.myBack()}
+          onLeft={() => this.props.navigator.pop({ animated: true })}
           title='My Black Book'
-
           onRenderLeft = {() => (
             <View
               style = {{
@@ -91,10 +76,10 @@ export default class BlackBook extends PureComponent {
               onPress={
                 () => {
                   ContactDetailsStore.reset();
-                  ContactDetailsStore.myBack = () => {
-                    window.navigators[0].jumpTo(routes.blackBook);
-                  }
-                  window.navigators[0].jumpTo(routes.contactDetails);
+                  this.props.navigator.push({
+                    screen: 'hairfolio.ContactDetails',
+                    navigatorStyle: NavigatorStyles.tab,
+                  });
                 }
               }
             >
@@ -112,7 +97,6 @@ export default class BlackBook extends PureComponent {
         />
         <Content />
       </View>
-    </NavigationSetting>
     );
   }
 };

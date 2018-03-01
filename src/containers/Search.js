@@ -1,12 +1,7 @@
 import PureComponent from '../components/PureComponent';
 import {COLORS, FONTS, SCALE} from '../style';
-import NavigationSetting from '../navigation/NavigationSetting';
-import {BOTTOMBAR_HEIGHT, STATUSBAR_HEIGHT} from '../constants';
-
-import {profile, profileExternal, appStack} from '../routes';
-
+import {STATUSBAR_HEIGHT} from '../constants';
 import SimpleButton from '../components/Buttons/Simple';
-
 import SearchElement from '../components/search/Search';
 import SearchStore from '../mobx/stores/SearchStore';
 
@@ -31,6 +26,7 @@ import {
   ScrollView,
   PickerIOS, Picker, StatusBar, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet
 } from 'Hairfolio/src/helpers';
+import NavigatorStyles from '../common/NavigatorStyles';
 
 const SampleActions = observer(() => {
   return (
@@ -40,8 +36,13 @@ const SampleActions = observer(() => {
       color={COLORS.DARK}
       label="Go to a consumer profile"
       onPress={() => {
-        appStack.scene().goToProfile(118);
-        //118 / consumerext@hairfolio.com / 123456
+        navigator.push({
+          screen: 'hairfolio.Profile',
+          navigatorStyle: NavigatorStyles.tab,
+          passProps: {
+            userId: 118,
+          }
+        });
       }}
     />
 
@@ -51,8 +52,13 @@ const SampleActions = observer(() => {
       color={COLORS.DARK}
       label="Go to a stylist profile"
       onPress={() => {
-        //120 / stylistext@hairfolio.com / 123456
-        appStack.scene().goToProfile(120);
+        navigator.push({
+          screen: 'hairfolio.Profile',
+          navigatorStyle: NavigatorStyles.tab,
+          passProps: {
+            userId: 120,
+          }
+        });
       }}
     />
 
@@ -62,8 +68,13 @@ const SampleActions = observer(() => {
       color={COLORS.DARK}
       label="Go to a salon profile"
       onPress={() => {
-        //121 / salonext@hairfolio.com / 123456
-        appStack.scene().goToProfile(121);
+        navigator.push({
+          screen: 'hairfolio.Profile',
+          navigatorStyle: NavigatorStyles.tab,
+          passProps: {
+            userId: 121,
+          }
+        });
       }}
     />
 
@@ -73,38 +84,36 @@ const SampleActions = observer(() => {
       color={COLORS.DARK}
       label="Go to a brand profile"
       onPress={() => {
-        //122 / brandext@hairfolio.com / 123456
-        appStack.scene().goToProfile(122);
+        navigator.push({
+          screen: 'hairfolio.Profile',
+          navigatorStyle: NavigatorStyles.tab,
+          passProps: {
+            userId: 122,
+          }
+        });
       }} />
 
     </View>
   );
 });
 
+@observer
 export default class Search extends PureComponent {
-
-  static contextTypes = {
-    navigators: React.PropTypes.array.isRequired
-  };
+  constructor(props) {
+    super(props);
+    SearchStore.load();
+  }
 
   render() {
-    return (<NavigationSetting
-      style={{
-        flex: 1,
-        backgroundColor: COLORS.WHITE,
-        paddingBottom: BOTTOMBAR_HEIGHT
-      }}
-      onWillFocus={
-        () => {
-          SearchStore.load();
-        }
-      }
-    >
-      <View style={{
-        flex: 1
-      }}>
-        <SearchElement />
+    return (
+      <View
+        style={{
+          flex: 1,
+          backgroundColor: COLORS.WHITE,
+        }}
+      >
+        <SearchElement navigator={this.props.navigator}/>
       </View>
-    </NavigationSetting>);
+    );
   }
 };

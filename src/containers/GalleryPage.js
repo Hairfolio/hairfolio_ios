@@ -16,45 +16,29 @@ import {
   ActivityIndicator,
   PickerIOS, Picker, StatusBar, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet
 } from 'Hairfolio/src/helpers';
-
+import NavigatorStyles from '../common/NavigatorStyles';
 import SlimHeader from '../components/SlimHeader';
 import AlbumStore from '../mobx/stores/AlbumStore';
 import CreatePostStore from '../mobx/stores/CreatePostStore';
 import AddTagStore from '../mobx/stores/AddTagStore';
 import AddServiceStore from '../mobx/stores/AddServiceStore';
-
 import ShareStore from '../mobx/stores/ShareStore';
-
 import ServiceBackend from '../backend/ServiceBackend';
 import LoadingScreen from '../components/LoadingScreen';
 import Video from 'react-native-video'
-
-
 import LinearGradient from 'react-native-linear-gradient';
-
-import {appStack, createPost, onPress, postFilter, albumPage, addServiceOne, filter, addLink, addServiceTwo, addServiceThree} from '../routes';
-
-import * as routes from '../routes';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-
 import ReactNative, { NativeModules } from 'react-native';
 const RCTUIManager = NativeModules.UIManager;
 const ImageFilter = NativeModules.ImageFilter;
-
 import MyPicker from '../components/MyPicker';
-
 import {Dimensions} from 'react-native';
-
 import ServiceBox from '../components/post/ServiceBox';
-
 import AddTagModal from '../components/post/AddTagModal';
-
 import VideoPreview from '../components/VideoPreview';
-
 import Triangle from 'react-native-triangle';
 
 class HashTag extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -75,6 +59,7 @@ class HashTag extends React.Component {
       });
     });
   }
+
   render() {
     return (
      <View
@@ -103,15 +88,13 @@ class HashTag extends React.Component {
   }
 }
 
-
-const ImagePreview = observer(({gallery, navigators}) => {
-
+const ImagePreview = observer(({gallery, navigator}) => {
   if (CreatePostStore.loadGallery) {
     return (
       <View
         style={{
           width: windowWidth,
-          height: windowWidth,
+          height: windowWidth * (4/3),
           backgroundColor: 'white',
           alignItems: 'center',
           justifyContent: 'center',
@@ -121,15 +104,12 @@ const ImagePreview = observer(({gallery, navigators}) => {
       </View>
     );
   }
-
-
-
   if (gallery.selectedPicture == null) {
     return (
       <View
         style={{
           width: windowWidth,
-          height: windowWidth,
+          height: windowWidth * (4/3),
           backgroundColor: 'white',
           alignItems: 'center',
           justifyContent: 'center',
@@ -151,7 +131,6 @@ const ImagePreview = observer(({gallery, navigators}) => {
     AlertIOS.alert(
       gallery.selectedPicture.isVideo ? 'Delete Video' : 'Delete Picture',
       'Are you sure you want to delete this item from the gallery?',
-
       [
         {text: 'Yes', onPress: () => gallery.deleteSelectedPicture()},
 
@@ -164,7 +143,10 @@ const ImagePreview = observer(({gallery, navigators}) => {
   let filterPicture = () => {
     CreatePostStore.gallery.filterStore.reset();
     setTimeout(()=> CreatePostStore.gallery.filterStore.setMainImage(CreatePostStore.gallery.selectedPicture), 500);
-    _.last(navigators).jumpTo(filter)
+    navigator.push({
+      screen: 'hairfolio.FilterPage',
+      navigatorStyle: NavigatorStyles.tab,
+    });
   };
 
   window.picture = gallery.selectedPicture;
@@ -186,7 +168,6 @@ const ImagePreview = observer(({gallery, navigators}) => {
       </View>
     </TouchableOpacity>
   );
-
   if (gallery.selectedPicture.isVideo) {
     return (
       <View>
@@ -195,58 +176,51 @@ const ImagePreview = observer(({gallery, navigators}) => {
       </View>
     );
   }
-
-
   return (
     <View
       style={{
         width: windowWidth,
-        height: windowWidth,
+        height: windowWidth * (4/3),
       }}
     >
       <TouchableWithoutFeedback
         onPress={(a, b) => {
-
           gallery.position.x = a.nativeEvent.locationX;
           gallery.position.y = a.nativeEvent.locationY;
-
           if (gallery.serviceTagSelected) {
             AddServiceStore.reset();
-
             AddServiceStore.posX = a.nativeEvent.locationX;
             AddServiceStore.posY = a.nativeEvent.locationY;
-
-            AddServiceStore.myBack = () => {
-              navigators[0].jumpTo(routes.createPostStack);
-            };
-
             AddServiceStore.save = (obj) => {
               CreatePostStore.gallery.addServicePicture(
                 AddServiceStore.posX,
                 AddServiceStore.posY,
                 obj
               );
-              AddServiceStore.myBack();
+              navigator.dismissModal({ animationType: 'slide-down' });
             };
-
-            navigators[0].jumpTo(addServiceOne);
+            navigator.showModal({
+              screen: 'hairfolio.AddServicePageOne',
+              navigatorStyle: NavigatorStyles.tab,
+            });
           } else if (gallery.linkTagSelected) {
-            _.last(navigators).jumpTo(addLink);
+            navigator.push({
+              screen: 'hairfolio.AddLink',
+              navigatorStyle: NavigatorStyles.tab,
+            })
           } else if (gallery.hashTagSelected) {
             StatusBar.setHidden(true);
             AddTagStore.show();
           }
-
         }}>
         <Image
           ref={(el) => window.img = el}
-          style={{height: windowWidth, width: windowWidth}}
+          style={{height: windowWidth * (4/3), width: windowWidth}}
           onError={(e) => alert(e.nativeEvent.error)}
           source={gallery.selectedPicture.source}
         />
       </TouchableWithoutFeedback>
       {closeBtn}
-
     {gallery.selectedPicture.isVideo ?  <View /> :
       <TouchableOpacity
         onPress={filterPicture}
@@ -266,7 +240,6 @@ const ImagePreview = observer(({gallery, navigators}) => {
       </TouchableOpacity>
       }
     {gallery.selectedPicture.tags.map((pic) => {
-
       let style = {
         position: 'absolute',
         top: pic.y - 13,
@@ -278,14 +251,11 @@ const ImagePreview = observer(({gallery, navigators}) => {
         justifyContent: 'center',
         alignItems: 'center'
       };
-
       if (pic.type == 'hashtag') {
         return (
           <HashTag key={pic.key} pic={pic} />
         );
       }
-
-
       if (pic.imageSource) {
         return (
           <Image
@@ -295,7 +265,6 @@ const ImagePreview = observer(({gallery, navigators}) => {
           />
         );
       }
-
       return (
         <View
           key={pic.key}
@@ -303,17 +272,14 @@ const ImagePreview = observer(({gallery, navigators}) => {
             <Text style={{fontSize: 15, backgroundColor: 'transparent', color: 'white'}}>{pic.abbrev}</Text>
         </View>
       );
-
     })}
   </View>
   );
 });
 
 const ActionRow = observer(({tagMenu, imageStyle}) => {
-
   let backgroundColor = tagMenu.selected ? '#3E3E3E' : 'white';
   let fontColor = tagMenu.selected ? 'white' : '#424242';
-
 
   return (
     <TouchableWithoutFeedback
@@ -407,10 +373,7 @@ const PlusPicture = observer(({onPress}) => {
 });
 
 const Picture = observer(({picture}) => {
-
-
   let selectedBox;
-
   if (picture.selected) {
     selectedBox = (
       <View
@@ -448,8 +411,6 @@ const Picture = observer(({picture}) => {
 });
 
 const PictureView = observer(({gallery, onPlus}) => {
-
-
   return (
     <ScrollView
       horizontal
@@ -466,11 +427,9 @@ const PictureView = observer(({gallery, onPlus}) => {
 });
 
 const TagInfo = observer(({gallery}) => {
-
   if (gallery.selectedTag == null) {
     return null;
   }
-
   return (
     <View
       style={{
@@ -488,25 +447,28 @@ const TagInfo = observer(({gallery}) => {
         }}
       >Tap where to add tag</Text>
     </View>
-
   );
 });
 
 @observer
 @autobind
 export default class GalleryPage extends Component {
+  constructor(props) {
+    super(props);
+    this.props.navigator.toggleTabs({
+      to: 'hidden',
+    });
+  }
 
-  static contextTypes = {
-    navigators: React.PropTypes.array.isRequired
-  };
+  static navigatorStyle = {
+    drawUnderTabBar: true,
+  }
 
   scrollToElement(reactNode) {
     RCTUIManager.measure(ReactNative.findNodeHandle(reactNode), (x, y, width, height, pageX, pageY) => {
       RCTUIManager.measure(this.refs.scrollView.getInnerViewNode(), (x2, y2, width2, height2, pageX2, pageY2) => {
-        // currentPos: 64
         var currentScroll = 64 - pageY2;
-        var differenceY = -pageY - 240 + (windowHeight - 20 - h(88));
-
+        var differenceY = -pageY - 320 + (windowHeight - 20 - h(88));
         if (currentScroll - differenceY > 0) {
           this.refs.scrollView.scrollTo({y: currentScroll - differenceY});
         }
@@ -537,7 +499,7 @@ export default class GalleryPage extends Component {
           CreatePostStore.reset(false);
           CreatePostStore.gallery.unselectTag();
           StatusBar.setHidden(true)
-          _.last(this.context.navigators).jumpTo(createPost)
+          this.props.navigator.pop({ animated: true });
         }}
         gallery={CreatePostStore.gallery}
       />,
@@ -583,15 +545,18 @@ export default class GalleryPage extends Component {
     }
 
     return (
-      <View style={{paddingTop: 20, backgroundColor: 'white'}}>
+      <View style={{paddingTop: 20, paddingBottom: 50, backgroundColor: 'white'}}>
           <SlimHeader
             leftText='Cancel'
             onLeft={() => {
-              _.first(this.context.navigators).jumpTo(appStack)
-              _.last(this.context.navigators).jumpTo(createPost)
-
+              this.props.navigator.toggleTabs({
+                to: 'shown',
+              });
+              this.props.navigator.popToRoot({ animated: true });
+              this.props.navigator.switchToTab({
+                tabIndex: 0,
+              });
               CreatePostStore.gallery.unselectTag();
-
               // only reset after view is gone
               setTimeout(() => CreatePostStore.reset(), 1000);
             }}
@@ -604,28 +569,40 @@ export default class GalleryPage extends Component {
               } else {
                 CreatePostStore.gallery.unselectTag();
                 ShareStore.reset();
-                _.last(this.context.navigators).jumpTo(routes.share)
-
-                ShareStore.myBack = () => _.last(this.context.navigators).jumpTo(routes.gallery);
+                this.props.navigator.push({
+                  screen: 'hairfolio.Share',
+                  navigatorStyle: NavigatorStyles.tab,
+                })
               }
             }}
           />
           <ScrollView
             ref='scrollView'
             bounces={false}
+            scrollEventThrottle={16}
+            onScroll={(e) => {
+              const offset = e.nativeEvent.contentOffset.y;
+              if (offset < 50) {
+                this.props.navigator.toggleTabs({
+                  to: 'shown',
+                });
+              } else {
+                this.props.navigator.toggleTabs({
+                  to: 'hidden',
+                });
+              }
+            }}
             style={{
               backgroundColor: 'white',
-              height:  windowHeight - 20 - h(88)
             }}
           >
             <AddTagModal />
             <ImagePreview
-              navigators={this.context.navigators}
+              navigator={this.props.navigator}
               gallery={CreatePostStore.gallery} />
 
             <ActionMenu gallery={CreatePostStore.gallery} />
             {bottomContent}
-
           </ScrollView>
           <LoadingScreen style={{opacity: 0.6}} store={CreatePostStore} />
         </View>

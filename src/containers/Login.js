@@ -1,120 +1,139 @@
 import React from 'react';
 import _ from 'lodash';
 import { LoginManager, AccessToken } from 'react-native-fbsdk';
-import {mixin} from 'core-decorators';
+// import {mixin} from 'core-decorators';
 import PureComponent from '../components/PureComponent';
-import {View, Text} from 'react-native';
-import {COLORS, FONTS, SCALE} from '../style';
-import NavigationSetting from '../navigation/NavigationSetting';
+import { View, Text, Image, StyleSheet } from 'react-native';
+import { COLORS, FONTS, SCALE, h } from '../style';
+import { reaction } from 'mobx';
 import { observer } from 'mobx-react';
 import SimpleButton from '../components/Buttons/Simple';
 import CustomTouchableOpacity from '../components/CustomTouchableOpacity';
-
+import { Dims, READY, LOADING_ERROR } from '../constants';
+import NavigatorStyles from '../common/NavigatorStyles';
 import utils from '../utils';
-import appEmitter from '../appEmitter';
-
+import { LOADING } from '../constants';
 import EnvironmentStore from '../mobx/stores/EnvironmentStore';
 import UserStore from '../mobx/stores/UserStore';
+import OAuthStore from '../mobx/stores/OAuthStore';
+import Intro from '../components/Intro';
 
-import oauthMixin from '../mixins/oauth';
-
-import {register, forgottenPasswordStack, loginEmail, loginStack, appStack} from '../routes';
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  backgroundContainer: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    height: Dims.deviceHeight,
+    width: Dims.deviceWidth,
+  },
+  buttonContainer: {
+    flex: 1,
+    width: '80%',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  logo: {
+    height: h(42),
+    width: h(383),
+    marginBottom: 30,
+  },
+});
 
 @observer
-@mixin(oauthMixin)
 export default class Login extends PureComponent {
-  static contextTypes = {
-    navigators: React.PropTypes.array.isRequired,
-    setBannerError: React.PropTypes.func.isRequired
-  };
-
   state = {};
 
+  constructor(props) {
+    super(props);
+    reaction(
+      () => OAuthStore.token,
+      () => {
+        if (OAuthStore.status === READY) {
+          UserStore.loginWithInstagram(OAuthStore.token);
+          OAuthStore.reset();
+        }
+      }
+    );
+  }
+
   render() {
-    return (<NavigationSetting
-      leftAction={() => {
-        _.last(this.context.navigators).jumpTo(register);
-      }}
-      leftDisabled={utils.isLoading([EnvironmentStore.environmentState, UserStore.userState, this.state.oauth])}
-      leftIcon="back"
-      onWillBlur={this.onWillBlur}
-      onWillFocus={this.onWillFocus}
-      style={{
-        flex: 1,
-        backgroundColor: 'transparent'
-      }}
-    >
-      <View
-        style={{flex: 1, justifyContent: 'space-between'}}
+    return (
+      <Image
+        resizeMode="cover"
+        source={require('../images/onboarding.jpg')}
+        style={styles.backgroundContainer}
       >
-        <View>
-          <View style={{paddingBottom: 10}}>
+      <View
+        style={styles.container}
+      >
+        <View style={styles.buttonContainer}>
+          <Image
+            style={styles.logo}
+            source={require('img/onboarding_logo.png')}
+          />
+          <View style={{paddingBottom: 10, alignSelf: 'stretch'}}>
             <SimpleButton
               color={COLORS.FB}
               disabled={utils.isLoading([EnvironmentStore.environmentState, UserStore.userState, this.state.oauth])}
               icon="facebook"
               label="Sign In with Facebook"
-              onPress={() =>
+              onPress={() => {
                 EnvironmentStore.loadEnv()
                   .then(() => LoginManager.logInWithReadPermissions(['email']))
                   .then(() => AccessToken.getCurrentAccessToken())
                   .then(data => data.accessToken.toString())
                   .then(token => UserStore.loginWithFacebook(token))
-                  .then(
-                    () => {
-                      appEmitter.emit('login');
-                      _.first(this.context.navigators).jumpTo(appStack);
-                    },
-                    (e) => {
-                      this.context.setBannerError(e);
-                    }
-                  )
-              }
+                  .catch((e) => {
+                    this.context.setBannerError(e);
+                  });
+              }}
             />
           </View>
-          <View style={{paddingBottom: 10}}>
+          <View style={{paddingBottom: 10, alignSelf: 'stretch'}}>
             <SimpleButton
               color={COLORS.IG}
               disabled={utils.isLoading([EnvironmentStore.environmentState, UserStore.userState, this.state.oauth])}
               icon="instagram"
               label="Sign In with Instagram"
-              onPress={() =>
-                EnvironmentStore.loadEnv()
-                  .then(() => this.oauth(loginStack, {
-                    authorize: 'https://api.instagram.com/oauth/authorize/',
-                    clientId: EnvironmentStore.environment.insta_client_id,
-                    redirectUri: EnvironmentStore.environment.insta_redirect_url,
-                    type: 'Instagram',
-                    scope: 'basic'
-                  }))
-                  .then(token => UserStore.loginWithInstagram(token))
-                  .then(
-                    () => {
-                      appEmitter.emit('login');
-                      _.first(this.context.navigators).jumpTo(appStack);
-                    },
-                    (e) => {
-                      this.context.setBannerError(e);
-                    }
-                  )
-              }
+              onPress={() => {
+                OAuthStore.setInstagramOauthConfig().then(() =>{
+                  this.props.navigator.push({
+                    screen: 'hairfolio.LoginOAuth',
+                    title: 'Instagram',
+                    navigatorStyle: NavigatorStyles.basicInfo,
+                  });
+                })
+              }}
             />
           </View>
-          <View style={{paddingBottom: SCALE.h(54)}}>
+          <View style={{paddingBottom: SCALE.h(54), alignSelf: 'stretch'}}>
             <SimpleButton
               color={COLORS.DARK}
               disabled={utils.isLoading([EnvironmentStore.environmentState, UserStore.userState, this.state.oauth])}
               icon="email"
               label="Sign In with email"
               onPress={() => {
-                _.last(this.context.navigators).jumpTo(loginEmail);
+                this.props.navigator.push({
+                  screen: 'hairfolio.LoginEmail',
+                  animationType: 'fade',
+                  navigatorStyle: NavigatorStyles.onboarding,
+                });
               }}
             />
           </View>
           <CustomTouchableOpacity
             disabled={utils.isLoading([EnvironmentStore.environmentState, UserStore.userState, this.state.oauth])}
             onPress={() => {
-              _.first(this.context.navigators).jumpTo(forgottenPasswordStack);
+              this.props.navigator.push({
+                screen: 'hairfolio.ForgotPassword',
+                navigatorStyle: NavigatorStyles.basicInfo,
+                title: 'Forgot Password',
+              });
             }}
           >
             <Text style={{
@@ -128,17 +147,23 @@ export default class Login extends PureComponent {
         <CustomTouchableOpacity
           disabled={utils.isLoading([EnvironmentStore.environmentState, UserStore.userState, this.state.oauth])}
           onPress={() => {
-            _.last(this.context.navigators).jumpTo(register);
+            this.props.navigator.resetTo({
+              screen: 'hairfolio.Register',
+              animationType: 'fade',
+              navigatorStyle: NavigatorStyles.onboarding,
+            });
           }}
         >
           <Text style={{
             fontFamily: FONTS.MEDIUM,
             fontSize: SCALE.h(28),
             color: COLORS.WHITE,
-            textAlign: 'center'
+            textAlign: 'center',
+            marginBottom: 10,
           }}>Don’t Have an Account? <Text style={{fontFamily: FONTS.HEAVY}}>Sign up</Text></Text>
         </CustomTouchableOpacity>
       </View>
-    </NavigationSetting>);
+      </Image>
+    );
   }
 };

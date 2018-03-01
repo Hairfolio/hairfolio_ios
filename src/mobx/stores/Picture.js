@@ -109,8 +109,7 @@ class Picture {
   }
 
   async uploadPicture() {
-    // TODO just for testing whether this is the course
-    const uri = await ImageResizer.createResizedImage(this.source.uri, 1024, 1024, 'JPEG', 100, 0);
+    const uri = await ImageResizer.createResizedImage(this.source.uri, 1024, 1024 * (4/3), 'JPEG', 100, 0);
 
     let formdata = new FormData();
     formdata.append('file', {

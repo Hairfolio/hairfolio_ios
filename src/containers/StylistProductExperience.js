@@ -1,37 +1,36 @@
 import React from 'react';
 import _ from 'lodash';
 import {OrderedMap, Map} from 'immutable';
+import { observer } from 'mobx-react';
 import PureComponent from '../components/PureComponent';
 import {autobind} from 'core-decorators';
 import {View, Text} from 'react-native';
 import EnvironmentStore from '../mobx/stores/EnvironmentStore';
 import {COLORS} from '../style';
-import NavigationSetting from '../navigation/NavigationSetting';
 import SearchList from '../components/SearchList';
-
 import LoadingContainer from '../components/LoadingContainer';
+import whiteBack from '../../resources/img/nav_white_back.png';
 
-import {NAVBAR_HEIGHT} from '../constants';
-
+@observer
 export default class StylistProductExperience extends PureComponent {
-  static propTypes = {
-    backTo: React.PropTypes.object.isRequired,
-    title: React.PropTypes.string.isRequired
-  };
-
-  static contextTypes = {
-    navigators: React.PropTypes.array.isRequired
-  };
-
   static defaultProps = {
     title: 'Product Experience'
   };
 
   state = {};
 
-  @autobind
-  onWillFocus() {
+  constructor(props) {
+    super(props);
     EnvironmentStore.getExperiences(EnvironmentStore.experiencesNextPage);
+  }
+
+  static navigatorButtons = {
+    leftButtons: [
+      {
+        id: 'back',
+        icon: whiteBack,
+      }
+    ],
   }
 
   getValue() {
@@ -65,20 +64,7 @@ export default class StylistProductExperience extends PureComponent {
         [experience.id, experience]
       );
     let experiences = new OrderedMap(newExperiences);
-    return (<NavigationSetting
-      leftAction={() => {
-        _.last(this.context.navigators).jumpTo(this.props.backTo);
-      }}
-      leftIcon="back"
-      onWillBlur={this.onWillBlur}
-      onWillFocus={this.onWillFocus}
-      style={{
-        flex: 1,
-        backgroundColor: COLORS.LIGHT,
-        paddingTop: NAVBAR_HEIGHT
-      }}
-      title={this.props.title}
-    >
+    return (
       <SearchList
           items={experiences}
           placeholder="Search for products"
@@ -92,10 +78,11 @@ export default class StylistProductExperience extends PureComponent {
             delete this.selectedIds;
           }}
           style={{
-            flex: 1
+            flex: 1,
+            backgroundColor: COLORS.LIGHT,
           }}
           onEndReached={this.getNextPage.bind(this)}
         />
-    </NavigationSetting>);
+    );
   }
 };

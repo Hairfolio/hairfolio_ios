@@ -16,22 +16,15 @@ import {
   PickerIOS, StatusBar, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet,
   convertFraction
 } from 'Hairfolio/src/helpers';
-
 import SlimHeader from '../components/SlimHeader';
 import AlbumStore from '../mobx/stores/AlbumStore';
 import CreatePostStore from '../mobx/stores/CreatePostStore';
 import AddServiceStore from '../mobx/stores/AddServiceStore';
-import {appStack, createPost, onPress, postFilter, albumPage, gallery, addServiceTwo} from '../routes';
-
 import LoadingScreen from '../components/LoadingScreen';
-
 import Picker from 'react-native-wheel-picker';
-
-
 import MyPicker from '../components/MyPicker';
 import ReactNative, { NativeModules } from 'react-native';
 const RCTUIManager = NativeModules.UIManager;
-
 import LinearGradient from 'react-native-linear-gradient';
 
 const ServiceRow = observer(({selector}) => {
@@ -195,8 +188,6 @@ const LastRowColor = observer(({store}) => {
           selector={store.vlSelector}
         />
         <PickerBox selector={store.vlWeightSelector} />
-
-
       </View>
       <View
         style={{
@@ -222,7 +213,6 @@ const LastRowColor = observer(({store}) => {
           }}
           onValueChange={(val) => store.selectedMinutes = val}>
           { store.minData.map((val) => <Picker.Item key={val[0] + val[1]} label={val} value={val} />) }
-
         </Picker>
       </View>
     </View>
@@ -233,33 +223,22 @@ const LastRowColor = observer(({store}) => {
 @observer
 @autobind
 export default class AddServicePageThree extends Component {
-
-  static contextTypes = {
-    navigators: React.PropTypes.array.isRequired
-  };
-
   render() {
-
     let store = AddServiceStore;
-
     return (
       <View style={{paddingTop: 20, backgroundColor: 'white', flex: 1}}>
         <SlimHeader
           leftText='Back'
           titleWidth={140}
           onLeft={() => {
-            _.last(this.context.navigators).jumpTo(
-              addServiceTwo
-            )
+            this.props.navigator.pop({ animated: true });
           }}
           title='Add Service (3/3)'
           titleStyle={{fontFamily: FONTS.SF_MEDIUM}}
           rightText='Done'
           onRight={() => {
-
             let unit = AddServiceStore.colorNameSelector.selectedData.unit;
             let developerWeight =  convertFraction(unit, AddServiceStore.vlWeightSelector.selectedValue);
-
             let storeObj = {
               unit: AddServiceStore.colorNameSelector.selectedData.unit,
               service_id: AddServiceStore.serviceSelector.selectedData.id,
@@ -272,11 +251,8 @@ export default class AddServicePageThree extends Component {
               developer_amount: developerWeight,
               developer_time: parseInt(AddServiceStore.selectedMinutes.split(' ')[0], 10)
             }
-
             AddServiceStore.isLoading = true;
-
             AddServiceStore.save(storeObj);
-
           }}
         />
       <View style={{flex: 1}}>
@@ -288,11 +264,8 @@ export default class AddServicePageThree extends Component {
           <ColorSummary store={AddServiceStore} />
           <LastRowColor store={AddServiceStore} />
         </ScrollView>
-
         <PickerPageThree store={AddServiceStore} />
-
         <LoadingScreen store={AddServiceStore} />
-
       </View>
     </View>
     );

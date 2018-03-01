@@ -2,24 +2,16 @@ import React from 'react';
 import PureComponent from '../components/PureComponent';
 import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import {COLORS, FONTS, SCALE} from '../style';
-import NavigationSetting from '../navigation/NavigationSetting';
 import UserStore from '../mobx/stores/UserStore';
 import AppStore from '../mobx/stores/AppStore';
 import EnvironmentStore from '../mobx/stores/EnvironmentStore';
 import FollowButton from '../components/Buttons/Follow';
-
 import utils from '../utils';
-
-import {appStack} from '../routes';
+import NavigatorStyles from '../common/NavigatorStyles';
 
 export default class UserStylist extends PureComponent {
   static propTypes = {
-    onLayout: React.PropTypes.func.isRequired,
     profile: React.PropTypes.object.isRequired,
-  };
-
-  static contextTypes = {
-    navigators: React.PropTypes.array.isRequired
   };
 
   renderFollowButton(stylist) {
@@ -40,29 +32,27 @@ export default class UserStylist extends PureComponent {
   }
 
   render() {
-    // if the map is not good for the performance.
-    // even if the scroll component is the wrapping profile scrollview which has multiple tabs
-    // it is still possible to use the ListView component by leveraging the renderScrollComponent
-    // the idea would be to pass a sort of proxy that relay/pass to/from the wrapping scrollview
-    // methods to implements can be seen in the react-native/ListView implementation
-
-    return (<NavigationSetting
-      style={{
-        flex: 1,
-        backgroundColor: COLORS.WHITE,
-        paddingLeft: 10,
-        paddingRight: 10,
-        paddingBottom: 10
-      }}
-    >
+    return (
       <View
-        onLayout={this.props.onLayout}
+        style={{
+          flex: 1,
+          backgroundColor: COLORS.WHITE,
+          paddingLeft: 10,
+          paddingRight: 10,
+          paddingBottom: 10
+        }}
       >
         {this.props.profile.stylists && this.props.profile.stylists.count() ?
           this.props.profile.stylists.map(stylist => <TouchableOpacity
             key={stylist.id}
             onPress={() => {
-              appStack.scene().goToProfile(stylist.id);
+              navigator.push({
+                screen: 'hairfolio.Profile',
+                navigatorStyle: NavigatorStyles.tab,
+                passProps: {
+                  userId: stylist.id,
+                }
+              });
             }}
             style={{
               flexDirection: 'row'
@@ -85,7 +75,6 @@ export default class UserStylist extends PureComponent {
                 }}
               />
             </View>
-
             <View style={{
               flex: 1,
               flexDirection: 'row',
@@ -99,7 +88,6 @@ export default class UserStylist extends PureComponent {
                 fontSize: SCALE.h(28),
                 color: COLORS.DARK
               }}>{stylist.first_name} {stylist.last_name}</Text>
-
               {this.renderFollowButton(stylist)}
             </View>
           </TouchableOpacity>)
@@ -112,6 +100,6 @@ export default class UserStylist extends PureComponent {
           }}>No stylists for the moment</Text>
         }
       </View>
-    </NavigationSetting>);
+    );
   }
 };

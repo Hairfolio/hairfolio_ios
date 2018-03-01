@@ -25,10 +25,8 @@ import ActivityYouStore from '../../mobx/stores/ActivityYouStore';
 
 import ActivityItem from './ActivityItem';
 
-const ActivityYou = observer(() => {
-
+const ActivityYou = observer(({navigator}) => {
   let store = ActivityYouStore;
-
 
   if (store.isLoading) {
     return (
@@ -57,7 +55,7 @@ const ActivityYou = observer(() => {
 
   return (
     <ScrollView>
-    {store.elements.map(p => <ActivityItem isMe={true} key={p.key} store={p} />)}
+    {store.elements.map(p => <ActivityItem isMe={true} key={p.key} store={p} navigator={navigator} />)}
     </ScrollView>
   );
 });

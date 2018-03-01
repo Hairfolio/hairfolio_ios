@@ -1,16 +1,9 @@
 import PureComponent from '../components/PureComponent';
 import {COLORS, FONTS, SCALE} from '../style';
-import NavigationSetting from '../navigation/NavigationSetting';
-
-import {BOTTOMBAR_HEIGHT, STATUSBAR_HEIGHT} from '../constants';
-
-import {profile, profileExternal, appStack} from '../routes';
-
+import {STATUSBAR_HEIGHT} from '../constants';
 import SimpleButton from '../components/Buttons/Simple';
-
 import SearchDetailsElement from '../components/search/SearchDetailsElement';
 import SearchStore from '../mobx/stores/SearchStore';
-
 import SearchDetailsStore from '../mobx/stores/search/SearchDetailsStore';
 
 import {
@@ -38,46 +31,39 @@ import {
 const SampleActions = observer(() => {
   return (
     <View>
-
     <SimpleButton
       color={COLORS.DARK}
       label="Go to a consumer profile"
       onPress={() => {
-        appStack.scene().goToProfile(118);
+        // appStack.scene().goToProfile(118);
         //118 / consumerext@hairfolio.com / 123456
       }}
     />
-
     <View style={{height: 20}} />
-
     <SimpleButton
       color={COLORS.DARK}
       label="Go to a stylist profile"
       onPress={() => {
         //120 / stylistext@hairfolio.com / 123456
-        appStack.scene().goToProfile(120);
+        // appStack.scene().goToProfile(120);
       }}
     />
-
     <View style={{height: 20}} />
-
     <SimpleButton
       color={COLORS.DARK}
       label="Go to a salon profile"
       onPress={() => {
         //121 / salonext@hairfolio.com / 123456
-        appStack.scene().goToProfile(121);
+        // appStack.scene().goToProfile(121);
       }}
     />
-
     <View style={{height: 20}} />
-
     <SimpleButton
       color={COLORS.DARK}
       label="Go to a brand profile"
       onPress={() => {
         //122 / brandext@hairfolio.com / 123456
-        appStack.scene().goToProfile(122);
+        // appStack.scene().goToProfile(122);
       }} />
 
     </View>
@@ -85,41 +71,31 @@ const SampleActions = observer(() => {
 });
 
 export default class SearchDetails extends PureComponent {
-  static contextTypes = {
-    navigators: React.PropTypes.array.isRequired
-  };
+  constructor(props) {
+    super(props);
+    StatusBar.setBarStyle('light-content')
+    if (SearchDetailsStore.dontReset) {
+      // SearchDetailsStore.dontReset = true;
+    } else {
+      SearchDetailsStore.reset();
+    }
+  }
+
+  componentDidMount() {
+    if (SearchDetailsStore.dontReset) {
+      SearchDetailsStore.dontReset = false;
+    } else {
+      setTimeout(() => SearchDetailsStore.input.focus());
+    }
+  }
 
   render() {
-    return (<NavigationSetting
-      style={{
-        flex: 1,
-        backgroundColor: COLORS.WHITE
-      }}
-      onWillFocus={
-        () => {
-          StatusBar.setBarStyle('light-content')
-          if (SearchDetailsStore.dontReset) {
-            // SearchDetailsStore.dontReset = true;
-          } else {
-            SearchDetailsStore.reset();
-          }
-        }
-      }
-      onFocus={
-        ()  => {
-          if (SearchDetailsStore.dontReset) {
-            SearchDetailsStore.dontReset = false;
-          } else {
-            setTimeout(() => SearchDetailsStore.input.focus());
-          }
-        }
-      }
-    >
+    return (
       <View style={{
         flex: 1
       }}>
-        <SearchDetailsElement />
+        <SearchDetailsElement navigator={this.props.navigator}/>
       </View>
-    </NavigationSetting>);
+    );
   }
 };

@@ -390,7 +390,6 @@ class AddServiceStore {
           }
         }
       }
-
     }
 
     this.colorGrid.setColors(res, unit);
@@ -415,7 +414,6 @@ class AddServiceStore {
           `${this.initStore.developerVolume} VL`
         );
       }
-
 
       if (this.initStore.developerTime) {
         this.selectedMinutes = `${this.initStore.developerTime} min`;

@@ -126,6 +126,7 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-navigation')
     compile project(':react-native-image-resizer')
     compile project(':react-native-social-share')
     compile project(':react-native-wheel-picker')

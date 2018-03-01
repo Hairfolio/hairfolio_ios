@@ -1,3 +1,4 @@
+
 import {
   _, // lodash
   v4,
@@ -19,6 +20,7 @@ class UserStore {
   @persist @observable changePasswordState;
   @persist @observable forgotPasswordState;
   @persist @observable registrationMethod;
+  @observable needsMoreInfo = false;
 
   constructor() {
     this.user = {
@@ -36,23 +38,28 @@ class UserStore {
     return this.user.auth_token;
   }
 
-  @action loadUser = (user) => {
+  @action setNeedsMoreInfo(value) {
+    this.needsMoreInfo = value;
+  }
+
+  @action loadUser(user) {
     this.user = user;
   }
 
-  @action setMethod = (method) => {
+  @action setMethod(method) {
     this.registrationMethod = method;
   }
 
-  @action editUser = (values = {}, type) => {
+  @action editUser(values = {}, type) {
     this.userState = LOADING;
+    debugger;
     if (values.experience_ids) {
-      values.experience_ids = values.experience_ids.split(',').map(e => Math.floor(e));
+      values.experience_ids = values.experience_ids;
     } else {
       values.experience_ids = [];
     }
     if (values.certificate_ids) {
-      values.certificate_ids = values.certificate_ids.split(',').map(e => Math.floor(e));
+      values.certificate_ids = values.certificate_ids;
     } else {
       values.certificate_ids = [];
     }
@@ -109,7 +116,7 @@ class UserStore {
 
   }
 
-  @action logout = () => {
+  @action logout() {
     ServiceBackend.delete(`/sessions/${this.user.auth_token}`);
     this.user = {
       educations: [],
@@ -119,22 +126,22 @@ class UserStore {
     this.followingStates = observable.map();
   }
 
-  @action setToken = (val) => {
+  @action setToken(val) {
     this.user.auth_token = val;
   }
 
-  @action addOffering = (offering) => {
+  @action addOffering(offering) {
     this.user.offerings.push(offering);
   }
 
-  @action editOffering = (id, offering) => {
+  @action editOffering(id, offering) {
     const index = this.user.offerings.indexOf(offering);
     if (index < 0) {
       this.user.offerings[index] = offering;
     }
   }
 
-  @action deleteOffering = (id) => {
+  @action deleteOffering(id) {
     let index = -1;
     this.user.offerings.forEach((offering, i) => {
       if (offering.id === id) {
@@ -144,28 +151,56 @@ class UserStore {
     this.user.offerings.splice(index, 1);
   }
 
-  @action addEducation = (education) => {
-    this.user.educations.push(education);
+  @action async addEducation(education) {
+    ServiceBackend.post(`/users/${this.user.id}/educations`, { education: education })
+      .then(response => {
+        const newEducations = this.user.educations;
+        newEducations.push(education);
+        this.user.educations = newEducations;
+      })
+      .catch((error) => {
+        console.log(error);
+        throw error;
+      });
   }
 
-  @action editEducation = (id, education) => {
-    const index = this.user.educations.indexOf(education);
-    if (index < 0) {
-      this.user.educations[index] = education;
-    }
+  @action editEducation(id, education) {
+    ServiceBackend.put(`/users/${this.user.id}/educations/${id}`, { education: education})
+      .then(response => {
+        const newEducations = this.user.educations;
+        const index = newEducations.indexOf(education);
+        if (index < 0) {
+          newEducations[index] = education;
+        }
+        this.user.educations = newEducations;
+      })
+      .catch((error) => {
+        console.log(error);
+        throw error;
+      });
+
   }
 
-  @action deleteEducation = (id) => {
+  @action deleteEducation(id) {
     let index = -1;
-    this.user.educations.forEach((education, i) => {
-      if (education.id === id) {
-        index = i;
-      }
-    });
-    this.user.educations.splice(index, 1);
+    ServiceBackend.delete(`/users/${this.user.id}/educations/${id}`)
+      .then(response => {
+        const newEducations = this.user.educations;
+        newEducations.forEach((education, i) => {
+          if (education.id === id) {
+            index = i;
+          }
+        });
+        newEducations.splice(index, 1);
+        this.user.educations = newEducations;
+      })
+      .catch((error) => {
+        console.log(error);
+        throw error;
+      });
   }
 
-  @action followUser = (id) => {
+  @action followUser(id) {
     this.followingStates.set(id, LOADING);
     ServiceBackend.post(
       `/users/${id}/follows`,
@@ -183,7 +218,7 @@ class UserStore {
       });
   }
 
-  @action unfollowUser = (id) => {
+  @action unfollowUser(id) {
     this.followingStates.set(id, LOADING);
     ServiceBackend.delete(`/users/${id}/follows`)
       .then(response => {
@@ -196,19 +231,22 @@ class UserStore {
       });
   }
 
-  getUserEducations = () => {
-    return ServiceBackend.get(`/users/${this.user.id}/educations`);
+  async getUserEducations() {
+    const response = await ServiceBackend.get(`/users/${this.user.id}/educations`);
+    return response.educations;
   }
 
-  getUserOfferings = () => {
-    return ServiceBackend.get(`/users/${this.user.id}/offerings`);
+  async getUserOfferings() {
+    const response = await ServiceBackend.get(`/users/${this.user.id}/offerings`);
+    return response.offerings;
   }
 
-  getUserFollowing = () => {
-    return ServiceBackend.get(`/users/${this.user.id}/follows`);
+  async getUserFollowing() {
+    const response = await ServiceBackend.get(`/users/${this.user.id}/follows`);
+    return response.users;
   }
 
-  @action forgotPassword = async (email) => {
+  @action async forgotPassword(email) {
     try {
       this.forgotPasswordState = LOADING;
       const response = await ServiceBackend.post(
@@ -220,7 +258,7 @@ class UserStore {
       this.forgotPasswordState = LOADING_ERROR;
     }
   }
-  @action changePassword = async (value) => {
+  @action async changePassword(value) {
     try {
       this.changePasswordState = LOADING;
       const response = await ServiceBackend.post(
@@ -236,15 +274,15 @@ class UserStore {
   }
 
   loadUserInformation = async () => {
-    const educations = await this.getUserEducations().educations || [];
-    const offerings = await this.getUserOfferings().offerings || [];
-    const following = await this.getUserFollowing().following || [];
+    const educations = await this.getUserEducations();
+    const offerings = await this.getUserOfferings();
+    const following = await this.getUserFollowing();
     this.user.following = following;
     this.user.educations = educations;
     this.user.offerings = offerings;
   }
 
-  @action loginWithFacebook = async (token) => {
+  @action  async loginWithFacebook(token) {
     this.userState = LOADING;
     try {
       const res = await ServiceBackend.post(
@@ -262,7 +300,7 @@ class UserStore {
     }
   }
 
-  @action signupWithFacebook = async (token, type) => {
+  @action async signupWithFacebook(token, type) {
     this.userState = LOADING;
     try {
       const res = await ServiceBackend.post(
@@ -279,7 +317,7 @@ class UserStore {
     }
   }
 
-  @action loginWithInstagram = async (token) => {
+  @action async loginWithInstagram(token) {
     this.userState = LOADING;
     try {
       const res = await ServiceBackend.post(
@@ -297,24 +335,29 @@ class UserStore {
     }
   }
 
-  @action signupWithInstagram = async (token, type) => {
+  @action async signupWithInstagram(token, type) {
     this.userState = LOADING;
     try {
       const res = await ServiceBackend.post(
         '/sessions/instagram',
         {
-          'instragram_token': token
+          'instagram_token': token
         }
       );
-      this.user = res.user;
-      this.userState = READY;
+      if (res.user) {
+        this.user = res.user;
+        this.userState = READY;
+      } else {
+        this.userState = LOADING_ERROR;
+        throw new Error(res.errors);
+      }
     } catch(error) {
       this.userState = LOADING_ERROR;
       throw error;
     }
   }
 
-  @action signUpWithEmail = async (value = {}, type) => {
+  @action async signUpWithEmail(value = {}, type) {
     this.userState = LOADING;
     if (value.business) {
       _.each(value.business, (v, key) => value[`business_${key}`] = v);
@@ -349,6 +392,7 @@ class UserStore {
         throw res.errors.first();
       }
       this.user = res.user;
+      this.needsMoreInfo = type !== 'consumer';
       this.userState = READY;
     } catch (error) {
       this.userState = LOADING_ERROR;
@@ -356,7 +400,7 @@ class UserStore {
     }
   }
 
-  @action loginWithEmail = async (value, type) => {
+  @action async loginWithEmail(value, type) {
     this.userState = LOADING;
     try {
       const res = await ServiceBackend.post(
@@ -377,7 +421,7 @@ class UserStore {
     }
   }
 
-  @action destroy = async () => {
+  @action async destroy() {
     ServiceBackend.delete(`/users/${this.user.id}`)
         .catch(e => console.log(e));
     this.user = {

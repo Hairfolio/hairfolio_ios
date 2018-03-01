@@ -30,8 +30,12 @@ export default class Picker extends PureComponent {
     active: false
   };
 
+  dismiss = () => {
+    this.setState({active: false});
+  }
+
   render() {
-    return (<View>
+    return (<View style={{alignSelf: 'stretch'}}>
       <CustomTouchableOpacity
         disabled={this.props.disabled}
         onPress={() => {
@@ -96,8 +100,14 @@ export default class Picker extends PureComponent {
             <TouchableOpacity
               onPress={() => {
                 this.setState({active: false});
-                if (this.props.onDone)
-                  this.props.onDone(this.props.choices[this.state.selected]);
+                if (this.props.onDone) {
+                  setTimeout(
+                    () => {
+                      this.props.onDone(this.props.choices[this.state.selected]);
+                    },
+                    1000
+                  );
+                }
               }}
             >
               <Text style={{

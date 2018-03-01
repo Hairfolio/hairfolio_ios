@@ -3,26 +3,56 @@ import _ from 'lodash';
 import PureComponent from '../components/PureComponent';
 import {List, OrderedMap} from 'immutable';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import { toJS } from 'mobx';
 import { observer } from 'mobx-react';
 import UserStore from '../mobx/stores/UserStore';
 import {COLORS, FONTS, SCALE} from '../style';
-import NavigationSetting from '../navigation/NavigationSetting';
 import SafeList from '../components/SafeList';
 import LoadingContainer from '../components/LoadingContainer';
-import {NAVBAR_HEIGHT} from '../constants';
+import whiteBack from '../../resources/img/nav_white_back.png';
+import NavigatorStyles from '../common/NavigatorStyles';
 
 @observer
 export default class SalonSP extends PureComponent {
-  static propTypes = {
-    addSP: React.PropTypes.object.isRequired,
-    backTo: React.PropTypes.object.isRequired,
-  };
-
-  static contextTypes = {
-    navigators: React.PropTypes.array.isRequired
-  };
-
   state = {};
+
+  componentDidMount(props) {
+    this.props.navigator.setOnNavigatorEvent((e) => {
+      this.onNavigatorEvent(e);
+    });
+  }
+
+  static navigatorButtons = {
+    leftButtons: [
+      {
+        id: 'back',
+        icon: whiteBack,
+      }
+    ],
+    rightButtons: [
+      {
+        id: 'add',
+        title: 'Add',
+        buttonFontSize: SCALE.h(30),
+        buttonColor: COLORS.WHITE,
+      }
+    ]
+  };
+
+  onNavigatorEvent(event) {
+    if (event.type == 'NavBarButtonPress') {
+      if (event.id == 'back') {
+        this.props.navigator.pop({
+          animated: true,
+        });
+      } else if (event.id == 'add') {
+        this.props.navigator.push({
+          screen: 'hairfolio.SalonAddSP',
+          navigatorStyle: NavigatorStyles.basicInfo,
+        });
+      }
+    }
+  }
 
   getValue() {
     return null;
@@ -35,8 +65,11 @@ export default class SalonSP extends PureComponent {
     window.sp = sp;
     return (<TouchableOpacity
       onPress={() => {
-        this.props.addSP.scene().setEditing(sp.offering);
-        _.last(this.context.navigators).jumpTo(this.props.addSP);
+        this.props.navigator.push({
+          screen: 'hairfolio.SalonAddSP',
+          navigatorStyle: NavigatorStyles.basicInfo,
+          passProps: { offering: sp.offering },
+        });
       }}
       style={{
         backgroundColor: COLORS.WHITE,
@@ -58,14 +91,16 @@ export default class SalonSP extends PureComponent {
     </TouchableOpacity>);
   }
 
-  renderContent() {
+  renderContent(userOfferings) {
     window.myuser = UserStore.user;
-    var offerings = new OrderedMap(UserStore.user.offerings.map(offerings => [offerings.id, offerings]));
+    var offerings = new OrderedMap(userOfferings.map(offerings => [offerings.id, offerings]));
 
     return (<View style={{
-      flex: 1
+      flex: 1,
+      backgroundColor: COLORS.LIGHT,
+      paddingTop: SCALE.h(15),
     }}>
-      {!UserStore.user.offerings.length ?
+      {!userOfferings.length ?
         <Text style={{
           marginTop: SCALE.h(35),
           marginLeft: SCALE.w(25),
@@ -90,29 +125,11 @@ export default class SalonSP extends PureComponent {
   }
 
   render() {
-    return (<NavigationSetting
-      forceUpdateEvents={['login', 'user-edited']}
-      leftAction={() => {
-        _.last(this.context.navigators).jumpTo(this.props.backTo);
-      }}
-      leftIcon="back"
-      onWillBlur={this.onWillBlur}
-      onWillFocus={this.onWillFocus}
-      rightAction={() => {
-        this.props.addSP.scene().setNew();
-        _.last(this.context.navigators).jumpTo(this.props.addSP);
-      }}
-      rightLabel="Add"
-      style={{
-        flex: 1,
-        backgroundColor: COLORS.LIGHT,
-        paddingTop: NAVBAR_HEIGHT + SCALE.h(15)
-      }}
-      title="Services & Prices"
-    >
+    const userOfferings = toJS(UserStore.user.offerings);
+    return (
       <LoadingContainer state={[UserStore.userState]}>
-        {() => this.renderContent()}
+        {() => this.renderContent(userOfferings)}
       </LoadingContainer>
-    </NavigationSetting>);
+    );
   }
 };

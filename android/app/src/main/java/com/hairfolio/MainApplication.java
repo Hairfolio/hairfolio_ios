@@ -3,6 +3,7 @@ package com.hairfolio;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.reactnativenavigation.NavigationReactPackage;
 import fr.bamlab.rnimageresizer.ImageResizerPackage;
 import com.barefootcoders.android.react.KDSocialShare.KDSocialShare;
 import com.zyu.ReactNativeWheelPickerPackage;
@@ -37,6 +38,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new NavigationReactPackage(),
             new ImageResizerPackage(),
             new KDSocialShare(),
             new ReactNativeWheelPickerPackage(),

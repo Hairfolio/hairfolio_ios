@@ -22,17 +22,14 @@ import PostPicture from './PostPicture';
 import PostActionButtons from './PostActionButtons';
 import PostDescription from './PostDescription';
 
-import * as routes from 'Hairfolio/src/routes';
-
-
-const Post = observer(({post}) => {
+const Post = observer(({post, navigator}) => {
   return (
     <View>
       <View style={{height: h(20), backgroundColor: '#F4F4F4', flex: 1}} />
-      <PostHeader post={post} />
-      <PostPicture post={post} />
-      <PostActionButtons post={post} />
-      <PostDescription limitLinesNumbers currentRoute={routes.appStack} post={post} />
+      <PostHeader post={post} navigator={navigator}/>
+      <PostPicture post={post} navigator={navigator}/>
+      <PostActionButtons post={post} navigator={navigator}/>
+      <PostDescription limitLinesNumbers currentRoute={null} post={post} navigator={navigator}/>
     </View>
   );
 });

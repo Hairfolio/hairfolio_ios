@@ -62,7 +62,8 @@ export default class BannerErrorContainer extends PureComponent {
             height: SCALE.h(70),
             alignItems: 'center',
             justifyContent: 'center',
-            overflow: 'hidden'
+            overflow: 'hidden',
+            zIndex: 999,
           }}>
             <Text style={{
               fontFamily: FONTS.ROMAN,
@@ -72,7 +73,7 @@ export default class BannerErrorContainer extends PureComponent {
           </View>
         </Animated.View>
       </TouchableOpacity>
-      <View pointerEvents="box-none" style={{flex: 1, position: 'relative'}}>
+      <View pointerEvents="box-none" style={{flex: 1, position: 'relative', alignSelf: 'stretch'}}>
         {this.props.children}
       </View>
     </View>);

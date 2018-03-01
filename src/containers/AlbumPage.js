@@ -1,16 +1,12 @@
 import React, { Component } from 'react'
 import { ScrollView, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet } from 'react-native'
-
 import {h, FONTS} from '../style';
 import {observer} from 'mobx-react';
 import autobind from 'autobind-decorator';
 import SlimHeader from '../components/SlimHeader';
 import AlbumStore from '../mobx/stores/AlbumStore';
 import CreatePostStore from '../mobx/stores/CreatePostStore';
-
 import _ from 'lodash';
-
-import {appStack, createPost, onPress, postFilter, albumPage} from '../routes';
 
 const AlbumRow = observer(({text, uri, onPress}) => {
   return (
@@ -95,37 +91,30 @@ const AlbumHeader = observer(({onLeft, leftText, title, rightText}) => {
 @observer
 @autobind
 export default class AlbumPage extends Component {
-
-  static contextTypes = {
-    navigators: React.PropTypes.array.isRequired
-  };
-
-
   renderAlbumRow(el) {
     return (
       <AlbumRow
         text={el.text}
         onPress={() => {
           CreatePostStore.changeGroupName(el.title);
-          window.createPost.forceUpdate(() => _.last(this.context.navigators).jumpTo(createPost));
+          this.props.navigator.pop({ animated: true });
         }}
         uri={el.uri}
         key={el.key}
       />
     );
   }
+
   render() {
     return (
       <View style={{flex: 1, backgroundColor: 'white'}}>
         <AlbumHeader
           leftText='Cancel'
           title='Change Album'
-          onLeft={ () => _.last(this.context.navigators).jumpTo(createPost) }
+          onLeft={() => this.props.navigator.pop({ animated: true })}
         />
         <ScrollView>
-        {
-          AlbumStore.albums.map((el) => this.renderAlbumRow(el))
-        }
+        {AlbumStore.albums.map((el) => this.renderAlbumRow(el))}
       </ScrollView>
       </View>
     );

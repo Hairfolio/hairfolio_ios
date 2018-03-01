@@ -2,12 +2,8 @@ import React from 'react';
 import PureComponent from '../components/PureComponent';
 import {View, ListView, Text} from 'react-native';
 import {COLORS, FONTS, SCALE} from '../style';
-import NavigationSetting from '../navigation/NavigationSetting';
-
 import UserPostStore from '../mobx/stores/UserPostStore';
-
 import GridPost from '../components/favourites/GridPost';
-
 import {
   _, // lodash
   v4,
@@ -28,14 +24,9 @@ import {
   ScrollView,
   PickerIOS, Picker, StatusBar, Platform, TextInput,  Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet
 } from 'Hairfolio/src/helpers';
-
 import ScrollViewProxy from '../components/ScrollViewProxy';
 
-
-
-
 const MyFooter = observer(({store}) => {
-
   if (store.nextPage != null) {
     return (
       <View style={{flex: 1, paddingVertical: 20, alignItems: 'center', justifyContent: 'center'}}>
@@ -47,36 +38,16 @@ const MyFooter = observer(({store}) => {
   }
 });
 
-
 @autobind
 @observer
 export default class UserPosts extends PureComponent {
-  static propTypes = {
-    onLayout: React.PropTypes.func.isRequired
-  };
-
-  static contextTypes = {
-    navigators: React.PropTypes.array.isRequired
-  };
-
-
-
-  componentDidMount() {
-    this.layout(this.nb);
-  }
-
-
-  layout(nb) {
-    this.props.onLayout(
-      {
-        nativeEvent: {
-          layout: {
-            height: (nb + 1) * (windowWidth / 2)
-          },
-        },
-      },
-      true,
-    );
+  constructor(props) {
+    super(props);
+    let userId = this.props.profile.id;
+    if (window.lastUserId != userId) {
+      window.lastUserId = userId;
+      UserPostStore.load(userId);
+    }
   }
 
   render() {
@@ -113,6 +84,7 @@ export default class UserPosts extends PureComponent {
       <ListView
         enableEmptySections
         dataSource={store.dataSource}
+        scrollEnabled={false}
         renderRow={(el, i) => {
           return (
             <View
@@ -121,9 +93,9 @@ export default class UserPosts extends PureComponent {
                 flexWrap: 'wrap'
               }}
             >
-              <GridPost key={el[0].key} post={el[0]} />
+              <GridPost key={el[0].key} post={el[0]} navigator={this.props.navigator}/>
               {
-                el[1] != null ?  <GridPost key={el[1].key} post={el[1]} /> :
+                el[1] != null ?  <GridPost key={el[1].key} post={el[1]}  navigator={this.props.navigator} /> :
                   <View
                     style = {{
                       width: windowWidth / 2,
@@ -135,13 +107,6 @@ export default class UserPosts extends PureComponent {
             </View>
           )
         }}
-        renderScrollComponent={(props) => <ScrollViewProxy
-          {...props}
-          onChildrenLength={(nb) => {
-            this.nb = nb;
-            this.layout(nb);
-          }}
-        />}
         renderFooter={
           () => <MyFooter store={store} />
         }
@@ -150,28 +115,15 @@ export default class UserPosts extends PureComponent {
         }} />
     );
 
-    return (<NavigationSetting
-      style={{
-        flex: 1,
-        backgroundColor: COLORS.WHITE,
-      }}
-      onWillFocus={() => {
-        let userId = this.props.profile.id;
-        if (window.lastUserId != userId) {
-          window.lastUserId = userId;
-          UserPostStore.load(userId);
-        }
-      }}
-    >
+    return (
       <View
-        onLayout={
-          () => {
-
-          }
-        }
+        style={{
+          flex: 1,
+          backgroundColor: COLORS.WHITE,
+        }}
       >
         {content}
       </View>
-    </NavigationSetting>);
+    );
   }
 };

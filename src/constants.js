@@ -11,7 +11,6 @@ export const READY = 'READY';
 export const UPDATING = 'UPDATING';
 export const UPDATING_ERROR = 'UPDATING_ERROR';
 
-export const NAVBAR_HEIGHT = Navigator.NavigationBar.Styles.General.TotalNavHeight;
 export const BOTTOMBAR_HEIGHT = SCALE.h(105);
 export const STATUSBAR_HEIGHT = 20;
 export const USERPROFILEBAR_HEIGHT = SCALE.h(102);

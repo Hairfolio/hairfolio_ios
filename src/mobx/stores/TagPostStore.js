@@ -1,15 +1,9 @@
 import {observable, computed, action} from 'mobx';
-
 import ServiceBackend from '../../backend/ServiceBackend';
-
 import {_, moment, React, Text} from 'Hairfolio/src/helpers';
-
 import PostListStore from './PostListStore';
-
-
 import {PostGridStore} from './PostStore';
-
-import * as routes from 'Hairfolio/src/routes';
+import NavigatorStyles from '../../common/NavigatorStyles';
 
 class TagPostModel extends PostGridStore {
   @observable title = '#myTag'
@@ -35,19 +29,21 @@ class TagPostModel extends PostGridStore {
 class TagPostStore {
 
   @observable stack = [];
-
-  jump(name, title, onBack = () => window.navigators[0].jumpTo(routes.appStack)) {
-    ;
+  jump(name, title, navigator) {
     let tagStore = new TagPostModel();
     tagStore.title = title;
     tagStore.load(name)
     tagStore.myBack = () => {
-      onBack();
+      navigator.pop({
+        animated: true,
+      })
       this.stack.pop();
     }
     this.stack.push(tagStore);
-
-    window.navigators[0].jumpTo(routes.tagPosts);
+    navigator.push({
+      screen: 'hairfolio.TagPosts',
+      navigatorStyle: NavigatorStyles.tab,
+    });
   }
 
   @computed get isEmpty() {

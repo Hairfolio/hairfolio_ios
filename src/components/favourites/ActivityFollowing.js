@@ -25,7 +25,7 @@ import ActivityFollowingStore from '../../mobx/stores/ActivityFollowingStore';
 
 import ActivityItem from '../favourites/ActivityItem';
 
-const ActivityFollowing = observer(() => {
+const ActivityFollowing = observer(({navigator}) => {
 
   let store = ActivityFollowingStore;
 
@@ -56,7 +56,14 @@ const ActivityFollowing = observer(() => {
 
   return (
     <ScrollView>
-    {store.elements.map(p => <ActivityItem isMe={false} key={p.key} store={p} />)}
+    {store.elements.map(p =>
+      <ActivityItem
+        isMe={false}
+        key={p.key}
+        store={p}
+        navigator={navigator}
+      />)
+    }
     </ScrollView>
   );
 });

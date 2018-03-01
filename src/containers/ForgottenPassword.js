@@ -5,40 +5,51 @@ import {mixin} from 'core-decorators';
 import PureComponent from '../components/PureComponent';
 import {View, Text} from 'react-native';
 import {COLORS, FONTS, SCALE} from '../style';
-import NavigationSetting from '../navigation/NavigationSetting';
 import { observer } from 'mobx-react';
 import InlineTextInput from '../components/Form/InlineTextInput';
 import BannerErrorContainer from '../components/BannerErrorContainer';
-
-import {loginStack} from '../routes';
 import UserStore from '../mobx/stores/UserStore';
-
 import formMixin from '../mixins/form';
-
-import {NAVBAR_HEIGHT} from '../constants';
+import whiteBack from '../../resources/img/nav_white_back.png';
 
 @observer
 @mixin(formMixin)
 export default class ForgottenPassword extends PureComponent {
-  static contextTypes = {
-    navigators: React.PropTypes.array.isRequired
-  };
-
   state = {};
 
-  render() {
-    return (<NavigationSetting
-      leftAction={() => {
-        _.first(this.context.navigators).jumpTo(loginStack);
-      }}
-      leftDisabled={this.state.submitting}
-      leftIcon="back"
-      onWillBlur={this.onWillBlur}
-      onWillFocus={this.onWillFocus}
-      rightAction={() => {
+  constructor(props) {
+    super(props);
+    if (this.props.navigator) {
+      this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+    }
+  }
+
+  static navigatorButtons = {
+    leftButtons: [
+      {
+        id: 'back',
+        icon: whiteBack,
+      }
+    ],
+    rightButtons: [
+      {
+        id: 'send',
+        title: 'Send',
+        buttonFontSize: SCALE.h(30),
+        buttonColor: COLORS.WHITE,
+      }
+    ]
+  };
+
+  onNavigatorEvent(event) {
+    if (event.type == 'NavBarButtonPress') {
+      if (event.id == 'back') {
+        this.props.navigator.pop({
+          animated: true,
+        });
+      } else if (event.id == 'send') {
         if (this.checkErrors())
           return;
-
         this.setState({'submitting': true});
         UserStore.forgotPassword(this.getFormValue().email)
         .then((r) => {
@@ -57,19 +68,19 @@ export default class ForgottenPassword extends PureComponent {
             this.refs.ebc.error(e);
           }
           );
-      }}
-      rightDisabled={this.state.submitting}
-      rightLabel="Send"
-      style={{
-        flex: 1,
-        backgroundColor: COLORS.LIGHT,
-        paddingTop: NAVBAR_HEIGHT
-      }}
-      title="Forgot Password"
-    >
-      <BannerErrorContainer ref="ebc" style={{
-        flex: 1
-      }}>
+      }
+    }
+  }
+
+  render() {
+    return (
+      <BannerErrorContainer
+        ref="ebc"
+        style={{
+          flex: 1,
+          backgroundColor: COLORS.LIGHT,
+        }}
+      >
         <View style={{
           height: SCALE.h(34)
         }} />
@@ -96,17 +107,19 @@ export default class ForgottenPassword extends PureComponent {
             validation={(v) => !!v && validator.isEmail(v)}
           />
         }
-
-        <Text style={{
-          marginTop: SCALE.h(35),
-          marginLeft: SCALE.w(25),
-          marginRight: SCALE.w(25),
-          fontFamily: FONTS.MEDIUM,
-          fontSize: SCALE.h(26),
-          color: COLORS.TEXT
-        }}>An email with information on how to reset your password
-will be sent to you</Text>
+        <Text
+          style={{
+            marginTop: SCALE.h(35),
+            marginLeft: SCALE.w(25),
+            marginRight: SCALE.w(25),
+            fontFamily: FONTS.MEDIUM,
+            fontSize: SCALE.h(26),
+            color: COLORS.TEXT
+          }}
+        >
+          An email with information on how to reset your password will be sent to you
+        </Text>
       </BannerErrorContainer>
-    </NavigationSetting>);
+    );
   }
 };

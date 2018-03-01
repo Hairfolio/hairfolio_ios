@@ -16,23 +16,17 @@ import {
   ScrollView,
   PickerIOS, Picker, StatusBar, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet
 } from 'Hairfolio/src/helpers';
-
+import NavigatorStyles from '../../common/NavigatorStyles';
 import PostDetailStore from '../../mobx/stores/PostDetailStore';
 import StarGiversStore from '../../mobx/stores/StarGiversStore';
 import CommentsStore from '../../mobx/stores/CommentsStore';
-
 import PostTags from './PostTags';
-
 import PostStar from './PostStar';
 import PostSave from './PostSave';
 import VideoPreview from '../VideoPreview';
-
-import * as routes from 'Hairfolio/src/routes';
-
 import WriteMessageStore from '../../mobx/stores/WriteMessageStore';
 
-const PostDetailsActionButtons = observer(({store}) => {
-
+const PostDetailsActionButtons = observer(({store, navigator}) => {
   return (
     <View
       style = {{
@@ -47,11 +41,14 @@ const PostDetailsActionButtons = observer(({store}) => {
           flexDirection: 'row',
           alignItems: 'center',
           width: h(120),
+          backgroundColor: 'transparent',
         }}
         onPress={() => {
-          StarGiversStore.back = () => window.navigators[0].jumpTo(routes.postDetails);
           StarGiversStore.load(store.post.id);
-          window.navigators[0].jumpTo(routes.starGivers);
+          navigator.push({
+            screen: 'hairfolio.StarGivers',
+            navigatorStyle: NavigatorStyles.tab,
+          });
         }}
       >
         <Image
@@ -75,12 +72,13 @@ const PostDetailsActionButtons = observer(({store}) => {
         style = {{
           flexDirection: 'row',
           alignItems: 'center',
-          width: h(100)
+          width: h(100),
+          backgroundColor: 'transparent',
         }}
         onPress={() => {
           CommentsStore.jump(
             store.post.id,
-            () => window.navigators[0].jumpTo(routes.postDetails)
+            navigator
           );
         }}
       >
@@ -105,7 +103,8 @@ const PostDetailsActionButtons = observer(({store}) => {
         style = {{
           flexDirection: 'row',
           alignItems: 'center',
-          width: h(120)
+          width: h(120),
+          backgroundColor: 'transparent',
         }}
         onPress={() => { store.showTags = !store.showTags }}
       >
@@ -130,9 +129,8 @@ const PostDetailsActionButtons = observer(({store}) => {
 });
 
 
-const PostDetailsHeader = observer(({store}) => {
+const PostDetailsHeader = observer(({store, navigator}) => {
   let post = store.post;
-
   return (
     <TouchableWithoutFeedback
       onPress={
@@ -171,12 +169,12 @@ const PostDetailsHeader = observer(({store}) => {
       }}
     >
 
-    <View style={{height: windowWidth, width: windowWidth}}>
+    <View style={{height: windowWidth * (4/3), width: windowWidth}}>
       {
         store.selectedPicture.isVideo ?
        <VideoPreview picture={store.selectedPicture} /> :
         <Image
-          style={{height: windowWidth, width: windowWidth}}
+          style={{height: windowWidth * (4/3), width: windowWidth}}
           source={store.selectedPicture.getSource(2 * windowWidth)}
         />
       }
@@ -207,10 +205,14 @@ const PostDetailsHeader = observer(({store}) => {
           }}
           onPress={
             () => {
-              WriteMessageStore.myBack = () => window.navigators[0].jumpTo(routes.postDetails);
+              WriteMessageStore.navigator = navigator;
               WriteMessageStore.mode = 'POST';
               WriteMessageStore.post = post;
-              window.navigators[0].jumpTo(routes.writeMessageRoute);
+              navigator.push({
+                screen: 'hairfolio.WriteMessage',
+                navigatorStyle: NavigatorStyles.basicInfo,
+                title: WriteMessageStore.title,
+              });
             }
           }
         >
@@ -222,12 +224,11 @@ const PostDetailsHeader = observer(({store}) => {
             source={require('img/feed_white_share_btn.png')}
           />
         </TouchableOpacity>
-        <PostTags store={store} />
-        <PostDetailsActionButtons store={store} />
+        <PostTags store={store} navigator={navigator} />
+        <PostDetailsActionButtons store={store} navigator={navigator} />
         <PostSave post={post} />
         <PostStar post={post} />
       </View>
-
     </TouchableWithoutFeedback>
   );
 });

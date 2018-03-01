@@ -15,12 +15,6 @@ export default class SafeList extends PureComponent {
     pageSize: React.PropTypes.number.isRequired
   };
 
-  static contextTypes = {
-    navigators: React.PropTypes.array.isRequired,
-    currentRoutes: React.PropTypes.array.isRequired,
-    focusEmitter: React.PropTypes.object.isRequired
-  };
-
   constructor(props) {
     super(props);
 
@@ -40,22 +34,6 @@ export default class SafeList extends PureComponent {
     };
   }
 
-  componentWillMount() {
-    this.listeners = [
-      this.context.focusEmitter.addListener('focus', () => {
-        this.isActive();
-      }),
-      this.context.focusEmitter.addListener('willblur', () => {
-        this.isInactive();
-      })
-    ];
-  }
-
-  componentDidMount() {
-    if (_.last(this.context.navigators).nextRoute === _.last(this.context.currentRoutes))
-      this.isActive();
-  }
-
   componentWillReceiveProps(props) {
     var dataSource = this.state.dataSource.cloneWithRowsAndSections(props.dataSource, props.dataSourceSectionIdentities, props.dataSourceRowIdentities);
     var nbRows = dataSource.getRowCount();
@@ -72,11 +50,6 @@ export default class SafeList extends PureComponent {
       dataSource
     });
   }
-
-  componentWillUnmount() {
-    this.isInactive();
-    _.each(this.listeners, l => l.remove());
-  };
 
   blankWorkaround() {
     if (this.refs.listView) {
@@ -124,20 +97,22 @@ export default class SafeList extends PureComponent {
   }
 
   render() {
-    return (<ListView
-      {...this.props}
-      dataSource={this.state.dataSource}
-      enableEmptySections
-      onScroll={(e) => {
-        this.firstScrolled = true;
+    return (
+      <ListView
+        {...this.props}
+        dataSource={this.state.dataSource}
+        enableEmptySections
+        onScroll={(e) => {
+          this.firstScrolled = true;
 
-        if (this.props.onScroll)
-          this.props.onScroll(e);
-      }}
-      onEndReached={this.props.onEndReached}
-      onEndReachedThreshold={10}
-      ref="listView"
-    />);
+          if (this.props.onScroll)
+            this.props.onScroll(e);
+        }}
+        onEndReached={this.props.onEndReached}
+        onEndReachedThreshold={10}
+        ref="listView"
+      />
+    );
   }
 
 }

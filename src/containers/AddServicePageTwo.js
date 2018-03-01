@@ -14,21 +14,16 @@ import {
   ScrollView,
   PickerIOS, Picker, StatusBar, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet
 } from 'Hairfolio/src/helpers';
-
-
 import LinearGradient from 'react-native-linear-gradient';
-
 import SlimHeader from '../components/SlimHeader';
 import AlbumStore from '../mobx/stores/AlbumStore';
 import CreatePostStore from '../mobx/stores/CreatePostStore';
 import AddServiceStore from '../mobx/stores/AddServiceStore';
-
-import {appStack, createPost, onPress, postFilter, albumPage, addServiceOne, addServiceThree} from '../routes';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-
 import MyPicker from '../components/MyPicker';
 import ReactNative, { NativeModules } from 'react-native';
 const RCTUIManager = NativeModules.UIManager;
+import NavigatorStyles from '../common/NavigatorStyles';
 
 const ColorItem = observer(({colorField}) => {
   return (
@@ -41,9 +36,7 @@ const ColorItem = observer(({colorField}) => {
         } else if (!colorField.isBlank) {
           alert('You already selected 4 colors!');
         }
-
       }}
-
     >
       <LinearGradient
         colors={colorField.gradientColors}
@@ -120,7 +113,7 @@ export default class AddServicePageTwo extends Component {
             titleWidth={140}
             leftText='Back'
             onLeft={() => {
-              _.last(this.context.navigators).jumpTo(addServiceOne)
+              this.props.navigator.pop({ animated: true });
             }}
             title='Add Service (2/3)'
             titleStyle={{fontFamily: FONTS.SF_MEDIUM}}
@@ -128,14 +121,15 @@ export default class AddServicePageTwo extends Component {
             rightStyle={{opacity: AddServiceStore.canMoveToPageTwo ? 1 : 0.5}}
             onRight={() => {
               if (AddServiceStore.canMoveToPageTwo) {
-                _.last(this.context.navigators).jumpTo(addServiceThree)
+                this.props.navigator.push({
+                  screen: 'hairfolio.AddServicePageThree',
+                  navigatorStyle: NavigatorStyles.tab,
+                });
               } else {
                 alert('You need to select colors first');
               }
             }}
-
           />
-
         <View style={{flex: 1, backgroundColor: 'white'}}>
           <Text
             style={{fontSize: h(40), textAlign: 'center', marginVertical: h(30), fontFamily: FONTS.SF_MEDIUM}}

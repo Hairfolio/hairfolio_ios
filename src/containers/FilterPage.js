@@ -15,21 +15,15 @@ import {
   ScrollView,
   PickerIOS, Picker, StatusBar, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet
 } from 'Hairfolio/src/helpers';
-
 import SlimHeader from '../components/SlimHeader';
 import AlbumStore from '../mobx/stores/AlbumStore';
 import CreatePostStore from '../mobx/stores/CreatePostStore';
 import AddTagStore from '../mobx/stores/AddTagStore';
-
-import {appStack, gallery, createPost, onPress, postFilter, albumPage, addServiceOne, addLink, addServiceTwo, addServiceThree} from '../routes';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-
 import ReactNative, { NativeModules } from 'react-native';
 const RCTUIManager = NativeModules.UIManager;
 const ImageFilter = NativeModules.ImageFilter;
-
 import MyPicker from '../components/MyPicker';
-
 import ServiceBox from '../components/post/ServiceBox';
 
 const FilterImage = observer(({item}) => {
@@ -65,39 +59,32 @@ const FilterSelector = observer(({store}) => {
 @observer
 @autobind
 export default class FilterPage extends Component {
-
-  static contextTypes = {
-    navigators: React.PropTypes.array.isRequired
-  };
-
   render() {
-
     let store = CreatePostStore.gallery.filterStore;
-
     if (!store) {
       return <View />;
     }
-
-    return <View style={{paddingTop: 20, backgroundColor: 'white', flex: 1}}>
-      <SlimHeader
-        leftText='Cancel'
-        onLeft={() => {
-          _.last(this.context.navigators).jumpTo(gallery)
-        }}
-        title='Filter'
-        titleStyle={{fontFamily: FONTS.SF_MEDIUM}}
-        rightText='Apply'
-        onRight={() => {
-          CreatePostStore.gallery.applyFilter();
-          _.last(this.context.navigators).jumpTo(gallery)
-        }}
-      />
-      <Image
-        style={{height: windowWidth, width:windowWidth}}
-        source={store.mainPicture && store.mainPicture.source}
-      />
-      <FilterSelector store={store}/>
+    return (
+      <View style={{paddingTop: 20, backgroundColor: 'white', flex: 1}}>
+        <SlimHeader
+          leftText='Cancel'
+          onLeft={() => {
+            this.props.navigator.pop({ animated: true });
+          }}
+          title='Filter'
+          titleStyle={{fontFamily: FONTS.SF_MEDIUM}}
+          rightText='Apply'
+          onRight={() => {
+            CreatePostStore.gallery.applyFilter();
+            this.props.navigator.pop({ animated: true });
+          }}
+        />
+        <Image
+          style={{height: windowWidth, width:windowWidth}}
+          source={store.mainPicture && store.mainPicture.source}
+        />
+        <FilterSelector store={store}/>
       </View>
-  ;
+    );
   }
 }

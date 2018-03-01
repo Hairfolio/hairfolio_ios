@@ -64,7 +64,7 @@ const FollowButton = observer(({store, style = {}}) => {
         style={{
           height: h(53),
           width: h(115),
-          borderWidth: h(1),
+          borderWidth: 1,
           borderColor: '#B5B5B5',
           alignItems: 'center',
           justifyContent: 'center',
@@ -75,6 +75,7 @@ const FollowButton = observer(({store, style = {}}) => {
         <Text
           style = {{
             color: '#868686',
+            backgroundColor: 'transparent',
             fontSize: h(20),
             fontFamily: FONTS.HEAVY_OBLIQUE
           }}

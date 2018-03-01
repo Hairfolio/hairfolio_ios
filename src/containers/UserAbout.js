@@ -6,28 +6,18 @@ import {autobind} from 'core-decorators';
 import PureComponent from '../components/PureComponent';
 import {View, Text, TouchableOpacity, Linking, Image, StyleSheet} from 'react-native';
 import {COLORS, FONTS, SCALE} from '../style';
-import NavigationSetting from '../navigation/NavigationSetting';
 import Communications from 'react-native-communications';
 import UserStore from '../mobx/stores/UserStore';
 import AppStore from '../mobx/stores/AppStore';
 import { READY, EMPTY, LOADING, LOADING_ERROR } from '../constants';
-
-import appEmitter from '../appEmitter';
-
 import CollapsableContainer from '../components/CollapsableContainer';
 import Icon from '../components/Icon';
-
-import {editCustomerStack} from '../routes';
+import NavigatorStyles from '../common/NavigatorStyles';
 
 @observer
 export default class UserAbout extends PureComponent {
   static propTypes = {
-    onLayout: React.PropTypes.func.isRequired,
     profile: React.PropTypes.object.isRequired,
-  };
-
-  static contextTypes = {
-    navigators: React.PropTypes.array.isRequired
   };
 
   renderEmpty() {
@@ -38,26 +28,32 @@ export default class UserAbout extends PureComponent {
         color: COLORS.BOTTOMBAR_NOTSELECTED
       }}>Nothing added yet</Text>);
 
-    return (<TouchableOpacity
-      onPress={() => {
-        _.first(this.context.navigators).jumpTo(editCustomerStack);
-      }}
-      style={{
-        height: SCALE.h(36),
-        width: SCALE.h(36),
-        borderRadius: SCALE.h(36) / 2,
-        borderWidth: 1,
-        borderColor: COLORS.BOTTOMBAR_NOTSELECTED,
-        alignItems: 'center',
-        justifyContent: 'center'
-      }}
-    >
-      <Icon
-        color={COLORS.BOTTOMBAR_NOTSELECTED}
-        name="collapsable-cross"
-        size={SCALE.h(20)}
-      />
-    </TouchableOpacity>);
+    return (
+      <TouchableOpacity
+        onPress={() => {
+          this.props.navigator.push({
+            screen: 'hairfolio.EditCustomer',
+            title: 'Settings',
+            navigatorStyle: NavigatorStyles.basicInfo,
+          });
+        }}
+        style={{
+          height: SCALE.h(36),
+          width: SCALE.h(36),
+          borderRadius: SCALE.h(36) / 2,
+          borderWidth: 1,
+          borderColor: COLORS.BOTTOMBAR_NOTSELECTED,
+          alignItems: 'center',
+          justifyContent: 'center'
+        }}
+      >
+        <Icon
+          color={COLORS.BOTTOMBAR_NOTSELECTED}
+          name="collapsable-cross"
+          size={SCALE.h(20)}
+        />
+      </TouchableOpacity>
+    );
   }
 
   renderProfessionalDescription() {
@@ -155,8 +151,6 @@ export default class UserAbout extends PureComponent {
           style={{width: 1, backgroundColor: COLORS.ABOUT_SEPARATOR}} />
       );
     }
-
-
 
     return (<View style={{
       flexDirection: 'row'
@@ -421,20 +415,17 @@ export default class UserAbout extends PureComponent {
     // alors qu'on est deja sur la page,
     // on switche sur user qui de toute façon est le seul qui risque d'etre updaté
     this.props.profile = this.props.profile.id === UserStore.user.id ? toJS(UserStore.user) : this.props.profile;
-    return (<NavigationSetting
-      forceUpdateEvents={this.props.profile === toJS(UserStore.user) ? ['user-edited'] : null}
-      style={{
-        backgroundColor: COLORS.WHITE,
-        flex: 1
-      }}
-    >
+    return (
       <View
-        onLayout={this.props.onLayout}
+        style={{
+          backgroundColor: COLORS.WHITE,
+          flex: 1
+        }}
       >
         {this.props.profile.account_type === 'stylist' && this.renderStylist()}
         {this.props.profile.account_type === 'ambassador' && this.renderBrand()}
         {this.props.profile.account_type === 'owner' && this.renderSalon()}
       </View>
-    </NavigationSetting>);
+    );
   }
 };

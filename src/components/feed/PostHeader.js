@@ -16,21 +16,25 @@ import {
   ScrollView,
   PickerIOS, Picker, StatusBar, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet
 } from 'Hairfolio/src/helpers';
-
-import {profile, profileExternal, appStack} from 'Hairfolio/src/routes';
+import { toJS } from 'mobx';
 import utils from '../../utils';
-
+import NavigatorStyles from '../../common/NavigatorStyles';
 import PostDetailStore from '../../mobx/stores/PostDetailStore';
 import TagPostStore from '../../mobx/stores/TagPostStore';
 import CommentsStore from '../../mobx/stores/CommentsStore';
 import EnvironmentStore from '../../mobx/stores/EnvironmentStore';
-
-const PostHeader = observer(({post}) => {
+import UserStore from '../../mobx/stores/UserStore';
+const PostHeader = observer(({post, navigator}) => {
   return (
     <TouchableWithoutFeedback
       onPress={() => {
-        appStack.scene().goToProfile(post.creator.id);
-        window.navigators[0].jumpTo(appStack);
+        navigator.push({
+          screen: 'hairfolio.Profile',
+          navigatorStyle: NavigatorStyles.tab,
+          passProps: {
+            userId: post.creator.id,
+          }
+        });
         PostDetailStore.clear();
         TagPostStore.clear();
         CommentsStore.clear();

@@ -6,25 +6,18 @@ import validator from 'validator';
 import PureComponent from '../components/PureComponent';
 import RN, {View, StyleSheet} from 'react-native';
 import {COLORS, SCALE} from '../style';
-import NavigationSetting from '../navigation/NavigationSetting';
-
 import InlineTextInput from '../components/Form/InlineTextInput';
 import PictureInput from '../components/Form/Picture';
 import KeyboardScrollView from '../components/KeyboardScrollView';
 import BannerErrorContainer from '../components/BannerErrorContainer';
 import Icon from '../components/Icon';
-
-import {loginStack} from '../routes';
-
 import utils from '../utils';
-import appEmitter from '../appEmitter';
 import formMixin from '../mixins/form';
-
 import UserStore from '../mobx/stores/UserStore';
 import EnvironmentStore from '../mobx/stores/EnvironmentStore';
 import CloudinaryStore from '../mobx/stores/CloudinaryStore';
-
-import {NAVBAR_HEIGHT} from '../constants';
+import whiteBack from '../../resources/img/nav_white_back.png';
+import NavigatorStyles from '../common/NavigatorStyles';
 
 @observer
 @mixin(formMixin)
@@ -32,26 +25,89 @@ export default class BasicInfo extends PureComponent {
   static propTypes = {
     accountType: React.PropTypes.string.isRequired,
     detailFields: React.PropTypes.array.isRequired,
-    nextRoute: React.PropTypes.object,
-    title: React.PropTypes.string.isRequired,
-  };
-
-  static contextTypes = {
-    navigators: React.PropTypes.array.isRequired
   };
 
   state = {};
 
-  jumpToNext(callback) {
-    if (!this.props.nextRoute)
-      return callback();
+  constructor(props) {
+    super(props);
 
-    var firstNavigator = _.first(this.context.navigators);
-    var lastNavigator = _.last(this.context.navigators);
+    if (this.props.navigator) {
+      this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+    }
+  }
 
-    var navigator = (firstNavigator.getCurrentRoutes().indexOf(this.props.nextRoute) !== -1) ? firstNavigator : lastNavigator;
+  static navigatorButtons = {
+    leftButtons: [
+      {
+        id: 'back',
+        icon: whiteBack,
+      }
+    ],
+    rightButtons: [
+      {
+        id: 'next',
+        title: 'Next',
+        buttonFontSize: SCALE.h(30),
+        buttonColor: COLORS.WHITE,
+      }
+    ]
+  };
 
-    navigator.jumpTo(this.props.nextRoute, callback);
+  onNavigatorEvent(event) {
+    if (event.type == 'NavBarButtonPress') {
+      if (event.id == 'back') {
+        this.props.navigator.pop({
+          animated: true,
+          animationStyle: 'fade',
+        });
+      } else if (event.id == 'next') {
+        if (!this.checkErrors()) {
+          var value = this.getFormValue();
+          value['password_confirmation'] = value.password;
+          UserStore.signUpWithEmail(value, this.props.accountType)
+            .then(() => {
+              this.clearValues();
+              this._navigateToNextStep();
+            })
+            .catch((e) => {
+              console.log(e);
+              this.refs.ebc.error(e);
+            });
+        }
+      }
+    }
+  }
+
+  _navigateToNextStep = () => {
+    switch (this.props.accountType) {
+      case 'stylist':
+        this.props.navigator.resetTo({
+          screen: 'hairfolio.StylistInfo',
+          animationType: 'fade',
+          title: 'Professional Info',
+          navigatorStyle: NavigatorStyles.basicInfo,
+        });
+        break;
+      case 'salon':
+        this.props.navigator.resetTo({
+          screen: 'hairfolio.SalonInfo',
+          animationType: 'fade',
+          title: 'Professional Info',
+          navigatorStyle: NavigatorStyles.basicInfo,
+        });
+        break;
+      case 'brand':
+        this.props.navigator.resetTo({
+          screen: 'hairfolio.BrandInfo',
+          animationType: 'fade',
+          title: 'Professional Info',
+          navigatorStyle: NavigatorStyles.basicInfo,
+        });
+        break;
+      default:
+        break;
+    }
   }
 
   renderAccountIcon() {
@@ -85,38 +141,7 @@ export default class BasicInfo extends PureComponent {
   }
 
   render() {
-    return (<NavigationSetting
-      leftAction={() => {
-        _.first(this.context.navigators).jumpTo(loginStack);
-      }}
-      leftDisabled={utils.isLoading([EnvironmentStore.environmentState, UserStore.userState, CloudinaryStore.cloudinaryStates.get('register-pick')])}
-      leftIcon="back"
-      onWillBlur={this.onWillBlur}
-      onWillFocus={this.onWillFocus}
-      rightAction={() => {
-        if (!this.checkErrors()) {
-          var value = this.getFormValue();
-          value['password_confirmation'] = value.password;
-          EnvironmentStore.loadEnv()
-            .then(() => UserStore.signUpWithEmail(value, this.props.accountType))
-            .then(() => {
-              appEmitter.emit('login');
-              this.jumpToNext(() => this.clearValues());
-            }, (e) => {
-              console.log(e);
-              this.refs.ebc.error(e);
-            });
-        }
-      }}
-      rightDisabled={utils.isLoading([EnvironmentStore.environmentState, UserStore.userState, CloudinaryStore.cloudinaryStates.get('register-pick')])}
-      rightLabel="Next"
-      style={{
-        flex: 1,
-        backgroundColor: COLORS.LIGHT,
-        paddingTop: NAVBAR_HEIGHT
-      }}
-      title={this.props.title}
-    >
+    return (
       <BannerErrorContainer style={{flex: 1}} ref="ebc">
         <KeyboardScrollView
           scrollEnabled={false}
@@ -133,8 +158,6 @@ export default class BasicInfo extends PureComponent {
           }}>
             <PictureInput
               disabled={utils.isLoading([EnvironmentStore.environmentState, UserStore.userState, CloudinaryStore.cloudinaryStates.get('register-pick')])}
-              // not used here
-              // because we never setValue on this input
               getPictureURIFromValue={() => {}}
               onError={(error) => {
                 this.refs.ebc.error(error);
@@ -205,6 +228,6 @@ export default class BasicInfo extends PureComponent {
           />
         </KeyboardScrollView>
       </BannerErrorContainer>
-    </NavigationSetting>);
+    );
   }
 };

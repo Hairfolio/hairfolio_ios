@@ -1,41 +1,70 @@
 import React from 'react';
 import _ from 'lodash';
 import PureComponent from '../components/PureComponent';
-import {View, StyleSheet} from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import validator from 'validator';
-import {COLORS, FONTS, SCALE} from '../style';
-import NavigationSetting from '../navigation/NavigationSetting';
+import { COLORS, FONTS, SCALE } from '../style';
 import UserStore from '../mobx/stores/UserStore';
 import EnvironmentStore from '../mobx/stores/EnvironmentStore';
 import EducationStore from '../mobx/stores/EducationStore';
-
-import {mixin, autobind} from 'core-decorators';
+import { toJS } from 'mobx';
+import { observer } from 'mobx-react';
+import { mixin, autobind } from 'core-decorators';
 import InlineTextInput from '../components/Form/InlineTextInput';
 import PickerInput from '../components/Form/PickerInput';
 import BannerErrorContainer from '../components/BannerErrorContainer';
 import KeyboardScrollView from '../components/KeyboardScrollView';
 import LoadingContainer from '../components/LoadingContainer';
 import DeleteButton from '../components/Buttons/Delete';
-
-import {NAVBAR_HEIGHT} from '../constants';
-
-import appEmitter from '../appEmitter';
-
+import whiteBack from '../../resources/img/nav_white_back.png';
+import NavigatorStyles from '../common/NavigatorStyles';
 import formMixin from '../mixins/form';
 
+@observer
 @mixin(formMixin)
 export default class StylistAddEducation extends PureComponent {
-  static contextTypes = {
-    navigators: React.PropTypes.array.isRequired
-  };
-
   state = {
     editing: false
   };
 
-  @autobind
-  onWillFocus() {
+  constructor(props) {
+    super(props);
     EnvironmentStore.getDegrees();
+    if (this.props.education) {
+      this.setEditing(this.props.education);
+    }
+    if (this.props.navigator) {
+      this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+    }
+  }
+
+  static navigatorButtons = {
+    leftButtons: [
+      {
+        id: 'back',
+        icon: whiteBack,
+      }
+    ],
+    rightButtons: [
+      {
+        id: 'done',
+        title: 'Done',
+        buttonFontSize: SCALE.h(30),
+        buttonColor: COLORS.WHITE,
+      }
+    ]
+  };
+
+  onNavigatorEvent(event) {
+    if (event.type == 'NavBarButtonPress') {
+      if (event.id == 'back') {
+        this.props.navigator.pop({
+          animated: true,
+        });
+      } else if (event.id == 'done') {
+        this.submit();
+      }
+    }
   }
 
   getValue() {
@@ -84,49 +113,36 @@ export default class StylistAddEducation extends PureComponent {
     });
   }
 
+  submit = () => {
+    if (this.checkErrors())
+      return;
+
+    this.setState({'submitting': true});
+
+    var action = this.state.editing === false ?
+      EducationStore.addEducation(this.getFormValue().education) :
+      EducationStore.editEducation(this.state.editing.id, this.getFormValue().education);
+    action
+      .then((r) => {
+        this.setState({submitting: false});
+        return r;
+      })
+      .then(
+        () => {
+          this.props.navigator.pop({
+            animated: true,
+            animationStyle: 'fade',
+          });
+        },
+        (e) => {
+          this.refs.ebc.error(e);
+        }
+      );
+  }
+
   render() {
-    return (<NavigationSetting
-      leftAction={() => {
-        _.last(this.context.navigators).jumpBack();
-      }}
-      leftDisabled={this.state.submitting}
-      leftIcon="back"
-      onWillBlur={this.onWillBlur}
-      onWillFocus={this.onWillFocus}
-      rightAction={() => {
-        if (this.checkErrors())
-          return;
-
-        this.setState({'submitting': true});
-
-        var action = this.state.editing === false ?
-          EducationStore.addEducation(this.getFormValue()) :
-          EducationStore.editEducation(this.state.editing.id, this.getFormValue());
-
-        action
-          .then((r) => {
-            this.setState({submitting: false});
-            return r;
-          })
-          .then(
-            () => {
-              appEmitter.emit('user-edited');
-              _.last(this.context.navigators).jumpBack();
-            },
-            (e) => {
-              this.refs.ebc.error(e);
-            }
-          );
-      }}
-      rightDisabled={this.state.submitting}
-      rightLabel="Done"
-      style={{
-        flex: 1,
-        backgroundColor: COLORS.LIGHT,
-        paddingTop: NAVBAR_HEIGHT
-      }}
-      title={(this.state.editing ? 'Edit' : 'Add') + ' Education'}
-    >
+    const degrees = toJS(EnvironmentStore.degrees);
+    return (
       <BannerErrorContainer ref="ebc" style={{
         flex: 1
       }}>
@@ -177,10 +193,12 @@ export default class StylistAddEducation extends PureComponent {
               <View style={{height: StyleSheet.hairlineWidth}} />
 
               <PickerInput
-                choices={EnvironmentStore.degrees.map(degree => ({
-                  id: degree.id,
-                  label: degree.name}
-                )).toJS()}
+                choices={
+                  degrees.map(degree => ({
+                    id: degree.id,
+                    label: degree.name
+                  }))
+                }
                 placeholder="Degree"
                 ref={(r) => this.addFormItem(r, 'degree_id')}
                 validation={(v) => !!v}
@@ -211,8 +229,10 @@ export default class StylistAddEducation extends PureComponent {
                       })
                       .then(
                         () => {
-                          appEmitter.emit('user-edited');
-                          _.last(this.context.navigators).jumpBack();
+                          this.props.navigator.pop({
+                            animated: true,
+                            animationStyle: 'fade',
+                          });
                         },
                         (e) => {
                           this.refs.ebc.error(e);
@@ -225,6 +245,6 @@ export default class StylistAddEducation extends PureComponent {
           </LoadingContainer>
         </KeyboardScrollView>
       </BannerErrorContainer>
-    </NavigationSetting>);
+    );
   }
 };

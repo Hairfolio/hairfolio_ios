@@ -3,17 +3,12 @@ import {CameraRoll, NativeModules} from 'react-native';
 import Camera from 'react-native-camera';
 import Picture from './Picture';
 import ServiceBackend from '../../backend/ServiceBackend';
-
 import Service from 'Hairfolio/src/services/index';
-
 import {_, v4, moment, React, Text} from 'Hairfolio/src/helpers';
-
 import User from './User';
 import UserStore from './UserStore';
-
-import * as routes from 'Hairfolio/src/routes'
 import MessageDetailsStore from './MessageDetailsStore';
-
+import NavigatorStyles from '../../common/NavigatorStyles';
 
 export class SelectableUser {
   @observable user;
@@ -57,10 +52,9 @@ class WriteMessageStore {
 
 
   writeNewMessage() {
-    MessageDetailsStore.myBack = () => window.navigators[0].jumpTo(routes.messagesRoute);
     MessageDetailsStore.createConversation(this.selectedItems);
     MessageDetailsStore.title = this.titleNames;
-    window.navigators[0].jumpTo(routes.messageDetailsRoute);
+    this.goToMessageDetails();
   }
 
   async sharePost(myId, userId, post) {
@@ -78,10 +72,7 @@ class WriteMessageStore {
     let res = (await ServiceBackend.post('conversations', postData)).conversation;
 
     // share the post
-
-
   }
-
 
   actionBtnAction() {
     if (this.mode == 'MESSAGE') {
@@ -92,7 +83,25 @@ class WriteMessageStore {
       for (let user of users) {
         ServiceBackend.sendPostMessage(UserStore.user.id, user, this.post);
       }
-      this.myBack();
+      this.goBack();
+    }
+  }
+
+  goToMessageDetails() {
+    if (this.navigator) {
+      this.navigator.push({
+        screen: 'hairfolio.MessageDetails',
+        navigatorStyle: NavigatorStyles.basicInfo,
+        title: this.title || '',
+      });
+    }
+  }
+
+  goBack() {
+    if (this.navigator) {
+      this.navigator.pop({
+        animated: true,
+      });
     }
   }
 

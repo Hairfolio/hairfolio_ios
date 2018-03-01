@@ -27,7 +27,7 @@ export default class ScrollViewProxy extends React.Component {
       }),
       this.context.onWrappingScrollViewScroll((...args) => {
         if (this.focused) {
-          // todo add the correct offset
+
           this.props.onScroll(...args);
         }
       }),

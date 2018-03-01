@@ -8,24 +8,14 @@ import {
   TextInput,
   View, Text, Dimensions, TouchableOpacity, TouchableWithoutFeedback, Image} from 'react-native';
 import {COLORS, FONTS, h, SCALE} from 'Hairfolio/src/style';
-import NavigationSetting from '../navigation/NavigationSetting';
 import {observer} from 'mobx-react';
 import autobind from 'autobind-decorator'
 import _ from 'lodash';
-
 import FollowButton from '../components/FollowButton';
-
 import StarGiversStore from '../mobx/stores/StarGiversStore';
-
-import {appStack, gallery, postFilter, albumPage} from '../routes';
-
-import * as routes from 'Hairfolio/src/routes'
-
 import {STATUSBAR_HEIGHT, POST_INPUT_MODE} from '../constants';
-
 import LoadingScreen from '../components/LoadingScreen';
 import BlackHeader from '../components/BlackHeader';
-
 import CommentsStore from '../mobx/stores/CommentsStore';
 
 const CommentRow = observer(({store}) => {
@@ -79,7 +69,6 @@ const CommentRow = observer(({store}) => {
             {store.text}
           </Text>
         </View>
-
         <View
           style = {{
             width: h(108),
@@ -95,20 +84,14 @@ const CommentRow = observer(({store}) => {
               flex: 1,
               textAlign: 'right'
             }}
-
           >
             {store.timeDifference}
           </Text>
         </View>
-
       </View>
-
-
     </View>
-
   );
 });
-
 
 const InputBar = observer(({inputStore, onAction}) => {
   return (
@@ -200,16 +183,7 @@ import LoadingPage from '../components/LoadingPage';
 
 @observer
 export default class Comments extends PureComponent {
-
-  static contextTypes = {
-    navigators: React.PropTypes.array.isRequired
-  };
-
-
   render() {
-
-    window.nav2 = this.context.navigators;
-
     if (CommentsStore.isEmpty) {
       return null;
     }
@@ -218,25 +192,19 @@ export default class Comments extends PureComponent {
 
     let Content = LoadingPage(
       CommentsContent,
-      store
+      store,
+      {navigator: this.props.navigator},
     );
 
 
-    return (<NavigationSetting
-      style={{
-        flex: 1,
-      }}
-      onWillFocus={() => {
-        StatusBar.setBarStyle('light-content');
-      }}
-    >
-       <View style={{flex: 1}}>
+    return (
+      <View style={{flex: 1}}>
         <BlackHeader
-          onLeft={() => CommentsStore.currentStore.myBack()}
+          onLeft={() => this.props.navigator.pop({ animated: true })}
           title='Comments'/>
         <Content />
         <CommentInput store={store}/>
       </View>
-    </NavigationSetting>);
+    );
   }
 };

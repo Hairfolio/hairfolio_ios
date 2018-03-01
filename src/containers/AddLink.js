@@ -22,23 +22,13 @@ import {
 import SlimHeader from '../components/SlimHeader';
 import AlbumStore from '../mobx/stores/AlbumStore';
 import CreatePostStore from '../mobx/stores/CreatePostStore';
-
 import { FlatList} from 'react-native';
-
-import {appStack, createPost, onPress, postFilter, albumPage, addServiceTwo, gallery} from '../routes';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-
-
 import MyPicker from '../components/MyPicker';
-
 import AddLinkStore from '../mobx/stores/AddLinkStore';
-
-
 import ReactNative, { NativeModules } from 'react-native';
 const RCTUIManager = NativeModules.UIManager;
-
 import ScrollableTabView from 'react-native-scrollable-tab-view'
-
 import LinkTabBar from '../components/post/LinkTabBar';
 
 const SearchBar = observer(({catalog}) => {
@@ -101,7 +91,7 @@ const SearchBar = observer(({catalog}) => {
   );
 });
 
-const CatalogResultItem = observer(({item}) => {
+const CatalogResultItem = observer(({item, navigator}) => {
   return (
     <TouchableHighlight
       underlayColor='#ccc'
@@ -111,7 +101,7 @@ const CatalogResultItem = observer(({item}) => {
           CreatePostStore.gallery.position.y,
           item
         );
-        _.last(window.navigators).jumpTo(gallery);
+        navigator.pop({ animated: true });
       }}
     >
       <View
@@ -135,7 +125,7 @@ const CatalogResultItem = observer(({item}) => {
   );
 });
 
-const CatalogResults = observer(({catalog}) => {
+const CatalogResults = observer(({catalog, navigator}) => {
 
   if (catalog.isLoading) {
     return (
@@ -158,7 +148,7 @@ const CatalogResults = observer(({catalog}) => {
   return (
     <FlatList
       data={catalog.items}
-      renderItem={({item}) => <CatalogResultItem key={item.key} item={item} /> }
+      renderItem={({item}) => <CatalogResultItem key={item.key} item={item} navigator={navigator} /> }
 
 
       onEndReached={() => {
@@ -185,16 +175,19 @@ const CatalogResults = observer(({catalog}) => {
   )
 });
 
-const CatalogPage = observer(() => {
+const CatalogPage = observer(({ navigator }) => {
   return (
     <View style={{flex: 1}}>
       <SearchBar catalog={AddLinkStore.catalog} />
-      <CatalogResults catalog={AddLinkStore.catalog} />
+      <CatalogResults
+        catalog={AddLinkStore.catalog}
+        navigator={navigator}
+      />
     </View>
   );
 });
 
-const BrowseFooter = observer(() => {
+const BrowseFooter = observer(({ navigator }) => {
   return (
     <View
       style={{
@@ -220,7 +213,7 @@ const BrowseFooter = observer(() => {
             CreatePostStore.gallery.position.y,
             {name: AddLinkStore.browse.title, linkUrl: AddLinkStore.browse.link}
           );
-          _.last(window.navigators).jumpTo(gallery);
+          navigator.pop({ animated: true });
         }}
         style={{
           backgroundColor: 'white',
@@ -257,10 +250,8 @@ const BrowseFooter = observer(() => {
   );
 });
 
-const BrowsePage = observer(() => {
-
+const BrowsePage = observer(({navigator}) => {
   let browse = AddLinkStore.browse;
-
   return (
     <View style={{flex: 1}}>
       <WebView
@@ -272,7 +263,7 @@ const BrowsePage = observer(() => {
           browse.link = nativeEvent.url;
         }}
       />
-    <BrowseFooter />
+    <BrowseFooter navigator={navigator}/>
   </View>
   );
 });
@@ -297,10 +288,8 @@ const ManualTextField = observer(({item, placeholder, style}) => {
   );
 });
 
-const ManualPage = observer(() => {
-
+const ManualPage = observer(({ navigator }) => {
   let manual = AddLinkStore.manual;
-
   return (
     <View style={{marginTop: 30, paddingHorizontal: h(40)}}>
       <ManualTextField
@@ -333,7 +322,7 @@ const ManualPage = observer(() => {
               CreatePostStore.gallery.position.y,
               data
             );
-            _.last(window.navigators).jumpTo(gallery);
+            navigator.pop({ animated: true });
           } else {
             alert('Fill out all the fields');
           }
@@ -369,23 +358,15 @@ const ManualPage = observer(() => {
 @observer
 @autobind
 export default class AddLink extends Component {
-
-  static contextTypes = {
-    navigators: React.PropTypes.array.isRequired
-  };
-
   render() {
-
-    window.navigators = this.context.navigators;
     let store = AddLinkStore;
-
 
     return (
         <View style={{paddingTop: 20, flex: 1, backgroundColor: 'white'}}>
           <SlimHeader
             leftText='Back'
             onLeft={() => {
-              _.last(window.navigators).jumpTo(gallery);
+              this.props.navigator.pop({ animated: true });
             }}
             title='Add Link'
             titleStyle={{fontFamily: FONTS.SF_MEDIUM}}
@@ -401,9 +382,9 @@ export default class AddLink extends Component {
             renderTabBar={() => <LinkTabBar />}
             initialPage={1}
           >
-            <CatalogPage tabLabel="Catalog" />
-            <BrowsePage tabLabel="Browse" />
-            <ManualPage tabLabel="Manual" />
+            <CatalogPage tabLabel="Catalog" navigator={this.props.navigator}/>
+            <BrowsePage tabLabel="Browse" navigator={this.props.navigator}/>
+            <ManualPage tabLabel="Manual" navigator={this.props.navigator}/>
           </ScrollableTabView>
 
         </View>

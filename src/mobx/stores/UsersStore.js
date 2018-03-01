@@ -13,10 +13,16 @@ import ServiceBackend from '../../backend/ServiceBackend';
 class UsersStore {
   @observable users;
   @observable usersStates;
+  @observable currentProfile;
 
   constructor() {
     this.users = observable.map();
     this.usersStates = observable.map();
+    this.currentProfile = null;
+  }
+
+  @action setCurrentProfile = (profile) => {
+    this.currentProfile = profile;
   }
 
   @action getUser = async (userId) => {

@@ -1,32 +1,32 @@
 import React from 'react';
 import _ from 'lodash';
+import { observer } from 'mobx-react';
 import {Map, OrderedMap} from 'immutable';
 import PureComponent from '../components/PureComponent';
 import {autobind} from 'core-decorators';
 import {View, Text} from 'react-native';
 import {COLORS, FONTS, SCALE} from '../style';
-import NavigationSetting from '../navigation/NavigationSetting';
 import EnvironmentStore from '../mobx/stores/EnvironmentStore';
 import LoadingContainer from '../components/LoadingContainer';
-
 import SearchList from '../components/SearchList';
+import whiteBack from '../../resources/img/nav_white_back.png';
 
-import {NAVBAR_HEIGHT} from '../constants';
-
+@observer
 export default class StylistCertificates extends PureComponent {
-  static propTypes = {
-    backTo: React.PropTypes.object.isRequired,
-  };
-
-  static contextTypes = {
-    navigators: React.PropTypes.array.isRequired
-  };
-
   state = {};
 
-  @autobind
-  onWillFocus() {
+  constructor(props) {
+    super(props);
     EnvironmentStore.getCertificates();
+  }
+
+  static navigatorButtons = {
+    leftButtons: [
+      {
+        id: 'back',
+        icon: whiteBack,
+      }
+    ],
   }
 
   getValue() {
@@ -46,43 +46,30 @@ export default class StylistCertificates extends PureComponent {
     if (this._searchList)
       this._searchList.clear();
   }
-
+  // TODO
   render() {
-    return (<NavigationSetting
-      leftAction={() => {
-        _.last(this.context.navigators).jumpTo(this.props.backTo);
-      }}
-      leftIcon="back"
-      onWillBlur={this.onWillBlur}
-      onWillFocus={this.onWillFocus}
-      style={{
-        flex: 1,
-        backgroundColor: COLORS.LIGHT,
-        paddingTop: NAVBAR_HEIGHT
-      }}
-      title="Certificates"
-    >
-      <LoadingContainer state={[EnvironmentStore.certificatesState]}>
+    const certificates = new OrderedMap(
+      EnvironmentStore.certificates.map(certificate => [certificate.id, new Map(certificate)])
+    );
+    const loadingState = [EnvironmentStore.certificatesState];
+    return (
+      <LoadingContainer state={loadingState}>
         {() => <SearchList
-          items={new OrderedMap(EnvironmentStore.certificates.map(certificate => {
-            return [certificate.id, certificate]
-          }
-          ))}
+          items={certificates}
           placeholder="Search for certificates"
           ref={sL => {
             this._searchList = sL;
-
             if (!this.selectedIds)
               return;
-
             this._searchList.setSelected(this.selectedIds);
             delete this.selectedIds;
           }}
           style={{
-            flex: 1
+            flex: 1,
+            backgroundColor: COLORS.LIGHT,
           }}
         />}
       </LoadingContainer>
-    </NavigationSetting>);
+    );
   }
 };

@@ -16,9 +16,6 @@ import {
   ScrollView,
   StatusBar, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet
 } from 'Hairfolio/src/helpers';
-
-import {appStack, createPost, onPress, postFilter, albumPage} from 'Hairfolio/src/routes';
-
 import AddTagStore from '../../mobx/stores/AddTagStore';
 import CreatePostStore from '../../mobx/stores/CreatePostStore';
 import KeyboardStore from '../../mobx/stores/KeyboardStore';

@@ -19,9 +19,8 @@ import {
 } from 'Hairfolio/src/helpers';
 
 import TagPostStore from '../../mobx/stores/TagPostStore';
-import * as routes from 'Hairfolio/src/routes';
 
-const PostDescription = observer(({post, limitLinesNumbers, currentRoute = routes.postDetails, style = {}}) => {
+const PostDescription = observer(({post, navigator, limitLinesNumbers, style = {}}) => {
   return (
     <View
       style={{
@@ -31,8 +30,6 @@ const PostDescription = observer(({post, limitLinesNumbers, currentRoute = route
         ...style
       }}
     >
-
-
       <Text
         style = {{
           flexWrap: 'wrap',
@@ -49,7 +46,6 @@ const PostDescription = observer(({post, limitLinesNumbers, currentRoute = route
         >
           {post.description + ' '}
         </Text>
-
         {
           post.hashTags.map(e =>
               <Text
@@ -58,7 +54,7 @@ const PostDescription = observer(({post, limitLinesNumbers, currentRoute = route
                   TagPostStore.jump(
                     e.hashtag,
                     `#${e.hashtag}`,
-                    () => window.navigators[0].jumpTo(currentRoute)
+                    navigator
                   );
                 }}
                 style = {{
@@ -73,11 +69,9 @@ const PostDescription = observer(({post, limitLinesNumbers, currentRoute = route
           )
         }
       </Text>
-
     </View>
-
   );
 });
 
 
-export default PostDescription ;
+export default PostDescription;

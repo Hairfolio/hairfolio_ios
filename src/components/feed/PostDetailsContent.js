@@ -16,21 +16,15 @@ import {
   ScrollView,
   PickerIOS, Picker, StatusBar, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet
 } from 'Hairfolio/src/helpers';
-
-
 import PostHeader from './PostHeader';
 import PostDetailStore from '../../mobx/stores/PostDetailStore';
-
 import PostDetailsHeader from './PostDetailsHeader';
 import PostDetailsImageList from './PostDetailsImageList';
-
 import PostDetailsColorFormula from './PostDetailsColorFormula';
-
 import PostDescription from './PostDescription';
 
-import * as routes from 'Hairfolio/src/routes';
 
-const PostDetailsContent = observer(() => {
+const PostDetailsContent = observer(({navigator}) => {
 
   if (PostDetailStore.isEmpty) {
     return null;
@@ -38,20 +32,43 @@ const PostDetailsContent = observer(() => {
 
   let store = PostDetailStore.currentStore;
 
-
   return (
     <ScrollView
       ref={el => {store.scrollView = el}}
+      scrollEventThrottle={16}
+      onScroll={(e) => {
+        const offset = e.nativeEvent.contentOffset.y;
+        if (offset > 0) {
+          navigator.toggleTabs({
+            to: 'shown',
+          });
+        } else {
+          navigator.toggleTabs({
+            to: 'hidden',
+          });
+        }
+      }}
     >
-      <PostHeader post={store.post} />
-      <PostDetailsHeader store={store} />
-      <PostDetailsImageList store={store} />
+      <PostHeader
+        post={store.post}
+        navigator={navigator}
+      />
+      <PostDetailsHeader
+        store={store}
+        navigator={navigator}
+      />
+      <PostDetailsImageList
+        store={store}
+      />
       <PostDescription
         style={{paddingTop: h(28)}}
         post={store.post}
-        currentRoute={routes.postDetails}
-        />
-      <PostDetailsColorFormula store={store} />
+        navigator={navigator}
+      />
+      <PostDetailsColorFormula
+        store={store}
+        navigator={navigator}
+      />
     </ScrollView>
   );
 });

@@ -8,43 +8,28 @@ import {
   TextInput,
   TouchableHighlight,
   View, Text, Dimensions, TouchableOpacity, TouchableWithoutFeedback, Image} from 'react-native';
-
 import VideoPreview from '../components/VideoPreview';
 import {COLORS, FONTS, h, SCALE} from 'Hairfolio/src/style';
-import NavigationSetting from '../navigation/NavigationSetting';
 import {observer} from 'mobx-react';
 import autobind from 'autobind-decorator'
 import _ from 'lodash';
-import * as routes from '../routes'
 import PostDetailStore from '../mobx/stores/PostDetailStore';
 import ImagePicker from 'react-native-image-picker'
 import MyImage from 'Hairfolio/src/components/MyImage';
-
 import FollowButton from '../components/FollowButton';
-
 import WriteMessageStore from '../mobx/stores/WriteMessageStore'
-
 import StarGiversStore from '../mobx/stores/StarGiversStore';
-
-import {appStack, gallery, postFilter, albumPage} from '../routes';
-
-
 import {STATUSBAR_HEIGHT, POST_INPUT_MODE} from '../constants';
-
 import LoadingScreen from '../components/LoadingScreen';
 import BlackHeader from '../components/BlackHeader';
-
 import CommentsStore from '../mobx/stores/CommentsStore';
-
 import MessageDetailsStore from '../mobx/stores/MessageDetailsStore';
-
 import {
   windowWidth,
   windowHeight,
 } from 'Hairfolio/src/helpers';
-
-import Swipeout from 'Hairfolio/react-native-swipeout/index';;
-
+import Swipeout from 'Hairfolio/react-native-swipeout/index';
+import whiteBack from '../../resources/img/nav_white_back.png';
 
 @observer
 class MessageContent  extends React.Component {
@@ -122,7 +107,7 @@ class MessageContent  extends React.Component {
               PostDetailStore.jump(
                 false,
                 store.post,
-                () => window.navigators[0].jumpTo(routes.messageDetailsRoute)
+                this.props.navigator
               )
             }
           }
@@ -387,48 +372,35 @@ const MessageInput = observer(() => {
       </Text>
     </View>
     </TouchableOpacity>
-
-
     </View>
   );
 });
 
 @observer
 export default class MesageDetails extends PureComponent {
-
-  static contextTypes = {
-    navigators: React.PropTypes.array.isRequired
+  static navigatorButtons = {
+    leftButtons: [
+      {
+        id: 'back',
+        icon: whiteBack,
+      }
+    ],
   };
 
-
   render() {
-
     let store = MessageDetailsStore;
-
     let Content = LoadingPage(
       MessagesContent,
       store
     );
 
-
-    return (<NavigationSetting
-      style={{
-        flex: 1,
-      }}
-      onWillFocus={() => {
-        StatusBar.setBarStyle('light-content');
-      }}
-    >
+    return (
        <View style={{flex: 1}}>
-        <BlackHeader
-          onLeft={() => MessageDetailsStore.myBack()}
-          title={store.title}
-        />
         <Content />
         <MessageInput />
         <KeyboardSpacer/>
         <LoadingScreen style={{opacity: 0.6}} store={MessageDetailsStore.loadingStore} />
       </View>
-    </NavigationSetting>);
+    );
   }
 };

@@ -9,36 +9,26 @@ import {
   TouchableHighlight,
   View, Text, Dimensions, TouchableOpacity, TouchableWithoutFeedback, Image} from 'react-native';
 import {COLORS, FONTS, h, SCALE} from 'Hairfolio/src/style';
-import NavigationSetting from '../navigation/NavigationSetting';
 import {observer} from 'mobx-react';
 import autobind from 'autobind-decorator';
 import _ from 'lodash';
 import FollowButton from '../components/FollowButton';
 import MessageDetailsStore from '../mobx/stores/MessageDetailsStore';
-
 import WriteMessageStore from '../mobx/stores/WriteMessageStore';
-
 import StarGiversStore from '../mobx/stores/StarGiversStore';
-
-import {appStack, gallery, postFilter, albumPage} from '../routes';
-
-import * as routes from 'Hairfolio/src/routes';
-
 import {STATUSBAR_HEIGHT, POST_INPUT_MODE} from '../constants';
-
 import LoadingScreen from '../components/LoadingScreen';
 import BlackHeader from '../components/BlackHeader';
-
 import CommentsStore from '../mobx/stores/CommentsStore';
-
 import MessagesStore from '../mobx/stores/MessagesStore';
-
-
 import Swipeout from 'Hairfolio/react-native-swipeout/index';
+import LoadingPage from '../components/LoadingPage';
+import whiteBack from '../../resources/img/nav_white_back.png';
+import plusIcon from 'img/message_plus.png';
+import NavigatorStyles from '../common/NavigatorStyles';
 
-const MessageRow = observer(({store}) => {
+const MessageRow = observer(({store, navigator}) => {
   let pictureElement;
-
   if (store.picture) {
     pictureElement = (
       <Image
@@ -79,10 +69,13 @@ const MessageRow = observer(({store}) => {
         underlayColor='#ccc'
         onPress={
           () => {
-            MessageDetailsStore.myBack = () => window.navigators[0].jumpTo(routes.messagesRoute);
             MessageDetailsStore.loadMessages(store.id);
             MessageDetailsStore.title = store.user.name;
-            window.navigators[0].jumpTo(routes.messageDetailsRoute);
+            navigator.push({
+              screen: 'hairfolio.MessageDetails',
+              navigatorStyle: NavigatorStyles.basicInfo,
+              title: 'Message Details',
+            });
           }
         }
       >
@@ -153,7 +146,6 @@ const MessageRow = observer(({store}) => {
                   flex: 1,
                   textAlign: 'right'
                 }}
-
               >
                 {store.timeDifference}
               </Text>
@@ -166,10 +158,7 @@ const MessageRow = observer(({store}) => {
   );
 });
 
-
-
-
-const MessagesContent = observer(({store}) => {
+const MessagesContent = observer(({store, navigator}) => {
   return (
     <View style={{flex: 1}}>
       <ScrollView
@@ -178,68 +167,72 @@ const MessagesContent = observer(({store}) => {
         onLayout={ev => store.scrollViewHeight = ev.nativeEvent.layout.height}
       >
       {
-        store.messages.map(e => <MessageRow key={e.key} store={e} />)}
+        store.messages.map(e => <MessageRow key={e.key} store={e} navigator={navigator}/>)}
       </ScrollView>
     </View>
   );
 });
 
-import LoadingPage from '../components/LoadingPage'
-
 @observer
 export default class Messages extends PureComponent {
+  constructor(props) {
+    super(props);
+    StatusBar.setBarStyle('light-content');
+    MessagesStore.load();
+    if (this.props.navigator) {
+      this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+    }
+  }
 
-  static contextTypes = {
-    navigators: React.PropTypes.array.isRequired
+  static navigatorButtons = {
+    leftButtons: [
+      {
+        id: 'back',
+        icon: whiteBack,
+      }
+    ],
+    rightButtons: [
+      {
+        id: 'add',
+        title: '+',
+        buttonFontSize: SCALE.h(48),
+        buttonColor: COLORS.WHITE,
+      }
+    ]
   };
 
+  onNavigatorEvent(event) {
+    if (event.type == 'NavBarButtonPress') {
+      if (event.id == 'back') {
+        this.props.navigator.pop({
+          animated: true,
+          animationStyle: 'fade',
+        });
+      } else if (event.id == 'add') {
+        WriteMessageStore.mode = 'MESSAGE';
+        WriteMessageStore.navigator = this.props.navigator;
+        this.props.navigator.push({
+          screen: 'hairfolio.WriteMessage',
+          navigatorStyle: NavigatorStyles.basicInfo,
+          title: WriteMessageStore.title,
+        });
+      }
+    }
+  }
 
   render() {
-
     let store = MessagesStore;
 
     let Content = LoadingPage(
       MessagesContent,
-      store
+      store,
+      {navigator: this.props.navigator},
     );
 
-    return (<NavigationSetting
-      style={{
-        flex: 1,
-      }}
-      onWillFocus={() => {
-        StatusBar.setBarStyle('light-content');
-        MessagesStore.load();
-      }}
-    >
+    return (
        <View style={{flex: 1}}>
-        <BlackHeader
-          onLeft={() => MessagesStore.myBack()}
-          title='Messages'
-          onRenderRight={() =>
-            <TouchableOpacity
-              onPress={
-                () => {
-                  WriteMessageStore.mode = 'MESSAGE';
-                  WriteMessageStore.myBack = () => window.navigators[0].jumpTo(routes.messagesRoute);
-                  window.navigators[0].jumpTo(routes.writeMessageRoute);
-                }
-              }
-              style={{height: h(60), paddingRight: h(26), justifyContent: 'center'}}
-            >
-              <Image
-                style = {{
-                  width: h(28),
-                  height: h(28),
-                  alignSelf: 'flex-end'
-                }}
-                source={require('img/message_plus.png')}
-              />
-            </TouchableOpacity>
-          }
-        />
         <Content />
       </View>
-    </NavigationSetting>);
+    );
   }
 };

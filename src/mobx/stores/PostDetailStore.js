@@ -1,19 +1,14 @@
 import {observable, computed, action} from 'mobx';
 import {CameraRoll, NativeModules} from 'react-native';
 import Camera from 'react-native-camera';
-
 import FilterStore from './FilterStore';
 import Picture from './Picture';
-
 import TagPostStore from './TagPostStore';
-
 let PhotoAlbum = NativeModules.PhotoAlbum;
-
 import {v4} from 'uuid';
 import {_, Linking, moment, React, Text, ActionSheetIOS} from 'Hairfolio/src/helpers';
 import Post from './Post';
-
-import * as routes from 'Hairfolio/src/routes';
+import NavigatorStyles from '../../common/NavigatorStyles';
 
 class PostDetailsModel {
   @observable post;
@@ -32,7 +27,9 @@ class PostDetailsModel {
     if (this.myBack) {
       this.myBack();
     } else {
-      window.navigators[0].jumpTo(routes.appStack);
+      this.navigator.pop({
+        animated: true,
+      });
     }
   }
 
@@ -80,9 +77,7 @@ class PostDetailsModel {
             TagPostStore.jump(
               tag.hashtag,
               `#${tag.hashtag}`,
-              () => {
-                window.navigators[0].jumpTo(routes.postDetails);
-              }
+              this.navigator,
             );
           }
         });
@@ -113,9 +108,7 @@ class PostDetailsModel {
             TagPostStore.jump(
               tag.hashtag,
               `#${tag.hashtag}`,
-              () => {
-                window.navigators[0].jumpTo(routes.postDetails);
-              }
+              this.navigator
             );
           }
         });
@@ -129,21 +122,28 @@ class PostDetailsModel {
 }
 
 class PostDetailStore {
-
   @observable stack = [];
 
-  jump(showTags, post, onBack = () => window.navigators[0].jumpTo(routes.appStack)) {
-    ;
+  jump(showTags, post, navigator) {
     let postStore = new PostDetailsModel();
+    postStore.navigator = navigator;
     postStore.showTags = showTags;
     postStore.post = post;
     postStore.myBack = () => {
-      onBack();
+      navigator.toggleTabs({
+        to: 'shown',
+      });
+      navigator.pop({
+        animated: true,
+      })
       this.stack.pop();
     }
     this.stack.push(postStore);
-
-    window.navigators[0].jumpTo(routes.postDetails);
+    navigator.push({
+      screen: 'hairfolio.PostDetails',
+      navigatorStyle: NavigatorStyles.tab,
+      title: 'Post Details',
+    })
   }
 
   @computed get isEmpty() {

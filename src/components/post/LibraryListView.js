@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {Dimensions, ListView, ScrollView, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet } from 'react-native'
+import {Dimensions, FlatList, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet } from 'react-native'
 
 
 import {COLORS, FONTS, h, SCALE} from 'Hairfolio/src/style';
@@ -70,10 +70,7 @@ const SelectedBorder = observer(({width, picture}) => {
   );
 });
 
-const LibraryPicture = observer(({picture}) => {
-  let width = Dimensions.get('window').width / 4;
-
-
+const LibraryPicture = observer(({width, picture}) => {
   return (
     <TouchableWithoutFeedback
       onPress={() => picture.select()}
@@ -127,26 +124,26 @@ const LibraryListView = observer(({store}) => {
     </ScrollView>
   );
   */
-
+  let width = Dimensions.get('window').width / 4;
   return (
-    <ListView
+    <FlatList
       bounces={false}
       style={{
         height: Dimensions.get('window').height - 2 * (h(88) + Dimensions.get('window').width),
         width: Dimensions.get('window').width,
         backgroundColor: '#F0F0F0'
       }}
-      dataSource={store.libraryDataSource}
-      renderRow={(el, i) =>
+      data={store.libraryDataSource}
+      renderItem={({item}) =>
         <View
           style={{
             flexDirection: 'row',
           }}
         >
-          <LibraryPicture key={el[0].key} picture={el[0]} />
-          {el[1] == null ? <EmptyPicture  /> : <LibraryPicture key={el[1].key} picture={el[1]} /> }
-          {el[2] == null ? <EmptyPicture  /> : <LibraryPicture key={el[2].key} picture={el[2]} /> }
-          {el[3] == null ? <EmptyPicture  /> : <LibraryPicture key={el[3].key} picture={el[3]} /> }
+          <LibraryPicture key={item[0].key} picture={item[0]} width={width} />
+          {item[1] == null ? <EmptyPicture  /> : <LibraryPicture key={item[1].key} picture={item[1]} width={width} /> }
+          {item[2] == null ? <EmptyPicture  /> : <LibraryPicture key={item[2].key} picture={item[2]} width={width} /> }
+          {item[3] == null ? <EmptyPicture  /> : <LibraryPicture key={item[3].key} picture={item[3]} width={width} /> }
         </View>
       }
     />

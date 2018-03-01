@@ -21,21 +21,15 @@ import {
   ScrollView,
   PickerIOS, Picker, StatusBar, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet
 } from 'Hairfolio/src/helpers';
-
-import {BOTTOMBAR_HEIGHT, STATUSBAR_HEIGHT} from 'Hairfolio/src/constants';
-
+import NavigatorStyles from '../../common/NavigatorStyles';
+import {STATUSBAR_HEIGHT} from 'Hairfolio/src/constants';
 import TagPostStore from '../../mobx/stores/TagPostStore';
-
 import SearchStore from '../../mobx/stores/SearchStore';
-
 import GridView from '../GridView';
-
 import GridPost from '../favourites/GridPost';
-
 import SearchModeSearch from '../search/SearchModeSearch';
 
 const MyFooter = observer(({store}) => {
-
   if (store.nextPage != null || store.isLoading) {
     return (
       <View style={{flex: 1, paddingVertical: 20, alignItems: 'center', justifyContent: 'center'}}>
@@ -47,10 +41,7 @@ const MyFooter = observer(({store}) => {
   }
 });
 
-import * as routes from 'Hairfolio/src/routes'
-
 const TagFooter = observer(({store}) => {
-
   if (store.nextPage != null) {
     return (
       <View style={{flex: 1,
@@ -69,7 +60,7 @@ const TagFooter = observer(({store}) => {
 });
 
 
-const SearchBar = observer(({store}) => {
+const SearchBar = observer(({store, navigator}) => {
   return (
     <View
       style={{
@@ -79,7 +70,11 @@ const SearchBar = observer(({store}) => {
     >
       <TouchableWithoutFeedback
         onPress={() =>
-          window.navigators[0].jumpTo(routes.searchDetails)
+          navigator.push({
+            screen: 'hairfolio.SearchDetails',
+            navigatorStyle: NavigatorStyles.tab,
+            title: 'Search',
+          })
         }
       >
         <View
@@ -120,7 +115,7 @@ const SearchBar = observer(({store}) => {
   );
 });
 
-const TagItem = observer(({store}) => {
+const TagItem = observer(({store, navigator}) => {
   return (
     <TouchableWithoutFeedback
       onPress={
@@ -128,7 +123,7 @@ const TagItem = observer(({store}) => {
           TagPostStore.jump(
             store.name,
             `#${store.name}`,
-            () => window.navigators[0].jumpTo(routes.appStack)
+            navigator,
           );
         }
       }
@@ -161,8 +156,7 @@ const TagItem = observer(({store}) => {
   );
 });
 
-const TopTags = observer(({store}) => {
-
+const TopTags = observer(({store, navigator}) => {
   if (store.isLoading) {
     return (
       <View style={{height: h(220), justifyContent: 'center'}}>
@@ -177,7 +171,6 @@ const TopTags = observer(({store}) => {
         height: h(220)
       }}
     >
-
     <ListView
       style = {{
         height: h(220)
@@ -187,16 +180,15 @@ const TopTags = observer(({store}) => {
       dataSource={store.dataSource}
       renderRow={(el, i) => {
         return (
-          <TagItem key={el.key} store={el} />
+          <TagItem key={el.key} store={el} navigator={navigator}/>
         )
       }}
       renderFooter={
-        () => <TagFooter store={store} />
+        () => <TagFooter store={store} navigator={navigator}/>
       }
       onEndReached={() => {
         store.loadNextPage();
       }} />
-
       <Text
         style = {{
           position: 'absolute',
@@ -210,9 +202,6 @@ const TopTags = observer(({store}) => {
       >TOP TAGS </Text>
     </View>
   );
-
-
-
 });
 
 const PopularPostHeader = observer(({store}) => {
@@ -240,11 +229,10 @@ const PopularPostHeader = observer(({store}) => {
       </View>
       {/*<GridView store={store} emptyText='POPULAR TODAY' />*/}
     </View>
-
   );
 });
 
-const Search = observer(() => {
+const Search = observer(({navigator}) => {
 
   if (!SearchStore.loaded) {
     return <View />;
@@ -261,9 +249,9 @@ const Search = observer(() => {
       dataSource={SearchStore.dataSource}
       renderRow={(el, i) => {
         if (el.type == 'searchBar') {
-          return <SearchBar store={SearchStore} />;
+          return <SearchBar store={SearchStore} navigator={navigator}/>;
         } else if (el.type == 'topTags') {
-          return <TopTags store={SearchStore.topTags} />;
+          return <TopTags store={SearchStore.topTags} navigator={navigator}/>;
         } else if (el.type == 'popularPostHeader') {
           return <PopularPostHeader />;
         } else {
@@ -274,9 +262,9 @@ const Search = observer(() => {
                 flexWrap: 'wrap'
               }}
             >
-              <GridPost key={el[0].key} post={el[0]} />
+              <GridPost key={el[0].key} post={el[0]} navigator={navigator}/>
               {
-                el[1] != null ?  <GridPost key={el[1].key} post={el[1]} /> :
+                el[1] != null ?  <GridPost key={el[1].key} post={el[1]} navigator={navigator}/> :
                   <View
                     style = {{
                       width: windowWidth / 2,
@@ -289,16 +277,13 @@ const Search = observer(() => {
           );
         }
       }}
-
       renderFooter={
-        () => <MyFooter store={SearchStore.popularPosts} />
+        () => <MyFooter store={SearchStore.popularPosts} navigator={navigator}/>
       }
-
       onEndReached={() => {
         SearchStore.popularPosts.loadNextPage();
       }}
-
-      />
+    />
   );
 
 });

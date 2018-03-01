@@ -16,35 +16,23 @@ import {
   ActivityIndicator,
   Picker, StatusBar, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet
 } from 'Hairfolio/src/helpers';
-
 import SlimHeader from '../components/SlimHeader';
 import AlbumStore from '../mobx/stores/AlbumStore';
 import CreatePostStore from '../mobx/stores/CreatePostStore';
-
-import {appStack, createPost, onPress, postFilter, albumPage, addServiceTwo, gallery} from '../routes';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-
 import MyPicker from '../components/MyPicker';
-
 import AddServiceStore from '../mobx/stores/AddServiceStore';
-
-
 import ReactNative, { NativeModules } from 'react-native';
-
 var RCTUIManager = NativeModules.UIManager;
 import LoadingScreen from '../components/LoadingScreen';
-
+import NavigatorStyles from '../common/NavigatorStyles';
 
 const BoxSelector = observer(({selector}) => {
-
   let picker;
-
   if (selector.isHidden) {
     return null;
   }
-
   if (selector.isOpen) {
-
     if (selector.isLoaded) {
       picker = (
         <Picker
@@ -71,8 +59,6 @@ const BoxSelector = observer(({selector}) => {
       );
     }
   }
-
-
   return (
     <View>
       <TouchableWithoutFeedback
@@ -120,21 +106,12 @@ const BoxSelector = observer(({selector}) => {
   );
 });
 
-
 @observer
 @autobind
 export default class AddServicePageOne extends Component {
-
-  static contextTypes = {
-    navigators: React.PropTypes.array.isRequired
-  };
-
   render() {
-
     let store = AddServiceStore;
-
     let content = <View />;
-
     if (!store.isLoading) {
       content = (
         <View>
@@ -151,7 +128,7 @@ export default class AddServicePageOne extends Component {
             titleWidth={140}
             leftText='Back'
             onLeft={() => {
-              AddServiceStore.myBack();
+              this.props.navigator.pop({ anmiated: true });
             }}
             title='Add Service (1/3)'
             titleStyle={{fontFamily: FONTS.SF_MEDIUM}}
@@ -159,12 +136,9 @@ export default class AddServicePageOne extends Component {
             rightStyle={{opacity: store.nextOpacity}}
             onRight={async () => {
               if (store.canGoNext) {
-
                 if (store.colorNameSelector.hasValue) {
                   store.isLoading = true;
-
                   let res;
-
                   try {
                     res = await store.loadColors();
                   } catch(err) {
@@ -174,10 +148,12 @@ export default class AddServicePageOne extends Component {
                   }
 
                   if (res.length > 0) {
-                    _.last(this.context.navigators).jumpTo(addServiceTwo)
+                    this.props.navigator.push({
+                      screen: 'hairfolio.AddServicePageTwo',
+                      navigatorStyle: NavigatorStyles.tab,
+                    });
                     setTimeout(() => store.isLoading = false, 500);
                   } else {
-
                     let storeObj = {
                       service_id: AddServiceStore.serviceSelector.selectedData.id,
                       service_name: AddServiceStore.serviceSelector.selectedData.name,

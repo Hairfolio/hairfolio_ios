@@ -30,10 +30,6 @@ import Video from 'react-native-video';
 
 
 import LinearGradient from 'react-native-linear-gradient';
-
-import {appStack, createPost, onPress, postFilter, albumPage, addServiceOne, filter, addLink, addServiceTwo, addServiceThree} from '../routes';
-
-import * as routes from '../routes';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 import MyPicker from './MyPicker';
@@ -102,7 +98,7 @@ const VideoPreview = observer(({picture, width}) => {
         <View
           style={{
             width: myWidth,
-            height: myWidth,
+            height: myWidth * (4/3),
             overflow: 'hidden'
           }}
         >
@@ -121,7 +117,7 @@ const VideoPreview = observer(({picture, width}) => {
             style={{
               marginTop: -(windowHeight - myWidth) / 2,
               width: myWidth,
-              height: windowHeight,
+              height: windowHeight * (4/3),
               backgroundColor: 'black'
             }}
             key={pic.key}
@@ -136,12 +132,12 @@ const VideoPreview = observer(({picture, width}) => {
       <View
         style={{
           width: myWidth,
-          height: myWidth
+          height: myWidth * (4/3)
         }}
       >
       <Image
         style={{
-          height: myWidth,
+          height: myWidth * (4/3),
           width: myWidth
 
         }}

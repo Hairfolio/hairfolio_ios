@@ -18,12 +18,6 @@ export default class KeyboardScrollView extends PureComponent {
     space: React.PropTypes.number
   };
 
-  static contextTypes = {
-    navigators: React.PropTypes.array.isRequired,
-    currentRoutes:  React.PropTypes.array.isRequired,
-    scrolling:  React.PropTypes.func.isRequired
-  };
-
   static childContextTypes = {
     kbScrollViewEmitter: React.PropTypes.object
   };
@@ -73,12 +67,6 @@ export default class KeyboardScrollView extends PureComponent {
     if (!node)
       return;
 
-    var eligible = _.every(this.context.currentRoutes, (route, i) => {
-      return route === this.context.navigators[i].nextRoute;
-    });
-    if (!eligible)
-      return;
-
     this.focus = refNode || node;
 
     this.ee.emit('focus');
@@ -114,12 +102,6 @@ export default class KeyboardScrollView extends PureComponent {
             this.props.onLayout(e);
         }}
         onScroll={(e) => {
-          // see src/index for the necessity of this
-          this.context.scrolling(true);
-          setTimeout(() => {
-            this.context.scrolling(false);
-          }, 300);
-
           if (this.props.onScroll)
             return this.props.onScroll(e);
         }}

@@ -38,7 +38,7 @@ const WhiteHeader = observer(({title, numberOfLines, onLeft, onRenderRight}) => 
     >
       <TouchableOpacity
         style={{
-          width: 80
+          width: 100
         }}
         onPress={onLeft}
       >
@@ -52,7 +52,7 @@ const WhiteHeader = observer(({title, numberOfLines, onLeft, onRenderRight}) => 
             }}
           >
             <Image
-              style={{height: h(18), width: h(30)}}
+              style={{height: 16, width: 28}}
               source={require('img/nav_black_back.png')}
             />
         </View>

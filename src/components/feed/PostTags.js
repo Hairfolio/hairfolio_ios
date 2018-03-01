@@ -79,12 +79,10 @@ class HashTag extends React.Component {
   }
 }
 
-const PostTags  = observer(({store}) => {
-
+const PostTags  = observer(({store, navigator}) => {
   if (!store.showTags) {
     return null;
   }
-
   return (
     <View
       style = {{
@@ -115,6 +113,7 @@ const PostTags  = observer(({store}) => {
           return (
             <TouchableWithoutFeedback
               onPress={() => {
+                store.navigator = navigator;
                 store.selectTag(pic);
               }}
               key={pic.key}>
@@ -125,8 +124,6 @@ const PostTags  = observer(({store}) => {
             </TouchableWithoutFeedback>
           );
         }
-
-
         if (pic.type == 'hashtag') {
           return (
             <HashTag store={store} key={pic.key} pic={pic} />
@@ -137,6 +134,7 @@ const PostTags  = observer(({store}) => {
           <TouchableWithoutFeedback
             key={pic.key}
             onPress={() => {
+              store.navigator = navigator;
               store.selectTag(pic);
             }}
           >

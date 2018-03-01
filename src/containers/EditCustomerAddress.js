@@ -5,30 +5,50 @@ import {mixin} from 'core-decorators';
 import PureComponent from '../components/PureComponent';
 import {View, Text, StyleSheet} from 'react-native';
 import {COLORS, FONTS, SCALE} from '../style';
-import NavigationSetting from '../navigation/NavigationSetting';
 import { observer } from 'mobx-react';
 import MultilineTextInput from '../components/Form/MultilineTextInput';
 import InlineTextInput from '../components/Form/InlineTextInput';
 import PickerInput from '../components/Form/PickerInput';
 import BannerErrorContainer from '../components/BannerErrorContainer';
 import states from '../states.json';
-
 import UserStore from '../mobx/stores/UserStore';
-import {editCustomer} from '../routes';
-
 import formMixin from '../mixins/form';
-
-import {NAVBAR_HEIGHT} from '../constants';
+import whiteBack from '../../resources/img/nav_white_back.png';
 
 @observer
 @mixin(formMixin)
 export default class EditCustomerAddress extends PureComponent {
-  static contextTypes = {
-    navigators: React.PropTypes.array.isRequired
-  };
-
   state = {};
 
+  constructor(props) {
+    super(props);
+    if (this.props.currentValue) {
+      this.setValue(this.props.currentValue);
+    }
+    if (this.props.navigator) {
+      this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+    }
+  }
+
+  static navigatorButtons = {
+    leftButtons: [
+      {
+        id: 'back',
+        icon: whiteBack,
+      }
+    ],
+  };
+
+  onNavigatorEvent(event) {
+    if (event.type == 'NavBarButtonPress') {
+      if (event.id == 'back') {
+        this.props.onBack(this.getValue());
+        this.props.navigator.pop({
+          animated: true,
+        });
+      }
+    }
+  }
   getValue() {
     var value = this.getFormValue();
     return !_.isEmpty(value) ? value : null;
@@ -43,21 +63,7 @@ export default class EditCustomerAddress extends PureComponent {
   }
 
   render() {
-    return (<NavigationSetting
-      leftAction={() => {
-        _.last(this.context.navigators).jumpTo(editCustomer);
-      }}
-      leftDisabled={this.state.submitting}
-      leftIcon="back"
-      onWillBlur={this.onWillBlur}
-      onWillFocus={this.onWillFocus}
-      style={{
-        flex: 1,
-        backgroundColor: COLORS.LIGHT,
-        paddingTop: NAVBAR_HEIGHT
-      }}
-      title="Address"
-    >
+    return (
       <BannerErrorContainer ref="ebc" style={{
         flex: 1
       }}>
@@ -108,6 +114,6 @@ export default class EditCustomerAddress extends PureComponent {
           </View>
         </View>
       </BannerErrorContainer>
-    </NavigationSetting>);
+    );
   }
 };

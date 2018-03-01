@@ -19,8 +19,6 @@ import SlimHeader from '../SlimHeader';
 import AlbumStore from '../../mobx/stores/AlbumStore';
 import CreatePostStore from '../../mobx/stores/CreatePostStore';
 
-import {appStack, createPost, onPress, postFilter, albumPage} from 'Hairfolio/src/routes';
-
 import ReactNative from 'react-native';
 
 const BoxSelector = observer(() => {

@@ -1,54 +1,40 @@
 import React from 'react';
 import PureComponent from '../components/PureComponent';
 import {View, TouchableOpacity, Text} from 'react-native';
+import { observer } from 'mobx-react';
 import {COLORS, FONTS, SCALE} from '../style';
-import NavigationSetting from '../navigation/NavigationSetting';
-
-import {BOTTOMBAR_HEIGHT, STATUSBAR_HEIGHT} from '../constants';
-
+import {STATUSBAR_HEIGHT} from '../constants';
 import WhiteHeader from '../components/WhiteHeader';
 import LinkTabBar from '../components/post/LinkTabBar';
 import ScrollableTabView from 'react-native-scrollable-tab-view';
-
 import ShareFollowers from '../components/ShareFollowers';
 import ShareMessage from '../components/ShareMessage';
 import AddBlackBookStore from '../mobx/stores/AddBlackBookStore';
 import LoadingScreen from '../components/LoadingScreen';
 import CreatePostStore from '../mobx/stores/CreatePostStore';
-
 import ShareStore from '../mobx/stores/ShareStore';
-import {
-  h
-} from 'Hairfolio/src/helpers';
+import { h } from 'Hairfolio/src/helpers';
 
+@observer
 export default class Share extends PureComponent {
-  static contextTypes = {
-    navigators: React.PropTypes.array.isRequired
-  };
+  constructor(props) {
+    super(props);
+    AddBlackBookStore.load();
+    ShareStore.resetButtons();
+  }
 
   render() {
     return (
-      <NavigationSetting
+      <View
         style={{
           flex: 1,
           backgroundColor: COLORS.WHITE
         }}
-        onWillFocus={
-          () => {
-            AddBlackBookStore.load();
-            ShareStore.resetButtons();
-            // ActivityYouStore.load();
-            // ActivityFollowingStore.load();
-          }
-        }
       >
-        <View style={{
-          flex: 1
-        }}>
         <WhiteHeader
           onLeft={
             () => {
-              ShareStore.myBack();
+              this.props.navigator.pop({ animated: true });
             }
           }
           title='Share To'
@@ -59,7 +45,7 @@ export default class Share extends PureComponent {
                 alignItems: 'center'
               }}
               onPress={() => {
-                CreatePostStore.postPost();
+                CreatePostStore.postPost(this.props.navigator);
               }}
             >
               <Text
@@ -82,12 +68,11 @@ export default class Share extends PureComponent {
           initialPage={0}
           refs={e => ShareStore.tabView = e}
         >
-          <ShareFollowers tabLabel="Followers" />
-          <ShareMessage tabLabel='Send Direct' />
+          <ShareFollowers tabLabel="Followers" navigator={this.props.navigator} />
+          <ShareMessage tabLabel='Send Direct' navigator={this.props.navigator} />
         </ScrollableTabView>
         <LoadingScreen style={{opacity: 0.6}} store={CreatePostStore} />
       </View>
-    </NavigationSetting>
     );
   }
 };

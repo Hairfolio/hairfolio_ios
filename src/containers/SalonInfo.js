@@ -5,7 +5,6 @@ import {mixin} from 'core-decorators';
 import PureComponent from '../components/PureComponent';
 import {View, Text, StyleSheet} from 'react-native';
 import {COLORS, FONTS, SCALE} from '../style';
-import NavigationSetting from '../navigation/NavigationSetting';
 import { observer } from 'mobx-react';
 import MultilineTextInput from '../components/Form/MultilineTextInput';
 import InlineTextInput from '../components/Form/InlineTextInput';
@@ -13,63 +12,65 @@ import PickerInput from '../components/Form/PickerInput';
 import PageInput from '../components/Form/PageInput';
 import BannerErrorContainer from '../components/BannerErrorContainer';
 import KeyboardScrollView from '../components/KeyboardScrollView';
-
 import states from '../states.json';
-
-import {salonStylists, salonSP, salonProductExperience} from '../routes';
-
+import App from '../App';
 import formMixin from '../mixins/form';
-
-import {NAVBAR_HEIGHT} from '../constants';
-import appEmitter from '../appEmitter';
-import {appStack} from '../routes';
 import UserStore from '../mobx/stores/UserStore';
 
 @observer
 @mixin(formMixin)
 export default class SalonInfo extends PureComponent {
-  static contextTypes = {
-    navigators: React.PropTypes.array.isRequired
-  };
-
   state = {};
 
+  constructor(props) {
+    super(props);
+    this.props.navigator.setOnNavigatorEvent((e) => {
+      this.onNavigatorEvent(e);
+    });
+  }
+
+  static navigatorButtons = {
+    rightButtons: [
+      {
+        id: 'next',
+        title: 'Next',
+        buttonFontSize: SCALE.h(30),
+        buttonColor: COLORS.WHITE,
+      }
+    ]
+  };
+
+  onNavigatorEvent(event) {
+    if (event.type == 'NavBarButtonPress') {
+      if (event.id == 'next') {
+        if (!this.checkErrors()) {
+          let formData = this.getFormValue();
+          formData.business.name = UserStore.user.salon.name;
+          this.setState({'submitting': true});
+          UserStore.editUser(formData)
+          .then((r) => {
+            this.setState({submitting: false});
+            return r;
+          })
+          .then(
+            () => {
+              UserStore.needsMoreInfo = false;
+              App.startApplication();
+            },
+            (e) => {
+              this.refs.ebc.error(e);
+            }
+          );
+        } else {
+          UserStore.needsMoreInfo = false;
+          App.startApplication();
+        }
+      }
+    }
+  }
+
   render() {
-    return (<NavigationSetting
-      onWillBlur={this.onWillBlur}
-      onWillFocus={this.onWillFocus}
-      rightAction={() => {
-        if (this.checkErrors())
-          return;
-
-        let formData = this.getFormValue();
-        formData.business.name = UserStore.user.salon.name;
-
-        this.setState({'submitting': true});
-        UserStore.editUser(formData)
-        .then((r) => {
-          this.setState({submitting: false});
-          return r;
-        })
-        .then(
-          () => {
-            appEmitter.emit('user-edited');
-            _.first(this.context.navigators).jumpTo(appStack, () => this.clearValues());
-          },
-          (e) => {
-            this.refs.ebc.error(e);
-          }
-        );
-      }}
-      rightDisabled={this.state.submitting}
-      rightLabel="Next"
-      style={{
-        flex: 1,
-        backgroundColor: COLORS.LIGHT,
-        paddingTop: NAVBAR_HEIGHT
-      }}
-      title="Professional Info"
-    >
+    return (
       <BannerErrorContainer ref="ebc" style={{
         flex: 1
       }}>
@@ -156,14 +157,18 @@ export default class SalonInfo extends PureComponent {
           <View style={{height: StyleSheet.hairlineWidth}} />
 
           <PageInput
-            page={salonStylists}
+            page={'hairfolio.SalonStylists'}
+            navigator={this.props.navigator}
+            title={'Education'}
             placeholder="Stylists"
           />
 
           <View style={{height: StyleSheet.hairlineWidth}} />
 
           <PageInput
-            page={salonProductExperience}
+            page={'hairfolio.SalonProductExperience'}
+            navigator={this.props.navigator}
+            title={'Education'}
             placeholder="Products"
             ref={(r) => this.addFormItem(r, 'experience_ids')}
             validation={(v) => true}
@@ -172,7 +177,9 @@ export default class SalonInfo extends PureComponent {
           <View style={{height: StyleSheet.hairlineWidth}} />
 
           <PageInput
-            page={salonSP}
+            page={'hairfolio.SalonSP'}
+            navigator={this.props.navigator}
+            title={'Education'}
             placeholder="Services &  Prices"
             ref={(r) => this.addFormItem(r, 'services')}
             validation={(v) => true}
@@ -199,6 +206,6 @@ export default class SalonInfo extends PureComponent {
           }}>You can fill all this in later, if you’re feeling lazy.</Text>
         </KeyboardScrollView>
       </BannerErrorContainer>
-    </NavigationSetting>);
+    );
   }
 };

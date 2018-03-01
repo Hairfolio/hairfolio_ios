@@ -1,13 +1,5 @@
-// Register app
-import {AppRegistry} from 'react-native';
-import Root from './src';
+import { AppRegistry } from 'react-native';
 
-import Player from './src/Player';
+import App from './src/App';
 
-let debug = false;
-
-if (debug) {
-  AppRegistry.registerComponent('Hairfolio', () => Player);
-} else {
-  AppRegistry.registerComponent('Hairfolio', () => Root);
-}
+AppRegistry.registerComponent('Hairfolio', () => App);

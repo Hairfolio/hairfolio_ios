@@ -4,7 +4,6 @@ import {_, React, Text} from 'Hairfolio/src/helpers';
 import {v4} from 'uuid';
 import Camera from 'react-native-camera';
 let PhotoAlbum = NativeModules.PhotoAlbum;
-import * as routes from '../../routes';
 import ServiceBackend from '../../backend/ServiceBackend';
 import Picture from './Picture';
 import FilterStore from './FilterStore';
@@ -360,11 +359,9 @@ class CreatePostStore {
   }
 
   stopRecording() {
-    CreatePostStore.isRecording = false;
-
-    clearInterval(this.recordFun);
-
     window.recorder.pause();
+    CreatePostStore.isRecording = false;
+    clearInterval(this.recordFun);
   }
 
   @computed get flashIconSource() {
@@ -411,6 +408,7 @@ class CreatePostStore {
       this.isOpen = false;
       this.gallery.reset();
     }
+    window.recorder && window.recorder.removeAllSegments();
   }
 
   @computed get selectedLibraryPicture() {
@@ -488,7 +486,6 @@ class CreatePostStore {
     /*
     this.loadedImages++;
 
-    // TODO only load first 1200 pictures
     if (this.loadedImages % 50 == 0 && this.imageData.length > 0 && this.loadedImages < 1200) {
 
       // don't load next images so we have time to render
@@ -518,12 +515,8 @@ class CreatePostStore {
   }
 
   @computed get libraryDataSource() {
-    const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
-
     let arr = this.libraryPictures.slice();
-
     let newArr = [];
-
     let counter = 0;
 
     while (counter < arr.length) {
@@ -540,7 +533,7 @@ class CreatePostStore {
       counter += 4;
     }
 
-    return ds.cloneWithRows(newArr);
+    return newArr;
   }
 
   @action changeGroupName(newName) {
@@ -598,8 +591,7 @@ class CreatePostStore {
     return text;
   }
 
-  @action async postPost() {
-
+  @action async postPost(navigator) {
     try {
       this.isLoading = true;
 
@@ -621,13 +613,10 @@ class CreatePostStore {
         alert('A backend error occured: ' + JSON.stringify(res));
         alert('The data was : ' + JSON.stringify(data));
       } else {
-
-
         for (let hairfolio of  ShareStore.selectedHairfolios) {
           ServiceBackend.pinHairfolio(hairfolio, res.post);
         }
 
-        // console.log(ShareStore.selectedUsers);
         for (let user of ShareStore.selectedUsers) {
           ServiceBackend.sendPostMessage(UserStore.user.id, user.user, res.post);
         }
@@ -637,10 +626,10 @@ class CreatePostStore {
         }
 
         FeedStore.load();
-        // SearchStore.refresh();
-        routes.appStack.scene().goToFeed();
-        window.navigators[1].jumpTo(routes.createPost);
-        window.navigators[0].jumpTo(routes.appStack);
+        navigator.popToRoot({ animated: true });
+        navigator.switchToTab({
+          tabIndex: 0,
+        });
         setTimeout(() => this.reset(), 1000);
       }
 

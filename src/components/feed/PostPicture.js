@@ -17,8 +17,6 @@ import {
   PickerIOS, Picker, StatusBar, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet
 } from 'Hairfolio/src/helpers';
 
-import * as routes from 'Hairfolio/src/routes';
-
 import PostDetailStore from '../../mobx/stores/PostDetailStore';
 
 import PostStar from './PostStar';
@@ -31,17 +29,11 @@ class InstantSwiper extends React.Component {
 
   constructor(props) {
     super(props)
-
     this.state = {
       currentIndex: 0
     };
-
     this.currentImage = <View />;
-
-
-
     let pictures = this.props.post.pictures;
-
     let images = [];
 
     for (let pic of pictures) {
@@ -59,10 +51,8 @@ class InstantSwiper extends React.Component {
         />
       );
     }
-
     this.images = images;
   }
-
 
   componentDidMount() {
     if (this.images.length > 1) {
@@ -83,11 +73,8 @@ class InstantSwiper extends React.Component {
   }
 
   render() {
-
     let pic = this.props.post.currentImage;
-
     let imageArray = [];
-
     let index = -1;
 
     let infoText = `${this.state.currentIndex + 1} of ${this.props.post.pictures.length}`;
@@ -101,23 +88,21 @@ class InstantSwiper extends React.Component {
             top: 0,
             left: 0,
             opacity: this.state.currentIndex == index ? 1 : 0,
-            height: windowWidth,
+            height: windowWidth * (4/3),
             width: windowWidth
           }}
+          resizeMode='cover'
           source={pic.getSource(windowWidth * 2)}
         />
       );
     }
-
     return  (
       <View
         style={{
-          height: windowWidth,
+          height: windowWidth * (4/3),
           width: windowWidth
         }}
-
         key={pic.key}>
-
         {imageArray}
         {pic.isVideo ?
             <View
@@ -134,9 +119,6 @@ class InstantSwiper extends React.Component {
             </View>
             : <View />
         }
-
-
-
         <View
           style={{
             position: 'absolute',
@@ -162,30 +144,25 @@ class InstantSwiper extends React.Component {
   }
 }
 
-const PostPicture = observer(({post}) => {
+const PostPicture = observer(({post, navigator}) => {
   return (
     <TouchableWithoutFeedback
       onPress={(e) => {
         let data = e.touchHistory.touchBank[1];
         let timeDiff = data.currentTimeStamp - data.previousTimeStamp;
-
         let currentClickTime = (new Date()).getTime();
-
         let time = currentClickTime;
-
         let oneClickFun = () => {
           if (time == post.lastClickTime && !post.doubleClick) {
             PostDetailStore.jump(
               false,
               post,
-              () => window.navigators[0].jumpTo(routes.appStack)
+              navigator,
             );
           } else {
             post.doubleClick = false;
           }
         };
-
-
         if (post.lastClickTime) {
           let diff = currentClickTime - post.lastClickTime;
 
@@ -207,17 +184,12 @@ const PostPicture = observer(({post}) => {
     >
       <View>
         <View
-          style={{height: windowWidth, width: windowWidth}}>
-
+          style={{height: windowWidth * (4/3), width: windowWidth}}
+        >
           <InstantSwiper post={post} />
-
           <PostStar post={post} />
           <PostSave post={post} />
-
-
-
-
-                  </View>
+        </View>
       </View>
     </TouchableWithoutFeedback>
   );

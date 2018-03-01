@@ -3,12 +3,9 @@ import {CameraRoll, NativeModules} from 'react-native';
 import Camera from 'react-native-camera';
 import Picture from './Picture';
 import ServiceBackend from '../../backend/ServiceBackend';
-
 import {_, v4, moment, React, Text} from 'Hairfolio/src/helpers';
-
 import User from './User';
-
-import * as routes from 'Hairfolio/src/routes';
+import NavigatorStyles from '../../common/NavigatorStyles';
 
 class Comment {
   @observable user;
@@ -123,19 +120,18 @@ class CommentsModel {
 class CommentsStore {
 
   @observable stack = [];
-
-  jump(postId, onBack = () => window.navigators[0].jumpTo(routes.appStack)) {
-
+  jump(postId, navigator) {
     let store = new CommentsModel(postId);
-
     store.myBack = () => {
-      onBack();
+      navigator.pop({ animated: true });
       this.stack.pop();
     }
 
     this.stack.push(store);
-
-    window.navigators[0].jumpTo(routes.comments);
+    navigator.push({
+      screen: 'hairfolio.Comments',
+      navigatorStyle: NavigatorStyles.tab,
+    });
   }
 
   @computed get isEmpty() {

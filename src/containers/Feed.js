@@ -1,21 +1,12 @@
 import PureComponent from '../components/PureComponent';
-import NavigationSetting from '../navigation/NavigationSetting';
-import {BOTTOMBAR_HEIGHT, STATUSBAR_HEIGHT} from '../constants';
-
+import {STATUSBAR_HEIGHT} from '../constants';
 import SimpleButton from '../components/Buttons/Simple';
-
 import FeedStore from '../mobx/stores/FeedStore';
 import MessagesStore from '../mobx/stores/MessagesStore';
-
-import {profile, profileExternal, appStack} from '../routes';
-
-import * as routes from '../routes';
-
 import Post from '../components/feed/Post';
 import WhiteHeader from '../components/WhiteHeader';
-
 import CreatePostStore from '../mobx/stores/CreatePostStore';
-
+import { toJS } from 'mobx';
 import {
   _, // lodash
   v4,
@@ -36,9 +27,8 @@ import {
   ActivityIndicator,
   PickerIOS, Picker, StatusBar, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet
 } from 'Hairfolio/src/helpers';
-
-
 import NewMessageStore from '../mobx/stores/NewMessageStore';
+import NavigatorStyles from '../common/NavigatorStyles';
 
 const NewMessageNumber = observer(() => {
 
@@ -73,7 +63,7 @@ const NewMessageNumber = observer(() => {
   );
 });
 
-const FeedHeader = observer(() => {
+const FeedHeader = observer((props) => {
   return (
     <View
       style = {{
@@ -89,18 +79,18 @@ const FeedHeader = observer(() => {
       <Image
         style = {{
           height: h(25),
-          width: h(231)
+          width: h(241)
         }}
         source={require('img/feed_header.png')}
       />
       <TouchableOpacity
         onPress={
           () => {
-            MessagesStore.myBack = () => {
-              window.navigators[0].jumpTo(routes.appStack)
-            }
-
-            window.navigators[0].jumpTo(routes.messagesRoute)
+            props.navigator.push({
+              screen: 'hairfolio.Messages',
+              title: 'Messages',
+              navigatorStyle: NavigatorStyles.basicInfo,
+            });
           }
         }
         style={{width: h(150), flex: 1}} >
@@ -123,16 +113,27 @@ const FeedHeader = observer(() => {
 
 @observer
 export default class Feed extends PureComponent {
+  constructor(props) {
+    super(props);
+    this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+  }
 
-  static contextTypes = {
-    navigators: React.PropTypes.array.isRequired
-  };
+  onNavigatorEvent(event) {
+    switch(event.id) {
+      case 'willAppear':
+        NewMessageStore.load();
+        if (!FeedStore.isLoading) {
+          FeedStore.load();
+          FeedStore.hasLoaded = true;
+        }
+        break;
+      default:
+        break;
+    }
+  }
 
   render() {
-
     let store = FeedStore;
-
-
     let content = (
       <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
         <ActivityIndicator size='large' />
@@ -164,7 +165,7 @@ export default class Feed extends PureComponent {
       content = (
         <ListView
           dataSource={store.dataSource}
-          renderRow={(p, i) => <Post key={p.key} post={p} />}
+          renderRow={(p, i) => <Post key={p.key} post={p} navigator={this.props.navigator}/>}
           renderFooter={
             () => {
               if (store.nextPage != null) {
@@ -185,29 +186,15 @@ export default class Feed extends PureComponent {
       );
     }
 
-    return (<NavigationSetting
-      onFocus={() => {
-        NewMessageStore.load();
-        // initial loading
-
-        if (!FeedStore.hasLoaded) {
-          FeedStore.hasLoaded = true;
-          FeedStore.load();
-        }
-      }}
-      style={{
+    return (
+      <View style={{
         flex: 1,
         backgroundColor: COLORS.WHITE,
         paddingTop: STATUSBAR_HEIGHT,
-        paddingBottom: BOTTOMBAR_HEIGHT
-      }}
-    >
-      <View style={{
-        flex: 1
       }}>
-      <FeedHeader />
-      {content}
-    </View>
-  </NavigationSetting>);
+        <FeedHeader navigator={this.props.navigator}/>
+        {content}
+      </View>
+    );
   }
 };

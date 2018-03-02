@@ -45,7 +45,7 @@ import ServiceBox from './post/ServiceBox';
 
 const PlayButton = observer(({myWidth, playPauseAction}) => {
   return (
-    <TouchableWithoutFeedback onPress={ playPauseAction() } >
+    <TouchableWithoutFeedback onPress={ playPauseAction } >
       <Image source={require('img/play_button.png')} />
     </TouchableWithoutFeedback>
   );
@@ -59,13 +59,13 @@ class VideoPreview extends React.Component{
     this.myWidth = props.width ? props.width : windowWidth;
     this.pic = props.picture;
     this.state = {
-      isPaused: false,
+      isPaused: true,
     };
   }
 
   playPauseAction = () => {
     this.setState({
-      isPlaying: !this.state.isPaused,
+      isPaused: !this.state.isPaused,
     })
   }
 
@@ -73,7 +73,6 @@ class VideoPreview extends React.Component{
     if (this.pic == null) {
       return <View />;
     }
-    debugger;
     return (
       <TouchableWithoutFeedback onPress={this.playPauseAction}>
         <View
@@ -89,16 +88,10 @@ class VideoPreview extends React.Component{
           <Image source={require('img/play_button.png')} />
         }
             <Video
-              ref={
-                v => {
-                  window.galleryVideo = v;
-                  this.pic.video = v;
-                }
-              }
               paused={this.state.isPaused}
               repeat={true}
               resizeMode="contain"
-              onEnd={() => this.playPauseAction}
+              onEnd={this.playPauseAction}
               style={{
                 width: this.myWidth,
                 height: windowHeight * (4/3),

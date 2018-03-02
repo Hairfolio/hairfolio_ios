@@ -43,110 +43,71 @@ const ImageFilter = NativeModules.ImageFilter;
 
 import ServiceBox from './post/ServiceBox';
 
-const PlayButton = observer(({myWidth, pic}) => {
-
-  if (pic.isPlaying && !pic.isPaused) {
-    return <View />;
-  }
-
+const PlayButton = observer(({myWidth, playPauseAction}) => {
   return (
-
-    <TouchableWithoutFeedback
-      onPress={
-        () => {
-          pic.isPaused = false;
-          pic.isPlaying = true;
-        }
-      }
-    >
-      <Image
-        style={{
-          position: 'absolute',
-          top: myWidth / 2 - 40,
-          left: myWidth / 2 - 40,
-          height: 80,
-          width: 80
-
-        }}
-        source={require('img/play_button.png')}
-      />
+    <TouchableWithoutFeedback onPress={ playPauseAction } >
+      <Image source={require('img/play_button.png')} />
     </TouchableWithoutFeedback>
   );
 });
 
-const VideoPreview = observer(({picture, width}) => {
+@observer
+class VideoPreview extends React.Component{
 
-  let myWidth = width ? width : windowWidth;
-
-  let pic = picture;
-
-
-
-  if (pic == null) {
-    return <View />;
+  constructor(props) {
+    super(props)
+    this.myWidth = props.width ? props.width : windowWidth;
+    this.pic = props.picture;
+    this.state = {
+      isPaused: true,
+    };
   }
 
-  if (pic.isPlaying) {
+  playPauseAction = () => {
+    this.setState({
+      isPaused: !this.state.isPaused,
+    })
+  }
+
+  render = () => {
+    if (this.pic == null) {
+      return <View />;
+    }
     return (
-      <TouchableWithoutFeedback
-        onPress={
-          () => {
-            pic.isPaused = !pic.isPaused;
-          }
-        }
-      >
+      <TouchableWithoutFeedback onPress={this.playPauseAction}>
         <View
           style={{
-            width: myWidth,
-            height: myWidth * (4/3),
-            overflow: 'hidden'
+            width: this.myWidth,
+            height: this.myWidth * (4/3),
+            overflow: 'hidden',
+            justifyContent: 'center',
+            alignItems: 'center',
           }}
         >
-          <Video
-            ref={
-              v => {
-                window.galleryVideo = v;
-                pic.video = v;
-              }
-            }
-            paused={pic.isPaused}
-            resizeMode="stretch"
-            onEnd={() => {
-              pic.isPlaying = false;
-            }}
-            style={{
-              marginTop: -(windowHeight - myWidth) / 2,
-              width: myWidth,
-              height: windowHeight * (4/3),
-              backgroundColor: 'black'
-            }}
-            key={pic.key}
-            source={{uri: pic.videoUrl}}
-          />
-          <PlayButton myWidth={myWidth} pic={pic} />
+        {this.state.isPaused &&
+          <Image source={require('img/play_button.png')} />
+        }
+            <Video
+              paused={this.state.isPaused}
+              repeat={true}
+              resizeMode="contain"
+              onEnd={this.playPauseAction}
+              style={{
+                width: this.myWidth,
+                height: windowHeight * (4/3),
+                backgroundColor: 'black',
+                justifyContent: 'center',
+                alignItems: 'center',
+                position: 'absolute',
+                zIndex: -1,
+              }}
+              key={this.pic.key}
+              source={{uri: this.pic.videoUrl}}
+            />
         </View>
       </TouchableWithoutFeedback>
     );
-  } else {
-    return (
-      <View
-        style={{
-          width: myWidth,
-          height: myWidth * (4/3)
-        }}
-      >
-      <Image
-        style={{
-          height: myWidth * (4/3),
-          width: myWidth
-
-        }}
-        source={pic.source}
-      />
-      <PlayButton myWidth={myWidth} pic={pic} />
-    </View>
-    );
   }
-});
+}
 
 export default VideoPreview;

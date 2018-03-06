@@ -121,10 +121,11 @@ const SearchHeader = observer(({navigator}) => {
   );
 });
 
-const StylistSearch = observer(({store}) => {
+const StylistSearch = observer(({store, navigator}) => {
   return (
     <FollowUserList
       store={store}
+      navigator={navigator}
       noResultText='Nothing was found'
     />
   );
@@ -219,7 +220,6 @@ const BrandSearch = observer(({store, navigator}) => {
 });
 
 let SearchPage = (Class, store, props) => observer(() => {
-
   if (store.isLoading) {
     return <ActivityIndicator size='large'/>;
   }

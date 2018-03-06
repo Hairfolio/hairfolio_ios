@@ -52,7 +52,6 @@ class UserStore {
 
   @action editUser(values = {}, type) {
     this.userState = LOADING;
-    debugger;
     if (values.experience_ids) {
       values.experience_ids = values.experience_ids;
     } else {

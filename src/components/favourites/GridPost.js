@@ -97,7 +97,6 @@ const GridPost = observer(({post, navigator}) => {
           );
         }
       }
-
     >
       <View
         style = {{
@@ -110,7 +109,7 @@ const GridPost = observer(({post, navigator}) => {
             width: windowWidth / 2,
             height: windowWidth / 2
           }}
-          source={post.pictures[0].source}
+          source={post.pictures[0].getSource(Math.round(windowWidth / 2))}
         />
         <ActionButtons post={post} />
       </View>

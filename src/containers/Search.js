@@ -104,6 +104,18 @@ export default class Search extends PureComponent {
     SearchStore.load();
   }
 
+  onNavigatorEvent(event) {
+    switch(event.id) {
+      case 'willAppear':
+        this.props.navigator.toggleTabs({
+          to: 'shown',
+        });
+        break;
+      default:
+        break;
+    }
+  }
+
   render() {
     return (
       <View

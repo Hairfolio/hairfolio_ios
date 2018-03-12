@@ -52,6 +52,18 @@ export default class Profile extends PureComponent {
     }
   }
 
+  onNavigatorEvent(event) {
+    switch(event.id) {
+      case 'willAppear':
+        this.props.navigator.toggleTabs({
+          to: 'shown',
+        });
+        break;
+      default:
+        break;
+    }
+  }
+
   _fetchProfile = () => {
     UsersStore.getUser(this.props.userId)
     .then(() =>{

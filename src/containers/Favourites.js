@@ -25,6 +25,9 @@ export default class Favourites extends PureComponent {
   onNavigatorEvent(event) {
     switch(event.id) {
       case 'willAppear':
+        this.props.navigator.toggleTabs({
+          to: 'shown',
+        });
         ActivityYouStore.load();
         ActivityFollowingStore.load();
         FavoriteStore.load();

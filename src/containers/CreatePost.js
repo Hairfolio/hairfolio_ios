@@ -223,6 +223,9 @@ export default class CreatePost extends PureComponent {
   onNavigatorEvent(event) {
     switch(event.id) {
       case 'willAppear':
+        this.props.navigator.toggleTabs({
+          to: 'shown',
+        });
         CreatePostStore.isOpen = CreatePostStore.inputMethod === 'Video' || CreatePostStore.inputMethod === 'Photo';
         break;
       default:

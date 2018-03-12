@@ -121,6 +121,9 @@ export default class Feed extends PureComponent {
   onNavigatorEvent(event) {
     switch(event.id) {
       case 'willAppear':
+        this.props.navigator.toggleTabs({
+          to: 'shown',
+        });
         NewMessageStore.load();
         if (!FeedStore.isLoading) {
           FeedStore.load();

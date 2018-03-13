@@ -322,6 +322,8 @@ class Gallery {
   }
 }
 
+const imagesSelectedLimit = 10;
+
 class CreatePostStore {
   @observable isRecording = false;
   @observable loadGallery = false;
@@ -423,9 +425,7 @@ class CreatePostStore {
     this.gallery.addLibraryPictures(
       this.selectedPictures
     );
-
     this.gallery.wasOpened = true;
-    // this.gallery.selectedPicture = null;
     this.gallery.selectedPicture = _.first(this.gallery.pictures);
   }
 
@@ -463,21 +463,15 @@ class CreatePostStore {
   }
 
   @action selectPicture(picture) {
-
-    let selectedNumber = picture.selectedNumber;
-
-    if (selectedNumber == null) {
+    if (picture.selectedNumber == null && this.selectedPictures.length < imagesSelectedLimit) {
       this.selectedPictures.push(picture);
       picture.selectedNumber = this.selectedPictures.length;
     } else {
-      picture.selectedNumber = null;
-
-      this.selectedPictures = this.selectedPictures.filter((el) => el.key != picture.key);
-
-      for (var pic of this.selectedPictures) {
-        if (pic.selectedNumber >= selectedNumber) {
-          pic.selectedNumber--;
-        }
+      const pictureIndex = this.selectedPictures.findIndex(pic => pic.key === picture.key);
+      if(pictureIndex !== -1) {
+        this.selectedPictures.splice(pictureIndex, 1);
+        this.selectedPictures.forEach((pic, i) => pic.selectedNumber = (i >= pictureIndex) ? pic.selectedNumber - 1 : pic.selectedNumber);
+        picture.selectedNumber = null;
       }
     }
   }

@@ -52,12 +52,10 @@ export default class Backend {
     let response = await myfetch(BASE_URL + url, {
       method: 'POST',
       headers: this.getHeaders(),
-      timeout: 20000, // req/res timeout in ms, 0 to disable, timeout reset on redirect
+      timeout: 60000, // req/res timeout in ms, 0 to disable, timeout reset on redirect
       body: JSON.stringify(data)
     });
-
     let json = await response.json();
-
     if (response.status) {
       json.status = response.status;
     }

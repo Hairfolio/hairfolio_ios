@@ -124,6 +124,8 @@ export default class Feed extends PureComponent {
         this.props.navigator.toggleTabs({
           to: 'shown',
         });
+        break;
+      case 'bottomTabSelected':
         NewMessageStore.load();
         if (!FeedStore.isLoading) {
           FeedStore.load();

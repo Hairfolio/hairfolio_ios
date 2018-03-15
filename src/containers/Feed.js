@@ -118,6 +118,14 @@ export default class Feed extends PureComponent {
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
   }
 
+  componentDidMount() {
+    NewMessageStore.load();
+    if (!FeedStore.isLoading) {
+      FeedStore.load();
+      FeedStore.hasLoaded = true;
+    }
+  }
+
   onNavigatorEvent(event) {
     switch(event.id) {
       case 'willAppear':

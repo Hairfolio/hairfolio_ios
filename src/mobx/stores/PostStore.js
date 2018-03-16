@@ -31,6 +31,8 @@ export default class PostStore {
     this.isLoadingNextPage = false;
   }
 
+  //getPosts() is pretended to be implemtend by extending classes
+
   async loadNextPage() {
     if (!this.isLoadingNextPage && this.nextPage != null) {
       this.isLoadingNextPage = true;

@@ -98,5 +98,6 @@ export const registerScreens = ()  => {
   Navigation.registerComponent('hairfolio.EditCustomerAddress', () => EditCustomerAddress);
   Navigation.registerComponent('hairfolio.ChangePassword', () => ChangePassword);
   Navigation.registerComponent('hairfolio.SalonStylists', () => SalonStylists);
+  Navigation.registerComponent('hairfolio.AddBlackBook', () => AddBlackBook);
 };
 

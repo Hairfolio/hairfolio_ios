@@ -11,6 +11,7 @@ import AlbumStore from './AlbumStore';
 import ShareStore from './ShareStore';
 import FeedStore from './FeedStore';
 import UserStore from './UserStore';
+import AddBlackBookStore from './AddBlackBookStore'
 
 var counter = 0;
 const COLORS = ['blue', 'orange', 'red'];
@@ -588,7 +589,6 @@ class CreatePostStore {
   @action async postPost(navigator) {
     try {
       this.isLoading = true;
-
       this.loadingText = 'Uploading pictures ..';
       let data = await this.gallery.toJSON();
 
@@ -601,6 +601,11 @@ class CreatePostStore {
 
       let res = await ServiceBackend.post('/posts', data);
 
+      const contactsDetails = (AddBlackBookStore.selectedItems) ?
+      await Promise.all(AddBlackBookStore.selectedItems
+        .map(contact => ServiceBackend.get(`/contacts/${contact.user.id}`))) :
+        [];
+      debugger;
       window.postRes = res;
 
       if (res.status != 201) {
@@ -615,7 +620,8 @@ class CreatePostStore {
           ServiceBackend.sendPostMessage(UserStore.user.id, user.user, res.post);
         }
 
-        for (let contact of ShareStore.contacts) {
+        for (let contact of contactsDetails) {
+          debugger;
           ServiceBackend.addPostToBlackBook(contact, res.post);
         }
 

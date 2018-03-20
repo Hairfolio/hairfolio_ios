@@ -69,18 +69,14 @@ class ServiceBackend extends Backend {
 
   }
 
-  async addPostToBlackBook(contact, post) {
-
-    let postIds = contact.posts.map(e => e.id);
-    postIds.push(post.id);
-
+  async addPostToBlackBook(user, post) {
+    let postIds = user.contact.posts.map(e => e.id);
     let postData = {
       contact: {
-        post_ids: postIds
+        post_ids: postIds.concat([post.id])
       }
     };
-
-    await this.put(`contacts/${contact.user.id}`, postData);
+    await this.put(`contacts/${user.contact.id}`, postData);
 
   }
 

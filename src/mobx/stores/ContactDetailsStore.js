@@ -13,7 +13,7 @@ class ContactDetailsStore {
   @observable mode = 'view';
 
   @observable isUploadingPicture;
-
+  @observable isLoading;
 
   @observable picture;
   @observable notes = [];
@@ -90,16 +90,19 @@ class ContactDetailsStore {
     this.addressCity = '';
     this.addressCountry = '';
     this.notes = [];
+    this.isLoading = true;
   }
 
 
   async init(contactId) {
+    this.isLoading = true;
     let store = await ServiceBackend.get(`/contacts/${contactId}`);
     let data = store.contact;
     this.id = store.contact.id;
     this.mode = 'view';
 
     let conv = (el) => {
+      this.isLoading = false;
       return el ? el : '';
     }
 
@@ -155,6 +158,7 @@ class ContactDetailsStore {
       let c = new Post();
       return c.init(e);
     }));
+    this.isLoading;
   }
 
   sample() {

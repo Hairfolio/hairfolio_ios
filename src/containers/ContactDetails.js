@@ -8,6 +8,7 @@ import {
   TextInput,
   TouchableHighlight,
   ActivityIndicator,
+  FlatList,
   View, Text, Dimensions, TouchableOpacity, TouchableWithoutFeedback, Image} from 'react-native';
 import {COLORS, FONTS, h, SCALE} from 'Hairfolio/src/style';
 import {observer} from 'mobx-react';
@@ -493,7 +494,6 @@ const NotesInfo = observer(({store, navigator}) => {
     if (!store.hasNotes) {
       return <View />;
     }
-
     return (
       <ContactInfoRow title='Notes' >
         <View
@@ -503,12 +503,11 @@ const NotesInfo = observer(({store, navigator}) => {
             marginTop: h(20)
           }}
         >
-          <ScrollView
+          <FlatList
             horizontal
-          >
-            {store.notes.map((e, index) => <NoteItem key={index} store={e} navigator={navigator} />)}
-          </ScrollView>
-
+            data={store.notes}
+            renderItem={({item, index}) => <NoteItem key={Math.random()} store={item} navigator={navigator} />}
+          />
         </View>
       </ContactInfoRow>
     );
@@ -517,32 +516,44 @@ const NotesInfo = observer(({store, navigator}) => {
   return <View />;
 });
 
-const ContactDetailsContent = observer(({navigator}) => {
-  let store = ContactDetailsStore;
-  return (
-    <View style={{flex: 1}}>
-      <ContactsDetailsHeader store={store} navigator={navigator} />
-      <ScrollView
-        keyboardShouldPersistTaps="always"
-        ref={e => store.scrollView = e}
-      >
-        <GeneralInfo store={store} />
-        <PhoneInfo store={store} />
-        <EmailInfo store={store} />
-        <AddressInfo store={store} />
-        <NotesInfo store={store} navigator={navigator}/>
-      </ScrollView>
-      <KeyboardSpacer />
-    </View>
-  );
+const ContactDetailsContent = observer(({navigator, store}) => {
+
+  if (store.isLoading) {
+    return (
+      <View style={{marginTop: 20}}>
+        <ActivityIndicator size='large' />
+      </View>
+    );
+  } else {
+    return(
+        <ScrollView
+          keyboardShouldPersistTaps="always"
+          ref={e => store.scrollView = e}
+        >
+          <GeneralInfo store={store} />
+          <PhoneInfo store={store} />
+          <EmailInfo store={store} />
+          <AddressInfo store={store} />
+          <NotesInfo store={store} navigator={navigator}/>
+        </ScrollView>
+    );
+  }
 });
 
 @observer
 export default class ContactDetails extends PureComponent {
   render() {
+    let store = ContactDetailsStore;
     return (
       <View style={{flex: 1}}>
-        <ContactDetailsContent navigator={this.props.navigator}/>
+        <ContactsDetailsHeader store={store} navigator={this.props.navigator} />
+        <ScrollView
+          keyboardShouldPersistTaps="always"
+          ref={e => store.scrollView = e}
+        >
+          <ContactDetailsContent navigator={this.props.navigator} store={store}/>
+        </ScrollView>
+        <KeyboardSpacer />
       </View>
     );
   }

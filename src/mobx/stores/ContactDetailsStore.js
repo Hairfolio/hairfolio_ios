@@ -93,9 +93,10 @@ class ContactDetailsStore {
   }
 
 
-  async init(store) {
-    let data = store.data;
-    this.id = store.data.id;
+  async init(contactId) {
+    let store = await ServiceBackend.get(`/contacts/${contactId}`);
+    let data = store.contact;
+    this.id = store.contact.id;
     this.mode = 'view';
 
     let conv = (el) => {
@@ -149,7 +150,6 @@ class ContactDetailsStore {
     this.addressPostCode = conv(data.zipcode);
     this.addressCity = conv(data.city);
     this.addressCountry = conv(data.country);
-
 
     this.notes = await Promise.all(data.posts.map(e => {
       let c = new Post();

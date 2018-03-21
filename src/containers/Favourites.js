@@ -48,7 +48,7 @@ export default class Favourites extends PureComponent {
         renderTabBar={() => <LinkTabBar />}
         initialPage={0}
       >
-        <FavouritesGrid tabLabel="Favorites" navigator={this.props.navigator} />
+        <FavouritesGrid tabLabel="Favourites" navigator={this.props.navigator} />
         <ActivityYou tabLabel='You' navigator={this.props.navigator} />
         <ActivityFollowing tabLabel='Following' navigator={this.props.navigator} />
       </ScrollableTabView>

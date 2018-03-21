@@ -79,7 +79,7 @@ const Cell = observer(({item, showBorder, navigator}) => {
       underlayColor='#ccc'
       onPress={
         () => {
-          ContactDetailsStore.init(item);
+          ContactDetailsStore.init(item.data.id);
           navigator.push({
             screen: 'hairfolio.ContactDetails',
             navigatorStyle: NavigatorStyles.tab,

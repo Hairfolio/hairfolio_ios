@@ -90,7 +90,7 @@ class ContactDetailsStore {
     this.addressCity = '';
     this.addressCountry = '';
     this.notes = [];
-    this.isLoading = true;
+    this.isLoading = false;
   }
 
 

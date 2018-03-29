@@ -21,6 +21,7 @@ class UserStore {
   @persist @observable forgotPasswordState;
   @persist @observable registrationMethod;
   @observable needsMoreInfo = false;
+  @observable sessionHasExpired;
 
   constructor() {
     this.user = {
@@ -40,6 +41,12 @@ class UserStore {
 
   @action setNeedsMoreInfo(value) {
     this.needsMoreInfo = value;
+  }
+
+  @action setHasSessionExpired(value) {
+    this.sessionHasExpired = value;
+    this.user.auth_token = (value) ? null : this.user.auth_token;
+    UserStore
   }
 
   @action loadUser(user) {

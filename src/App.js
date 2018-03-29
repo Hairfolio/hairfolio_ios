@@ -19,6 +19,10 @@ class App {
       () => UserStore.userState,
       () => this.startApplication(),
     );
+    reaction(
+      () => UserStore.sessionHasExpired,
+      (hasExpired) => (hasExpired && this.restartExpiredSessionApplication()),
+    );
     this.startApplication();
   }
 
@@ -84,6 +88,18 @@ class App {
       screen: {
         screen: 'hairfolio.Register',
         navigatorStyle: NavigatorStyles.onboarding,
+      },
+    });
+  }
+
+  restartExpiredSessionApplication = () => {
+    Navigation.startSingleScreenApp({
+      screen: {
+        screen: 'hairfolio.Login',
+        navigatorStyle: NavigatorStyles.onboarding,
+      },
+      passProps: {
+        sessionHasExpired: true,
       },
     });
   }

@@ -61,6 +61,13 @@ export default class Login extends PureComponent {
     );
   }
 
+  componentDidMount() {
+    if(this.props.sessionHasExpired) {
+      alert('Session expired');
+      UserStore.setHasSessionExpired(false);
+    }
+  }
+
   render() {
     return (
       <Image

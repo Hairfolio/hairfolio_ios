@@ -120,10 +120,8 @@ export default class Feed extends PureComponent {
 
   componentDidMount() {
     NewMessageStore.load();
-    if (!FeedStore.isLoading) {
-      FeedStore.load();
-      FeedStore.hasLoaded = true;
-    }
+    FeedStore.load();
+    FeedStore.hasLoaded = true;
   }
 
   onNavigatorEvent(event) {
@@ -135,10 +133,8 @@ export default class Feed extends PureComponent {
         break;
       case 'bottomTabSelected':
         NewMessageStore.load();
-        if (!FeedStore.isLoading) {
-          FeedStore.load();
-          FeedStore.hasLoaded = true;
-        }
+        FeedStore.load();
+        FeedStore.hasLoaded = true;
         break;
       default:
         break;

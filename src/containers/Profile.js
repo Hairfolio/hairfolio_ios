@@ -24,21 +24,20 @@ import {STATUSBAR_HEIGHT, EMPTY, READY, LOADING} from '../constants';
 import BlackBookStore from '../mobx/stores/BlackBookStore';
 import LinkTabBar from '../components/post/LinkTabBar';
 import UserPosts from '../containers/UserPosts';
-// import UserPostsStore from '../mobx/stores/UserPostStore';
-import { storeFactory } from '../mobx/stores/UserPostStoreFactory';
+import { StoreFactory } from '../mobx/stores/UserPostStoreFactory';
 import UserHairfolio from '../containers/UserHairfolio';
 import HairfolioStore from '../mobx/stores/HairfolioStore'
 import UserAbout from '../containers/UserAbout';
 import UserStylists from '../containers/UserStylists';
 import NavigatorStyles from '../common/NavigatorStyles';
 import whiteBack from '../../resources/img/nav_white_back.png';
+import store from '../mobx/stores/PostDetailStore';
 
 @observer
 export default class Profile extends PureComponent {
   constructor(props) {
     super(props);
     if (this.props.userId) {
-      this._fetchProfile();
       this.state = {
         followed: false,
         loading: UsersStore.usersStates.get(this.props.userId) || LOADING,
@@ -54,12 +53,7 @@ export default class Profile extends PureComponent {
   }
 
   componentDidMount() {
-    this.state.user.userId
-    UserPostStoreFactory.ge
-  }
-
-  componentWillUnmount() {
-
+    this._fetchProfile();
   }
 
   onNavigatorEvent(event) {
@@ -77,7 +71,6 @@ export default class Profile extends PureComponent {
   _fetchProfile = () => {
     UsersStore.getUser(this.props.userId)
     .then(() =>{
-      UserPostsStore.load(this.props.userId);
       HairfolioStore.load(this.props.userId);
       this._userStateChanged(UsersStore.usersStates.get(this.props.userId))
     });

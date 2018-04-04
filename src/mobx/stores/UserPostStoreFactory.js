@@ -11,17 +11,32 @@ class UserPostStoreFactory {
   }
 
   @action
-  getUserStore(userId) {
+  initUserStore(userId) {
     const userStore = this.userStores.get(userId);
-    return (userStore) ?
-    userStore :
-    this.userStores.set(userId, {store: new UserPostStore(), activeConsumers: 1});
+    if(userStore) {
+      return userStore;
+    }else{
+      const userStore = {store: new UserPostStore(), activeConsumers: 1};
+      this.userStores.set(userId, userStore);
+      return userStore;
+    }
   }
 
   @action
-  deleteUserStore(userId) {
-    this.userStores.delete(userId);
+  freeUserStore(userId) {
+    const userStore = this.userStores.get(userId);
+    let activeConsumers = userStore.activeConsumers - 1;
+    if(activeConsumers > 0) {
+      this.userStores.set(userId, {store: new UserPostStore(), activeConsumers});
+    }else{
+      this.userStores.delete(userId);
+    }
+  }
+
+  @action
+  load(userId) {
+    this.userStores.get(userId).load(userId);
   }
 }
 
-export const storeFactory = new UserPostStoreFactory();
+export const StoreFactory = new UserPostStoreFactory();

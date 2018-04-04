@@ -14,6 +14,7 @@ class UserPostStoreFactory {
   initUserStore(userId) {
     const userStore = this.userStores.get(userId);
     if(userStore) {
+      this.userStores.set(userId, {...userStore, activeConsumers: userStore.activeConsumers + 1});
       return userStore;
     }else{
       const userStore = {store: new UserPostStore(), activeConsumers: 1};
@@ -27,7 +28,7 @@ class UserPostStoreFactory {
     const userStore = this.userStores.get(userId);
     let activeConsumers = userStore.activeConsumers - 1;
     if(activeConsumers > 0) {
-      this.userStores.set(userId, {store: new UserPostStore(), activeConsumers});
+      this.userStores.set(userId, {...userStore, activeConsumers: userStore.activeConsumers - 1});
     }else{
       this.userStores.delete(userId);
     }

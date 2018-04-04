@@ -10,15 +10,16 @@ const cache = {};
 
 import {PostGridStore} from './PostStore';
 
-class UserPostStore extends PostGridStore {
+export class UserPostStore extends PostGridStore {
+  @observable lastUserId;
+
+  @action setLastUserId(id) {
+    this.lastUserId = id;
+  }
+
   async getPosts(page) {
     let userId = this.initData;
 
     return await ServiceBackend.get(`users/${userId}/posts?page=${this.nextPage}`);
   }
 }
-
-
-const store = new UserPostStore();
-
-export default store;

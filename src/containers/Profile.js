@@ -24,7 +24,8 @@ import {STATUSBAR_HEIGHT, EMPTY, READY, LOADING} from '../constants';
 import BlackBookStore from '../mobx/stores/BlackBookStore';
 import LinkTabBar from '../components/post/LinkTabBar';
 import UserPosts from '../containers/UserPosts';
-import UserPostsStore from '../mobx/stores/UserPostStore';
+// import UserPostsStore from '../mobx/stores/UserPostStore';
+import { storeFactory } from '../mobx/stores/UserPostStoreFactory';
 import UserHairfolio from '../containers/UserHairfolio';
 import HairfolioStore from '../mobx/stores/HairfolioStore'
 import UserAbout from '../containers/UserAbout';
@@ -50,6 +51,15 @@ export default class Profile extends PureComponent {
         user: UserStore.user,
       };
     }
+  }
+
+  componentDidMount() {
+    this.state.user.userId
+    UserPostStoreFactory.ge
+  }
+
+  componentWillUnmount() {
+
   }
 
   onNavigatorEvent(event) {

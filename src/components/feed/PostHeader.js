@@ -35,9 +35,6 @@ const PostHeader = observer(({post, navigator}) => {
             userId: post.creator.id,
           }
         });
-        PostDetailStore.clear();
-        TagPostStore.clear();
-        CommentsStore.clear();
       }}
     >
       <View

@@ -11,11 +11,6 @@ const cache = {};
 import {PostGridStore} from './PostStore';
 
 export class UserPostStore extends PostGridStore {
-  @observable lastUserId;
-
-  @action setLastUserId(id) {
-    this.lastUserId = id;
-  }
 
   async getPosts(page) {
     let userId = this.initData;

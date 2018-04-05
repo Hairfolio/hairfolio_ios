@@ -47,8 +47,8 @@ export default class UserPosts extends PureComponent {
 
   componentWillMount() {
     const userId = this.props.profile.id;
-    const userStoreObj = StoreFactory.initUserStore(userId);
-    userStoreObj.store.load(userId);
+    const userStore = StoreFactory.initUserStore(userId);
+    userStore.load(userId);
   }
 
   componentWillUnmount() {
@@ -56,12 +56,11 @@ export default class UserPosts extends PureComponent {
   }
 
   render() {
-    let userStoreObj = StoreFactory.userStores.get(this.props.profile.id);
-    if (!userStoreObj) {
+    let store = StoreFactory.getUserStore(this.props.profile.id);
+    if (!store) {
       return null;
     }
 
-    let store = userStoreObj.store;
     let content;
 
     if (store.isLoading) {

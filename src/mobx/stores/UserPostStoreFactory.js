@@ -4,22 +4,18 @@ import { UserPostStore } from './UserPostStore';
 
 class UserPostStoreFactory {
 
-  @observable userStores;
-
-  constructor() {
-    this.userStores = observable.map();
-  }
+  @observable userStores = observable.map();
 
   @action
   initUserStore(userId) {
     const userStore = this.userStores.get(userId);
     if(userStore) {
       this.userStores.set(userId, {...userStore, activeConsumers: userStore.activeConsumers + 1});
-      return userStore;
+      return userStore.store;
     }else{
       const userStore = {store: new UserPostStore(), activeConsumers: 1};
       this.userStores.set(userId, userStore);
-      return userStore;
+      return userStore.store;
     }
   }
 
@@ -37,6 +33,11 @@ class UserPostStoreFactory {
   @action
   load(userId) {
     this.userStores.get(userId).load(userId);
+  }
+
+  getUserStore(userId) {
+    let userStoreRef = this.userStores.get(userId);
+    return (userStoreRef) ? userStoreRef.store : null;
   }
 }
 

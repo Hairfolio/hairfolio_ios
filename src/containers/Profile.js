@@ -24,14 +24,12 @@ import {STATUSBAR_HEIGHT, EMPTY, READY, LOADING} from '../constants';
 import BlackBookStore from '../mobx/stores/BlackBookStore';
 import LinkTabBar from '../components/post/LinkTabBar';
 import UserPosts from '../containers/UserPosts';
-import { StoreFactory } from '../mobx/stores/UserPostStoreFactory';
 import UserHairfolio from '../containers/UserHairfolio';
 import HairfolioStore from '../mobx/stores/HairfolioStore'
 import UserAbout from '../containers/UserAbout';
 import UserStylists from '../containers/UserStylists';
 import NavigatorStyles from '../common/NavigatorStyles';
 import whiteBack from '../../resources/img/nav_white_back.png';
-import store from '../mobx/stores/PostDetailStore';
 
 @observer
 export default class Profile extends PureComponent {

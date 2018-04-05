@@ -37,7 +37,7 @@ platform :ios do
     )
     gym(
       project: './ios/Hairfolio.xcodeproj',
-      scheme: "hairfolio",
+      scheme: "Hairfolio",
       clean: true,
       silent: true,
       include_bitcode: false

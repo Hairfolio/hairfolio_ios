@@ -2,7 +2,7 @@ import React from 'react';
 import PureComponent from '../components/PureComponent';
 import {View, ListView, Text} from 'react-native';
 import {COLORS, FONTS, SCALE} from '../style';
-import UserPostStore from '../mobx/stores/UserPostStore';
+import { StoreFactory } from '../mobx/stores/UserPostStoreFactory';
 import GridPost from '../components/favourites/GridPost';
 import {
   _, // lodash
@@ -43,15 +43,23 @@ const MyFooter = observer(({store}) => {
 export default class UserPosts extends PureComponent {
   constructor(props) {
     super(props);
-    let userId = this.props.profile.id;
-    if (window.lastUserId != userId) {
-      window.lastUserId = userId;
-      UserPostStore.load(userId);
-    }
+  }
+
+  componentWillMount() {
+    const userId = this.props.profile.id;
+    const userStore = StoreFactory.initUserStore(userId);
+    userStore.load(userId);
+  }
+
+  componentWillUnmount() {
+    StoreFactory.freeUserStore(this.props.profile.id);
   }
 
   render() {
-    let store = UserPostStore;
+    let store = StoreFactory.getUserStore(this.props.profile.id);
+    if (!store) {
+      return null;
+    }
 
     let content;
 

@@ -86,6 +86,7 @@ const ActionButtons = observer(({post}) => {
 });
 
 const GridPost = observer(({post, navigator}) => {
+  const windowEdge = Math.round(windowWidth / 2);
   return (
     <TouchableWithoutFeedback
       onPress={
@@ -109,7 +110,7 @@ const GridPost = observer(({post, navigator}) => {
             width: windowWidth / 2,
             height: windowWidth / 2
           }}
-          source={post.pictures[0].getSource(Math.round(windowWidth / 2))}
+          source={post.pictures[0].getSource(windowEdge, windowEdge)}
         />
         <ActionButtons post={post} />
       </View>

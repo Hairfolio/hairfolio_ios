@@ -100,7 +100,7 @@ const Cell = observer(({item, showBorder, navigator}) => {
       >
         <Image
           style={{height: h(84), width: h(84), borderRadius: h(42)}}
-          source={item.picture ? item.picture.getSource(84) : null}
+          source={item.picture ? item.picture.getSource(84, 84) : null}
         />
         <Text
           style = {{

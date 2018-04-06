@@ -82,7 +82,7 @@ class MessageContent  extends React.Component {
       } else {
         return (
           <MyImage
-            source={this.props.store.picture.getSource(2 * this.props.maxWidth)}
+            source={this.props.store.picture.getSource(2 * this.props.maxWidth, 2 * this.props.maxWidth)}
             width={this.props.maxWidth}
           />
         );
@@ -122,7 +122,7 @@ class MessageContent  extends React.Component {
           >
             <Image
               style={{height: h(32), width: h(32), borderRadius: h(16)}}
-              source={store.post.creator.profilePicture.getSource(32)}
+              source={store.post.creator.profilePicture.getSource(32, 32)}
             />
 
           <Text
@@ -147,7 +147,7 @@ class MessageContent  extends React.Component {
       </View>
 
       <MyImage
-        source={store.post.currentImage.getSource(2 * this.props.maxWidth)}
+        source={store.post.currentImage.getSource(2 * this.props.maxWidth, 2 * this.props.maxWidth)}
         width={this.props.maxWidth}
       />
 
@@ -195,7 +195,7 @@ const Message = observer(({store}) => {
     userImage = (
       <Image
         style={{height: h(80), width: h(80), borderRadius: h(40), marginRight: h(15)}}
-        source={store.user.profilePicture.getSource(80)}
+        source={store.user.profilePicture.getSource(80, 80)}
       />
     );
   }

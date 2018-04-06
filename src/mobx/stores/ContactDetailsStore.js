@@ -351,7 +351,7 @@ class ContactDetailsStore {
     if (this.picture == null) {
       return require('img/contact_camera.png');
     } else {
-      return this.picture.getSource(120);
+      return this.picture.getSource(120, 120);
     }
   }
 

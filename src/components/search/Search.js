@@ -136,7 +136,7 @@ const TagItem = observer(({store, navigator}) => {
       >
         <Image
           style={{height: h(220), width: h(220)}}
-          source={store.picture.getSource(220)} />
+          source={store.picture.getSource(220, 220)} />
         <Text
           style = {{
             width: h(220 - 2 * 13),

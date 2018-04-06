@@ -48,7 +48,7 @@ const FollowUserRow = observer(({store, navigator}) => {
       >
         <Image
           style={{height: h(80), width: h(80), borderRadius: h(40)}}
-          source={store.profilePicture.getSource(80)}
+          source={store.profilePicture.getSource(80, 80)}
         />
         <View
           style={{

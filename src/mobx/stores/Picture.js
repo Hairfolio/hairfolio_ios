@@ -48,13 +48,13 @@ class Picture {
     });
   }
 
-  getSource(width) {
+  getSource(width, height) {
 
     let uri = this.source.uri;
 
     if (uri && uri.indexOf('cloudinary') > -1) {
       let splitUrl = uri.split('upload');
-      let newUrl = `${splitUrl[0]}upload/w_${width}${splitUrl[1]}`;
+      let newUrl = `${splitUrl[0]}upload/w_${width},h_${height},c_mfit${splitUrl[1]}`;
       return {uri: newUrl};
     }
 

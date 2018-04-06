@@ -47,7 +47,7 @@ class InstantSwiper extends React.Component {
             height: windowWidth,
             width: windowWidth
           }}
-          source={pic.getSource(windowWidth * 2)}
+          source={pic.getSource(windowWidth * 2, windowWidth * 2)}
         />
       );
     }
@@ -92,7 +92,7 @@ class InstantSwiper extends React.Component {
             width: windowWidth
           }}
           resizeMode='cover'
-          source={pic.getSource(windowWidth * 2)}
+          source={pic.getSource(windowWidth * 2, windowWidth * 2)}
         />
       );
     }

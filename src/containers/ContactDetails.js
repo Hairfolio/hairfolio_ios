@@ -480,7 +480,7 @@ const NoteItem = observer(({store, navigator}) => {
     >
       <Image
         style={{height: h(120), width: h(120), marginRight: h(20)}}
-        source={store.pictures[0].getSource(120)}
+        source={store.pictures[0].getSource(120, 120)}
       />
     </TouchableOpacity>
   );

@@ -33,7 +33,7 @@ const MessageRow = observer(({store, navigator}) => {
     pictureElement = (
       <Image
         style={{height: 40, width:40, marginRight: h(15)}}
-        source={store.picture.getSource(40)}
+        source={store.picture.getSource(40, 40)}
       />
     );
   }
@@ -94,7 +94,7 @@ const MessageRow = observer(({store, navigator}) => {
           >
             <Image
               style={{height: h(80), width: h(80), borderRadius: h(40)}}
-              source={store.user.profilePicture.getSource(80)}
+              source={store.user.profilePicture.getSource(80, 80)}
             />
           </View>
           <View

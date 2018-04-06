@@ -58,7 +58,7 @@ const PeopleRow = observer(({store}) => {
           >
             <Image
               style={{height: h(80), width: h(80), borderRadius: h(40)}}
-              source={store.user.profilePicture ? store.user.profilePicture.getSource(80) : null}
+              source={store.user.profilePicture ? store.user.profilePicture.getSource(80, 80) : null}
             />
           </View>
           <View

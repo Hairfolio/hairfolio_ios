@@ -34,7 +34,7 @@ const CommentRow = observer(({store}) => {
       >
         <Image
           style={{height: h(80), width: h(80), borderRadius: h(40)}}
-          source={store.user.profilePicture.getSource(80)}
+          source={store.user.profilePicture.getSource(80, 80)}
         />
       </View>
       <View

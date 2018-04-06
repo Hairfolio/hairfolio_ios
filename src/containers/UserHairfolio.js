@@ -62,7 +62,7 @@ const HairfolioItem = observer(({store, isEditable, navigator}) => {
           width: h(195),
           marginLeft: h(18),
         }}
-        source={store.picture.getSource(195)}
+        source={store.picture.getSource(195, 195)}
       />
     );
   }

@@ -294,7 +294,7 @@ const PhoneInfo = observer(({store}) => {
             }
           }
         >
-          <InfoText value={store.formatNumber(store.phoneMobile)} />
+          <InfoText value={store.phoneMobile} />
         </ContactInfoRow>
       );
     }
@@ -314,7 +314,7 @@ const PhoneInfo = observer(({store}) => {
             }
           }
         >
-          <InfoText value={store.formatNumber(store.phoneHome)} />
+          <InfoText value={store.phoneHome} />
         </ContactInfoRow>
       );
     }
@@ -334,7 +334,7 @@ const PhoneInfo = observer(({store}) => {
             }
           }
         >
-          <InfoText value={store.formatNumber(store.phoneWork)} />
+          <InfoText value={store.phoneWork} />
         </ContactInfoRow>
       );
     }

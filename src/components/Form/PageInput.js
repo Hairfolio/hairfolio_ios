@@ -1,12 +1,11 @@
-import React from 'react';
+import React, { Component } from 'react';
 import _ from 'lodash';
 import {Text, TouchableOpacity} from 'react-native';
-import PureComponent from '../PureComponent';
 import Icon from '../Icon';
 import NavigatorStyles from '../../common/NavigatorStyles';
 import {COLORS, FONTS, SCALE} from '../../style';
 
-export default class FormPageInput extends PureComponent {
+export default class FormPageInput extends React.Component {
   static propTypes = {
     disabled: React.PropTypes.bool,
     page: React.PropTypes.object,

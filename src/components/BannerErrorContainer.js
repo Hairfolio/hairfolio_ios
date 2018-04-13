@@ -1,10 +1,9 @@
-import React from 'react';
+import React, { Component } from 'react';
 import {Animated, View, TouchableOpacity, Text} from 'react-native';
-import PureComponent from './PureComponent';
 
 import {COLORS, FONTS, SCALE} from '../style';
 
-export default class BannerErrorContainer extends PureComponent {
+export default class BannerErrorContainer extends React.Component {
   static propTypes = {
     children: React.PropTypes.node.isRequired
   };

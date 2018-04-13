@@ -24,9 +24,6 @@ export default class SalonInfo extends PureComponent {
 
   constructor(props) {
     super(props);
-    this.props.navigator.setOnNavigatorEvent((e) => {
-      this.onNavigatorEvent(e);
-    });
   }
 
   static navigatorButtons = {

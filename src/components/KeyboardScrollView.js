@@ -1,15 +1,14 @@
-import React from 'react';
+import React, { Component } from 'react';
 import {ScrollView, Keyboard, TextInput, Platform} from 'react-native';
 import {autobind} from 'core-decorators';
 import _ from 'lodash';
 import focusEmitter from './Form/focusEmitter';
-import PureComponent from './PureComponent';
 import EventEmitter from 'EventEmitter';
 
 // handles automatically scrolling to the textInput
 // support multiple instance in multiple views
 
-export default class KeyboardScrollView extends PureComponent {
+export default class KeyboardScrollView extends React.Component {
   static propTypes = {
     onScroll: React.PropTypes.func,
     onLayout: React.PropTypes.func,

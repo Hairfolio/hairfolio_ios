@@ -47,9 +47,6 @@ export default class StylistInfo extends PureComponent {
       <BannerErrorContainer ref="ebc" style={{
         flex: 1
       }}>
-        <View style={{
-          height: SCALE.h(34)
-        }} />
 
         <MultilineTextInput
           max={300}

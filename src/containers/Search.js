@@ -102,6 +102,7 @@ export default class Search extends PureComponent {
   constructor(props) {
     super(props);
     SearchStore.load();
+    this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
   }
 
   onNavigatorEvent(event) {

@@ -1,21 +1,21 @@
-import {observable, computed, action} from 'mobx';
+import {observable, computed, action, toJS} from 'mobx';
 
 import { UserPostStore } from './UserPostStore';
 
 class UserPostStoreFactory {
 
-  @observable userStores = observable.map();
+  userStores = observable.map();
 
   @action
   initUserStore(userId) {
     const userStore = this.userStores.get(userId);
     if(userStore) {
-      this.userStores.set(userId, {...userStore, activeConsumers: userStore.activeConsumers + 1});
+      userStore.activeConsumers += 1;
       return userStore.store;
     }else{
-      const userStore = {store: new UserPostStore(), activeConsumers: 1};
-      this.userStores.set(userId, userStore);
-      return userStore.store;
+      const newUserStore = {store: new UserPostStore(), activeConsumers: 1};
+      this.userStores.set(userId, newUserStore);
+      return newUserStore.store;
     }
   }
 
@@ -24,7 +24,7 @@ class UserPostStoreFactory {
     const userStore = this.userStores.get(userId);
     let activeConsumers = userStore.activeConsumers - 1;
     if(activeConsumers > 0) {
-      this.userStores.set(userId, {...userStore, activeConsumers: userStore.activeConsumers - 1});
+      userStore.activeConsumers -= 1;
     }else{
       this.userStores.delete(userId);
     }
@@ -32,7 +32,7 @@ class UserPostStoreFactory {
 
   @action
   load(userId) {
-    this.userStores.get(userId).load(userId);
+    this.userStores.get(userId).store.load(userId);
   }
 
   getUserStore(userId) {

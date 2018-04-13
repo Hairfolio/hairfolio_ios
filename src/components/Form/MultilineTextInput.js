@@ -44,7 +44,11 @@ export default class FormMultilineTextInput extends PureComponent {
   }
 
   render() {
-    return (<View style={{position: 'relative'}}>
+    return (
+    <View style={{
+      position: 'relative',
+      height: SCALE.h(200),
+    }}>
       <TextInput
         editable={!this.props.blocked}
         {...this.props}

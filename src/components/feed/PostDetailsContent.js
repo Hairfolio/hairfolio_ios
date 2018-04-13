@@ -36,16 +36,19 @@ const PostDetailsContent = observer(({navigator}) => {
     <ScrollView
       ref={el => {store.scrollView = el}}
       scrollEventThrottle={16}
-      onScroll={(e) => {
+      onScroll={async (e) => {
         const offset = e.nativeEvent.contentOffset.y;
-        if (offset > 0) {
-          navigator.toggleTabs({
-            to: 'shown',
-          });
-        } else {
-          navigator.toggleTabs({
-            to: 'hidden',
-          });
+        const isVisible = await navigator.screenIsCurrentlyVisible()
+        if(isVisible) {
+          if (offset > 0) {
+            navigator.toggleTabs({
+              to: 'shown',
+            });
+          } else {
+            navigator.toggleTabs({
+              to: 'hidden',
+            });
+          }
         }
       }}
     >

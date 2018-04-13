@@ -80,9 +80,6 @@ export default class SalonInfo extends PureComponent {
           space={200}
           style={{flex: 1}}
         >
-          <View style={{
-            height: SCALE.h(34)
-          }} />
 
           <MultilineTextInput
             autoCapitalize="none"

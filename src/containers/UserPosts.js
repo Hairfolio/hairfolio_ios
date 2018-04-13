@@ -40,19 +40,9 @@ const MyFooter = observer(({store}) => {
 
 @autobind
 @observer
-export default class UserPosts extends PureComponent {
+export default class UserPosts extends React.Component {
   constructor(props) {
     super(props);
-  }
-
-  componentWillMount() {
-    const userId = this.props.profile.id;
-    const userStore = StoreFactory.initUserStore(userId);
-    userStore.load(userId);
-  }
-
-  componentWillUnmount() {
-    StoreFactory.freeUserStore(this.props.profile.id);
   }
 
   render() {

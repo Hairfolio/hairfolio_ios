@@ -1,11 +1,10 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { View, Text } from 'react-native';
-import PureComponent from './PureComponent';
 import Spinner from 'react-native-spinkit';
 import { COLORS, SCALE } from '../style';
 import utils from '../utils';
 
-export default class LoadingContainer extends PureComponent {
+export default class LoadingContainer extends React.Component {
 
   static propTypes = {
     children: React.PropTypes.func,

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import {Animated, Image} from 'react-native';
 import PureComponent from './PureComponent';
 import fontelloConfig from '../../fontello.json';
@@ -6,7 +6,7 @@ import {createIconSetFromFontello} from 'react-native-vector-icons';
 
 var Icon = createIconSetFromFontello(fontelloConfig, 'hairfolio', 'hairfolio.ttf');
 
-export default class WrappedIcon extends PureComponent {
+export default class WrappedIcon extends React.Component {
   setNativeProps(props) {
     this.refs.icon.setNativeProps(props);
   }

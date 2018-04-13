@@ -30,6 +30,18 @@ export default class PostDetails extends PureComponent {
     StatusBar.setBarStyle('light-content');
   }
 
+  onNavigatorEvent(event) {
+    switch(event.id) {
+      case 'willDisappear':
+        this.props.navigator.toggleTabs({
+          to: 'shown',
+        });
+        break;
+      default:
+        break;
+    }
+  }
+
   render() {
     return (
       <View style={{

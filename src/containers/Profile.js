@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import _ from 'lodash';
 import {BlurView} from 'react-native-blur';
 import {View, Text, Image, TouchableOpacity, ScrollView, StatusBar} from 'react-native';
@@ -26,13 +26,14 @@ import LinkTabBar from '../components/post/LinkTabBar';
 import UserPosts from '../containers/UserPosts';
 import UserHairfolio from '../containers/UserHairfolio';
 import HairfolioStore from '../mobx/stores/HairfolioStore'
+import { StoreFactory } from '../mobx/stores/UserPostStoreFactory'
 import UserAbout from '../containers/UserAbout';
 import UserStylists from '../containers/UserStylists';
 import NavigatorStyles from '../common/NavigatorStyles';
 import whiteBack from '../../resources/img/nav_white_back.png';
 
 @observer
-export default class Profile extends PureComponent {
+export default class Profile extends React.Component {
   constructor(props) {
     super(props);
     if (this.props.userId) {
@@ -48,15 +49,30 @@ export default class Profile extends PureComponent {
         user: UserStore.user,
       };
     }
+    this.userId = this.props.userId || this.state.user.id;
+    this.unsuscribeNavEvent = this.props.navigator.addOnNavigatorEvent(this.onNavigatorEvent.bind(this));
   }
 
-  componentDidMount() {
+  componentWillMount() {
+    StoreFactory.initUserStore(this.userId);
     this._fetchProfile();
+    this._fetchUserPosts();
+    this._fetchUserHairfolios();
+    this.props.navigator.toggleTabs({
+      to: 'shown',
+    });
+  }
+
+  componentWillUnmount() {
+    StoreFactory.freeUserStore(this.userId);
+    this.unsuscribeNavEvent();
   }
 
   onNavigatorEvent(event) {
     switch(event.id) {
-      case 'willAppear':
+      case 'bottomTabSelected':
+        this._fetchUserPosts();
+        this._fetchUserHairfolios();
         this.props.navigator.toggleTabs({
           to: 'shown',
         });
@@ -67,17 +83,24 @@ export default class Profile extends PureComponent {
   }
 
   _fetchProfile = () => {
-    UsersStore.getUser(this.props.userId)
+    UsersStore.getUser(this.userId)
     .then(() =>{
-      HairfolioStore.load(this.props.userId);
-      this._userStateChanged(UsersStore.usersStates.get(this.props.userId))
+      HairfolioStore.load(this.userId);
+      this._userStateChanged(UsersStore.usersStates.get(this.userId))
     });
+  }
 
+  _fetchUserPosts = () => {
+    StoreFactory.load(this.userId);
+  }
+
+  _fetchUserHairfolios = () => {
+    HairfolioStore.load(this.userId);
   }
 
   _userStateChanged = (newState) => {
     if (newState === READY) {
-      const user = UsersStore.users.get(this.props.userId);
+      const user = UsersStore.users.get(this.userId);
       this.setState({
         followed: user.is_followed_by_me,
         loading: READY,
@@ -512,7 +535,7 @@ export default class Profile extends PureComponent {
               {this._tabsForAccountType()}
             </WrappingScrollView>
             {this._renderBackButton()}
-            {this.state.user === UserStore.user ? <View ref="settings" style={{
+            {this.userId === toJS(UserStore.user).id ? <View ref="settings" style={{
               position: 'absolute',
               top: STATUSBAR_HEIGHT + 5,
               right: 10
@@ -533,7 +556,7 @@ export default class Profile extends PureComponent {
                 />
               </TouchableOpacity>
             </View> : null}
-            {this.state.user.id === toJS(UserStore.user).id ?
+            {this.userId === toJS(UserStore.user).id ?
                 <View
                   style = {{
                     position: 'absolute',

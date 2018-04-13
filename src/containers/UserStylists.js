@@ -1,5 +1,4 @@
-import React from 'react';
-import PureComponent from '../components/PureComponent';
+import React, { Component } from 'react';
 import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import {COLORS, FONTS, SCALE} from '../style';
 import UserStore from '../mobx/stores/UserStore';
@@ -9,7 +8,7 @@ import FollowButton from '../components/Buttons/Follow';
 import utils from '../utils';
 import NavigatorStyles from '../common/NavigatorStyles';
 
-export default class UserStylist extends PureComponent {
+export default class UserStylist extends React.Component {
   static propTypes = {
     profile: React.PropTypes.object.isRequired,
   };

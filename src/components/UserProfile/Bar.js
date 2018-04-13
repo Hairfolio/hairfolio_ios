@@ -1,11 +1,10 @@
-import React from 'react';
+import React, { Component } from 'react';
 import _ from 'lodash';
 import {View, TouchableWithoutFeedback, Text} from 'react-native';
-import PureComponent from '../PureComponent';
 import {USERPROFILEBAR_HEIGHT} from '../../constants';
 import {COLORS, FONTS, SCALE} from '../../style';
 
-export default class UserProfileBar extends PureComponent {
+export default class UserProfileBar extends React.Component {
 
   static propTypes = {
     color: React.PropTypes.string.isRequired,

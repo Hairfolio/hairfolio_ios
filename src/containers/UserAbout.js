@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import _ from 'lodash';
 import { observer } from 'mobx-react';
 import { toJS } from 'mobx';
@@ -15,7 +15,7 @@ import Icon from '../components/Icon';
 import NavigatorStyles from '../common/NavigatorStyles';
 
 @observer
-export default class UserAbout extends PureComponent {
+export default class UserAbout extends React.Component {
   static propTypes = {
     profile: React.PropTypes.object.isRequired,
   };

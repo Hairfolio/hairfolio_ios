@@ -605,7 +605,6 @@ class CreatePostStore {
       await Promise.all(AddBlackBookStore.selectedItems
         .map(contact => ServiceBackend.get(`/contacts/${contact.user.id}`))) :
         [];
-      debugger;
       window.postRes = res;
 
       if (res.status != 201) {
@@ -621,7 +620,6 @@ class CreatePostStore {
         }
 
         for (let contact of contactsDetails) {
-          debugger;
           ServiceBackend.addPostToBlackBook(contact, res.post);
         }
 

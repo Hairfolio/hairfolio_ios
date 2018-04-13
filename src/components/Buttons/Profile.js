@@ -1,6 +1,6 @@
 'use strict';
 
-import React, {PropTypes} from 'React';
+import React, { PropTypes, Component } from 'React';
 import {
   Text,
   TouchableOpacity,
@@ -10,7 +10,7 @@ import {COLORS, FONTS, SCALE} from '../../style';
 import PureComponent from '../PureComponent';
 import Icon from '../Icon';
 
-export default class ProfileButton extends PureComponent {
+export default class ProfileButton extends React.Component {
   static propTypes = {
     color: PropTypes.string,
     disabled: PropTypes.bool,

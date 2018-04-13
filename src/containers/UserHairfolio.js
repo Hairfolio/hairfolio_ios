@@ -1,5 +1,4 @@
-import React from 'react';
-import PureComponent from '../components/PureComponent';
+import React, { Component } from 'react';
 import {View, Text, TouchableHighlight} from 'react-native';
 import {COLORS, FONTS, SCALE} from '../style';
 import {
@@ -195,7 +194,7 @@ const HairfolioList = observer(({navigator}) => {
   }
 });
 
-export default class UserHairfolio extends PureComponent {
+export default class UserHairfolio extends React.Component {
   constructor(props) {
     super(props);
     HairfolioStore.load(this.props.profile.id);

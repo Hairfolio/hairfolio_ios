@@ -288,6 +288,10 @@ class UserStore {
     this.user.offerings = offerings;
   }
 
+  loadUserEducations = async () => {
+    this.user.educations = await this.getUserEducations();
+  }
+
   @action  async loginWithFacebook(token) {
     this.userState = LOADING;
     try {

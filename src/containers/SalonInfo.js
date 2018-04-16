@@ -1,8 +1,7 @@
-import React from 'react';
+import React, { Component } from 'react';
 import _ from 'lodash';
 import validator from 'validator';
 import {mixin} from 'core-decorators';
-import PureComponent from '../components/PureComponent';
 import {View, Text, StyleSheet} from 'react-native';
 import {COLORS, FONTS, SCALE} from '../style';
 import { observer } from 'mobx-react';
@@ -19,7 +18,7 @@ import UserStore from '../mobx/stores/UserStore';
 
 @observer
 @mixin(formMixin)
-export default class SalonInfo extends PureComponent {
+export default class SalonInfo extends React.Component {
   state = {};
 
   constructor(props) {
@@ -160,7 +159,7 @@ export default class SalonInfo extends PureComponent {
           <View style={{height: StyleSheet.hairlineWidth}} />
 
           <PageInput
-            page={'hairfolio.SalonProductExperience'}
+            page={'hairfolio.StylistProductExperience'}
             navigator={this.props.navigator}
             title={'Education'}
             placeholder="Products"

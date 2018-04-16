@@ -1,6 +1,5 @@
-import React from 'react';
+import React, { Component } from 'react';
 import _ from 'lodash';
-import PureComponent from '../components/PureComponent';
 import { View, StyleSheet } from 'react-native';
 import validator from 'validator';
 import { COLORS, FONTS, SCALE } from '../style';
@@ -22,7 +21,7 @@ import formMixin from '../mixins/form';
 
 @observer
 @mixin(formMixin)
-export default class StylistAddEducation extends PureComponent {
+export default class StylistAddEducation extends React.Component {
   state = {
     editing: false
   };
@@ -120,7 +119,7 @@ export default class StylistAddEducation extends PureComponent {
     this.setState({'submitting': true});
 
     var action = this.state.editing === false ?
-      EducationStore.addEducation(this.getFormValue().education) :
+      EducationStore.addEducation(this.getFormValue()) :
       EducationStore.editEducation(this.state.editing.id, this.getFormValue().education);
     action
       .then((r) => {

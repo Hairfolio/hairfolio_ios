@@ -23,7 +23,7 @@ export default class StylistCertificates extends React.Component {
     this.tempCerts = EnvironmentStore.certificates;
     this.tempUser = toJS(UserStore.user);
     this.state = {
-      selectedIds: UserStore.user.certificates.map(cert => cert.id),
+      selectedIds: toJS(UserStore.user.certificates.map(cert => cert.id)),
     }
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
   }
@@ -56,10 +56,6 @@ export default class StylistCertificates extends React.Component {
       if (event.id == 'done') {
         const formData = { certificate_ids: this.state.selectedIds };
         UserStore.editUser(formData, UserStore.user.account_type)
-        // .then((r) => {
-        //   // this.setState({submitting: false});
-        //   return r;
-        // })
         .catch((e) => {
           this.refs.ebc.error(e);
         });
@@ -93,7 +89,7 @@ export default class StylistCertificates extends React.Component {
     let certificates = new OrderedMap(
       EnvironmentStore.certificates.map(certificate => [certificate.id, new Map(certificate)])
     );
-    certificates = certificates._list._tail.array.foreach(certArrMap => {
+    certificates._list._tail.array.forEach(certArrMap => {
       const certificateId = certArrMap[1]._root.entries.filter(prop => prop[0] === 'id')[0][1];
       if (this.state.selectedIds.find(currUsrCertId =>  currUsrCertId === certificateId)) {
         certArrMap[1]._root.entries[3] = ['selected', true];
@@ -107,10 +103,8 @@ export default class StylistCertificates extends React.Component {
     this.setState({
       selectedIds: selectedIds,
     });
-    console.log(this.state);
   }
 
-  // TODO
   render() {
     let certificates = this.genUserCertificates();
 

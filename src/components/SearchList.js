@@ -14,10 +14,14 @@ export default class SearchList extends React.Component {
     placeholder: React.PropTypes.string.isRequired
   };
 
-  state = {
-    search: '',
-    selected: []
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      items: [],
+      search: '',
+      selected: [],
+    };
+  }
 
   componentWillMount() {
     this.setItems(this.props.items);
@@ -29,10 +33,12 @@ export default class SearchList extends React.Component {
 
   setItems(items) {
     this.setState({items});
-    this.props.updateSelectedIds(
-      items.filter(item => item.get('selected'))
-      .map(item => item.get('id'))
-      .toArray());
+    if(this.props.updateSelectedIds) {
+      this.props.updateSelectedIds(
+        items.filter(item => item.get('selected'))
+        .map(item => item.get('id'))
+        .toArray());
+    }
   }
 
   clear() {
@@ -101,7 +107,10 @@ export default class SearchList extends React.Component {
   }
 
   render() {
-    var items = this.state.items.filter(item => !item.get('isFilteredOut'));
+    var items = this.state.items.filter((item) => {
+      return !item.get('isFilteredOut')
+    });
+
 
     return (<View
       {...this.props}

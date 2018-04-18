@@ -107,19 +107,17 @@ class EnvironmentStore {
       });
   }
 
-  @action getExperiences = (pageNumber) => {
+  @action getExperiences = async (pageNumber) => {
     this.experiencesState = LOADING;
-    return ServiceBackend.get(`/experiences?page=${pageNumber || 1}`)
-      .then(response => {
-        this.experiences.concat(response.experiences);
-        this.experiencesNextPage = response.meta.next_page;
-        this.experiencesState = READY;
-      })
-      .catch(error => {
-        this.experiencesState = LOADING_ERROR;
-      })
+    try {
+      const response = await ServiceBackend.get(`/experiences?page=${pageNumber || 1}`);
+      this.experiences = this.experiences.concat(response.experiences);
+      this.experiencesNextPage = response.meta.next_page;
+      this.experiencesState = READY;
+    } catch (error) {
+      this.experiencesState = LOADING_ERROR;
+    }
   }
-
 }
 
 const store = new EnvironmentStore();

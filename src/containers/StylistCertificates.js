@@ -85,20 +85,6 @@ export default class StylistCertificates extends React.Component {
       this._searchList.clear();
   }
 
-  genUserCertificates = () => {
-    let certificates = new OrderedMap(
-      EnvironmentStore.certificates.map(certificate => [certificate.id, new Map(certificate)])
-    );
-    certificates._list._tail.array.forEach(certArrMap => {
-      const certificateId = certArrMap[1]._root.entries.filter(prop => prop[0] === 'id')[0][1];
-      if (this.state.selectedIds.find(currUsrCertId =>  currUsrCertId === certificateId)) {
-        certArrMap[1]._root.entries[3] = ['selected', true];
-      }
-      return certArrMap;
-    });
-    return certificates;
-  }
-
   updateCertificates = (selectedIds) => {
     this.setState({
       selectedIds: selectedIds,
@@ -106,7 +92,14 @@ export default class StylistCertificates extends React.Component {
   }
 
   render() {
-    let certificates = this.genUserCertificates();
+    let certificates = new OrderedMap(
+      EnvironmentStore.certificates.map((certificate) => {
+        if (this.state.selectedIds.find(currUsrCertId =>  currUsrCertId === certificate.id)) {
+          certificate.selected = true;
+        }
+        return [certificate.id, new Map(certificate)];
+      })
+    );
 
     const loadingState = [EnvironmentStore.certificatesState];
     return (

@@ -3,7 +3,7 @@ import _ from 'lodash';
 import validator from 'validator';
 import {mixin, debounce} from 'core-decorators';
 import { observer } from 'mobx-react';
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity, ActivityIndicator, Dimensions} from 'react-native';
 import {COLORS, FONTS, SCALE} from '../style';
 import MultilineTextInput from '../components/Form/MultilineTextInput';
 import InlineTextInput from '../components/Form/InlineTextInput';
@@ -27,10 +27,13 @@ export default class StylistPlaceOfWork extends React.Component {
     super(props);
     this.state = {
       autocompleteState: READY,
+      isLoading: false,
     };
-    const temp = UserStore.user;
-    debugger;
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+  }
+
+  componentDidMount() {
+    this.loadForm();
   }
 
   static navigatorButtons = {
@@ -59,11 +62,13 @@ export default class StylistPlaceOfWork extends React.Component {
         })
       }
       if (event.id == 'done') {
-        const formData = { experience_ids: this.state.selectedIds };
-        UserStore.editUser(formData, UserStore.user.account_type)
-        .catch((e) => {
-          this.refs.ebc.error(e);
-        });
+        if (this.state.selected) {
+          const formData = { salon_id: this.state.selected };
+          UserStore.editUser(formData, UserStore.user.account_type)
+          .catch((e) => {
+            this.refs.ebc.error(e);
+          });
+        }
         this.props.navigator.pop({
           animated: true,
           animationStyle: 'fade',
@@ -113,12 +118,50 @@ export default class StylistPlaceOfWork extends React.Component {
       });
   }
 
+  loadForm = () => {
+    this.setState({isLoading: true});
+    ServiceBackend.get(`users/${UserStore.user.id}`)
+    .then((response) => {
+      let user = response.user;
+      this.setFormValue({
+        name: user.salon.name,
+        'salon_user_id': user.salon.id,
+        address: user.salon.address,
+        city: user.salon.city,
+        state: user.salon.state,
+        zip: user.salon.zip,
+        website: user.salon.website,
+        phone: user.salon.phone,
+      });
+      this.setState({isLoading: false});
+    }).catch((e) => {
+      this.refs.ebc.error(e);
+      this.setState({isLoading: false});
+    });
+  }
+
+  renderLoadingScreen = () => {
+    let {windowHeight, windowWidth} = Dimensions.get('window');
+    return (
+      <View style={{
+        height: windowHeight,
+        width: windowWidth,
+        marginTop: 20,
+        backgroundColor: COLORS.WHITE,
+        zIndex: 1,
+      }}>
+        <ActivityIndicator size='large' />
+      </View>
+    );
+  }
+
   render() {
     return (
       <BannerErrorContainer ref="ebc" style={{
         flex: 1,
         backgroundColor: COLORS.LIGHT,
       }}>
+        {!this.state.isLoading || this.renderLoadingScreen()}
         <KeyboardScrollView
           scrollEnabled={false}
           scrollToTopOnBlur

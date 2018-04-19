@@ -1,24 +1,27 @@
-import React from 'react';
+import React, { Component } from 'react';
 import _ from 'lodash';
 import {debounce} from 'core-decorators';
 import {View, Text, TextInput, StyleSheet, TouchableOpacity} from 'react-native';
-import PureComponent from './PureComponent';
 import Icon from './Icon';
 import SafeList from './SafeList';
 
 import {COLORS, FONTS, SCALE} from '../style';
 
-export default class SearchList extends PureComponent {
+export default class SearchList extends React.Component {
   static propTypes = {
     items: React.PropTypes.object.isRequired,
     onChange: React.PropTypes.func,
     placeholder: React.PropTypes.string.isRequired
   };
 
-  state = {
-    search: '',
-    selected: []
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      items: [],
+      search: '',
+      selected: [],
+    };
+  }
 
   componentWillMount() {
     this.setItems(this.props.items);
@@ -30,6 +33,12 @@ export default class SearchList extends PureComponent {
 
   setItems(items) {
     this.setState({items});
+    if(this.props.updateSelectedIds) {
+      this.props.updateSelectedIds(
+        items.filter(item => item.get('selected'))
+        .map(item => item.get('id'))
+        .toArray());
+    }
   }
 
   clear() {
@@ -98,7 +107,10 @@ export default class SearchList extends PureComponent {
   }
 
   render() {
-    var items = this.state.items.filter(item => !item.get('isFilteredOut'));
+    var items = this.state.items.filter((item) => {
+      return !item.get('isFilteredOut')
+    });
+
 
     return (<View
       {...this.props}

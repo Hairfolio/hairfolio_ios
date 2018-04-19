@@ -1,9 +1,8 @@
-import React from 'react';
+import React, { Component } from 'react';
 import _ from 'lodash';
 import validator from 'validator';
 import { observer } from 'mobx-react';
 import {mixin} from 'core-decorators';
-import PureComponent from '../components/PureComponent';
 import {View, Text, StyleSheet} from 'react-native';
 import {COLORS, FONTS, SCALE} from '../style';
 import MultilineTextInput from '../components/Form/MultilineTextInput';
@@ -16,7 +15,7 @@ import App from '../App';
 
 @observer
 @mixin(formMixin)
-export default class StylistInfo extends PureComponent {
+export default class StylistInfo extends React.Component {
   state = {};
 
   constructor(props) {

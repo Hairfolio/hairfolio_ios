@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import {View, TextInput, Text} from 'react-native';
 import PureComponent from '../PureComponent';
 
@@ -8,7 +8,7 @@ import focusEmitter from './focusEmitter';
 
 // no animation here !
 
-export default class FormInlineTextInput extends PureComponent {
+export default class FormInlineTextInput extends React.Component {
 
   static propTypes = {
     blocked: React.PropTypes.bool,

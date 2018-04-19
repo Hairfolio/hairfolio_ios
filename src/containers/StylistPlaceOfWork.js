@@ -1,10 +1,9 @@
-import React from 'react';
+import React, { Component } from 'react';
 import _ from 'lodash';
 import validator from 'validator';
 import {mixin, debounce} from 'core-decorators';
 import { observer } from 'mobx-react';
-import PureComponent from '../components/PureComponent';
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity, ActivityIndicator, Dimensions} from 'react-native';
 import {COLORS, FONTS, SCALE} from '../style';
 import MultilineTextInput from '../components/Form/MultilineTextInput';
 import InlineTextInput from '../components/Form/InlineTextInput';
@@ -15,17 +14,27 @@ import KeyboardScrollView from '../components/KeyboardScrollView';
 import LoadingContainer from '../components/LoadingContainer';
 import states from '../states.json';
 import formMixin from '../mixins/form';
+import UserStore from '../mobx/stores/UserStore';
 import {LOADING, READY, LOADING_ERROR} from '../constants';
 import whiteBack from '../../resources/img/nav_white_back.png';
 import ServiceBackend from '../backend/ServiceBackend'
 
 @observer
 @mixin(formMixin)
-export default class StylistPlaceOfWork extends PureComponent {
-  state = {
-    blocked: false,
-    autocompleteState: READY
-  };
+export default class StylistPlaceOfWork extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      autocompleteState: READY,
+      isLoading: false,
+    };
+    this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+  }
+
+  componentDidMount() {
+    this.loadForm();
+  }
 
   static navigatorButtons = {
     leftButtons: [
@@ -34,6 +43,38 @@ export default class StylistPlaceOfWork extends PureComponent {
         icon: whiteBack,
       }
     ],
+    rightButtons: [
+      {
+        id: 'done',
+        title: 'Done',
+        buttonFontSize: SCALE.h(30),
+        buttonColor: COLORS.WHITE,
+      }
+    ],
+  }
+
+  onNavigatorEvent(event) {
+    if (event.type == 'NavBarButtonPress') {
+      if (event.id == 'back') {
+        this.props.navigator.pop({
+          animated: true,
+          animationStyle: 'fade',
+        })
+      }
+      if (event.id == 'done') {
+        if (this.state.selected) {
+          const formData = { salon_id: this.state.selected };
+          UserStore.editUser(formData, UserStore.user.account_type)
+          .catch((e) => {
+            this.refs.ebc.error(e);
+          });
+        }
+        this.props.navigator.pop({
+          animated: true,
+          animationStyle: 'fade',
+        })
+      }
+    }
   }
 
   getValue() {
@@ -77,12 +118,50 @@ export default class StylistPlaceOfWork extends PureComponent {
       });
   }
 
+  loadForm = () => {
+    this.setState({isLoading: true});
+    ServiceBackend.get(`users/${UserStore.user.id}`)
+    .then((response) => {
+      let user = response.user;
+      this.setFormValue({
+        name: user.salon.name,
+        'salon_user_id': user.salon.id,
+        address: user.salon.address,
+        city: user.salon.city,
+        state: user.salon.state,
+        zip: user.salon.zip,
+        website: user.salon.website,
+        phone: user.salon.phone,
+      });
+      this.setState({isLoading: false});
+    }).catch((e) => {
+      this.refs.ebc.error(e);
+      this.setState({isLoading: false});
+    });
+  }
+
+  renderLoadingScreen = () => {
+    let {windowHeight, windowWidth} = Dimensions.get('window');
+    return (
+      <View style={{
+        height: windowHeight,
+        width: windowWidth,
+        marginTop: 20,
+        backgroundColor: COLORS.WHITE,
+        zIndex: 1,
+      }}>
+        <ActivityIndicator size='large' />
+      </View>
+    );
+  }
+
   render() {
     return (
       <BannerErrorContainer ref="ebc" style={{
         flex: 1,
         backgroundColor: COLORS.LIGHT,
       }}>
+        {!this.state.isLoading || this.renderLoadingScreen()}
         <KeyboardScrollView
           scrollEnabled={false}
           scrollToTopOnBlur
@@ -113,7 +192,7 @@ export default class StylistPlaceOfWork extends PureComponent {
                   website: '',
                   phone: ''
                 });
-              this.setState({blocked: false, selected: null});
+              this.setState({selected: null});
             }}
             placeholder="Salon name"
             ref={(r) => this.addFormItem(r, 'name')}
@@ -180,7 +259,6 @@ export default class StylistPlaceOfWork extends PureComponent {
           <MultilineTextInput
             autoCapitalize="none"
             autoCorrect={false}
-            blocked={!!this.state.selected}
             placeholder="Address"
             ref={(r) => this.addFormItem(r, 'address')}
             validation={(v) => !!v}
@@ -190,7 +268,6 @@ export default class StylistPlaceOfWork extends PureComponent {
 
           <InlineTextInput
             autoCorrect={false}
-            blocked={!!this.state.selected}
             placeholder="City"
             ref={(r) => this.addFormItem(r, 'city')}
             validation={(v) => !!v}
@@ -203,7 +280,6 @@ export default class StylistPlaceOfWork extends PureComponent {
             <View style={{flex: 1}}>
               <PickerInput
                 choices={states}
-                blocked={!!this.state.selected}
                 placeholder="State"
                 ref={(r) => this.addFormItem(r, 'state')}
                 validation={(v) => !!v}
@@ -214,7 +290,6 @@ export default class StylistPlaceOfWork extends PureComponent {
             <View style={{flex: 1}}>
               <InlineTextInput
                 autoCorrect={false}
-                blocked={!!this.state.selected}
                 placeholder="Zip"
                 ref={(r) => this.addFormItem(r, 'zip')}
                 validation={(v) => !!v}
@@ -226,7 +301,6 @@ export default class StylistPlaceOfWork extends PureComponent {
 
           <InlineTextInput
             autoCorrect={false}
-            blocked={!!this.state.selected}
             keyboardType="numeric"
             placeholder="Phone Number"
             ref={(r) => this.addFormItem(r, 'phone')}
@@ -237,7 +311,6 @@ export default class StylistPlaceOfWork extends PureComponent {
 
           <InlineTextInput
             autoCorrect={false}
-            blocked={!!this.state.selected}
             keyboardType="url"
             placeholder="Website"
             ref={(r) => this.addFormItem(r, 'website')}

@@ -42,6 +42,9 @@ export default class StylistEducation extends PureComponent {
   };
 
   onNavigatorEvent(event) {
+    if (event.id == 'willAppear') {
+      UserStore.loadUserEducations();
+    }
     if (event.type == 'NavBarButtonPress') {
       if (event.id == 'back') {
         this.props.navigator.pop({
@@ -102,7 +105,7 @@ export default class StylistEducation extends PureComponent {
   }
 
   renderContent() {
-    const user = toJS(UserStore.user);
+    const user = UserStore.user;
     var educations = new OrderedMap(user.educations.map(education => [education.id, education]));
 
     window.user = user;

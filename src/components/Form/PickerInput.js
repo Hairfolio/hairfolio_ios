@@ -1,6 +1,6 @@
 'use strict';
 import _ from 'lodash';
-import React, {PropTypes} from 'React';
+import React, { PropTypes, Component } from 'React';
 import {
   Text,
   TouchableOpacity,
@@ -9,7 +9,6 @@ import {
   PickerIOS
 } from 'react-native';
 import {COLORS, FONTS, SCALE} from '../../style';
-import PureComponent from '../PureComponent';
 import Icon from '../Icon';
 import dismissKeyboard from 'react-native/Libraries/Utilities/dismissKeyboard';
 
@@ -17,7 +16,7 @@ import {
   windowWidth,
 } from 'Hairfolio/src/helpers';
 
-export default class Picker extends PureComponent {
+export default class Picker extends React.Component {
   static propTypes = {
     blocked: PropTypes.bool,
     choices: PropTypes.array.isRequired,

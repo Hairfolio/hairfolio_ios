@@ -1,12 +1,11 @@
-import React from 'react';
+import React, { Component } from 'react';
 import {ListView} from 'react-native';
 import _ from 'lodash';
-import PureComponent from './PureComponent';
 
 // list with a workaround for bad rerenders and white renders
 // when jumping between views
 
-export default class SafeList extends PureComponent {
+export default class SafeList extends React.Component {
   static propTypes = {
     contentOffset: React.PropTypes.object,
     dataSource: React.PropTypes.object.isRequired,

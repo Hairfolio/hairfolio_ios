@@ -16,7 +16,7 @@ import profile from 'img/profile_placeholder.png';
 class App {
   constructor() {
     reaction(
-      () => UserStore.userState,
+      () => UserStore.user.auth_token,
       () => this.startApplication(),
     );
     reaction(

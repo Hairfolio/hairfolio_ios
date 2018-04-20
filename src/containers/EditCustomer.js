@@ -159,7 +159,7 @@ export default class EditCustomer extends PureComponent {
         ref={(r) => {
           this.addFormItem(r, 'business_info');
           if (r) {
-            r.setValue(UserStore.user.business_info);
+            r.setValue(UserStore.user.business_info || UserStore.user.description);
           }
         }}
         validation={(v) => !v || validator.isLength(v, {max: 300})}
@@ -272,7 +272,7 @@ export default class EditCustomer extends PureComponent {
         ref={(r) => {
           this.addFormItem(r, 'business_info');
           if (r) {
-            r.setValue(UserStore.user.business_info);
+            r.setValue(UserStore.user.business_info || UserStore.user.description);
           }
         }}
         validation={(v) => !v || validator.isLength(v, {max: 300})}
@@ -336,7 +336,7 @@ export default class EditCustomer extends PureComponent {
         ref={(r) => {
           this.addFormItem(r, 'business_info');
           if (r) {
-            r.setValue(UserStore.user.business_info);
+            r.setValue(UserStore.user.business_info || UserStore.user.description);
           }
         }}
         validation={(v) => !v || validator.isLength(v, {max: 300})}

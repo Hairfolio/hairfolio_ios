@@ -35,6 +35,7 @@ export default class EditCustomer extends PureComponent {
 
   componentDidMount() {
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+    // console.log(JSON.stringify(UserStore.user))
   }
 
   static navigatorButtons = {
@@ -101,7 +102,8 @@ export default class EditCustomer extends PureComponent {
   initValues() {
     var rawValues = toJS(UserStore.user);
     let business;
-    let salonUserId;
+    let salonUserId;   
+
     if (UserStore.user.account_type === 'ambassador') {
       business = rawValues.brand;
     } else {
@@ -109,6 +111,7 @@ export default class EditCustomer extends PureComponent {
       if (business != null) {
         salonUserId = business.id;
       }
+      
     }
 
 
@@ -327,7 +330,7 @@ export default class EditCustomer extends PureComponent {
 
   renderStylistSpecifics() {
     return (<View>
-      <Categorie name="BRAND INFORMATION" />
+      <Categorie name="PROFESSIONAL INFORMATION" />
       <MultilineTextInput
         autoCapitalize="none"
         autoCorrect={false}
@@ -453,6 +456,8 @@ export default class EditCustomer extends PureComponent {
   render() {
     var isLoading = this.state.submitting || utils.isLoading(CloudinaryStore.cloudinaryStates.get('edit-user-pick'));
     const userProfileUri = utils.getUserProfilePicURI(UserStore.user, EnvironmentStore.getEnv());
+    console.log("userProfileUri ==>")
+      console.log(JSON.stringify(userProfileUri))
     return (
       <BannerErrorContainer ref="ebc" style={{flex: 1}}>
         <KeyboardScrollView

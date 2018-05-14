@@ -6,6 +6,7 @@ import Icon from './Icon';
 import SafeList from './SafeList';
 
 import {COLORS, FONTS, SCALE} from '../style';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 export default class SearchList extends React.Component {
   static propTypes = {
@@ -175,6 +176,7 @@ export default class SearchList extends React.Component {
           </View>}
         </View>
       </View>
+      <KeyboardAwareScrollView>
       <SafeList
         dataSource={{items: items.toObject()}}
         dataSourceRowIdentities={[Array.from(items.keys())]}
@@ -187,6 +189,8 @@ export default class SearchList extends React.Component {
         }}
         onEndReached={this.props.onEndReached}
       />
-    </View>);
+      </KeyboardAwareScrollView>
+    </View>
+    );
   }
 }

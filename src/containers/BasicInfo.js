@@ -18,6 +18,8 @@ import EnvironmentStore from '../mobx/stores/EnvironmentStore';
 import CloudinaryStore from '../mobx/stores/CloudinaryStore';
 import whiteBack from '../../resources/img/nav_white_back.png';
 import NavigatorStyles from '../common/NavigatorStyles';
+import App from '../App';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 @observer
 @mixin(formMixin)
@@ -105,6 +107,9 @@ export default class BasicInfo extends PureComponent {
           navigatorStyle: NavigatorStyles.basicInfo,
         });
         break;
+      case 'consumer':
+        App.startApplication();
+        break;
       default:
         break;
     }
@@ -143,7 +148,7 @@ export default class BasicInfo extends PureComponent {
   render() {
     return (
       <BannerErrorContainer style={{flex: 1}} ref="ebc">
-        <KeyboardScrollView
+        <KeyboardAwareScrollView
           scrollEnabled={false}
           scrollToTopOnBlur
           showsVerticalScrollIndicator={false}
@@ -226,7 +231,7 @@ export default class BasicInfo extends PureComponent {
             secureTextEntry
             validation={(v) => !!v && validator.isLength(v, {min: 6})}
           />
-        </KeyboardScrollView>
+        </KeyboardAwareScrollView>
       </BannerErrorContainer>
     );
   }

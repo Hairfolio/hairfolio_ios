@@ -11,10 +11,14 @@ import SafeList from '../components/SafeList';
 import LoadingContainer from '../components/LoadingContainer';
 import whiteBack from '../../resources/img/nav_white_back.png';
 import NavigatorStyles from '../common/NavigatorStyles';
+import ServiceBackend from '../backend/ServiceBackend';
 
 @observer
 export default class SalonSP extends PureComponent {
-  state = {};
+  state = {
+    userOfferings:[],
+    singleItem:{}
+  };
 
   componentDidMount(props) {
     this.props.navigator.setOnNavigatorEvent((e) => {
@@ -38,8 +42,25 @@ export default class SalonSP extends PureComponent {
       }
     ]
   };
+  
+  async callApi(){
+    const response = await ServiceBackend.get(`/users/${UserStore.user.id}/offerings`);    
+    this.setState({
+      userOfferings:toJS(response.offerings)
+    });
+    console.log("callApi ==>"+JSON.stringify(this.state.userOfferings))
+    // window.myuser = UserStore.user;
+    var offerings = new OrderedMap(this.state.userOfferings.map(offerings => [offerings.id, offerings]));
+    console.log("offerings ==>"+JSON.stringify(offerings))
+    this.setState({
+      singleItem : offerings.toObject()
+    })
+  }
 
   onNavigatorEvent(event) {
+    if (event.id == 'willAppear') {
+      this.callApi()
+    }
     if (event.type == 'NavBarButtonPress') {
       if (event.id == 'back') {
         this.props.navigator.pop({
@@ -48,6 +69,7 @@ export default class SalonSP extends PureComponent {
       } else if (event.id == 'add') {
         this.props.navigator.push({
           screen: 'hairfolio.SalonAddSP',
+          title:"Services &  Prices",
           navigatorStyle: NavigatorStyles.basicInfo,
         });
       }
@@ -63,12 +85,14 @@ export default class SalonSP extends PureComponent {
 
   renderSP(sp) {
     window.sp = sp;
+    console.log("sp ==>"+JSON.stringify(sp))
     return (<TouchableOpacity
       onPress={() => {
         this.props.navigator.push({
           screen: 'hairfolio.SalonAddSP',
+          title:"Services &  Prices",
           navigatorStyle: NavigatorStyles.basicInfo,
-          passProps: { offering: sp.offering },
+          passProps: { offering: sp }
         });
       }}
       style={{
@@ -92,15 +116,15 @@ export default class SalonSP extends PureComponent {
   }
 
   renderContent(userOfferings) {
-    window.myuser = UserStore.user;
-    var offerings = new OrderedMap(userOfferings.map(offerings => [offerings.id, offerings]));
+    // window.myuser = UserStore.user;
+    // var offerings = new OrderedMap(userOfferings.map(offerings => [offerings.id, offerings]));
 
     return (<View style={{
       flex: 1,
       backgroundColor: COLORS.LIGHT,
       paddingTop: SCALE.h(15),
     }}>
-      {!userOfferings.length ?
+      { (this.state.userOfferings.length <= 0) ?
         <Text style={{
           marginTop: SCALE.h(35),
           marginLeft: SCALE.w(25),
@@ -111,7 +135,7 @@ export default class SalonSP extends PureComponent {
         }}>No Services added yet</Text>
       :
         <SafeList
-          dataSource={{offerings: offerings.toObject()}}
+          dataSource={{offerings: this.state.singleItem}}
           pageSize={10}
           renderRow={(sp) => this.renderSP(sp)}
           renderSeparator={(sId, rId) => <View key={`sep_${sId}_${rId}`} style={{height: StyleSheet.hairlineWidth, backgroundColor: 'transparent'}} />}
@@ -125,10 +149,10 @@ export default class SalonSP extends PureComponent {
   }
 
   render() {
-    const userOfferings = toJS(UserStore.user.offerings);
+    // const userOfferings = toJS(UserStore.user.offerings);
     return (
       <LoadingContainer state={[UserStore.userState]}>
-        {() => this.renderContent(userOfferings)}
+        {() => this.renderContent(this.state.userOfferings)}
       </LoadingContainer>
     );
   }

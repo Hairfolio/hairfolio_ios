@@ -15,6 +15,7 @@ import states from '../states.json';
 import App from '../App';
 import formMixin from '../mixins/form';
 import UserStore from '../mobx/stores/UserStore';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 @observer
 @mixin(formMixin)
@@ -70,7 +71,7 @@ export default class SalonInfo extends React.Component {
       <BannerErrorContainer ref="ebc" style={{
         flex: 1
       }}>
-        <KeyboardScrollView
+        <KeyboardAwareScrollView
           scrollToTopOnBlur
           showsVerticalScrollIndicator={false}
           space={200}
@@ -123,6 +124,7 @@ export default class SalonInfo extends React.Component {
               <InlineTextInput
                 autoCorrect={false}
                 placeholder="Zip"
+                keyboardType="numeric"
                 ref={(r) => this.addFormItem(r, 'business.zip')}
                 validation={(v) => true}
               />
@@ -152,7 +154,7 @@ export default class SalonInfo extends React.Component {
           <PageInput
             page={'hairfolio.SalonStylists'}
             navigator={this.props.navigator}
-            title={'Education'}
+            title={'Stylist'}
             placeholder="Stylists"
           />
 
@@ -161,7 +163,7 @@ export default class SalonInfo extends React.Component {
           <PageInput
             page={'hairfolio.StylistProductExperience'}
             navigator={this.props.navigator}
-            title={'Education'}
+            title={'Products'}
             placeholder="Products"
             ref={(r) => this.addFormItem(r, 'experience_ids')}
             validation={(v) => true}
@@ -172,7 +174,7 @@ export default class SalonInfo extends React.Component {
           <PageInput
             page={'hairfolio.SalonSP'}
             navigator={this.props.navigator}
-            title={'Education'}
+            title={'Services &  Prices'}
             placeholder="Services &  Prices"
             ref={(r) => this.addFormItem(r, 'services')}
             validation={(v) => true}
@@ -197,7 +199,7 @@ export default class SalonInfo extends React.Component {
             fontSize: SCALE.h(26),
             color: COLORS.TEXT
           }}>You can fill all this in later, if you’re feeling lazy.</Text>
-        </KeyboardScrollView>
+        </KeyboardAwareScrollView>
       </BannerErrorContainer>
     );
   }

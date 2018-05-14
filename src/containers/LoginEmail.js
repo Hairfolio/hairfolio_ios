@@ -17,6 +17,7 @@ import { Dims } from '../constants';
 import NavigatorStyles from '../common/NavigatorStyles';
 import whiteBack from '../../resources/img/nav_white_back.png';
 import BannerErrorContainer from '../components/BannerErrorContainer';
+import App from '../App';
 
 const styles = StyleSheet.create({
   container: {
@@ -47,7 +48,10 @@ const styles = StyleSheet.create({
 @observer
 @mixin(formMixin)
 export default class LoginEmail extends PureComponent {
-  state = {};
+  state = {
+    user_email:null,
+    user_pass : null
+  };
 
   static navigatorButtons = {
     leftButtons: [
@@ -57,6 +61,37 @@ export default class LoginEmail extends PureComponent {
       }
     ]
   }
+
+  hasValidPassword(input_val) {
+    /* validation which do not allow space */
+    var letters = /^[a-zA-Z0-9!@~`#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]*$/;
+    if (input_val.match(letters)) {
+        return true;
+    } else {
+        return false;
+    }    
+}
+
+getText(str){
+  if(str){
+    var temp = str.trim();
+    return temp;
+  }
+}
+
+setText(str){
+  if(str){
+    var temp = str.trim();
+    console.log("temp ==>"+temp);
+    
+    setTimeout(()=>{
+      this.setState({
+        user_email: temp
+      });
+    },0)
+    
+  }
+}
 
   render() {
     return (
@@ -85,6 +120,10 @@ export default class LoginEmail extends PureComponent {
                 placeholder="Email"
                 ref={(r) => this.addFormItem(r, 'email')}
                 validation={(v) => !!v && validator.isEmail(v)}
+                value={this.state.user_email}
+                onChangeText={(value)=>{                  
+                  this.setText(value)
+                }}
               />
             </View>
             <View style={{paddingBottom: 10, alignSelf: 'stretch'}}>
@@ -98,6 +137,12 @@ export default class LoginEmail extends PureComponent {
                 ref={(r) => this.addFormItem(r, 'password')}
                 secureTextEntry
                 validation={(v) => !!v && validator.isLength(v, {min: 6})}
+                value={this.state.user_pass}
+                onChangeText={(value)=>{
+                  this.setState({
+                    user_pass: value
+                  })
+                }}
               />
             </View>
             <View style={{paddingBottom: SCALE.h(54), alignSelf: 'stretch'}}>
@@ -106,6 +151,13 @@ export default class LoginEmail extends PureComponent {
                 disabled={utils.isLoading([EnvironmentStore.environmentState, UserStore.userState])}
                 label="Sign In"
                 onPress={() => {
+
+                  if(this.state.user_pass)
+                  if(!this.hasValidPassword(this.state.user_pass)){
+                    alert('Password should not contain space');
+                    return;
+                  }
+
                   if (!this.checkErrors()) {
                     var value = this.getFormValue();
 
@@ -113,6 +165,7 @@ export default class LoginEmail extends PureComponent {
                       .then(() => UserStore.loginWithEmail(value, 'consumer'))
                       .then(() => {
                         this.clearValues();
+                        App.startLoggedInApplication();                        
                       }, (e) => {
                         this.refs.ebc.error(e);
                       });
@@ -125,7 +178,7 @@ export default class LoginEmail extends PureComponent {
               disabled={utils.isLoading([EnvironmentStore.environmentState, UserStore.userState])}
               onPress={() => {
                 this.props.navigator.push({
-                  screen: 'hairfolio.ForgottenPassword',
+                  screen: 'hairfolio.ForgotPassword',
                 })
               }}
             >

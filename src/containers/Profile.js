@@ -53,7 +53,21 @@ export default class Profile extends React.Component {
     this.unsuscribeNavEvent = this.props.navigator.addOnNavigatorEvent(this.onNavigatorEvent.bind(this));
   }
 
+  showLog(msg){
+    console.log(msg)
+  }
+
   componentWillMount() {
+    this.fetchProfile();
+  }
+
+  componentWillUnmount() {
+    StoreFactory.freeUserStore(this.userId);
+    this.unsuscribeNavEvent();
+  }
+  
+  fetchProfile(){
+    this.showLog("testMethod ==>");
     StoreFactory.initUserStore(this.userId);
     this._fetchProfile();
     this._fetchUserPosts();
@@ -61,11 +75,6 @@ export default class Profile extends React.Component {
     this.props.navigator.toggleTabs({
       to: 'shown',
     });
-  }
-
-  componentWillUnmount() {
-    StoreFactory.freeUserStore(this.userId);
-    this.unsuscribeNavEvent();
   }
 
   onNavigatorEvent(event) {
@@ -77,6 +86,8 @@ export default class Profile extends React.Component {
           to: 'shown',
         });
         break;
+      case 'willAppear':
+        this.fetchProfile()
       default:
         break;
     }
@@ -482,6 +493,9 @@ export default class Profile extends React.Component {
                             disabled={utils.isLoading(UserStore.followingStates.get(this.state.user.i) || EMPTY)}
                             label="FOLLOW"
                             onPress={() => {
+                              this.setState({
+                                followed: !this.state.followed
+                              })
                               UserStore.followUser(this.state.user.id);
                             }}
                           />
@@ -491,6 +505,9 @@ export default class Profile extends React.Component {
                             disabled={utils.isLoading(UserStore.followingStates.get(this.state.user.id) || EMPTY)}
                             label="FOLLOWING"
                             onPress={() => {
+                              this.setState({
+                                followed: !this.state.followed
+                              })
                               UserStore.unfollowUser(this.state.user.id);
                             }}
                           />

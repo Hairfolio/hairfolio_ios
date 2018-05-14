@@ -11,10 +11,16 @@ import SafeList from '../components/SafeList';
 import LoadingContainer from '../components/LoadingContainer';
 import whiteBack from '../../resources/img/nav_white_back.png';
 import NavigatorStyles from '../common/NavigatorStyles';
+import ServiceBackend from '../backend/ServiceBackend';
+
 
 @observer
 export default class StylistEducation extends PureComponent {
-  state = {};
+  state = {
+    objEdu:[],
+    singleItem:{},
+    flag_firstTime:false
+  };
 
   constructor(props) {
     super(props);
@@ -22,6 +28,8 @@ export default class StylistEducation extends PureComponent {
     if (this.props.navigator) {
       this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
     }
+    console.log("user ==>"+JSON.stringify(UserStore.user))
+    // this._changeState = this._changeState.bind(this);
   }
 
   static navigatorButtons = {
@@ -39,11 +47,42 @@ export default class StylistEducation extends PureComponent {
         buttonColor: COLORS.WHITE,
       }
     ]
-  };
+  };    
+
+    async callApi() {
+      const response = await ServiceBackend.get(`/users/${UserStore.user.id}/educations`);
+      console.log("callApi result==>"+JSON.stringify(response.educations))
+      this.setState({
+        objEdu : response.educations
+      })
+      var educations = new OrderedMap(this.state.objEdu.map(education => [education.id, education]));
+    this.setState({
+      singleItem : educations.toObject()
+    })
+    }
+
 
   onNavigatorEvent(event) {
     if (event.id == 'willAppear') {
-      UserStore.loadUserEducations();
+
+      this.callApi();
+      // if(!this.state.flag_firstTime){
+      //   this.setState({
+      //     flag_firstTime : true
+      //   })
+      //   const user = UserStore.user;
+      //   this.setState({
+      //     objEdu : user.educations
+      //   })
+      //   console.log("callApi result 123==>"+JSON.stringify(UserStore.user))
+      //   var educations = new OrderedMap(this.state.objEdu.map(education => [education.id, education]));
+      //   this.setState({
+      //   singleItem : educations.toObject()
+      //   })
+      
+      // }else{
+      //   this.callApi();
+      // }      
     }
     if (event.type == 'NavBarButtonPress') {
       if (event.id == 'back') {
@@ -52,10 +91,13 @@ export default class StylistEducation extends PureComponent {
           animationStyle: 'fade',
         });
       } else if (event.id == 'add') {
+
+        // this.props.navigation.navigate('EditSubCommunity', { updateSubCommunity: this.updateSubCommunity.bind(this), subCommunity: this.state.userSubCommunity })
+
         this.props.navigator.push({
           screen: 'hairfolio.StylistAddEducation',
           title: 'Add Education',
-          navigatorStyle: NavigatorStyles.basicInfo,
+          navigatorStyle: NavigatorStyles.basicInfo
         });
       }
     }
@@ -94,7 +136,7 @@ export default class StylistEducation extends PureComponent {
           fontFamily: FONTS.ROMAN,
           fontSize: SCALE.h(30),
           color: COLORS.DARK2
-        }}>{education.degree.name}</Text>
+        }}>{(education.degree) ?education.degree.name:''}</Text>
         <Text style={{
           fontFamily: FONTS.BOOK,
           fontSize: SCALE.h(30),
@@ -105,14 +147,11 @@ export default class StylistEducation extends PureComponent {
   }
 
   renderContent() {
-    const user = UserStore.user;
-    var educations = new OrderedMap(user.educations.map(education => [education.id, education]));
-
-    window.user = user;
+    
     return (<View style={{
       flex: 1
     }}>
-      {!user.educations.length === 0 ?
+      {(this.state.objEdu.length <= 0) ?
         <Text style={{
           marginTop: SCALE.h(35),
           marginLeft: SCALE.w(25),
@@ -122,16 +161,17 @@ export default class StylistEducation extends PureComponent {
           color: COLORS.TEXT
         }}>No Education added</Text>
       :
-        <SafeList
-          dataSource={{education: educations.toObject()}}
-          pageSize={10}
-          renderRow={(education) => this.renderEducation(education)}
-          renderSeparator={(sId, rId) => <View key={`sep_${sId}_${rId}`} style={{height: StyleSheet.hairlineWidth, backgroundColor: 'transparent'}} />}
-          style={{
-            flex: 1,
-            backgroundColor: 'transparent'
-          }}
-        />
+      <SafeList
+      dataSource={{education: this.state.singleItem}}
+        pageSize={10}
+        renderRow={(education) => this.renderEducation(education)}
+        renderSeparator={(sId, rId) => <View key={`sep_${sId}_${rId}`} style={{height: StyleSheet.hairlineWidth, backgroundColor: 'transparent'}} />}
+        style={{
+          flex: 1,
+          backgroundColor: 'transparent'
+        }}
+      />
+       
       }
     </View>);
   }

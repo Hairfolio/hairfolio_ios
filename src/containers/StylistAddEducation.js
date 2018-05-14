@@ -19,21 +19,29 @@ import whiteBack from '../../resources/img/nav_white_back.png';
 import NavigatorStyles from '../common/NavigatorStyles';
 import formMixin from '../mixins/form';
 
+var flag_service = false;
+
 @observer
 @mixin(formMixin)
 export default class StylistAddEducation extends React.Component {
   state = {
-    editing: false
+    editing: false,
+    schoolName:'',
+    websiteName:''
   };
 
   constructor(props) {
     super(props);
+
     EnvironmentStore.getDegrees();
     if (this.props.education) {
+      this.setState({
+        editing: true
+      });
       this.setEditing(this.props.education);
     }
     if (this.props.navigator) {
-      this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+      this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));      
     }
   }
 
@@ -76,12 +84,21 @@ export default class StylistAddEducation extends React.Component {
   setEditing(education) {
     if (this.state.editing !== education)
       EnvironmentStore.getDegrees().then(() => {
+        this.setState({
+          schoolName:education.name,
+          websiteName:education.website
+        })
         this.setFormValue({
-          ...education.toJS(),
           'year_from': education.year_from.toString(),
           'year_to': education.year_to.toString(),
           'degree_id': education.degree.id
         });
+        // this.setFormValue({
+        //   ...education.toJS(),
+        //   'year_from': education.year_from.toString(),
+        //   'year_to': education.year_to.toString(),
+        //   'degree_id': education.degree.id
+        // });
 
         if (this._deleteButton)
           this._deleteButton.setNativeProps({
@@ -113,8 +130,16 @@ export default class StylistAddEducation extends React.Component {
   }
 
   submit = () => {
-    if (this.checkErrors())
-      return;
+    if(!flag_service){
+      flag_service = true;
+
+      if (this.checkErrors()){
+        setTimeout(()=>{
+          flag_service = false;
+        },500)
+        return;
+      }
+      
 
     this.setState({'submitting': true});
 
@@ -122,21 +147,33 @@ export default class StylistAddEducation extends React.Component {
       EducationStore.addEducation(this.getFormValue()) :
       EducationStore.editEducation(this.state.editing.id, this.getFormValue().education);
     action
-      .then((r) => {
+      .then((r) => {           
         this.setState({submitting: false});
         return r;
       })
       .then(
         () => {
+          setTimeout(()=>{
+            flag_service = false;
+          },500)
           this.props.navigator.pop({
             animated: true,
             animationStyle: 'fade',
           });
         },
         (e) => {
+          setTimeout(()=>{
+            flag_service = false;
+          },500)
           this.refs.ebc.error(e);
         }
       );
+
+    }
+
+    
+    
+    
   }
 
   render() {
@@ -162,6 +199,14 @@ export default class StylistAddEducation extends React.Component {
                 placeholder="School Name"
                 ref={(r) => this.addFormItem(r, 'name')}
                 validation={(v) => !!v}
+                value={this.state.schoolName}
+                onChangeText={
+                  (value)=>{
+                    this.setState({
+                      schoolName:value
+                    })
+                  }
+                }
               />
               <View style={{height: StyleSheet.hairlineWidth}} />
               <View style={{
@@ -212,6 +257,14 @@ export default class StylistAddEducation extends React.Component {
                 placeholder="Website"
                 ref={(r) => this.addFormItem(r, 'website')}
                 validation={(v) => !!v}
+                value={this.state.websiteName}
+                onChangeText={
+                  (value)=>{
+                    this.setState({
+                      websiteName:value
+                    })
+                  }
+                }
               />
 
               <View style={{height: 30}} />

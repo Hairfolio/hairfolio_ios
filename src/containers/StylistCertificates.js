@@ -12,19 +12,23 @@ import LoadingContainer from '../components/LoadingContainer';
 import SearchList from '../components/SearchList';
 import whiteBack from '../../resources/img/nav_white_back.png';
 import User from '../mobx/stores/User';
-
+import ServiceBackend from '../backend/ServiceBackend';
+var loadingState = "READY";
 @observer
 export default class StylistCertificates extends React.Component {
-  state = {};
+  state = {
+    objEdu:[],
+    certiItem:null
+  };
 
   constructor(props) {
     super(props);
-    EnvironmentStore.getCertificates();
-    this.tempCerts = EnvironmentStore.certificates;
-    this.tempUser = toJS(UserStore.user);
-    this.state = {
-      selectedIds: toJS(UserStore.user.certificates.map(cert => cert.id)),
-    }
+    // EnvironmentStore.getCertificates();
+    // this.tempCerts = EnvironmentStore.certificates;
+    // this.tempUser = toJS(UserStore.user);
+    // this.state = {
+    //   selectedIds: toJS(UserStore.user.certificates.map(cert => cert.id)),
+    // }
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
   }
 
@@ -45,7 +49,41 @@ export default class StylistCertificates extends React.Component {
     ],
   }
 
+  async callApi() {
+    EnvironmentStore.getCertificates();
+    const response = await ServiceBackend.get(`/users/${UserStore.user.id}`);
+    console.log("callApi result==>"+JSON.stringify(response));
+    var user = response.user;
+    this.setState({
+      objEdu:user.certificates,
+      selectedIds: toJS(user.certificates.map(cert => cert.id))   
+    })
+
+    // loadingState = "READY";
+
+   
+    let certificates = new OrderedMap(
+      EnvironmentStore.certificates.map((certificate) => {
+        if (this.state.selectedIds.find(currUsrCertId =>  currUsrCertId === certificate.id)) {
+          certificate.selected = true;
+        } else {
+          certificate.selected = false;
+        }
+        return [certificate.id, new Map(certificate)];
+      })
+    );
+
+    this.setState({
+      certiItem:certificates
+    })
+ 
+  }
+
   onNavigatorEvent(event) {
+    if (event.id == 'willAppear') {
+      this.callApi();
+    }
+
     if (event.type == 'NavBarButtonPress') {
       if (event.id == 'back') {
         this.props.navigator.pop({
@@ -57,7 +95,8 @@ export default class StylistCertificates extends React.Component {
         const formData = { certificate_ids: this.state.selectedIds };
         UserStore.editUser(formData, UserStore.user.account_type)
         .catch((e) => {
-          this.refs.ebc.error(e);
+          console.log(JSON.stringify(e))
+          // this.refs.ebc.error(e);
         });
         this.props.navigator.pop({
           animated: true,
@@ -86,26 +125,33 @@ export default class StylistCertificates extends React.Component {
   }
 
   updateCertificates = (selectedIds) => {
+    console.log("updateCertificates ==>"+JSON.stringify(selectedIds))
     this.setState({
       selectedIds: selectedIds,
     });
   }
 
   render() {
-    let certificates = new OrderedMap(
-      EnvironmentStore.certificates.map((certificate) => {
-        if (this.state.selectedIds.find(currUsrCertId =>  currUsrCertId === certificate.id)) {
-          certificate.selected = true;
-        }
-        return [certificate.id, new Map(certificate)];
-      })
-    );
+    // var temp = EnvironmentStore.certificates;
+    // console.log("temp ==>"+JSON.stringify(temp))
+    // let certificates = new OrderedMap(
+    //   EnvironmentStore.certificates.map((certificate) => {
+    //     if (this.state.selectedIds.find(currUsrCertId =>  currUsrCertId === certificate.id)) {
+    //       certificate.selected = true;
+    //     } else {
+    //       certificate.selected = false;
+    //     }
+    //     return [certificate.id, new Map(certificate)];
+    //   })
+    // );
 
-    const loadingState = [EnvironmentStore.certificatesState];
+    // const loadingState = [EnvironmentStore.certificatesState];
     return (
+      (this.state.certiItem) ?
+    
       <LoadingContainer state={loadingState}>
-        {() => <SearchList
-          items={certificates}
+        {() => <SearchList 
+          items={this.state.certiItem}
           placeholder="Search for certificates"
           updateSelectedIds = {this.updateCertificates}
           ref={sL => {
@@ -121,6 +167,8 @@ export default class StylistCertificates extends React.Component {
           }}
         />}
       </LoadingContainer>
+      :
+      <View><Text></Text></View>
     );
   }
 };

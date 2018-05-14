@@ -85,7 +85,19 @@ export default class Picker extends PureComponent {
       >
         <View style={{flex: 1}}>
           <TouchableOpacity
-            onPress={() => this.setState({active: false})}
+            onPress={() => {
+              this.setState({active: false})
+              // alert('Modal has been closed.');
+              console.log('Modal has been closed.'+ this.props.onDone)
+              if (this.props.onDone) {
+                setTimeout(
+                  () => {
+                    this.props.onDone(this.props.choices[this.state.selected]);
+                  },
+                  1000
+                );
+              }
+            }}
             style={{flex: 1}}
           />
           <View style={{

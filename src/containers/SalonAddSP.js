@@ -20,17 +20,25 @@ import DeleteButton from '../components/Buttons/Delete';
 import formMixin from '../mixins/form';
 import whiteBack from '../../resources/img/nav_white_back.png';
 
+var flag_service = false;
+
 @observer
 @mixin(formMixin)
 export default class SalonAddSP extends PureComponent {
   state = {
-    editing: false
+    editing: false,
+    servicePrice:null
   };
 
   constructor(props) {
     super(props);
     if (this.props.offering) {
-      this.setFormValue(this.props.offering);
+      this.setState({
+        editing: true
+      });
+      console.log("HELLO ==>"+JSON.stringify(this.props.offering))
+      // this.setFormValue(this.props.offering);
+      this.setEditing(this.props.offering)
     }
     this.loadData();
   }
@@ -39,6 +47,7 @@ export default class SalonAddSP extends PureComponent {
     this.props.navigator.setOnNavigatorEvent((e) => {
       this.onNavigatorEvent(e);
     });
+    console.log("componentDidMount ==>")
   }
 
   static navigatorButtons = {
@@ -65,24 +74,39 @@ export default class SalonAddSP extends PureComponent {
           animated: true,
         });
       } else if (event.id == 'add') {
-        if (this.checkErrors())
-          return;
+        if(!flag_service){
+          flag_service = true;
+
+          if (this.checkErrors()){
+            setTimeout(()=>{
+              flag_service = false;
+            },500)
+            return;
+          }
+          
 
         this.setState({'submitting': true});
 
         var action = this.state.editing === false ?
           OfferingStore.addOffering(this.getFormValue()) :
           OfferingStore.editOffering(this.state.editing.get('id'), this.getFormValue());
-
         action
           .then((r) => {
+            setTimeout(()=>{
+              flag_service = false;
+            },500)
             this.setState({submitting: false});
-            this.props.navigator.pop({ animated: true });
+            this.props.navigator.pop({ animated: true });                      
             return r;
           })
           .catch((e) => {
+            setTimeout(()=>{
+              flag_service = false;
+            },500)
             this.refs.ebc.error(e);
           });
+        }       
+
       }
     }
   }
@@ -101,12 +125,24 @@ export default class SalonAddSP extends PureComponent {
 
   setEditing(sp) {
     if (this.state.editing !== sp)
+      console.log("setEditing ==>"+JSON.stringify(toJS(sp)))
       this.loadData().then(() => {
+        console.log("loadData ==>"+sp.price)
+        
         this.setFormValue({
-          ...sp.toJS(),
           'category_id': sp.category.id,
-          'service_id': sp.service.id
+          'service_id': sp.service.id,
+          'price': sp
         });
+
+        this.setState({
+          servicePrice:""+sp.price
+        })
+        // this.setFormValue({
+        //   ...sp.toJS(),
+        //   'category_id': sp.category.id,
+        //   'service_id': sp.service.id
+        // });
 
         if (this._deleteButton)
           this._deleteButton.setNativeProps({
@@ -188,7 +224,15 @@ export default class SalonAddSP extends PureComponent {
                 placeholder="Price"
                 ref={(r) => this.addFormItem(r, 'price')}
                 validation={(v) => !!v}
-              />
+                onChangeText={
+                  (value)=>{
+                    this.setState({
+                      servicePrice:value
+                    })
+                  }
+                }
+                value={this.state.servicePrice}
+              />               
 
               <View style={{height: 30}} />
               <View ref={r => this._deleteButton = r} style={{opacity: this.state.editing ? 1 : 0}}>

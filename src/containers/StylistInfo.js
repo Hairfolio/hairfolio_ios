@@ -12,6 +12,7 @@ import BannerErrorContainer from '../components/BannerErrorContainer';
 import UserStore from '../mobx/stores/UserStore';
 import formMixin from '../mixins/form';
 import App from '../App';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 @observer
 @mixin(formMixin)
@@ -46,6 +47,8 @@ export default class StylistInfo extends React.Component {
       <BannerErrorContainer ref="ebc" style={{
         flex: 1
       }}>
+
+      <KeyboardAwareScrollView>
 
         <MultilineTextInput
           max={300}
@@ -128,6 +131,8 @@ export default class StylistInfo extends React.Component {
           fontSize: SCALE.h(26),
           color: COLORS.TEXT
         }}>You can fill all this in later, if you’re feeling lazy.</Text>
+
+        </KeyboardAwareScrollView>
       </BannerErrorContainer>
     );
   }

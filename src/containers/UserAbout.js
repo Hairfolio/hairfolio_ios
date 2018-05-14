@@ -20,6 +20,10 @@ export default class UserAbout extends React.Component {
     profile: React.PropTypes.object.isRequired,
   };
 
+  showLog(msg){
+    console.log(msg);
+  }
+
   renderEmpty() {
     if (this.props.profile.id !== UserStore.user.id)
       return (<Text style={{
@@ -316,6 +320,7 @@ export default class UserAbout extends React.Component {
 
   renderStylist() {
     window.profile = this.props.profile;
+    this.showLog("renderStylist ==>"+JSON.stringify(window.profile));
     return (
       <View>
         <CollapsableContainer

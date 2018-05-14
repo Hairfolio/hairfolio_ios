@@ -15,6 +15,7 @@ import KeyboardScrollView from '../components/KeyboardScrollView';
 import UserStore from '../mobx/stores/UserStore';
 import formMixin from '../mixins/form';
 import App from '../App';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 @observer
 @mixin(formMixin)
@@ -75,8 +76,9 @@ export default class BrandInfo extends PureComponent {
       <BannerErrorContainer ref="ebc" style={{
         flex: 1
       }}>
-        <KeyboardScrollView
-          scrollEnabled={false}
+      
+        <KeyboardAwareScrollView
+          scrollEnabled={true}
           scrollToTopOnBlur
           showsVerticalScrollIndicator={false}
           space={200}
@@ -163,7 +165,7 @@ export default class BrandInfo extends PureComponent {
             fontSize: SCALE.h(26),
             color: COLORS.TEXT
           }}>You can fill all this in later, if you’re feeling lazy.</Text>
-        </KeyboardScrollView>
+        </KeyboardAwareScrollView>
       </BannerErrorContainer>
     );
   }

@@ -55,6 +55,11 @@ const TYPES = {
   Brand: 'brand',
 };
 
+var client_id = 'c9ef6f5790154ba9ac777fccb6740e97';
+var redirect_url = 'https://www.google.com';
+var auth_url='https://api.instagram.com/oauth/authorize/?client_id='+client_id+'&redirect_uri='+redirect_url+'&response_type=token&scope=basic';
+var consumer_item=null;
+
 @observer
 export default class Register2 extends PureComponent {
   state = {};
@@ -67,7 +72,11 @@ export default class Register2 extends PureComponent {
       () => {
         if (OAuthStore.status === READY) {
           UserStore.signupWithInstagram(OAuthStore.token, OAuthStore.userType)
-            .then(() =>  OAuthStore.reset())
+            .then(() =>  {
+              console.log("STORE 123==>"+OAuthStore.token+" TYPE ==>"+OAuthStore.userType)
+              this._navigateToNextStep(OAuthStore.userType);
+              OAuthStore.reset()
+            })
             .catch(e => {
               this.refs.ebc.error(e);
               OAuthStore.reset();
@@ -97,6 +106,7 @@ export default class Register2 extends PureComponent {
     } else if (UserStore.registrationMethod === 'facebook') {
       this._loginWithFacebook(item);
     } else {
+      consumer_item = item;
       this._loginWithInstagram(item);
     }
   }
@@ -170,9 +180,10 @@ export default class Register2 extends PureComponent {
   }
 
   _loginWithFacebook= (item) => {
+    consumer_item = item;
     var type = TYPES[item.label];
     EnvironmentStore.loadEnv()
-      .then(() => LoginManager.logInWithReadPermissions(['email']))
+      .then(() => LoginManager.logInWithReadPermissions(['public_profile']))
       .then(() => AccessToken.getCurrentAccessToken())
       .then(data => data.accessToken.toString())
       .then(token => {
@@ -190,13 +201,14 @@ export default class Register2 extends PureComponent {
         this._navigateToNextStep(type);
       },
       (e) => {
+        // alert(e)
         this.refs.ebc.error(e);
       }
     );
-  }
+  }  
 
   _loginWithInstagram = (item) => {
-    var type = TYPES[item.label];
+    var type = TYPES[item.label];    
     OAuthStore.setInstagramOauthConfig()
     .then(() => {
       OAuthStore.setUserType(type);
@@ -234,6 +246,21 @@ export default class Register2 extends PureComponent {
           navigatorStyle: NavigatorStyles.basicInfo,
         });
         break;
+      case 'consumer':
+        this.props.navigator.push({
+          screen: 'hairfolio.BasicInfo',
+          title: this._titleForAccountType(consumer_item),
+          passProps: this._propsForAccountType(consumer_item),
+          navigatorStyle: NavigatorStyles.basicInfo,
+        });     
+      
+      // this.props.navigator.resetTo({
+      //   screen: 'hairfolio.BasicInfo',
+      //   animationType: 'fade',
+      //   title: 'Basic Info',
+      //   navigatorStyle: NavigatorStyles.basicInfo,
+      // });
+      break;
       default:
         break;
     }

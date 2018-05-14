@@ -55,7 +55,7 @@ class UserStore {
 
   @action setMethod(method) {
     this.registrationMethod = method;
-  }
+  }     
 
   @action editUser(values = {}, type) {
     this.userState = LOADING;
@@ -319,9 +319,12 @@ class UserStore {
           'facebook_token': token
         }
       );
+      
       this.user = res.user;
       this.userState = READY;
+    
     } catch(error) {
+      
       this.userState = LOADING_ERROR;
       throw error;
     }
@@ -336,10 +339,12 @@ class UserStore {
           'instagram_token': token
         }
       );
+      alert(JSON.stringify(res.user))
       this.user = res.user;
       await this.loadUserInformation();
       this.userState = READY;
     } catch(error) {
+      alert("ERR ==>"+error);
       this.userState = LOADING_ERROR;
       throw error;
     }
@@ -398,10 +403,16 @@ class UserStore {
           }
         }
       );
+      console.log("with email ==>"+JSON.stringify(res))
       if(res.status != 201) {
-        throw res.errors.first();
+        for(key in res.errors){
+          if(key == 'email'){
+            throw key+" "+res.errors[key][0]; //throw res.errors.first();
+          }
+          
+        }
       }
-      this.user = res.user;
+      this.user = res.user;      
       this.needsMoreInfo = type !== 'consumer';
       this.userState = READY;
     } catch (error) {

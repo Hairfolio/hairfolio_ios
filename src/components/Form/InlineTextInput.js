@@ -57,11 +57,11 @@ export default class FormInlineTextInput extends React.Component {
           if (this.props.onChangeText)
             this.props.onChangeText(value);
         }}
-        onFocus={(e) => {
-          focusEmitter.focus(this.props.getRefNode ? this.props.getRefNode() : null);
-          if (this.props.onFocus)
-            this.props.onFocus(e);
-        }}
+        // onFocus={(e) => {
+        //   focusEmitter.focus(this.props.getRefNode ? this.props.getRefNode() : null);
+        //   if (this.props.onFocus)
+        //     this.props.onFocus(e);
+        // }}
         placeholderTextColor={this.state.error ? COLORS.RED : COLORS.TEXT}
         ref="ti"
         selectionColor={COLORS.LIGHT2}
@@ -77,7 +77,7 @@ export default class FormInlineTextInput extends React.Component {
           color: this.state.error ? COLORS.RED : COLORS.DARK
         }}
         underlineColorAndroid="transparent"
-        value={this.state.value}
+        value={this.props.value}
       />
       {this.props.help &&
         <View style={{

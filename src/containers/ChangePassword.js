@@ -18,7 +18,11 @@ import whiteBack from '../../resources/img/nav_white_back.png';
 @observer
 @mixin(formMixin)
 export default class ForgottenPassword extends PureComponent {
-  state = {};
+  state = {
+    old_pass:null,
+    new_pass:null,
+    confirm_pass:null,
+  };
 
   static navigatorButtons = {
     leftButtons: [
@@ -28,6 +32,24 @@ export default class ForgottenPassword extends PureComponent {
       }
     ],
   };
+
+  hasValidPassword(input_val) {
+    /* validation which do not allow space */
+    var letters = /^[a-zA-Z0-9!@~`#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]*$/;
+    if (input_val.match(letters)) {
+        return true;
+    } else {
+        return false;
+    }
+    // alert(input_val.length)
+    // var iChars = " ";
+    //     for (var i = 0; i < input_val.length; i++) {
+    //         if (iChars.indexOf(input_val.charAt(i)) == -1) {
+    //             return false;
+    //         }
+    //     }
+    //     return true;
+}
 
   render() {
     return (
@@ -54,6 +76,14 @@ export default class ForgottenPassword extends PureComponent {
             ref={(r) => this.addFormItem(r, 'old_password')}
             secureTextEntry
             validation={(v) => !!v && validator.isLength(v, {min: 6})}
+            value={this.state.old_pass}
+            onChangeText={(value) => {
+              this.setState({
+                old_pass:value
+              });    
+              
+            }}
+            
           />
           <Categorie name="NEW PASSWORD" />
           <InlineTextInput
@@ -67,6 +97,13 @@ export default class ForgottenPassword extends PureComponent {
             ref={(r) => this.addFormItem(r, 'new_password')}
             secureTextEntry
             validation={(v) => !!v && validator.isLength(v, {min: 6})}
+            value={this.state.new_pass}
+            onChangeText={(value) => {
+              this.setState({
+                new_pass:value
+              });    
+              
+            }}
           />
           <InlineTextInput
             autoCapitalize="none"
@@ -79,6 +116,13 @@ export default class ForgottenPassword extends PureComponent {
             ref={(r) => this.addFormItem(r, 'new_password_confirmation')}
             secureTextEntry
             validation={(v) => !!v && validator.isLength(v, {min: 6})}
+            value={this.state.confirm_pass}
+            onChangeText={(value) => {
+              this.setState({
+                confirm_pass:value
+              });    
+              
+            }}
           />
           <View style={{height: 20}} />
           <View style={{
@@ -90,6 +134,28 @@ export default class ForgottenPassword extends PureComponent {
               disabled={this.state.submitting}
               label="Save"
               onPress={() => {
+
+                
+                if(this.state.old_pass)
+                if(!this.hasValidPassword(this.state.old_pass)){
+                  alert('Old Password should not contain space');
+                  return;
+                }
+
+                if(this.state.new_pass)
+                if(!this.hasValidPassword(this.state.new_pass)){
+                  alert('New password should not contain space');
+                  return;
+                }
+
+                if(this.state.confirm_pass)
+                if(this.state.new_pass !== this.state.confirm_pass){
+                  alert('New Password and Confirm password doesnt match ');
+                  return;
+                }
+
+                
+
                 if (this.checkErrors())
                   return;
 

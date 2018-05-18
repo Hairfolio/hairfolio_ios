@@ -24,13 +24,13 @@ export default class PostFilter extends PureComponent {
       >
         <SlimHeader
           onLeft={() =>{
-            this.navigator.pop({ anmiated: true });
+            this.navigator.pop({ animated: true });
           }}
           leftText='Retake'
           rightText='Use Photo'
           onRight={() => {
             CreatePostStore.addTakenPictureToGallery()
-            this.navigator.pop({ anmiated: true });
+            this.navigator.pop({ animated: true });
             StatusBar.setHidden(false);
           }}
         />

@@ -26,15 +26,18 @@ import PostDescription from './PostDescription';
 
 const PostDetailsContent = observer(({navigator}) => {
 
+
+  // alert(JSON.stringify(navigator));
+
   if (PostDetailStore.isEmpty) {
     return null;
   }
-
-  let store = PostDetailStore.currentStore;
-
+  let value = PostDetailStore.currentStore;//props.value;
+  // let store = PostDetailStore.getPostDetails();
   return (
+    
     <ScrollView
-      ref={el => {store.scrollView = el}}
+      ref={el => {value.scrollView = el}}
       scrollEventThrottle={16}
       onScroll={async (e) => {
         const offset = e.nativeEvent.contentOffset.y;
@@ -53,23 +56,23 @@ const PostDetailsContent = observer(({navigator}) => {
       }}
     >
       <PostHeader
-        post={store.post}
+        post={value.post}
         navigator={navigator}
       />
       <PostDetailsHeader
-        store={store}
+        store={value}
         navigator={navigator}
       />
       <PostDetailsImageList
-        store={store}
+        store={value}
       />
       <PostDescription
         style={{paddingTop: h(28)}}
-        post={store.post}
+        post={value.post}
         navigator={navigator}
       />
       <PostDetailsColorFormula
-        store={store}
+        store={value}
         navigator={navigator}
       />
     </ScrollView>

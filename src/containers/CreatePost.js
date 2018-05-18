@@ -281,8 +281,8 @@ export default class CreatePost extends PureComponent {
     };
     let header = (
       <SlimHeader
-        onLeft={cancel}
-        leftText='Cancel'
+        // onLeft={cancel}
+        // leftText='Cancel'
         title={CreatePostStore.title}/>
     );
     let mainView = (

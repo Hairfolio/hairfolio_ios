@@ -133,7 +133,11 @@ export default class AddServicePageOne extends Component {
             titleWidth={140}
             leftText='Back'
             onLeft={() => {
+<<<<<<< HEAD
+              this.props.navigator.pop({ animated: true });
+=======
               this.props.navigator.dismissModal({ animationType: 'slide-down' });
+>>>>>>> d112b5c41269f14358689dfcaa4e8627871c40b5
             }}
             title='Add Service (1/3)'
             titleStyle={{fontFamily: FONTS.SF_MEDIUM}}

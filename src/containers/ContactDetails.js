@@ -54,7 +54,8 @@ const ContactsDetailsHeader = observer(({store, navigator}) => {
 
   return (
     <BlackHeader
-      onLeft={() => navigator.pop({ animated: true }) }
+      onLeft={() => {navigator.pop({ animated: true })
+      ContactDetailsStore.reset()} }
       title={store.title}
       onRenderLeft={renderLeft}
       onRenderRight={() =>
@@ -355,9 +356,9 @@ const PhoneInfo = observer(({store}) => {
       >
         Phone
       </Text>
-      <Input value='phoneMobile' keyboardType='phone-pad' placeholder='mobile' />
-      <Input value='phoneHome' keyboardType='phone-pad' placeholder='home' />
-      <Input value='phoneWork' keyboardType='phone-pad' placeholder='work' />
+      <Input value='phoneMobile' keyboardType='phone-pad' placeholder='Mobile' />
+      <Input value='phoneHome' keyboardType='phone-pad' placeholder='Home' />
+      <Input value='phoneWork' keyboardType='phone-pad' placeholder='Work' />
     </View>
   );
 });
@@ -419,8 +420,8 @@ const EmailInfo = observer(({store}) => {
       >
         Email
       </Text>
-      <Input value='emailPrimary' autoCapitalize='none' keyboardType='email-address' placeholder='primary' />
-      <Input value='emailSecondary' autoCapitalize='none' keyboardType='email-address' placeholder='secondary' />
+      <Input value='emailPrimary' autoCapitalize='none' keyboardType='email-address' placeholder='Primary' />
+      <Input value='emailSecondary' autoCapitalize='none' keyboardType='email-address' placeholder='Secondary' />
     </View>
   );
 });

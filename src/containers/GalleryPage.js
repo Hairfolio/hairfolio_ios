@@ -202,6 +202,7 @@ const ImagePreview = observer(({gallery, navigator}) => {
             navigator.showModal({
               screen: 'hairfolio.AddServicePageOne',
               navigatorStyle: NavigatorStyles.tab,
+              passProps:{goBack:this.props}
             });
           } else if (gallery.linkTagSelected) {
             navigator.push({
@@ -515,6 +516,7 @@ export default class GalleryPage extends Component {
           fontSize: h(28),
           color: '#3E3E3E'
         }}
+        multiline = {true}
         placeholder='Post description'
         value={CreatePostStore.gallery.description}
         onChangeText={(text) => CreatePostStore.gallery.description = text}
@@ -564,8 +566,9 @@ export default class GalleryPage extends Component {
             titleStyle={{fontFamily: FONTS.SF_MEDIUM}}
             rightText='Next'
             onRight={() => {
-              if (!CreatePostStore.gallery.description ||  CreatePostStore.gallery.description.length == 0) {
-                alert('Description cannot be blank');
+              if (!CreatePostStore.gallery.description ||  CreatePostStore.gallery.description.trim().length == 0) {
+                CreatePostStore.gallery.description = CreatePostStore.gallery.description.trim()
+                alert('Post description cannot be blank');
               } else {
                 CreatePostStore.gallery.unselectTag();
                 ShareStore.reset();

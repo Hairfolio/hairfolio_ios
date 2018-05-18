@@ -200,7 +200,10 @@ export default class Comments extends PureComponent {
     return (
       <View style={{flex: 1}}>
         <BlackHeader
-          onLeft={() => this.props.navigator.pop({ animated: true })}
+          onLeft={() => {
+            this.props.navigator.pop({ animated: true })
+            this.props.navigator.pop({ animated: true })
+          }}
           title='Comments'/>
         <Content />
         <CommentInput store={store}/>

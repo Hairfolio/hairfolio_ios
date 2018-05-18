@@ -120,9 +120,15 @@ export default class UserAbout extends React.Component {
 
   getBusiness() {
     if (this.props.profile.account_type === 'ambassador') {
-      return this.props.profile.brand;
+      if(this.props.profile.brand){
+        return this.props.profile.brand;
+      }
+      return '';
     } else {
-      return this.props.profile.salon;
+      if(this.props.profile.salon){
+        return this.props.profile.salon
+      }
+      return '';
     }
   }
 

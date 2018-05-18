@@ -55,7 +55,10 @@ export default class EditCustomer extends PureComponent {
     ]
   };
 
-  onNavigatorEvent(event) {
+  onNavigatorEvent(event) {   
+    if (event.id == 'didDisappear') {
+      this.props.navigator.pop({animated: true})
+    }
     if (event.type == 'NavBarButtonPress') {
       if (event.id == 'cancel') {
         this.props.navigator.pop({
@@ -68,6 +71,7 @@ export default class EditCustomer extends PureComponent {
   }
 
   _save = () => {
+    this.setState({submitting: false});
     if (this.checkErrors()) {
       this.refs.ebc.error('Invalid information');
       return;
@@ -88,13 +92,14 @@ export default class EditCustomer extends PureComponent {
       }
     }
     formData['business'] = business;
-    this.setState({'submitting': true});
+    // this.setState({'submitting': true});
     UserStore.editUser(formData, UserStore.user.account_type)
       .then((r) => {
         this.setState({submitting: false});
         return r;
       })
       .catch((e) => {
+        this.setState({submitting: false});
         this.refs.ebc.error(e);
       });
   }
@@ -455,6 +460,7 @@ export default class EditCustomer extends PureComponent {
 
   render() {
     var isLoading = this.state.submitting || utils.isLoading(CloudinaryStore.cloudinaryStates.get('edit-user-pick'));
+    console.log('isLoading'+isLoading);
     const userProfileUri = utils.getUserProfilePicURI(UserStore.user, EnvironmentStore.getEnv());
     console.log("userProfileUri ==>")
       console.log(JSON.stringify(userProfileUri))
@@ -473,7 +479,7 @@ export default class EditCustomer extends PureComponent {
             alignSelf: 'center'
           }}>
             <PictureInput
-              disabled={isLoading}
+              disabled={false}
               emptyStatePictureURI={userProfileUri}
               getPictureURIFromValue={(value) => {
                 return utils.getCloudinaryPicFromId(value, EnvironmentStore.getEnv());

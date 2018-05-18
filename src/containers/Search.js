@@ -111,7 +111,7 @@ export default class Search extends PureComponent {
         this.props.navigator.toggleTabs({
           to: 'shown',
         });
-        break;
+        break;        
       default:
         break;
     }

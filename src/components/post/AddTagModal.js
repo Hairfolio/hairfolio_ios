@@ -124,6 +124,7 @@ const Header = observer(({store}) => {
         }}
         returnKeyType='search'
         value={store.searchTerm}
+        maxLength={30}
         onChangeText={v => store.searchTerm = v}
         placeholder='Search Tag'
       />

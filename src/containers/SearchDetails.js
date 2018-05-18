@@ -73,11 +73,23 @@ const SampleActions = observer(() => {
 export default class SearchDetails extends PureComponent {
   constructor(props) {
     super(props);
+    this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
     StatusBar.setBarStyle('light-content')
     if (SearchDetailsStore.dontReset) {
       // SearchDetailsStore.dontReset = true;
     } else {
       SearchDetailsStore.reset();
+    }
+  }
+
+  onNavigatorEvent(event) {
+    console.log("event ==>"+event.id)
+    switch(event.id) {      
+        case 'didDisappear':
+        // this.props.navigator.pop({animated: true})
+        break;
+      default:
+        break;
     }
   }
 
@@ -88,6 +100,12 @@ export default class SearchDetails extends PureComponent {
       setTimeout(() => SearchDetailsStore.input.focus());
     }
   }
+
+  componentWillUnmount(){
+    this.props.navigator.pop({animated: true})
+  }
+
+  
 
   render() {
     return (

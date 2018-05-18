@@ -29,7 +29,14 @@ export default class BasicInfo extends PureComponent {
     detailFields: React.PropTypes.array.isRequired,
   };
 
-  state = {};
+  state = {
+    f_name:null,
+    l_name:null,
+    salon_name:null,
+    brand_name:null,
+    email:null,
+    pass:null
+  };
 
   constructor(props) {
     super(props);
@@ -64,7 +71,24 @@ export default class BasicInfo extends PureComponent {
           animationStyle: 'fade',
         });
       } else if (event.id == 'next') {
-        if (!this.checkErrors()) {
+        var value = this.getFormValue();
+        console.log('BEFORE VALUE ==>'+JSON.stringify(value));
+        if(value.first_name)
+          value.first_name = value.first_name.trim();
+        if(value.last_name)
+          value.last_name = value.last_name.trim();
+        if(value.business){
+          if(value.business.name){
+            value.business.name = value.business.name.trim();
+          }
+        }
+        if(value.email)
+          value.email = value.email.trim();
+        if(value.password)
+          value.password = value.password.trim();
+        console.log('AFTER VALUE ==>'+JSON.stringify(value));
+        this.setFormValue(value);
+        if (this.checkErrors()) {
           var value = this.getFormValue();
           value['password_confirmation'] = value.password;
           UserStore.signUpWithEmail(value, this.props.accountType)
@@ -201,7 +225,12 @@ export default class BasicInfo extends PureComponent {
                 }}
                 placeholder={placeholder}
                 ref={(r) => this.addFormItem(r, ppte)}
-                validation={(v) => !!v}
+                validation={(v) => !!v}    
+                onChangeText={(value)=>{
+                  this.setState({value})
+                  // ppte = value
+                }}
+
               />
               <View style={{height: StyleSheet.hairlineWidth}} />
             </View>
@@ -217,6 +246,10 @@ export default class BasicInfo extends PureComponent {
             placeholder="Email"
             ref={(r) => this.addFormItem(r, 'email')}
             validation={(v) => !!v && validator.isEmail(v)}
+            value={this.state.email}
+            onChangeText={(value)=>{
+              this.setState({ email : value })
+            }}
           />
           <View style={{height: StyleSheet.hairlineWidth}} />
           <InlineTextInput
@@ -230,6 +263,10 @@ export default class BasicInfo extends PureComponent {
             ref={(r) => this.addFormItem(r, 'password')}
             secureTextEntry
             validation={(v) => !!v && validator.isLength(v, {min: 6})}
+            value={this.state.pass}
+            onChangeText={(value)=>{
+              this.setState({ pass : value })
+            }}
           />
         </KeyboardAwareScrollView>
       </BannerErrorContainer>

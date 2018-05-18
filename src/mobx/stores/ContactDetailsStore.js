@@ -131,7 +131,7 @@ class ContactDetailsStore {
       if (e.phone_type == 'mobile') {
         this.phoneMobile = e.number;
       } else if (e.phone_type == 'home') {
-        this.phoneMobile = e.number;
+        this.phoneHome = e.number;
       } else if (e.phone_type == 'work') {
         this.phoneWork = e.number;
       }
@@ -290,15 +290,24 @@ class ContactDetailsStore {
 
     } else if (this.mode == 'edit') {
       this.mode = 'view';
-      if (this.firstName.length == 0 || this.lastName.length == 0) {
-        alert('Please Fill in a first and lastName');
+      if (this.firstName.length == 0) {
+        alert('Please Fill in a firstName');
+        return;
+      }
+      if (this.lastName.length == 0) {
+        alert('Please Fill in a lastName');
         return;
       }
       let data = this.createData();
       let res = await ServiceBackend.put(`contacts/${this.id}`, {contact: data});
+      navigator.pop({ animated: true })
     } else {
-      if (this.firstName.length == 0 || this.lastName.length == 0) {
-        alert('Please Fill in a first and lastName');
+      if (this.firstName.length == 0) {
+        alert('Please Fill in a firstName');
+        return;
+      }
+      if (this.lastName.length == 0) {
+        alert('Please Fill in a lastName');
         return;
       }
       let data = this.createData();

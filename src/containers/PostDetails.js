@@ -15,7 +15,9 @@ import {STATUSBAR_HEIGHT, POST_INPUT_MODE} from '../constants';
 import LoadingScreen from '../components/LoadingScreen';
 import BlackHeader from '../components/BlackHeader';
 import PostDetailsContent from '../components/feed/PostDetailsContent';
-
+import ServiceBackend from '../backend/ServiceBackend';
+import PostDetailStore from '../mobx/stores/PostDetailStore';
+let postDetails;
 @observer
 export default class PostDetails extends PureComponent {
   static navigatorStyle = {
@@ -30,6 +32,13 @@ export default class PostDetails extends PureComponent {
     StatusBar.setBarStyle('light-content');
   }
 
+  componentDidMount(props) {
+    this.props.navigator.setOnNavigatorEvent((e) => {
+      this.onNavigatorEvent(e);
+    });
+    this.callApi();
+  }
+
   onNavigatorEvent(event) {
     switch(event.id) {
       case 'willDisappear':
@@ -37,9 +46,22 @@ export default class PostDetails extends PureComponent {
           to: 'shown',
         });
         break;
+      case 'willAppear':
+        // alert("hi")
+        this.callApi();
+        break;
       default:
         break;
     }
+  }
+
+  async callApi(){
+    // let store = PostDetailStore.currentStore;
+    // console.log("")
+    let store = PostDetailStore.currentStore;
+    postDetails = await ServiceBackend.get(`posts/${store.post.id}`);
+    // console.log('postDetails==>'+JSON.stringify(postDetails))
+    // alert('postDetails==>'+postDetails)
   }
 
   render() {
@@ -47,7 +69,7 @@ export default class PostDetails extends PureComponent {
       <View style={{
         flex: 1,
       }}>
-        <PostDetailsContent navigator={this.props.navigator} />
+      <PostDetailsContent navigator={this.props.navigator} value={postDetails}/>
       </View>
     );
   }

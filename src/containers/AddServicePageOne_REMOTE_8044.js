@@ -179,7 +179,7 @@ export default class AddServicePageOne extends Component {
                   AddServiceStore.save(data);
                 }
               } else {
-                alert('Please select all the fields first');
+                alert('Please fill out all the fields first');
               }
             }}
           />

@@ -29,6 +29,7 @@ import { NativeModules } from 'react-native';
 import PostDetailStore from '../../mobx/stores/PostDetailStore';
 const KDSocialShare = NativeModules.KDSocialShare;
 import NavigatorStyles from '../../common/NavigatorStyles';
+import UserStore from '../../mobx/stores/UserStore';
 
 const PostActionButtons = observer(({post, navigator}) => {
 
@@ -56,159 +57,309 @@ const PostActionButtons = observer(({post, navigator}) => {
       }
     });
   }
+  
+  var isDifferentUser = true;
 
-  return (
-    <View
-      style={{
-        height: h(100),
-        flexDirection: 'row',
-        paddingLeft: h(31),
-        alignItems: 'center',
-        borderBottomWidth: h(2),
-        borderBottomColor: '#C1C1C1'
-      }}
-    >
-      <TouchableOpacity
-        onPress={() => {
-          StarGiversStore.load(post.id);
-          navigator.push({
-            screen: 'hairfolio.StarGivers',
-            navigatorStyle: NavigatorStyles.tab,
-          });
-        }}
+  var user = UserStore.user;
+  if(user.id === post.creator.id){
+    isDifferentUser = false;
+  }
+
+  if(isDifferentUser){
+
+    return (
+      <View
         style={{
+          height: h(100),
           flexDirection: 'row',
-          marginRight: h(50)
+          paddingLeft: h(31),
+          alignItems: 'center',
+          borderBottomWidth: h(2),
+          borderBottomColor: '#C1C1C1'
         }}
       >
-        <Image
-          style={{
-            height: h(40),
-            width: h(43),
-            marginRight: h(15)
-          }}
-          source={post.starImageSource} />
-        <Text
-          style={{
-            fontSize: h(30),
-            fontFamily: FONTS.LIGHT,
-            color: '#BABABA'
-          }}
-        >
-          {post.starNumber}
-        </Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        onPress={() => {
-          CommentsStore.jump(post.id, navigator);
-        }}
-
-        style={{
-          flexDirection: 'row',
-          marginRight: h(50)
-        }}
-      >
-        <Image
-          style={{
-            height: h(39),
-            width: h(51),
-            marginRight: h(15),
-            marginTop: h(3)
-          }}
-          source={require('img/feed_comments.png')} />
-        <Text
-          style={{
-            fontSize: h(30),
-            fontFamily: FONTS.LIGHT,
-            color: '#BABABA'
-          }}
-        >
-          {post.numberOfComments}
-        </Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        style={{
-          flexDirection: 'row',
-          marginRight: h(25)
-        }}
-        onPress={ () => {
-
-          PostDetailStore.jump(
-            true,
-            post,
-            navigator,
-          );
-        }}
-      >
-        <Image
-          style={{
-            height: h(38),
-            width: h(38),
-            marginRight: h(15),
-            marginTop: h(3)
-          }}
-          source={require('img/feed_tags.png')} />
-        <Text
-          style={{
-            fontSize: h(30),
-            fontFamily: FONTS.LIGHT,
-            color: '#BABABA'
-          }}
-        >
-          {post.numberOfTags}
-        </Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        onPress={
-          () => {
-            WriteMessageStore.navigator = navigator;
-            WriteMessageStore.mode = 'POST';
-            WriteMessageStore.post = post;
+        <TouchableOpacity
+          onPress={() => {
+            StarGiversStore.load(post.id);
             navigator.push({
-              screen: 'hairfolio.WriteMessage',
-              navigatorStyle: NavigatorStyles.basicInfo,
-              title: WriteMessageStore.title,
+              screen: 'hairfolio.StarGivers',
+              navigatorStyle: NavigatorStyles.tab,
             });
+          }}
+          style={{
+            flexDirection: 'row',
+            marginRight: h(50)
+          }}
+        >
+          <Image
+            style={{
+              height: h(40),
+              width: h(43),
+              marginRight: h(15)
+            }}
+            source={post.starImageSource} />
+          <Text
+            style={{
+              fontSize: h(30),
+              fontFamily: FONTS.LIGHT,
+              color: '#BABABA'
+            }}
+          >
+            {post.starNumber}
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            CommentsStore.jump(post.id, navigator);
+          }}
+  
+          style={{
+            flexDirection: 'row',
+            marginRight: h(50)
+          }}
+        >
+          <Image
+            style={{
+              height: h(39),
+              width: h(51),
+              marginRight: h(15),
+              marginTop: h(3)
+            }}
+            source={require('img/feed_comments.png')} />
+          <Text
+            style={{
+              fontSize: h(30),
+              fontFamily: FONTS.LIGHT,
+              color: '#BABABA'
+            }}
+          >
+            {post.numberOfComments}
+          </Text>
+        </TouchableOpacity>
+  
+        <TouchableOpacity
+          style={{
+            flexDirection: 'row',
+            marginRight: h(25)
+          }}
+          onPress={ () => {
+  
+            PostDetailStore.jump(
+              true,
+              post,
+              navigator,
+            );
+          }}
+        >
+          <Image
+            style={{
+              height: h(38),
+              width: h(38),
+              marginRight: h(15),
+              marginTop: h(3)
+            }}
+            source={require('img/feed_tags.png')} />
+          <Text
+            style={{
+              fontSize: h(30),
+              fontFamily: FONTS.LIGHT,
+              color: '#BABABA'
+            }}
+          >
+            {post.numberOfTags}
+          </Text>
+        </TouchableOpacity>
+  
+        <TouchableOpacity
+          onPress={
+            () => {
+              WriteMessageStore.navigator = navigator;
+              WriteMessageStore.mode = 'POST';
+              WriteMessageStore.post = post;
+              navigator.push({
+                screen: 'hairfolio.WriteMessage',
+                navigatorStyle: NavigatorStyles.basicInfo,
+                title: WriteMessageStore.title,
+              });
+            }
           }
-        }
+          style={{
+            flexDirection: 'row',
+            flex: 1,
+            paddingLeft: h(25),
+            height: h(100),
+            alignItems: 'center'
+          }}
+        >
+          <Image
+            style={{
+              height: h(26),
+              width: h(46),
+            }}
+            source={require('img/feed_share.png')} />
+        </TouchableOpacity>
+
+
+          <TouchableOpacity
+            onPress={openMore}
+            style={{
+              flexDirection: 'row',
+              paddingLeft: h(15),
+              paddingRight: h(31),
+              height: h(100),
+              alignItems: 'center'
+            }}
+          >
+            <Image
+              style={{
+                height: h(13),
+                width: h(59)
+              }}
+              source={require('img/feed_more.png')} />
+          </TouchableOpacity>
+
+      </View>
+  
+    );
+
+  }else{
+    return (
+      <View
         style={{
-          flexDirection: 'row',
-          flex: 1,
-          paddingLeft: h(25),
           height: h(100),
-          alignItems: 'center'
+          flexDirection: 'row',
+          paddingLeft: h(31),
+          alignItems: 'center',
+          borderBottomWidth: h(2),
+          borderBottomColor: '#C1C1C1'
         }}
       >
-        <Image
-          style={{
-            height: h(26),
-            width: h(46),
+        <TouchableOpacity
+          onPress={() => {
+            StarGiversStore.load(post.id);
+            navigator.push({
+              screen: 'hairfolio.StarGivers',
+              navigatorStyle: NavigatorStyles.tab,
+            });
           }}
-          source={require('img/feed_share.png')} />
-      </TouchableOpacity>
-      <TouchableOpacity
-        onPress={openMore}
-        style={{
-          flexDirection: 'row',
-          paddingLeft: h(15),
-          paddingRight: h(31),
-          height: h(100),
-          alignItems: 'center'
-        }}
-      >
-        <Image
           style={{
-            height: h(13),
-            width: h(59)
+            flexDirection: 'row',
+            marginRight: h(50)
           }}
-          source={require('img/feed_more.png')} />
-      </TouchableOpacity>
+        >
+          <Image
+            style={{
+              height: h(40),
+              width: h(43),
+              marginRight: h(15)
+            }}
+            source={post.starImageSource} />
+          <Text
+            style={{
+              fontSize: h(30),
+              fontFamily: FONTS.LIGHT,
+              color: '#BABABA'
+            }}
+          >
+            {post.starNumber}
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            CommentsStore.jump(post.id, navigator);
+          }}
+  
+          style={{
+            flexDirection: 'row',
+            marginRight: h(50)
+          }}
+        >
+          <Image
+            style={{
+              height: h(39),
+              width: h(51),
+              marginRight: h(15),
+              marginTop: h(3)
+            }}
+            source={require('img/feed_comments.png')} />
+          <Text
+            style={{
+              fontSize: h(30),
+              fontFamily: FONTS.LIGHT,
+              color: '#BABABA'
+            }}
+          >
+            {post.numberOfComments}
+          </Text>
+        </TouchableOpacity>
+  
+        <TouchableOpacity
+          style={{
+            flexDirection: 'row',
+            marginRight: h(25)
+          }}
+          onPress={ () => {
+  
+            PostDetailStore.jump(
+              true,
+              post,
+              navigator,
+            );
+          }}
+        >
+          <Image
+            style={{
+              height: h(38),
+              width: h(38),
+              marginRight: h(15),
+              marginTop: h(3)
+            }}
+            source={require('img/feed_tags.png')} />
+          <Text
+            style={{
+              fontSize: h(30),
+              fontFamily: FONTS.LIGHT,
+              color: '#BABABA'
+            }}
+          >
+            {post.numberOfTags}
+          </Text>
+        </TouchableOpacity>
+  
+        <TouchableOpacity
+          onPress={
+            () => {
+              WriteMessageStore.navigator = navigator;
+              WriteMessageStore.mode = 'POST';
+              WriteMessageStore.post = post;
+              navigator.push({
+                screen: 'hairfolio.WriteMessage',
+                navigatorStyle: NavigatorStyles.basicInfo,
+                title: WriteMessageStore.title,
+              });
+            }
+          }
+          style={{
+            flexDirection: 'row',
+            flex: 1,
+            paddingLeft: h(25),
+            height: h(100),
+            alignItems: 'center'
+          }}
+        >
+          <Image
+            style={{
+              height: h(26),
+              width: h(46),
+            }}
+            source={require('img/feed_share.png')} />
+        </TouchableOpacity>        
+      </View>
+  
+    );
+  }
 
-    </View>
-
-  );
+  
 });
 
 

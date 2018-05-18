@@ -20,6 +20,7 @@ import {
   ActivityIndicator,
   PickerIOS, Picker, StatusBar, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet
 } from 'Hairfolio/src/helpers';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 let LoadingPage = (Class, store, props) => observer(() => {
 
@@ -33,6 +34,7 @@ let LoadingPage = (Class, store, props) => observer(() => {
 
   if (store.isEmpty) {
     return (
+      <KeyboardAwareScrollView>
       <View style={{flex: 1}}>
         <Text
           style= {{
@@ -45,9 +47,10 @@ let LoadingPage = (Class, store, props) => observer(() => {
           {store.noElementsText}
         </Text>
       </View>
+      </KeyboardAwareScrollView>
     );
   } else {
-    return  <Class store={store} {...props} />
+    return   <KeyboardAwareScrollView><Class store={store} {...props} /></KeyboardAwareScrollView>
   }
 })
 

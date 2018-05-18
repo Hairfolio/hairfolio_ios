@@ -281,7 +281,7 @@ const MessageInput = observer(() => {
         onPress={
           () => {
 
-            StatusBar.setHidden(true);
+            // StatusBar.setHidden(true);
 
             ImagePicker.showImagePicker({
               title: 'Select Photo or Video',
@@ -292,7 +292,7 @@ const MessageInput = observer(() => {
               noData: true,
               allowsEditing: true
             }, (response) => {
-              StatusBar.setHidden(false);
+              // StatusBar.setHidden(false);
               if (response.error) {
                 alert(response.error);
               }
@@ -343,9 +343,10 @@ const MessageInput = observer(() => {
       />
 
     <TouchableOpacity
+      disabled={(store.inputText.length > 0) ? false : true }
       onPress={
         () => {
-          store.sendText();
+          store.sendText();        
         }
       }
 

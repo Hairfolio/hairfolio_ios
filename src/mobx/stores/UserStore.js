@@ -387,10 +387,19 @@ class UserStore {
       type = 'ambassador'
     } else if (type == 'salon') {
       let name = value['business_name'];
+      
+      if(value.salon_attributes){
+        value.salon_attributes = {
+          name: name
+        };
+
+      }else{
+        value.salon = {
+          name: name
+        };
+      }
       delete value.business_name;
-      value.salon_attributes = {
-        name: name
-      };
+     
       type = 'owner'
     }
     try {

@@ -1,6 +1,7 @@
 import React from 'react';
 import { ScrollView } from 'react-native';
 import EventEmitter from 'EventEmitter';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 export default class WrappingScrollView extends React.Component {
 
@@ -35,7 +36,7 @@ export default class WrappingScrollView extends React.Component {
   }
 
   render() {
-    return (<ScrollView
+    return (<KeyboardAwareScrollView
       {...this.props}
       onContentSize={(...args) => {
         if (this.props.onContentSize) {
@@ -60,6 +61,6 @@ export default class WrappingScrollView extends React.Component {
       scrollEventThrottle={128}
     >
       {this.props.children}
-    </ScrollView>);
+    </KeyboardAwareScrollView>);
   }
 };

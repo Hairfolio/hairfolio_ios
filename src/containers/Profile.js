@@ -50,11 +50,30 @@ export default class Profile extends React.Component {
       };
     }
     this.userId = this.props.userId || this.state.user.id;
+    // this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
     this.unsuscribeNavEvent = this.props.navigator.addOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+    
   }
 
   showLog(msg){
     console.log(msg)
+  }
+
+  onNavigatorEvent(event) {
+    switch(event.id) {
+      case 'willAppear':
+      this.props.navigator.popToRoot({
+        animated: true, // does the popToRoot have transition animation or does it happen immediately (optional)
+        animationType: 'fade', // 'fade' (for both) / 'slide-horizontal' (for android) does the popToRoot have different transition animation (optional)
+      });
+        
+        this.props.navigator.toggleTabs({
+          to: 'shown',
+        });
+        break;        
+      default:
+        break;
+    }
   }
 
   componentWillMount() {
@@ -121,12 +140,20 @@ export default class Profile extends React.Component {
   }
 
   getName() {
+    console.log("getname ==>"+JSON.stringify(this.state.user))
     if (this.state.user.account_type == 'ambassador') {
-      return this.state.user.brand.name;
+      if(this.state.user.brand){
+        return this.state.user.brand.name;
+      }
+      return '';
+      
     }
 
     if (this.state.user.account_type == 'owner') {
-      return this.state.user.salon.name;
+      if(this.state.user.salon){
+        return this.state.user.salon.name;
+      }
+      return '';
     }
 
     return `${this.state.user.first_name} ${this.state.user.last_name}`;

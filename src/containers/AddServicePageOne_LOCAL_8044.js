@@ -109,11 +109,6 @@ const BoxSelector = observer(({selector}) => {
 @observer
 @autobind
 export default class AddServicePageOne extends Component {
-
-  constructor(props) {
-    super(props);   
-  }
-  
   render() {
     let store = AddServiceStore;
     let content = <View />;
@@ -133,7 +128,7 @@ export default class AddServicePageOne extends Component {
             titleWidth={140}
             leftText='Back'
             onLeft={() => {
-              this.props.navigator.dismissModal({ animationType: 'slide-down' });
+              this.props.navigator.pop({ animated: true });
             }}
             title='Add Service (1/3)'
             titleStyle={{fontFamily: FONTS.SF_MEDIUM}}

@@ -24,7 +24,24 @@ import TagPostStore from '../../mobx/stores/TagPostStore';
 import CommentsStore from '../../mobx/stores/CommentsStore';
 import EnvironmentStore from '../../mobx/stores/EnvironmentStore';
 import UserStore from '../../mobx/stores/UserStore';
-const PostHeader = observer(({post, navigator}) => {
+const PostHeader = observer(({post, navigator}) => {  
+  // console.log("User ==>"+JSON.stringify(UserStore.user))
+  // console.log("HEADER ==>"+JSON.stringify(post))
+  var user = UserStore.user;
+
+  if(user.id == post.creator.id){
+    if(user.account_type == "owner"){
+      if(user.salon){
+        if(user.first_name && user.last_name){
+          
+        }else{
+          post.creator.name = user.salon.name;
+        }
+      }
+    }
+
+  }
+  
   return (
     <TouchableWithoutFeedback
       onPress={() => {

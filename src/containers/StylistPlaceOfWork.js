@@ -65,8 +65,8 @@ export default class StylistPlaceOfWork extends React.Component {
       if (event.id == 'done') {
         // alert(JSON.stringify(this.state));
         if (this.state.selected) {
-          console.log(this.state.selected)
-          const formData = { salon_user_id: this.state.selected };
+          console.log("state ==>"+JSON.stringify(this.state.selected))
+          const formData = { salon_attributes: this.state.selected };
          
           UserStore.editUser(formData, UserStore.user.account_type)
           .then((res) => {
@@ -84,29 +84,28 @@ export default class StylistPlaceOfWork extends React.Component {
     }
   }
 
-  // getValue() {
-  //   var value = this.getFormValue();
-  //   return !_.isEmpty(value) ? value : null;
-  // }
+  getValue() {
+    var value = this.getFormValue();
+    return !_.isEmpty(value) ? value : null;
+  }
 
-  // setValue(value = {}) {
+  setValue(value = {}) {
+    if (value == null) {
+      value = {};
+    }
 
-  //   if (value == null) {
-  //     value = {};
-  //   }
+    this.setFormValue({
+      ...value,
+      'salon_user_id': value.salon_user_id || -1
+    });
+    this.setState({
+      selected: value.salon_user_id
+    });
+  }
 
-  //   this.setFormValue({
-  //     ...value,
-  //     'salon_user_id': value.salon_user_id || -1
-  //   });
-  //   this.setState({
-  //     selected: value.salon_user_id
-  //   });
-  // }
-
-  // clear() {
-  //   this.clearValues();
-  // }
+  clear() {
+    this.clearValues();
+  }
 
   @debounce
   fetchAutocompleteList(value) {
@@ -351,7 +350,14 @@ export default class StylistPlaceOfWork extends React.Component {
                 ref={(r) => this.addFormItem(r, 'state')}
                 validation={(v) => !!v}
                 valueProperty="abbreviation"
-              // selected={this.state.selected.state}
+                // selected={this.state.selected.state}
+                onValueChange={(value) => {
+                  if(this.state.selected){
+                    var temp = this.state.selected;
+                    temp.state = value;
+                    this.setState({ selected: temp });
+                }
+              }}
               />
             </View>
             <View style={{ width: StyleSheet.hairlineWidth }} />

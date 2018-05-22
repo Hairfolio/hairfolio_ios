@@ -84,12 +84,13 @@ export default class SalonAddSP extends PureComponent {
             return;
           }
           
+          console.log("on submit ==>"+JSON.stringify(this.getFormValue()))
 
         this.setState({'submitting': true});
 
         var action = this.state.editing === false ?
           OfferingStore.addOffering(this.getFormValue()) :
-          OfferingStore.editOffering(this.state.editing.get('id'), this.getFormValue());
+          OfferingStore.editOffering(this.state.editing.id, this.getFormValue());
         action
           .then((r) => {
             setTimeout(()=>{
@@ -132,7 +133,7 @@ export default class SalonAddSP extends PureComponent {
         this.setFormValue({
           'category_id': sp.category.id,
           'service_id': sp.service.id,
-          'price': sp
+          'price': sp.price
         });
 
         this.setState({
@@ -223,15 +224,7 @@ export default class SalonAddSP extends PureComponent {
                 keyboardType="numeric"
                 placeholder="Price"
                 ref={(r) => this.addFormItem(r, 'price')}
-                validation={(v) => !!v}
-                onChangeText={
-                  (value)=>{
-                    this.setState({
-                      servicePrice:value
-                    })
-                  }
-                }
-                value={this.state.servicePrice}
+                validation={(v) => !!v}                
               />               
 
               <View style={{height: 30}} />

@@ -59,54 +59,58 @@ class UserStore {
 
   @action editUser(values = {}, type) {
     this.userState = LOADING;
-    if (values.experience_ids) {
-      values.experience_ids = values.experience_ids;
-    } else {
-      values.experience_ids = [];
-    }
-    if (values.certificate_ids) {
-      values.certificate_ids = values.certificate_ids;
-    } else {
-      values.certificate_ids = [];
-    }
-    if (values.business) {
-      if (type == 'ambassador') {
-        let brand = {};
-        _.each(values.business, (v, key) => brand[`${key}`] = v);
-        delete values.business;
-        values.brand_attributes = brand;
+    // if (values.experience_ids) {
+    //   values.experience_ids = values.experience_ids;
+    // } else {
+    //   values.experience_ids = [];
+    // }
+    // if (values.certificate_ids) {
+    //   values.certificate_ids = values.certificate_ids;
+    // } else {
+    //   values.certificate_ids = [];
+    // }
+    // if (values.business) {
+    //   if (type == 'ambassador') {
+    //     let brand = {};
+    //     _.each(values.business, (v, key) => brand[`${key}`] = v);
+    //     delete values.business;
+    //     values.brand_attributes = brand;
 
-        // delete brand  attributes if they don't have a value
-        if (values.brand_attributes && (!values.brand_attributes.name || values.brand_attributes.name == '')) {
-          delete values.brand_attributes;
-        }
-      } else {
-        let salon = {};
-        _.each(values.business, (v, key) => salon[`${key}`] = v);
-        delete values.business;
-        values.salon_attributes = salon;
+    //     // delete brand  attributes if they don't have a value
+    //     if (values.brand_attributes && (!values.brand_attributes.name || values.brand_attributes.name == '')) {
+    //       delete values.brand_attributes;
+    //     }
+    //   } else {
+    //     let salon = {};
+    //     _.each(values.business, (v, key) => salon[`${key}`] = v);
+    //     delete values.business;
+    //     values.salon_attributes = salon;
 
-        // delete salon attributes if they don't have a value
-        if (values.salon_attributes && (!values.salon_attributes.name || values.salon_attributes.name == '')) {
-          delete values.salon_attributes;
-        }
-      }
-    }
-    values['salon_user_id'] = values['business_salon_user_id'];
-    delete values['business_salon_user_id'];
-    if (values['salon_user_id'] === -1) {
-      values['salon_user_id'] = null;
-    }
+    //     // delete salon attributes if they don't have a value
+    //     if (values.salon_attributes && (!values.salon_attributes.name || values.salon_attributes.name == '')) {
+    //       delete values.salon_attributes;
+    //     }
+    //   }
+    // }
+    // values['salon_attributes'] = values['business_salon_user_id'];
+    // delete values['business_salon_user_id'];
+    // if (values['salon_user_id'] === -1) {
+    //   values['salon_user_id'] = null;
+    // }
     if (_.isEmpty(values)) {
       this.userState = READY;
     } else {
       try {
-        var user = values;
-        var body = _.pick(values, ['experience_ids', 'certificate_ids']);
-        if(!_.isEmpty(user)) {
-          body.user = user;
-        }
-        return ServiceBackend.patch(`/users/${this.user.id})}`, body)
+        // alert(JSON.stringify(values));
+        // var user = values;
+        // console.log("USER121212=>"+JSON.stringify(values));
+        // var body = _.pick(values, ['experience_ids', 'certificate_ids']);
+        var body = {"user" : values};
+        console.log("BODY 106"+JSON.stringify(body));
+        // if(!_.isEmpty(user)) {
+        //   body.user = user;
+        // }
+        return ServiceBackend.put(`/users/${this.user.id})}`, body)
           .then(res => {
             this.user = {
               ...this.user,
@@ -451,13 +455,18 @@ class UserStore {
     }
   }
 
-  @action async destroy() {
-    ServiceBackend.delete(`/users/${this.user.id}`)
-        .catch(e => console.log(e));
-    this.user = {
-      educations: [],
-      offerings: [],
-    };
+  @action async destroy(id) {
+    console.log("TEST USER"+id)
+    ServiceBackend.delete(`/users/${id}`)
+        .response(r => {
+          FeedStore.reset();
+          UserStore.logout();  
+        })
+        .catch(e => console.log("error"+e));
+    // this.user = {
+    //   educations: [],
+    //   offerings: [],
+    // };
     this.userState = EMPTY;
     this.followingStates = observable.map();
   }

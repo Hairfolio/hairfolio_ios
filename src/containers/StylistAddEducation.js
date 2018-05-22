@@ -84,14 +84,16 @@ export default class StylistAddEducation extends React.Component {
   setEditing(education) {
     if (this.state.editing !== education)
       EnvironmentStore.getDegrees().then(() => {
-        this.setState({
-          schoolName:education.name,
-          websiteName:education.website
-        })
+        // this.setState({
+        //   schoolName:education.name,
+        //   websiteName:education.website
+        // })
         this.setFormValue({
+          'name':education.name,
           'year_from': education.year_from.toString(),
           'year_to': education.year_to.toString(),
-          'degree_id': education.degree.id
+          'degree_id': education.degree.id,
+          'website':education.website
         });
         // this.setFormValue({
         //   ...education.toJS(),
@@ -140,12 +142,13 @@ export default class StylistAddEducation extends React.Component {
         return;
       }
       
+      console.log("on submit ==>"+JSON.stringify(this.getFormValue()))
 
     this.setState({'submitting': true});
 
     var action = this.state.editing === false ?
       EducationStore.addEducation(this.getFormValue()) :
-      EducationStore.editEducation(this.state.editing.id, this.getFormValue().education);
+      EducationStore.editEducation(this.state.editing.id, this.getFormValue());
     action
       .then((r) => {           
         this.setState({submitting: false});
@@ -198,15 +201,7 @@ export default class StylistAddEducation extends React.Component {
                 autoCorrect={false}
                 placeholder="School Name"
                 ref={(r) => this.addFormItem(r, 'name')}
-                validation={(v) => !!v}
-                value={this.state.schoolName}
-                onChangeText={
-                  (value)=>{
-                    this.setState({
-                      schoolName:value
-                    })
-                  }
-                }
+                validation={(v) => !!v}                
               />
               <View style={{height: StyleSheet.hairlineWidth}} />
               <View style={{
@@ -257,14 +252,7 @@ export default class StylistAddEducation extends React.Component {
                 placeholder="Website"
                 ref={(r) => this.addFormItem(r, 'website')}
                 validation={(v) => !!v}
-                value={this.state.websiteName}
-                onChangeText={
-                  (value)=>{
-                    this.setState({
-                      websiteName:value
-                    })
-                  }
-                }
+                
               />
 
               <View style={{height: 30}} />

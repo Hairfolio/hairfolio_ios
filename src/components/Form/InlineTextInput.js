@@ -77,7 +77,7 @@ export default class FormInlineTextInput extends React.Component {
           color: this.state.error ? COLORS.RED : COLORS.DARK
         }}
         underlineColorAndroid="transparent"
-        value={this.props.value}
+        value={this.state.value}
       />
       {this.props.help &&
         <View style={{

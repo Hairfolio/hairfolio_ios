@@ -57,7 +57,7 @@ export default class EditCustomer extends PureComponent {
 
   onNavigatorEvent(event) {   
     if (event.id == 'didDisappear') {
-      this.props.navigator.pop({animated: true})
+      // this.props.navigator.pop({animated: true})
     }
     if (event.type == 'NavBarButtonPress') {
       if (event.id == 'cancel') {
@@ -579,9 +579,9 @@ export default class EditCustomer extends PureComponent {
           <DeleteButton
             label="DESTROY"
             onPress={() => {
+              UserStore.destroy(UserStore.user.id);
               FeedStore.reset();
               UserStore.logout();
-              UserStore.destroy();
             }}
           />
           <View style={{height: 20}} />

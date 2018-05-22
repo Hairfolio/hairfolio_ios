@@ -71,24 +71,8 @@ export default class BasicInfo extends PureComponent {
           animationStyle: 'fade',
         });
       } else if (event.id == 'next') {
-        var value = this.getFormValue();
-        console.log('BEFORE VALUE ==>'+JSON.stringify(value));
-        if(value.first_name)
-          value.first_name = value.first_name.trim();
-        if(value.last_name)
-          value.last_name = value.last_name.trim();
-        if(value.business){
-          if(value.business.name){
-            value.business.name = value.business.name.trim();
-          }
-        }
-        if(value.email)
-          value.email = value.email.trim();
-        if(value.password)
-          value.password = value.password.trim();
-        console.log('AFTER VALUE ==>'+JSON.stringify(value));
-        this.setFormValue(value);
-        if (this.checkErrors()) {
+
+        if (!this.checkErrors()) {
           var value = this.getFormValue();
           value['password_confirmation'] = value.password;
           UserStore.signUpWithEmail(value, this.props.accountType)
@@ -101,6 +85,38 @@ export default class BasicInfo extends PureComponent {
               this.refs.ebc.error(e);
             });
         }
+
+
+        // var value = this.getFormValue();
+        // console.log('BEFORE VALUE ==>'+JSON.stringify(value));
+        // if(value.first_name)
+        //   value.first_name = value.first_name.trim();
+        // if(value.last_name)
+        //   value.last_name = value.last_name.trim();
+        // if(value.business){
+        //   if(value.business.name){
+        //     value.business.name = value.business.name.trim();
+        //   }
+        // }
+        // if(value.email)
+        //   value.email = value.email.trim();
+        // if(value.password)
+        //   value.password = value.password.trim();
+        // console.log('AFTER VALUE ==>'+JSON.stringify(value));
+        // this.setFormValue(value);
+        // if (this.checkErrors()) {
+        //   var value = this.getFormValue();
+        //   value['password_confirmation'] = value.password;
+        //   UserStore.signUpWithEmail(value, this.props.accountType)
+        //     .then(() => {
+        //       this.clearValues();
+        //       this._navigateToNextStep();
+        //     })
+        //     .catch((e) => {
+        //       console.log(e);
+        //       this.refs.ebc.error(e);
+        //     });
+        // }
       }
     }
   }
@@ -226,11 +242,6 @@ export default class BasicInfo extends PureComponent {
                 placeholder={placeholder}
                 ref={(r) => this.addFormItem(r, ppte)}
                 validation={(v) => !!v}    
-                onChangeText={(value)=>{
-                  this.setState({value})
-                  // ppte = value
-                }}
-
               />
               <View style={{height: StyleSheet.hairlineWidth}} />
             </View>
@@ -245,11 +256,7 @@ export default class BasicInfo extends PureComponent {
             keyboardType="email-address"
             placeholder="Email"
             ref={(r) => this.addFormItem(r, 'email')}
-            validation={(v) => !!v && validator.isEmail(v)}
-            value={this.state.email}
-            onChangeText={(value)=>{
-              this.setState({ email : value })
-            }}
+            validation={(v) => !!v && validator.isEmail(v)}            
           />
           <View style={{height: StyleSheet.hairlineWidth}} />
           <InlineTextInput
@@ -262,11 +269,7 @@ export default class BasicInfo extends PureComponent {
             placeholder="Password"
             ref={(r) => this.addFormItem(r, 'password')}
             secureTextEntry
-            validation={(v) => !!v && validator.isLength(v, {min: 6})}
-            value={this.state.pass}
-            onChangeText={(value)=>{
-              this.setState({ pass : value })
-            }}
+            validation={(v) => !!v && validator.isLength(v, {min: 6})}            
           />
         </KeyboardAwareScrollView>
       </BannerErrorContainer>

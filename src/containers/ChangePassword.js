@@ -24,6 +24,13 @@ export default class ForgottenPassword extends PureComponent {
     confirm_pass:null,
   };
 
+  constructor(props) {
+    super(props);
+    if (this.props.navigator) {
+      this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));      
+    }
+  }
+
   static navigatorButtons = {
     leftButtons: [
       {
@@ -32,6 +39,25 @@ export default class ForgottenPassword extends PureComponent {
       }
     ],
   };
+
+  onNavigatorEvent(event) {
+
+    if(event.id == 'willAppear'){
+      this.setFormValue({
+        'old_password':'123456',
+        'new_password': '',
+        'new_password_confirmation': '',
+      });
+    }
+
+    if (event.type == 'NavBarButtonPress') {
+      if (event.id == 'back') {
+        this.props.navigator.pop({
+          animated: true,
+        });
+      } 
+    }
+  }
 
   hasValidPassword(input_val) {
     /* validation which do not allow space */
@@ -160,6 +186,8 @@ export default class ForgottenPassword extends PureComponent {
                   return;
 
                 this.setState({'submitting': true});
+
+                console.log("on submit ==>"+JSON.stringify(this.getFormValue()))
                 UserStore.changePassword(this.getFormValue())
                   .then((r) => {
                     this.setState({submitting: false});

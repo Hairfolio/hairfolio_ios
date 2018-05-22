@@ -326,7 +326,7 @@ export default class UserAbout extends React.Component {
 
   renderStylist() {
     window.profile = this.props.profile;
-    this.showLog("renderStylist ==>"+JSON.stringify(window.profile));
+    // this.showLog("renderStylist ==>"+JSON.stringify(window.profile));
     return (
       <View>
         <CollapsableContainer

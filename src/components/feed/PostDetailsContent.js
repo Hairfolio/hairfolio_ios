@@ -40,19 +40,19 @@ const PostDetailsContent = observer(({navigator}) => {
       ref={el => {value.scrollView = el}}
       scrollEventThrottle={16}
       onScroll={async (e) => {
-        const offset = e.nativeEvent.contentOffset.y;
-        const isVisible = await navigator.screenIsCurrentlyVisible()
-        if(isVisible) {
-          if (offset > 0) {
-            navigator.toggleTabs({
-              to: 'shown',
-            });
-          } else {
-            navigator.toggleTabs({
-              to: 'hidden',
-            });
-          }
-        }
+        // const offset = e.nativeEvent.contentOffset.y;
+        // const isVisible = await navigator.screenIsCurrentlyVisible()
+        // if(isVisible) {
+        //   if (offset > 0) {
+        //     navigator.toggleTabs({
+        //       to: 'shown',
+        //     });
+        //   } else {
+        //     navigator.toggleTabs({
+        //       to: 'hidden',
+        //     });
+        //   }
+        // }
       }}
     >
       <PostHeader

@@ -27,7 +27,7 @@ export default class PostDetails extends PureComponent {
   constructor(props) {
     super(props);
     this.props.navigator.toggleTabs({
-      to: 'hidden',
+      to: 'shown',
     });
     StatusBar.setBarStyle('light-content');
   }

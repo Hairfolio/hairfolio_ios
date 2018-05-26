@@ -45,7 +45,13 @@ export default class BrandInfo extends PureComponent {
       if (event.id == 'next') {
         if (!this.checkErrors()) {
           let formData = this.getFormValue();
-          formData.business.name = UserStore.user.brand.name;
+
+          if(UserStore.user.brand){
+            formData.business.name = UserStore.user.brand.name;
+          }else{
+            formData.business.name = "";
+          }
+          
 
           this.setState({'submitting': true});
           UserStore.editUser(formData, 'ambassador')

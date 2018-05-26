@@ -21,7 +21,9 @@ export default class StylistInfo extends React.Component {
 
   constructor(props) {
     super(props);
-    this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+    this.props.navigator.setOnNavigatorEvent((e) => {
+      this.onNavigatorEvent(e);
+    });
   }
 
   static navigatorButtons = {

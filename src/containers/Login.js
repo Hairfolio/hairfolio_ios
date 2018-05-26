@@ -17,6 +17,16 @@ import EnvironmentStore from '../mobx/stores/EnvironmentStore';
 import UserStore from '../mobx/stores/UserStore';
 import OAuthStore from '../mobx/stores/OAuthStore';
 import Intro from '../components/Intro';
+import ServiceBackend from '../backend/ServiceBackend';
+import App from '../App';
+var consumer_item=null;
+
+const TYPES = {
+  Consumer: 'consumer',
+  Stylist: 'stylist',
+  Salon: 'salon',
+  Brand: 'brand',
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -50,21 +60,181 @@ export default class Login extends PureComponent {
 
   constructor(props) {
     super(props);
-    reaction(
+
+     reaction(
       () => OAuthStore.token,
       () => {
         if (OAuthStore.status === READY) {
-          UserStore.loginWithInstagram(OAuthStore.token);
-          OAuthStore.reset();
+          UserStore.loginWithInstagram(OAuthStore.token).then(
+            ()=>{
+
+              console.log("Logged in user ==>"+JSON.stringify(UserStore.user))
+                    var user = UserStore.user;
+                    consumer_item = user;
+                    this._navigateToNextStep(user.account_type);    
+                    OAuthStore.reset();
+
+            },
+            (e)=>{
+              console.log("Error==>"+JSON.stringify(e))
+              OAuthStore.reset();
+            }
+          );
+          
         }
       }
-    );
+    ); 
+
+
+    /* reaction(
+      () => OAuthStore.token,
+      () => {
+        if (OAuthStore.status === READY) {
+          UserStore.loginWithInstagram(OAuthStore.token)
+            .then(() =>  {
+                    console.log("Logged in user ==>"+JSON.stringify(UserStore.user))
+                    var user = UserStore.user;
+                    consumer_item = user;
+                    this._navigateToNextStep(user.account_type);    
+              // console.log("STORE 123==>"+JSON.stringify(OAuthStore))
+              // console.log("STORE 123==>"+OAuthStore.token+" TYPE ==>"+OAuthStore.userType)
+              // this._navigateToNextStep(OAuthStore.userType);
+              OAuthStore.reset()
+            })
+            .catch(e => {
+              console.log("Error==>"+JSON.stringify(e))
+
+              // this.refs.ebc.error(e);
+              OAuthStore.reset();
+            });
+        }
+      }
+    ); */
   }
 
   componentDidMount() {
     if(this.props.sessionHasExpired) {
       alert('Session expired');
+      OAuthStore.reset();
       UserStore.setHasSessionExpired(false);
+    }
+  }
+
+  _titleForAccountType = (item) => {
+    var type = TYPES[item.label];
+    switch (type) {
+      case 'stylist':
+        return 'Stylist Account';
+      case 'brand':
+        return 'Brand Account';
+      case 'salon':
+        return 'Salon Account';
+      default:
+        return 'Consumer Account';
+    }
+  }
+
+  _propsForAccountType = (item) => {
+    var type = TYPES[item.label];
+    switch (type) {
+      case 'stylist':
+        return {
+          accountType: 'stylist',
+          detailFields: [
+            {
+              placeholder: 'First Name',
+              ppte: 'first_name'
+            },
+            {
+              placeholder: 'Last Name',
+              ppte: 'last_name'
+            }
+          ],
+        };
+      case 'brand':
+        return {
+          accountType: 'brand',
+          detailFields: [
+            {
+              placeholder: 'Brand Name',
+              ppte: 'business.name'
+            }
+          ],
+        };
+      case 'salon':
+        return {
+          accountType: 'salon',
+          detailFields: [
+            {
+              placeholder: 'Salon Name',
+              ppte: 'business.name'
+            }
+          ],
+        };
+      default:
+        return {
+          accountType: 'consumer',
+          detailFields: [
+            {
+              placeholder: 'First Name',
+              ppte: 'first_name'
+            },
+            {
+              placeholder: 'Last Name',
+              ppte: 'last_name'
+            }
+          ],
+        };
+    }
+  }
+
+  _navigateToNextStep = (type) => {
+    switch (type) {
+      case 'stylist':
+        this.props.navigator.resetTo({
+          screen: 'hairfolio.StylistInfo',
+          animationType: 'fade',
+          title: 'Professional Info',
+          navigatorStyle: NavigatorStyles.basicInfo,
+        });
+        break;
+      case 'salon':
+        this.props.navigator.resetTo({
+          screen: 'hairfolio.SalonInfo',
+          animationType: 'fade',
+          title: 'Professional Info',
+          navigatorStyle: NavigatorStyles.basicInfo,
+        });
+        break;
+      case 'brand':
+        this.props.navigator.resetTo({
+          screen: 'hairfolio.BrandInfo',
+          animationType: 'fade',
+          title: 'Professional Info',
+          navigatorStyle: NavigatorStyles.basicInfo,
+        });
+        break;
+      case 'consumer':
+
+        App.startLoggedInApplication();
+
+
+        // this.props.navigator.push({
+        //   screen: 'hairfolio.BasicInfo',
+        //   title: this._titleForAccountType(consumer_item),
+        //   passProps: this._propsForAccountType(consumer_item),
+        //   navigatorStyle: NavigatorStyles.basicInfo,
+        // });     
+      
+      // this.props.navigator.resetTo({
+      //   screen: 'hairfolio.BasicInfo',
+      //   animationType: 'fade',
+      //   title: 'Basic Info',
+      //   navigatorStyle: NavigatorStyles.basicInfo,
+      // });
+      break;
+      default:
+        break;
     }
   }
 
@@ -95,9 +265,16 @@ export default class Login extends PureComponent {
                   .then(() => AccessToken.getCurrentAccessToken())
                   .then(data => data.accessToken.toString())
                   .then(token => UserStore.loginWithFacebook(token))
-                  .catch((e) => {
-                    this.context.setBannerError(e);
-                  });
+                  .then(() => {
+                    // console.log("Logged in user ==>"+JSON.stringify(UserStore.user))
+                    var user = UserStore.user;
+                    consumer_item = user;
+                    this._navigateToNextStep(user.account_type);                    
+                  },
+                  (e) => {
+                    // alert(e)
+                    this.refs.ebc.error(e);
+                  })                  
               }}
             />
           </View>

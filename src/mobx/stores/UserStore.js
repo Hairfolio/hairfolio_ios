@@ -128,7 +128,9 @@ class UserStore {
 
   @action logout() {
     ServiceBackend.delete(`/sessions/${this.user.auth_token}`);
+    
     this.user = {
+      auth_token:null,
       educations: [],
       offerings: [],
     };
@@ -343,12 +345,12 @@ class UserStore {
           'instagram_token': token
         }
       );
-      alert(JSON.stringify(res.user))
+      // alert(JSON.stringify(res.user))
       this.user = res.user;
       await this.loadUserInformation();
       this.userState = READY;
     } catch(error) {
-      alert("ERR ==>"+error);
+      // alert(JSON.stringify(error));
       this.userState = LOADING_ERROR;
       throw error;
     }
@@ -367,10 +369,12 @@ class UserStore {
         this.user = res.user;
         this.userState = READY;
       } else {
+        // alert("1 ==>"+JSON.stringify(res.errors))
         this.userState = LOADING_ERROR;
         throw new Error(res.errors);
       }
     } catch(error) {
+      // alert(JSON.stringify(error))
       this.userState = LOADING_ERROR;
       throw error;
     }
@@ -441,7 +445,8 @@ class UserStore {
         '/sessions',
         {
           session: {
-            ...value
+            ...value,
+            'account_type': type
           }
         }
       );
@@ -458,15 +463,16 @@ class UserStore {
   @action async destroy(id) {
     console.log("TEST USER"+id)
     ServiceBackend.delete(`/users/${id}`)
-        .response(r => {
-          FeedStore.reset();
-          UserStore.logout();  
+        .response(r => {          
+          this.logout();  
+          this.user = {
+            auth_token:null,
+            educations: [],
+            offerings: [],
+          };
         })
         .catch(e => console.log("error"+e));
-    // this.user = {
-    //   educations: [],
-    //   offerings: [],
-    // };
+        
     this.userState = EMPTY;
     this.followingStates = observable.map();
   }

@@ -581,7 +581,7 @@ export default class EditCustomer extends PureComponent {
             onPress={() => {
               UserStore.destroy(UserStore.user.id);
               FeedStore.reset();
-              UserStore.logout();
+              // UserStore.logout();
             }}
           />
           <View style={{height: 20}} />

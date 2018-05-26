@@ -39,6 +39,30 @@ const styles = StyleSheet.create({
 
 @observer
 export default class Register extends PureComponent {
+  
+  constructor(props) {
+    super(props);
+    this.props.navigator.setOnNavigatorEvent((e) => {
+      this.onNavigatorEvent(e);
+    });
+  }
+
+  onNavigatorEvent(event) {
+    console.log("event.id ==>"+event.id)
+    switch(event.id) {
+      case 'willDisappear':
+        
+        break;
+      case 'willAppear':
+          setTimeout(()=>{
+            // UserStore.needsMoreInfo = true;
+          },500)
+        break;
+      default:
+        break;
+    }
+  }
+
   render() {
     if (UserStore.userState === LOADING) {
       return <Intro />;

@@ -24,7 +24,9 @@ export default class SalonInfo extends React.Component {
 
   constructor(props) {
     super(props);
-    this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+    this.props.navigator.setOnNavigatorEvent((e) => {
+      this.onNavigatorEvent(e);
+    });
   }
 
   static navigatorButtons = {
@@ -43,7 +45,12 @@ export default class SalonInfo extends React.Component {
       if (event.id == 'next') {
         if (!this.checkErrors()) {
           let formData = this.getFormValue();
-          formData.business.name = UserStore.user.salon.name;
+          if(UserStore.user.salon){
+            formData.business.name = UserStore.user.salon.name;
+          }else{
+            formData.business.name = "";
+          }
+          
           this.setState({'submitting': true});
           UserStore.editUser(formData)
           .then((r) => {

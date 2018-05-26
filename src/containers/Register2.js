@@ -18,6 +18,7 @@ import EnvironmentStore from '../mobx/stores/EnvironmentStore';
 import OAuthStore from '../mobx/stores/OAuthStore';
 import CloudinaryStore from '../mobx/stores/CloudinaryStore';
 import BannerErrorContainer from '../components/BannerErrorContainer';
+import App from '../App';
 
 const styles = StyleSheet.create({
   backgroundContainer: {
@@ -223,6 +224,9 @@ export default class Register2 extends PureComponent {
   _navigateToNextStep = (type) => {
     switch (type) {
       case 'stylist':
+
+        console.log("Usertype stylist==>"+type);
+
         this.props.navigator.resetTo({
           screen: 'hairfolio.StylistInfo',
           animationType: 'fade',
@@ -231,6 +235,7 @@ export default class Register2 extends PureComponent {
         });
         break;
       case 'salon':
+      console.log("Usertype salon==>"+type);
         this.props.navigator.resetTo({
           screen: 'hairfolio.SalonInfo',
           animationType: 'fade',
@@ -239,6 +244,7 @@ export default class Register2 extends PureComponent {
         });
         break;
       case 'brand':
+      console.log("Usertype brand==>"+type);
         this.props.navigator.resetTo({
           screen: 'hairfolio.BrandInfo',
           animationType: 'fade',
@@ -247,12 +253,15 @@ export default class Register2 extends PureComponent {
         });
         break;
       case 'consumer':
-        this.props.navigator.push({
-          screen: 'hairfolio.BasicInfo',
-          title: this._titleForAccountType(consumer_item),
-          passProps: this._propsForAccountType(consumer_item),
-          navigatorStyle: NavigatorStyles.basicInfo,
-        });     
+      console.log("Usertype consumer==>"+type);
+
+          App.startLoggedInApplication();
+        // this.props.navigator.push({
+        //   screen: 'hairfolio.BasicInfo',
+        //   title: this._titleForAccountType(consumer_item),
+        //   passProps: this._propsForAccountType(consumer_item),
+        //   navigatorStyle: NavigatorStyles.basicInfo,
+        // });     
       
       // this.props.navigator.resetTo({
       //   screen: 'hairfolio.BasicInfo',

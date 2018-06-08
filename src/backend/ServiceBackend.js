@@ -81,7 +81,8 @@ class ServiceBackend extends Backend {
   }
 
   async getEnvironment() {
-    return this.get('/sessions/environment');
+    /* return this.get('/sessions/environment'); */
+    return this.get('sessions/environment');
   }
 }
 

@@ -55,9 +55,74 @@ class UserStore {
 
   @action setMethod(method) {
     this.registrationMethod = method;
-  }     
-
+  }   
+  
   @action editUser(values = {}, type) {
+    this.userState = LOADING;
+    if (values.experience_ids) {
+      values.experience_ids = values.experience_ids;
+    } else {
+      values.experience_ids = [];
+    }
+    if (values.certificate_ids) {
+      values.certificate_ids = values.certificate_ids;
+    } else {
+      values.certificate_ids = [];
+    }
+    if (values.business) {
+      if (type == 'ambassador') {
+        let brand = {};
+        _.each(values.business, (v, key) => brand[`${key}`] = v);
+        delete values.business;
+        values.brand_attributes = brand;
+
+        // delete brand  attributes if they don't have a value
+        if (values.brand_attributes && (!values.brand_attributes.name || values.brand_attributes.name == '')) {
+          delete values.brand_attributes;
+        }
+      } else {
+        let salon = {};
+        _.each(values.business, (v, key) => salon[`${key}`] = v);
+        delete values.business;
+        values.salon_attributes = salon;
+
+        // delete salon attributes if they don't have a value
+        if (values.salon_attributes && (!values.salon_attributes.name || values.salon_attributes.name == '')) {
+          delete values.salon_attributes;
+        }
+      }
+    }
+    values['salon_user_id'] = values['business_salon_user_id'];
+    delete values['business_salon_user_id'];
+    if (values['salon_user_id'] === -1) {
+      values['salon_user_id'] = null;
+    }
+    if (_.isEmpty(values)) {
+      this.userState = READY;
+    } else {
+      try {
+        var user = values;
+        var body = _.pick(values, ['experience_ids', 'certificate_ids']);
+        if(!_.isEmpty(user)) {
+          body.user = user;
+        }
+        return ServiceBackend.patch(`users/${this.user.id})}`, body)
+          .then(res => {
+            this.user = {
+              ...this.user,
+              ...res.user,
+            };
+            this.userState = READY;
+          });
+      } catch (error) {
+        this.userState = LOADING_ERROR;
+        throw error;
+      }
+    }
+
+  }
+
+  @action editUserNew(values = {}, type) {
     this.userState = LOADING;
     // if (values.experience_ids) {
     //   values.experience_ids = values.experience_ids;
@@ -110,7 +175,7 @@ class UserStore {
         // if(!_.isEmpty(user)) {
         //   body.user = user;
         // }
-        return ServiceBackend.put(`/users/${this.user.id})}`, body)
+        return ServiceBackend.put(`users/${this.user.id})}`, body)
           .then(res => {
             this.user = {
               ...this.user,
@@ -127,7 +192,7 @@ class UserStore {
   }
 
   @action logout() {
-    ServiceBackend.delete(`/sessions/${this.user.auth_token}`);
+    ServiceBackend.delete(`sessions/${this.user.auth_token}`);
     
     this.user = {
       auth_token:null,
@@ -164,7 +229,7 @@ class UserStore {
   }
 
   @action async addEducation(education) {
-    ServiceBackend.post(`/users/${this.user.id}/educations`, { education: education })
+    ServiceBackend.post(`users/${this.user.id}/educations`, { education: education })
       .then(response => {
         const newEducations = this.user.educations;
         newEducations.push(education);
@@ -177,7 +242,7 @@ class UserStore {
   }
 
   @action editEducation(id, education) {
-    ServiceBackend.put(`/users/${this.user.id}/educations/${id}`, { education: education})
+    ServiceBackend.put(`users/${this.user.id}/educations/${id}`, { education: education})
       .then(response => {
         const newEducations = this.user.educations;
         const index = newEducations.indexOf(education);
@@ -195,7 +260,7 @@ class UserStore {
 
   @action deleteEducation(id) {
     let index = -1;
-    ServiceBackend.delete(`/users/${this.user.id}/educations/${id}`)
+    ServiceBackend.delete(`users/${this.user.id}/educations/${id}`)
       .then(response => {
         const newEducations = this.user.educations;
         newEducations.forEach((education, i) => {
@@ -215,7 +280,7 @@ class UserStore {
   @action followUser(id) {
     this.followingStates.set(id, LOADING);
     ServiceBackend.post(
-      `/users/${id}/follows`,
+      `users/${id}/follows`,
       {
         user: {id}
       }
@@ -232,7 +297,7 @@ class UserStore {
 
   @action unfollowUser(id) {
     this.followingStates.set(id, LOADING);
-    ServiceBackend.delete(`/users/${id}/follows`)
+    ServiceBackend.delete(`users/${id}/follows`)
       .then(response => {
         this.user.following = this.user.following.filter(user => user.id !== id);
         this.user.follow_count = this.user.follow_count - 1;
@@ -244,37 +309,67 @@ class UserStore {
   }
 
   async getUserEducations() {
-    const response = await ServiceBackend.get(`/users/${this.user.id}/educations`);
+    const response = await ServiceBackend.get(`users/${this.user.id}/educations`);
     return response.educations;
   }
 
   async getUserOfferings() {
-    const response = await ServiceBackend.get(`/users/${this.user.id}/offerings`);
+    const response = await ServiceBackend.get(`users/${this.user.id}/offerings`);
     return response.offerings;
   }
 
   async getUserFollowing() {
-    const response = await ServiceBackend.get(`/users/${this.user.id}/follows`);
+    const response = await ServiceBackend.get(`users/${this.user.id}/follows`);
     return response.users;
+  }
+
+  @action async forgotPasswordNew(email) {
+    try {
+      this.forgotPasswordState = LOADING;
+      /* const response = await ServiceBackend.post(
+        'sessions/recover',
+        { email }
+      );
+      this.forgotPasswordState = READY; */
+
+      ServiceBackend.post(
+        'sessions/recover',
+        { email }
+      ).then(
+        res =>{
+          alert(JSON.stringify(res))
+        }
+
+      ).catch(
+        err =>{}
+      )
+
+    } catch(error) {
+      this.forgotPasswordState = LOADING_ERROR;
+    }
   }
 
   @action async forgotPassword(email) {
     try {
       this.forgotPasswordState = LOADING;
       const response = await ServiceBackend.post(
-        '/sessions/recover',
+        'sessions/recover',
         { email }
       );
       this.forgotPasswordState = READY;
+      return response;
     } catch(error) {
       this.forgotPasswordState = LOADING_ERROR;
+      return error;
     }
+
+    
   }
   @action async changePassword(value) {
     try {
       this.changePasswordState = LOADING;
       const response = await ServiceBackend.post(
-        `/users/${this.user.id}/change_password`,
+        `users/${this.user.id}/change_password`,
         {
           user: value
         }
@@ -302,7 +397,7 @@ class UserStore {
     this.userState = LOADING;
     try {
       const res = await ServiceBackend.post(
-        '/sessions/facebook',
+        'sessions/facebook',
         {
           'facebook_token': token
         }
@@ -320,7 +415,7 @@ class UserStore {
     this.userState = LOADING;
     try {
       const res = await ServiceBackend.post(
-        '/sessions/facebook',
+        'sessions/facebook',
         {
           'facebook_token': token
         }
@@ -328,6 +423,7 @@ class UserStore {
       
       this.user = res.user;
       this.userState = READY;
+      return res;
     
     } catch(error) {
       
@@ -340,7 +436,7 @@ class UserStore {
     this.userState = LOADING;
     try {
       const res = await ServiceBackend.post(
-        '/sessions/instagram',
+        'sessions/instagram',
         {
           'instagram_token': token
         }
@@ -360,7 +456,7 @@ class UserStore {
     this.userState = LOADING;
     try {
       const res = await ServiceBackend.post(
-        '/sessions/instagram',
+        'sessions/instagram',
         {
           'instagram_token': token
         }
@@ -412,7 +508,7 @@ class UserStore {
     }
     try {
       const res = await ServiceBackend.post(
-        '/users',
+        'users',
         {
           user: {
             ...value,
@@ -442,7 +538,7 @@ class UserStore {
     this.userState = LOADING;
     try {
       const res = await ServiceBackend.post(
-        '/sessions',
+        'sessions',
         {
           session: {
             ...value,
@@ -462,7 +558,7 @@ class UserStore {
 
   @action async destroy(id) {
     console.log("TEST USER"+id)
-    ServiceBackend.delete(`/users/${id}`)
+    /* ServiceBackend.delete(`/users/${id}`)
         .response(r => {          
           this.logout();  
           this.user = {
@@ -474,7 +570,35 @@ class UserStore {
         .catch(e => console.log("error"+e));
         
     this.userState = EMPTY;
+    this.followingStates = observable.map(); */
+
+
+    ServiceBackend.delete(`sessions/${this.user.auth_token}`)
+    .then(response => {
+
+      ServiceBackend.delete('users/'+id)
+    .then(response => {
+
+      this.user = {
+        auth_token:null,
+        educations: [],
+        offerings: [],
+      };
+
+      this.userState = EMPTY;
     this.followingStates = observable.map();
+      
+    })
+    .catch(error => {
+      
+    });
+
+      
+    })
+    .catch(error => {
+      
+    });
+
   }
 }
 

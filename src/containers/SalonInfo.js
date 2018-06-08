@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import _ from 'lodash';
 import validator from 'validator';
 import {mixin} from 'core-decorators';
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet, StatusBar} from 'react-native';
 import {COLORS, FONTS, SCALE} from '../style';
 import { observer } from 'mobx-react';
 import MultilineTextInput from '../components/Form/MultilineTextInput';
@@ -24,6 +24,7 @@ export default class SalonInfo extends React.Component {
 
   constructor(props) {
     super(props);
+    StatusBar.setBarStyle('light-content');
     this.props.navigator.setOnNavigatorEvent((e) => {
       this.onNavigatorEvent(e);
     });
@@ -135,6 +136,7 @@ export default class SalonInfo extends React.Component {
                 keyboardType="numeric"
                 ref={(r) => this.addFormItem(r, 'business.zip')}
                 validation={(v) => true}
+                max={10}
               />
             </View>
           </View>
@@ -152,7 +154,8 @@ export default class SalonInfo extends React.Component {
 
           <InlineTextInput
             autoCorrect={false}
-            keyboardType="numeric"
+            keyboardType="phone-pad" 
+            max={15}
             placeholder="Phone Number"
             ref={(r) => this.addFormItem(r, 'business.phone')}
             validation={(v) => true}

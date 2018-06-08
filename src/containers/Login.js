@@ -189,7 +189,10 @@ export default class Login extends PureComponent {
   }
 
   _navigateToNextStep = (type) => {
-    switch (type) {
+
+    App.startLoggedInApplication();
+    
+    /* switch (type) {
       case 'stylist':
         this.props.navigator.resetTo({
           screen: 'hairfolio.StylistInfo',
@@ -235,7 +238,7 @@ export default class Login extends PureComponent {
       break;
       default:
         break;
-    }
+    } */
   }
 
   render() {
@@ -272,7 +275,7 @@ export default class Login extends PureComponent {
                     this._navigateToNextStep(user.account_type);                    
                   },
                   (e) => {
-                    // alert(e)
+                    // alert(JSON.stringify(e))
                     this.refs.ebc.error(e);
                   })                  
               }}

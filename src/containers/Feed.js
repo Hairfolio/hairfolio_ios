@@ -7,6 +7,8 @@ import Post from '../components/feed/Post';
 import WhiteHeader from '../components/WhiteHeader';
 import CreatePostStore from '../mobx/stores/CreatePostStore';
 import { toJS } from 'mobx';
+import { StatusBar } from 'react-native';
+
 import {
   _, // lodash
   v4,
@@ -25,7 +27,7 @@ import {
   Modal,
   ScrollView,
   ActivityIndicator,
-  PickerIOS, Picker, StatusBar, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet
+  PickerIOS, Picker, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet
 } from 'Hairfolio/src/helpers';
 import NewMessageStore from '../mobx/stores/NewMessageStore';
 import NavigatorStyles from '../common/NavigatorStyles';
@@ -111,6 +113,8 @@ const FeedHeader = observer((props) => {
 });
 
 
+
+
 @observer
 export default class Feed extends PureComponent {
   constructor(props) {
@@ -119,19 +123,32 @@ export default class Feed extends PureComponent {
   }
 
   componentDidMount() {
+    StatusBar.setBarStyle('dark-content', true);   
     NewMessageStore.load();
     FeedStore.load();
     FeedStore.hasLoaded = true;
   }
 
+  returnBlank(){
+    StatusBar.setBarStyle('dark-content', true);   
+    return 'There are no posts in the feed yet.';
+  }
+
   onNavigatorEvent(event) {
+    
     switch(event.id) {
       case 'willAppear':
+      // StatusBar.setBarStyle('dark-content');
+      StatusBar.setBarStyle('dark-content', true);
         this.props.navigator.toggleTabs({
           to: 'shown',
         });
         break;
+        case 'didAppear':
+        StatusBar.setBarStyle('dark-content', true);        
+        break;
       case 'bottomTabSelected':
+      StatusBar.setBarStyle('dark-content', true);
         NewMessageStore.load();
         FeedStore.load();
         FeedStore.hasLoaded = true;
@@ -166,11 +183,12 @@ export default class Feed extends PureComponent {
               fontFamily: FONTS.BOOK_OBLIQUE
             }}
           >
-            There are no posts in the feed yet.
+            { this.returnBlank() }
           </Text>
         </View>
       );
     } else {
+      StatusBar.setBarStyle('dark-content', true);   
       content = (
         <ListView
           dataSource={store.dataSource}

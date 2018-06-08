@@ -366,6 +366,7 @@ export default class StylistPlaceOfWork extends React.Component {
                 autoCorrect={false}
                 placeholder="Zip"
                 keyboardType="numeric"
+                max={10}
                 ref={(r) => this.addFormItem(r, 'zip')}
                 validation={(v) => !!v}
                 onChangeText={(value) => {
@@ -383,7 +384,8 @@ export default class StylistPlaceOfWork extends React.Component {
 
           <InlineTextInput
             autoCorrect={false}
-            keyboardType="numeric"
+            keyboardType="phone-pad"
+            max={15}
             placeholder="Phone Number"
             ref={(r) => this.addFormItem(r, 'phone')}
             validation={(v) => true}

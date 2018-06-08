@@ -326,9 +326,9 @@ export default class UserAbout extends React.Component {
 
   renderStylist() {
     window.profile = this.props.profile;
-    // this.showLog("renderStylist ==>"+JSON.stringify(window.profile));
     return (
       <View>
+        {this.renderProfessionalDescription()}
         <CollapsableContainer
           label="EMPLOYMENT"
           renderFooter={() => this.renderAddressFooter()}
@@ -346,7 +346,9 @@ export default class UserAbout extends React.Component {
         <CollapsableContainer label="PRODUCT EXPERIENCE">
           {this.renderCartouches(this.props.profile.experiences)}
         </CollapsableContainer>
-        {this.renderProfessionalDescription()}
+        <CollapsableContainer label="EDUCATION">
+          {this.renderEducation()}
+        </CollapsableContainer>
       </View>
     );
   }
@@ -392,6 +394,37 @@ export default class UserAbout extends React.Component {
           fontSize: SCALE.h(30),
           color: COLORS.DARK2
         }}>${offer.price}</Text>
+      </View>
+    );
+  }
+
+  renderEducation() {
+    if (!this.props.profile.educations || this.props.profile.educations.length === 0)
+      return this.renderEmpty();
+
+    return this.props.profile.educations.map((education, i) =>
+      <View
+        key={education.id}
+        style={{
+          backgroundColor: COLORS.WHITE,
+          padding: SCALE.w(25),
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          borderTopWidth: i > 0 ? StyleSheet.hairlineWidth : 0,
+          borderTopColor: COLORS.ABOUT_SEPARATOR
+        }}
+      >
+        <Text style={{
+          fontFamily: FONTS.HEAVY,
+          fontSize: SCALE.h(30),
+          color: COLORS.DARK
+        }}>{education.name}</Text>
+      {/*   <Text style={{fontFamily: FONTS.ROMAN}}>{education.website}</Text> */}
+        <Text style={{
+          fontFamily: FONTS.ROMAN,
+          fontSize: SCALE.h(30),
+          color: COLORS.DARK2
+        }}>{education.year_from}<Text style={{fontFamily: FONTS.ROMAN}}> - {education.year_to}</Text></Text>
       </View>
     );
   }

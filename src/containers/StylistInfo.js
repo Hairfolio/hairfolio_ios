@@ -3,7 +3,7 @@ import _ from 'lodash';
 import validator from 'validator';
 import { observer } from 'mobx-react';
 import {mixin} from 'core-decorators';
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet,StatusBar} from 'react-native';
 import {COLORS, FONTS, SCALE} from '../style';
 import MultilineTextInput from '../components/Form/MultilineTextInput';
 import PickerInput from '../components/Form/PickerInput';
@@ -21,6 +21,7 @@ export default class StylistInfo extends React.Component {
 
   constructor(props) {
     super(props);
+    StatusBar.setBarStyle('light-content');
     this.props.navigator.setOnNavigatorEvent((e) => {
       this.onNavigatorEvent(e);
     });
@@ -40,9 +41,43 @@ export default class StylistInfo extends React.Component {
   onNavigatorEvent(event) {
     if (event.type == 'NavBarButtonPress') {
       UserStore.needsMoreInfo = false
-      App.startApplication();
+      // App.startApplication();
+      this._save()
     }
   }
+
+  _save = () => {
+    this.setState({submitting: true});
+    let formData = this.getFormValue();
+    let business = {};
+    if (UserStore.user.account_type == 'stylist') {
+      // console.log("formData ==>"+JSON.stringify(formData))
+      // formData.description = formData.business_info;
+      // delete formData.business_info;
+    }
+   /*  for (let key in formData) {
+      if (key == 'business') {
+        for (let key2 in formData[key]) {
+          business[key2] = formData[key][key2];
+        }
+      } else if (key.startsWith('business')) {
+        business[key.substr(9)] = formData[key];
+      }
+    }
+    formData['business'] = business; */
+    UserStore.editUser(formData, UserStore.user.account_type)
+      .then((r) => {
+        this.setState({submitting: false});
+        App.startApplication();
+        return r;
+      })
+      .catch((e) => {
+        App.startApplication();
+        this.setState({submitting: false});
+        this.refs.ebc.error(e);
+      });
+  }
+
 
   render() {
     return (
@@ -57,6 +92,9 @@ export default class StylistInfo extends React.Component {
           placeholder="Short professional description…"
           ref={(r) => this.addFormItem(r, 'description')}
           validation={(v) => !v || validator.isLength(v, {max: 300})}
+          onChangeText={ (value)=>{
+            UserStore.user.description = value
+          }}
         />
 
         <View style={{height: StyleSheet.hairlineWidth}} />
@@ -70,6 +108,9 @@ export default class StylistInfo extends React.Component {
           ref={(r) => this.addFormItem(r, 'years_exp')}
           validation={(v) => true}
           valueProperty="value"
+          onValueChange={(value) => {
+            UserStore.user.years_exp = value;
+          }}
         />
 
         <View style={{height: StyleSheet.hairlineWidth}} />

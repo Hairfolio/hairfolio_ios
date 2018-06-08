@@ -31,6 +31,7 @@ export default class Backend {
 
   async put(url, data) {
     const prevToken = UserStore.token;
+    console.log("prevToken ==>"+prevToken)
     window.head = this.getHeaders();
     window.data = data;
     let response = await myfetch(BASE_URL + url, {

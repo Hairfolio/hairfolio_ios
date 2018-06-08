@@ -2,7 +2,7 @@ import React from 'react';
 import _ from 'lodash';
 import PureComponent from '../components/PureComponent';
 import {mixin, autobind} from 'core-decorators';
-import {View, Text, StyleSheet, InteractionManager, Alert} from 'react-native';
+import {View, Text, StyleSheet, InteractionManager} from 'react-native';
 import { observer } from 'mobx-react';
 import { toJS } from 'mobx';
 import {COLORS, FONTS, SCALE} from '../style';
@@ -36,8 +36,6 @@ export default class EditCustomer extends PureComponent {
   componentDidMount() {
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
     // console.log(JSON.stringify(UserStore.user))
-
-    // alert(UserStore.user.account_type)
   }
 
   static navigatorButtons = {
@@ -84,28 +82,6 @@ export default class EditCustomer extends PureComponent {
         this._save();
       }
     }
-  }
-
-  _saveNew = () => {
-    this.setState({submitting: false});
-    if (this.checkErrors()) {
-      this.refs.ebc.error('Invalid information');
-      return;
-    }
-    let formData = this.getFormValue();
-    let business = {};
-
-console.log("form Data=>"+JSON.stringify(formData))
-
-    UserStore.editUser(formData, UserStore.user.account_type)
-      .then((r) => {
-        this.setState({submitting: false});
-        return r;
-      })
-      .catch((e) => {
-        this.setState({submitting: false});
-        this.refs.ebc.error(e);
-      });
   }
 
   _save = () => {
@@ -198,7 +174,7 @@ console.log("form Data=>"+JSON.stringify(formData))
     return (<View>
       <Categorie name="SALON INFORMATION" />
 
-     {/*  <MultilineTextInput
+      <MultilineTextInput
         autoCapitalize="none"
         autoCorrect={false}
         max={300}
@@ -210,22 +186,11 @@ console.log("form Data=>"+JSON.stringify(formData))
           }
         }}
         validation={(v) => !v || validator.isLength(v, {max: 300})}
-      /> */}
-
-       <MultilineTextInput
-        autoCapitalize="none"
-        autoCorrect={false}
-        max={300}
-        placeholder="Short professional description…"
-        ref={(r) => {
-          this.addFormItem(r, 'business_info');
-        }}
-        validation={(v) => !v || validator.isLength(v, {max: 300})}
       />
 
       <View style={{height: StyleSheet.hairlineWidth}} />
 
-      {/* <PageInput
+      <PageInput
         page={'hairfolio.EditCustomerAddress'}
         navigator={this.props.navigator}
         placeholder="Address"
@@ -237,20 +202,11 @@ console.log("form Data=>"+JSON.stringify(formData))
           }
         }}
         validation={(v) => true}
-      /> */}
-
-      <PageInput
-        page={'hairfolio.EditCustomerAddress'}
-        navigator={this.props.navigator}
-        placeholder="Address"
-        title="Address"
-        onBack={(r) => {this.addFormItem(r, 'business');}}
-        validation={(v) => true}
       />
 
       <View style={{height: StyleSheet.hairlineWidth}} />
 
-      {/* <InlineTextInput
+      <InlineTextInput
         autoCorrect={false}
         keyboardType="url"
         placeholder="Website"
@@ -261,24 +217,12 @@ console.log("form Data=>"+JSON.stringify(formData))
           }
         }}
         validation={(v) => true}
-      /> */}
+      />
+      <View style={{height: StyleSheet.hairlineWidth}} />
 
       <InlineTextInput
         autoCorrect={false}
-        keyboardType="url"
-        placeholder="Website"
-        ref={(r) => {
-          this.addFormItem(r, 'business_website');          
-        }}
-        validation={(v) => true}
-      />
-
-      <View style={{height: StyleSheet.hairlineWidth}} />
-
-      {/* <InlineTextInput
-        autoCorrect={false}
-        keyboardType="phone-pad"
-        max={15}
+        keyboardType="numeric"
         placeholder="Phone Number"
         ref={(r) => {
           this.addFormItem(r, 'business_phone');
@@ -287,19 +231,7 @@ console.log("form Data=>"+JSON.stringify(formData))
           }
         }}
         validation={(v) => true}
-      /> */}
-
-      <InlineTextInput
-        autoCorrect={false}
-        keyboardType="phone-pad"
-        max={15}
-        placeholder="Phone Number"
-        ref={(r) => {
-          this.addFormItem(r, 'business_phone');          
-        }}
-        validation={(v) => true}
       />
-
       <View style={{height: StyleSheet.hairlineWidth}} />
 
       <PageInput
@@ -311,7 +243,7 @@ console.log("form Data=>"+JSON.stringify(formData))
 
       <View style={{height: StyleSheet.hairlineWidth}} />
 
-      {/* <PageInput
+      <PageInput
         page={'hairfolio.StylistProductExperience'}
         placeholder="Products"
         ref={(r) => {
@@ -319,16 +251,6 @@ console.log("form Data=>"+JSON.stringify(formData))
           if (r) {
             r.setValue(UserStore.user.experiences.map(exp => exp.id));
           }
-        }}
-        validation={(v) => true}
-        title="Products"
-        navigator={this.props.navigator}
-      /> */}
-      <PageInput
-        page={'hairfolio.StylistProductExperience'}
-        placeholder="Products"
-        ref={(r) => {
-          this.addFormItem(r, 'experience_ids');          
         }}
         validation={(v) => true}
         title="Products"
@@ -345,7 +267,7 @@ console.log("form Data=>"+JSON.stringify(formData))
       />
 
       <View style={{height: StyleSheet.hairlineWidth}} />
-      {/* <MultilineTextInput
+      <MultilineTextInput
         autoCapitalize="none"
         autoCorrect={false}
         max={300}
@@ -357,16 +279,6 @@ console.log("form Data=>"+JSON.stringify(formData))
           }
         }}
         validation={(v) => !v || validator.isLength(v, {max: 300})}
-      /> */}
-      <MultilineTextInput
-        autoCapitalize="none"
-        autoCorrect={false}
-        max={300}
-        placeholder="Career opportunities"
-        ref={(r) => {
-          this.addFormItem(r, 'career_opportunity');          
-        }}
-        validation={(v) => !v || validator.isLength(v, {max: 300})}
       />
     </View>);
   }
@@ -375,7 +287,7 @@ console.log("form Data=>"+JSON.stringify(formData))
     return (<View>
       <Categorie name="BRAND INFORMATION" />
 
-      {/* <MultilineTextInput
+      <MultilineTextInput
         autoCapitalize="none"
         autoCorrect={false}
         max={300}
@@ -387,20 +299,11 @@ console.log("form Data=>"+JSON.stringify(formData))
           }
         }}
         validation={(v) => !v || validator.isLength(v, {max: 300})}
-      /> */}
-
-      <MultilineTextInput
-        autoCapitalize="none"
-        autoCorrect={false}
-        max={300}
-        placeholder="Short professional description…"
-        ref={(r) => {this.addFormItem(r, 'business_info');}}
-        validation={(v) => !v || validator.isLength(v, {max: 300})}
       />
 
       <View style={{height: StyleSheet.hairlineWidth}} />
 
-      {/* <PageInput
+      <PageInput
         page={'hairfolio.EditCustomerAddress'}
         placeholder="Address"
         ref={(r) => {
@@ -412,20 +315,11 @@ console.log("form Data=>"+JSON.stringify(formData))
         validation={(v) => true}
         title="Address"
         navigator={this.props.navigator}
-      /> */}
-
-      <PageInput
-        page={'hairfolio.EditCustomerAddress'}
-        placeholder="Address"
-        ref={(r) => {this.addFormItem(r, 'business');}}
-        validation={(v) => true}
-        title="Address"
-        navigator={this.props.navigator}
       />
 
       <View style={{height: StyleSheet.hairlineWidth}} />
 
-      {/* <InlineTextInput
+      <InlineTextInput
         autoCorrect={false}
         keyboardType="url"
         placeholder="Website"
@@ -436,21 +330,13 @@ console.log("form Data=>"+JSON.stringify(formData))
           }
         }}
         validation={(v) => true}
-      /> */}
+      />
+      <View style={{height: StyleSheet.hairlineWidth}} />
 
       <InlineTextInput
         autoCorrect={false}
-        keyboardType="url"
-        placeholder="Website"
-        ref={(r) => {this.addFormItem(r, 'business_website');}}
-        validation={(v) => true}
-      />
-
-      <View style={{height: StyleSheet.hairlineWidth}} />
-
-      {/* <InlineTextInput
-        autoCorrect={false}
-        keyboardType="numeric"
+        keyboardType="phone-pad"
+        max={15}
         placeholder="Phone Number"
         ref={(r) => {
           this.addFormItem(r, 'business_phone');
@@ -459,17 +345,7 @@ console.log("form Data=>"+JSON.stringify(formData))
           }
         }}
         validation={(v) => true}
-      /> */}
-
-      <InlineTextInput
-        autoCorrect={false}
-        keyboardType="numeric"
-        placeholder="Phone Number"
-        ref={(r) => {this.addFormItem(r, 'business_phone');}}
-        validation={(v) => true}
       />
-
-
     </View>);
   }
 
@@ -488,17 +364,9 @@ console.log("form Data=>"+JSON.stringify(formData))
           }
         }}
         validation={(v) => !v || validator.isLength(v, {max: 300})}
-        onChangeText={(value) => {
-          if(UserStore.user.business_info){
-            UserStore.user.business_info = value;
-          }else{
-            UserStore.user.description = value;
-          }
-          
-        }}
       />
       <View style={{height: StyleSheet.hairlineWidth}} />
-      {/* <PickerInput
+      <PickerInput
         choices={_.map(_.range(0, 46), i => ({
           label: i.toString(),
           value: i
@@ -512,22 +380,7 @@ console.log("form Data=>"+JSON.stringify(formData))
         }}
         validation={(v) => true}
         valueProperty="value"
-        onValueChange={(value) => {
-          UserStore.user.years_exp = value;
-        }}
-      /> */}
-
-      <PickerInput
-        choices={_.map(_.range(0, 46), i => ({
-          label: i.toString(),
-          value: i
-        }))}
-        placeholder="Years of experience"
-        ref={(r) => this.addFormItem(r, 'years_exp')}
-        validation={(v) => true}
-        valueProperty="value"        
       />
-
       <View style={{height: StyleSheet.hairlineWidth}} />
       <PageInput
         page={'hairfolio.StylistEducation'}
@@ -584,7 +437,7 @@ console.log("form Data=>"+JSON.stringify(formData))
 
   renderIndividualBasics() {
     return (<View>
-     {/*  <ProfileTextInput
+      <ProfileTextInput
         autoCorrect={false}
         placeholder="First name"
         ref={(r) => {
@@ -594,17 +447,9 @@ console.log("form Data=>"+JSON.stringify(formData))
           }
         }}
         validation={(v) => !!v}
-      /> */}
-       
-       <ProfileTextInput
-        autoCorrect={false}
-        placeholder="First name"
-        ref={(r) => this.addFormItem(r, 'first_name')}
-        validation={(v) => !!v}  
       />
-
       <View style={{height: StyleSheet.hairlineWidth}} />
-      {/* <ProfileTextInput
+      <ProfileTextInput
         autoCorrect={false}
         placeholder="Last name"
         ref={(r) => {
@@ -614,16 +459,7 @@ console.log("form Data=>"+JSON.stringify(formData))
           }
         }}
         validation={(v) => !!v}
-      /> */}
-
-      <ProfileTextInput
-        autoCorrect={false}
-        placeholder="Last name"
-        ref={(r) => this.addFormItem(r, 'last_name')}
-        validation={(v) => !!v}
       />
-
-
     </View>);
   }
 
@@ -634,12 +470,6 @@ console.log("form Data=>"+JSON.stringify(formData))
         placeholder={(UserStore.user.account_type === 'ambassador') ? 'Brand' : 'Salon' + ' name'}
         ref={(r) => this.addFormItem(r, 'business_name')}
         validation={(v) => !!v}
-        onChangeText={(value) => {
-          console.log("UserStore.user.salon==>"+JSON.stringify(UserStore.user.salon))
-          if(UserStore.user.salon){
-            UserStore.user.salon.name = value; 
-          }          
-        }}
       />
     </View>);
   }
@@ -757,50 +587,17 @@ console.log("form Data=>"+JSON.stringify(formData))
           <DeleteButton
             label="LOG OUT"
             onPress={() => {
-
-              Alert.alert(
-                'Hairfolio',
-                'Do you really want to logout ?', [{
-                  text: 'Yes',
-                  onPress: () => {
-                    FeedStore.reset();
-                    UserStore.logout();
-                  }
-                }, {
-                  text: 'No',
-                  onPress: () => {
-
-                  }
-                }], {
-                  cancelable: false
-                }
-              )              
+              FeedStore.reset();
+              UserStore.logout();
             }}
           />
           <View style={{height: 10}} />
           <DeleteButton
             label="DESTROY"
             onPress={() => {
-
-              Alert.alert(
-                'Hairfolio',
-                'Do you really want to destroy account ?', [{
-                  text: 'Yes',
-                  onPress: () => {
-                    UserStore.destroy(UserStore.user.id);
-                    FeedStore.reset();
-                    // UserStore.logout();
-                  }
-                }, {
-                  text: 'No',
-                  onPress: () => {
-
-                  }
-                }], {
-                  cancelable: false
-                }
-              )
-              
+              UserStore.destroy(UserStore.user.id);
+              FeedStore.reset();
+              // UserStore.logout();
             }}
           />
           <View style={{height: 20}} />

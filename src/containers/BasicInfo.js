@@ -4,7 +4,7 @@ import {mixin} from 'core-decorators';
 import { observer } from 'mobx-react';
 import validator from 'validator';
 import PureComponent from '../components/PureComponent';
-import RN, {View, StyleSheet} from 'react-native';
+import RN, {View, StyleSheet,StatusBar} from 'react-native';
 import {COLORS, SCALE} from '../style';
 import InlineTextInput from '../components/Form/InlineTextInput';
 import PictureInput from '../components/Form/Picture';
@@ -40,7 +40,7 @@ export default class BasicInfo extends PureComponent {
 
   constructor(props) {
     super(props);
-
+    StatusBar.setBarStyle('light-content');
     if (this.props.navigator) {
       this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
     }

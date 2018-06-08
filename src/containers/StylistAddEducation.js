@@ -69,7 +69,12 @@ export default class StylistAddEducation extends React.Component {
           animated: true,
         });
       } else if (event.id == 'done') {
-        this.submit();
+        var selectedValue = this.getFormValue();
+        if (parseInt(selectedValue.year_from) >= parseInt(selectedValue.year_to)) {
+          this.refs.ebc.error("To year should be greater than from year."); 
+        } else {
+          this.submit();
+        }
       }
     }
   }

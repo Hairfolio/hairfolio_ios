@@ -75,8 +75,28 @@ export default class Register2 extends PureComponent {
           UserStore.signupWithInstagram(OAuthStore.token, OAuthStore.userType)
             .then(() =>  {
               console.log("STORE 123==>"+OAuthStore.token+" TYPE ==>"+OAuthStore.userType)
-              this._navigateToNextStep(OAuthStore.userType);
-              OAuthStore.reset()
+
+              let userId = UserStore.user.id;
+
+            let post_data = {
+              user: {
+                'account_type': this.checkUserType(OAuthStore.userType)
+              }
+            }
+            
+            ServiceBackend.put('users/'+userId, post_data).then(
+              (response)=>{
+                console.log("signupWithInstagram response==>"+JSON.stringify(response))
+                this._navigateToNextStep(OAuthStore.userType);
+                OAuthStore.reset()
+              },
+              (err)=>{
+                console.log("signupWithInstagram error==>"+JSON.stringify(err))
+              }
+            ); 
+
+              /* this._navigateToNextStep(OAuthStore.userType);
+              OAuthStore.reset() */
             })
             .catch(e => {
               this.refs.ebc.error(e);
@@ -180,7 +200,7 @@ export default class Register2 extends PureComponent {
     }
   }
 
-  _loginWithFacebook= (item) => {
+  _loginWithFacebook2= (item) => {
     consumer_item = item;
     var type = TYPES[item.label];
     EnvironmentStore.loadEnv()
@@ -207,6 +227,56 @@ export default class Register2 extends PureComponent {
       }
     );
   }  
+
+  checkUserType(user_role){
+    if(user_role == 'salon'){
+      return 'owner';
+    }else if(user_role == 'brand'){
+      return 'ambassador';
+    }else{
+      return user_role;
+    }     
+  }
+
+  _loginWithFacebook= (item) => {
+    consumer_item = item;
+    var type = TYPES[item.label];
+    EnvironmentStore.loadEnv()
+      .then(() => LoginManager.logInWithReadPermissions(['public_profile']))
+      .then(() => AccessToken.getCurrentAccessToken())
+      .then(data => data.accessToken.toString())
+      .then(token => {
+        console.log("token==>" + token)
+
+        UserStore.signupWithFacebook(token, type).then(
+          (res)=>{
+            console.log("signupWithFacebook response==>" + JSON.stringify(res))
+            UserStore.user = res.user;
+            let userId = res.user.id;
+
+            let post_data = {
+              user: {
+                'account_type': this.checkUserType(type)
+              }
+            }
+            
+            ServiceBackend.put('users/'+userId, post_data).then(
+              (response)=>{
+                console.log("_loginWithFacebook response==>"+JSON.stringify(response))
+                this._navigateToNextStep(type);
+              },
+              (err)=>{
+                console.log("_loginWithFacebook error==>"+JSON.stringify(err))
+              }
+            ); 
+          },
+          (error)=>{
+            console.log("signupWithFacebook error==>" + JSON.stringify(error))
+
+          }
+        )
+      });
+  } 
 
   _loginWithInstagram = (item) => {
     var type = TYPES[item.label];    

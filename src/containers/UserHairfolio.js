@@ -79,7 +79,7 @@ const HairfolioItem = observer(({store, isEditable, navigator}) => {
             if (store.name != 'Inspiration') {
               HairfolioPostStore.title = `${store.name}`;
             } else {
-              HairfolioPostStore.title = 'Inspo';
+              HairfolioPostStore.title = 'Saved Inspo';
             }
             HairfolioPostStore.load(store);
             navigator.push({
@@ -110,7 +110,7 @@ const HairfolioItem = observer(({store, isEditable, navigator}) => {
             color: '#404040'
           }}
         >
-          {store.name == 'Inspiration' ? 'Inspo' : store.name}
+          {store.name == 'Inspiration' ? 'Saved Inspo' : store.name}
         </Text>
         <Text
           style = {{

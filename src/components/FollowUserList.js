@@ -107,9 +107,10 @@ const FollowUserList = observer(({store, style = {}, noResultText = 'There have 
 
   return (
     <ScrollView
-      style={{
-        ...style
-      }}
+      style={[{
+        ...style,
+        marginBottom:50
+      }]}
     >
       {store.users.map(e => (
         <FollowUserRow

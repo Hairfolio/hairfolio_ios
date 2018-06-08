@@ -468,11 +468,17 @@ class ShareStore {
       )
     );
 
-    setTimeout(() => this.input.focus(), 100);
+    setTimeout(() =>{ 
+      this.input.focus()
+    }, 100);
   }
 
   saveHairfolio(store) {
-    this.hairfolioStore.saveHairfolio(store);
+    if(store.name){
+      this.hairfolioStore.saveHairfolio(store);
+    } else{
+      this.hairfolioStore.hairfolios.pop();
+    }
     store.isInEdit = false;
   }
 

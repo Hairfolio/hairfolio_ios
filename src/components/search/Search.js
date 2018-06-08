@@ -19,7 +19,7 @@ import {
   ActivityIndicator,
   Modal,
   ScrollView,
-  PickerIOS, Picker, StatusBar, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet
+  PickerIOS, Picker, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet
 } from 'Hairfolio/src/helpers';
 import NavigatorStyles from '../../common/NavigatorStyles';
 import {STATUSBAR_HEIGHT} from 'Hairfolio/src/constants';
@@ -28,8 +28,10 @@ import SearchStore from '../../mobx/stores/SearchStore';
 import GridView from '../GridView';
 import GridPost from '../favourites/GridPost';
 import SearchModeSearch from '../search/SearchModeSearch';
+import {StatusBar} from 'react-native';
 
 const MyFooter = observer(({store}) => {
+  StatusBar.setBarStyle('dark-content', true); 
   if (store.nextPage != null || store.isLoading) {
     return (
       <View style={{flex: 1, paddingVertical: 20, alignItems: 'center', justifyContent: 'center'}}>
@@ -42,6 +44,7 @@ const MyFooter = observer(({store}) => {
 });
 
 const TagFooter = observer(({store}) => {
+  StatusBar.setBarStyle('dark-content', true); 
   if (store.nextPage != null) {
     return (
       <View style={{flex: 1,
@@ -61,6 +64,7 @@ const TagFooter = observer(({store}) => {
 
 
 const SearchBar = observer(({store, navigator}) => {
+  StatusBar.setBarStyle('dark-content', true); 
   return (
     <View
       style={{
@@ -116,6 +120,7 @@ const SearchBar = observer(({store, navigator}) => {
 });
 
 const TagItem = observer(({store, navigator}) => {
+  StatusBar.setBarStyle('dark-content', true); 
   return (
     <TouchableWithoutFeedback
       onPress={
@@ -157,6 +162,7 @@ const TagItem = observer(({store, navigator}) => {
 });
 
 const TopTags = observer(({store, navigator}) => {
+  StatusBar.setBarStyle('dark-content', true); 
   if (store.isLoading) {
     return (
       <View style={{height: h(220), justifyContent: 'center'}}>
@@ -205,6 +211,7 @@ const TopTags = observer(({store, navigator}) => {
 });
 
 const PopularPostHeader = observer(({store}) => {
+  StatusBar.setBarStyle('dark-content', true); 
   return (
     <View>
       <View
@@ -233,6 +240,8 @@ const PopularPostHeader = observer(({store}) => {
 });
 
 const Search = observer(({navigator}) => {
+
+  StatusBar.setBarStyle('dark-content', true);  
 
   if (!SearchStore.loaded) {
     return <View />;

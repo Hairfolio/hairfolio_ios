@@ -179,7 +179,9 @@ setText(str){
               onPress={() => {
                 this.props.navigator.push({
                   screen: 'hairfolio.ForgotPassword',
-                })
+                  navigatorStyle: NavigatorStyles.basicInfo,
+                  title: 'Forgot Password',
+                });
               }}
             >
               <Text style={{

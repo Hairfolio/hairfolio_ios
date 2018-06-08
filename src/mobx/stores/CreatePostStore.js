@@ -589,7 +589,8 @@ class CreatePostStore {
   @action async postPost(navigator) {
     try {
       this.isLoading = true;
-      this.loadingText = 'Uploading pictures ..';
+      // this.loadingText = 'Uploading pictures ..';
+      this.loadingText = 'Uploading..';
       let data = await this.gallery.toJSON();
 
       window.postData = data;

@@ -94,8 +94,8 @@ const MessageRow = observer(({store, navigator}) => {
           >
             <Image
               style={{height: h(80), width: h(80), borderRadius: h(40)}}
-              source={store.user.profilePicture.getSource(80, 80)}
-            />
+              source={ (store.user.profilePicture) ? store.user.profilePicture.getSource(80, 80) : null}
+            /> 
           </View>
           <View
             style = {{
@@ -202,6 +202,12 @@ export default class Messages extends PureComponent {
   };
 
   onNavigatorEvent(event) {
+    if(event.id == 'willAppear'){
+      StatusBar.setBarStyle('light-content');
+      MessagesStore.load();
+    }
+
+
     if (event.type == 'NavBarButtonPress') {
       if (event.id == 'back') {
         this.props.navigator.pop({

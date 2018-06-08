@@ -28,6 +28,8 @@ import BlackBookContent from '../components/blackbook/BlackBookContent';
 
 const ContactsDetailsHeader = observer(({store, navigator}) => {
 
+  // console.log("ContactsDetailsHeader ==>"+JSON.stringify(store));
+
   let renderLeft = null;
 
   if (store.mode != 'view') {
@@ -52,12 +54,18 @@ const ContactsDetailsHeader = observer(({store, navigator}) => {
       </View>;
   }
 
+
   return (
     <BlackHeader
       onLeft={() => {navigator.pop({ animated: true })
       ContactDetailsStore.reset()} }
-      title={store.title}
-      onRenderLeft={renderLeft}
+      title= { <View style={{width:150,height:25,marginTop:5}}><Text numberOfLines={1}  style={{flex: 1,
+        fontFamily: FONTS.Regular,
+        fontSize: h(34),
+        color: 'white',
+        alignSelf: 'center'
+      }}>{store.title}</Text></View>}
+      onRenderLeft={renderLeft} 
       onRenderRight={() =>
         <TouchableOpacity
           style = {{
@@ -89,6 +97,7 @@ const Input = observer(({placeholder, keyboardType = 'default', autoCapitalize =
   return (
     <View>
       <TextInput
+        // maxLength={15}
         value={store[value]}
         onChangeText={t => store[value] = t}
         autoCapitalize={autoCapitalize}
@@ -356,9 +365,9 @@ const PhoneInfo = observer(({store}) => {
       >
         Phone
       </Text>
-      <Input value='phoneMobile' keyboardType='phone-pad' placeholder='Mobile' />
-      <Input value='phoneHome' keyboardType='phone-pad' placeholder='Home' />
-      <Input value='phoneWork' keyboardType='phone-pad' placeholder='Work' />
+      <Input value='phoneMobile' keyboardType="phone-pad" max={15} placeholder='Mobile' />
+      <Input value='phoneHome' keyboardType="phone-pad" max={15} placeholder='Home' />
+      <Input value='phoneWork' keyboardType="phone-pad" max={15} placeholder='Work' />
     </View>
   );
 });
@@ -442,7 +451,7 @@ const AddressInfo = observer(({store}) => {
         <InfoText value={store.addressStreet1} />
         <InfoText value={store.addressCity} />
         <InfoText value={store.addressState + ' ' + store.addressPostCode} />
-        <InfoText value={store.addressCountry} />
+        {/* <InfoText value={store.addressCountry} /> */}
       </ContactInfoRow>
     );
   }
@@ -461,7 +470,7 @@ const AddressInfo = observer(({store}) => {
       <Input value='addressCity' placeholder='City' />
       <Input value='addressState' placeholder='State' />
       <Input value='addressPostCode' keyboardType='numeric' placeholder='Postal Code' />
-      <Input value='addressCountry' placeholder='Country' />
+      {/* <Input value='addressCountry' placeholder='Country' /> */}
     </View>
   );
 });

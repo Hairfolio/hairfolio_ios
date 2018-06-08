@@ -172,7 +172,7 @@ const PostDetailsHeader = observer(({store, navigator}) => {
     <View style={{height: windowWidth * (4/3), width: windowWidth}}>
       {
         store.selectedPicture.isVideo ?
-       <VideoPreview picture={store.selectedPicture} /> :
+       <VideoPreview picture={store.selectedPicture}  post={post} /> :
         <Image
           style={{height: windowWidth * (4/3), width: windowWidth}}
           source={store.selectedPicture.getSource(2 * windowWidth, 2 * windowWidth)}

@@ -58,11 +58,17 @@ export default class ForgottenPassword extends PureComponent {
           return r;
         })
         .then(
-          () => {
-            this.setState({success: true});
+          (k) => {
+            if(k.status == "422" || k.status == 422){
+              this.refs.ebc.error(k.errors);
+            }else{
+              this.setState({success: true});
             setTimeout(() => {
               this.setState({success: false});
             }, 3000);
+
+            }
+            
           },
           (e) => {
             this.refs.ebc.error(e);

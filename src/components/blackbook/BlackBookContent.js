@@ -95,15 +95,17 @@ const Cell = observer(({item, showBorder, navigator}) => {
           flexDirection: 'row',
           alignItems: 'center',
           height: h(132),
+          width: windowWidth - h(130),
           ...borderStyle
         }}
       >
         <Image
           style={{height: h(84), width: h(84), borderRadius: h(42)}}
-          source={item.picture ? item.picture.getSource(84, 84) : null}
+          source={item.picture ? item.picture.getSource(84, 84) : require('../../../resources/img/stylist.png')}
         />
         <Text
           style = {{
+            // backgroundColor:'pink',
             marginLeft: h(25),
             fontSize: h(34),
             fontFamily: FONTS.BOOK,

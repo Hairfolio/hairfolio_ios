@@ -457,7 +457,7 @@ export default class GalleryPage extends Component {
   constructor(props) {
     super(props);
     this.props.navigator.toggleTabs({
-      to: 'hidden',
+      to: 'shown',
     });
   }
 
@@ -547,7 +547,7 @@ export default class GalleryPage extends Component {
     }
 
     return (
-      <View style={{paddingTop: 20, paddingBottom: 50, backgroundColor: 'white'}}>
+      <View style={{paddingTop: 20, paddingBottom: 50, backgroundColor: 'white', marginBottom: 45,}}>
           <SlimHeader
             leftText='Cancel'
             onLeft={() => {
@@ -585,15 +585,15 @@ export default class GalleryPage extends Component {
             scrollEventThrottle={16}
             onScroll={(e) => {
               const offset = e.nativeEvent.contentOffset.y;
-              if (offset < 50) {
-                this.props.navigator.toggleTabs({
-                  to: 'shown',
-                });
-              } else {
-                this.props.navigator.toggleTabs({
-                  to: 'hidden',
-                });
-              }
+              // if (offset < 50) {
+              //   this.props.navigator.toggleTabs({
+              //     to: 'shown',
+              //   });
+              // } else {
+              //   this.props.navigator.toggleTabs({
+              //     to: 'hidden',
+              //   });
+              // }
             }}
             style={{
               backgroundColor: 'white',

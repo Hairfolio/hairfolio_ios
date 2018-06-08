@@ -1,6 +1,6 @@
 import React from 'react';
 import PureComponent from '../components/PureComponent';
-import {View, Text} from 'react-native';
+import {View, Text,StatusBar} from 'react-native';
 import {COLORS, FONTS, SCALE} from '../style';
 import FavoriteStore from '../mobx/stores/FavoriteStore';
 import { observer } from 'mobx-react';
@@ -25,6 +25,7 @@ export default class Favourites extends PureComponent {
   onNavigatorEvent(event) {
     switch(event.id) {
       case 'willAppear':
+      StatusBar.setBarStyle('dark-content');
         this.props.navigator.toggleTabs({
           to: 'shown',
         });

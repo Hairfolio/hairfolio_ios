@@ -135,10 +135,12 @@ export default class BrandInfo extends PureComponent {
             <View style={{width: StyleSheet.hairlineWidth}} />
             <View style={{flex: 1}}>
               <InlineTextInput
+                keyboardType="numeric"
                 autoCorrect={false}
                 placeholder="Zip"
                 ref={(r) => this.addFormItem(r, 'business.zip')}
                 validation={(v) => true}
+                max={10}
               />
             </View>
           </View>
@@ -156,7 +158,8 @@ export default class BrandInfo extends PureComponent {
 
           <InlineTextInput
             autoCorrect={false}
-            keyboardType="numeric"
+            keyboardType="phone-pad"
+            max={15}
             placeholder="Phone Number"
             ref={(r) => this.addFormItem(r, 'business.phone')}
             validation={(v) => true}

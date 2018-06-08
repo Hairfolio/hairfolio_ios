@@ -93,23 +93,29 @@ export default class Post {
         picture.videoUrl = pic.video_url;
       }
 
+      console.log("init ==>"+JSON.stringify(pic.labels))
+
       for (let item of pic.labels) {
 
-        if (item.formulas.length > 0) {
-          picture.addServiceTag(item.position_left, item.position_top, item.formulas[0]);
-        } else if (item.url != null) {
-          picture.addLinkTag(item.position_left, item.position_top, item);
+        if(item.formulas){
 
-        } else {
-          picture.addHashTag(item.position_left, item.position_top, item.tag.name);
-        }
+          if (item.formulas.length > 0) {
+            picture.addServiceTag(item.position_left, item.position_top, item.formulas[0]);
+          } else if (item.url != null) {
+            picture.addLinkTag(item.position_left, item.position_top, item);
+  
+          } else {
+            picture.addHashTag(item.position_left, item.position_top, item.tag.name);
+          }
+  
+          if (item.tag) {
+            picture.tags[picture.tags.length - 1].tagId = item.tag.id;
+          }
+  
+          if (item.id) {
+            picture.tags[picture.tags.length - 1].id = item.id;
+          }
 
-        if (item.tag) {
-          picture.tags[picture.tags.length - 1].tagId = item.tag.id;
-        }
-
-        if (item.id) {
-          picture.tags[picture.tags.length - 1].id = item.id;
         }
 
       }

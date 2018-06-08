@@ -77,12 +77,12 @@ class MessageContent  extends React.Component {
     } else if (this.props.store.type == 'picture') {
       if (this.props.store.picture.isVideo) {
         return (
-          <VideoPreview width={this.props.maxWidth} picture={this.props.store.picture} />
+          <VideoPreview width={this.props.maxWidth} picture={(this.props.store.picture) ? this.props.store.picture : null} />
         );
       } else {
         return (
           <MyImage
-            source={this.props.store.picture.getSource(2 * this.props.maxWidth, 2 * this.props.maxWidth)}
+            source={ (this.props.store.picture) ? this.props.store.picture.getSource(2 * this.props.maxWidth, 2 * this.props.maxWidth) : null}
             width={this.props.maxWidth}
           />
         );
@@ -195,7 +195,7 @@ const Message = observer(({store}) => {
     userImage = (
       <Image
         style={{height: h(80), width: h(80), borderRadius: h(40), marginRight: h(15)}}
-        source={store.user.profilePicture.getSource(80, 80)}
+        source={ (store.user.profilePicture) ? store.user.profilePicture.getSource(80, 80) : null}
       />
     );
   }

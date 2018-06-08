@@ -32,6 +32,7 @@ export default class SalonAddSP extends PureComponent {
 
   constructor(props) {
     super(props);
+    // alert('Hii')
     if (this.props.offering) {
       this.setState({
         editing: true
@@ -59,8 +60,8 @@ export default class SalonAddSP extends PureComponent {
     ],
     rightButtons: [
       {
-        id: 'add',
-        title: 'Add',
+        id: 'done',
+        title: 'Done',
         buttonFontSize: SCALE.h(30),
         buttonColor: COLORS.WHITE,
       }
@@ -73,7 +74,7 @@ export default class SalonAddSP extends PureComponent {
         this.props.navigator.pop({
           animated: true,
         });
-      } else if (event.id == 'add') {
+      } else if (event.id == 'done') {
         if(!flag_service){
           flag_service = true;
 
@@ -223,6 +224,7 @@ export default class SalonAddSP extends PureComponent {
               <InlineTextInput
                 keyboardType="numeric"
                 placeholder="Price"
+                maxLength={7}
                 ref={(r) => this.addFormItem(r, 'price')}
                 validation={(v) => !!v}                
               />               

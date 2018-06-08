@@ -22,7 +22,7 @@ export default class StylistProductExperience extends React.Component {
 
   constructor(props) {
     super(props);
-    EnvironmentStore.getExperiences(EnvironmentStore.experiencesNextPage);
+    // EnvironmentStore.getExperiences(EnvironmentStore.experiencesNextPage);
     this.state = {
       selectedIds: toJS(UserStore.user.experiences.map(exp => exp.id)),
     }
@@ -46,7 +46,19 @@ export default class StylistProductExperience extends React.Component {
     ],
   }
 
+  fetchServices(){
+    EnvironmentStore.getExperiences(EnvironmentStore.experiencesNextPage);
+    this.state = {
+      selectedIds: toJS(UserStore.user.experiences.map(exp => exp.id)),
+    }
+  }
+
   onNavigatorEvent(event) {
+    
+    if (event.id == 'willAppear') {
+      this.fetchServices()
+    }
+
     if (event.type == 'NavBarButtonPress') {
       if (event.id == 'back') {
         this.props.navigator.pop({

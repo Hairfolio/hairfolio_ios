@@ -24,9 +24,10 @@ import {
   AlertIOS,
   Modal,
   ScrollView,
-  PickerIOS, Picker, StatusBar, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet
+  PickerIOS, Picker, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet
 } from 'Hairfolio/src/helpers';
 import NavigatorStyles from '../common/NavigatorStyles';
+import {StatusBar} from 'react-native';
 
 const SampleActions = observer(() => {
   return (
@@ -106,8 +107,10 @@ export default class Search extends PureComponent {
   }
 
   onNavigatorEvent(event) {
+    
     switch(event.id) {
       case 'willAppear':
+      StatusBar.setBarStyle('dark-content', true);
         this.props.navigator.toggleTabs({
           to: 'shown',
         });
@@ -115,6 +118,10 @@ export default class Search extends PureComponent {
       default:
         break;
     }
+  }
+
+  componentWillMount() {
+    StatusBar.setBarStyle('dark-content', true);
   }
 
   render() {

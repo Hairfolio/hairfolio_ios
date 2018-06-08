@@ -136,7 +136,12 @@ const Footer = ({selectedMode, onSelect}) => {
         </View>
       </TouchableWithoutFeedback>
       <TouchableWithoutFeedback
-        onPress={() => onSelect('Photo')}>
+        onPress={() => {
+          onSelect('Photo')
+          if (CreatePostStore.isRecording) {
+            CreatePostStore.stopRecording();
+          }
+        }}>
         <View style={{flex: 1}}>
           <Text
             style={{

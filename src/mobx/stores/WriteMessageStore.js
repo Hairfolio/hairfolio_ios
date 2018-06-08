@@ -174,6 +174,8 @@ class WriteMessageStore {
 
     }
 
+    console.log("get items ==>"+JSON.stringify(users))
+
     return users;
   }
 

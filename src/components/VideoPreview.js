@@ -58,6 +58,7 @@ class VideoPreview extends React.Component{
     super(props)
     this.myWidth = props.width ? props.width : windowWidth;
     this.pic = props.picture;
+    this.post = props.post;
     this.state = {
       isPaused: true,
     };
@@ -69,12 +70,103 @@ class VideoPreview extends React.Component{
     })
   }
 
-  render = () => {
+  renderOld = () => {
     if (this.pic == null) {
       return <View />;
     }
     return (
       <TouchableWithoutFeedback onPress={this.playPauseAction}>
+        <View
+          style={{
+            width: this.myWidth,
+            height: this.myWidth * (4/3),
+            overflow: 'hidden',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+        {this.state.isPaused &&
+          <Image source={require('img/play_button.png')} />
+        }
+            <Video
+              paused={this.state.isPaused}
+              repeat={true}
+              resizeMode="contain"
+              onEnd={this.playPauseAction}
+              style={{
+                width: this.myWidth,
+                height: windowHeight * (4/3),
+                backgroundColor: 'black',
+                justifyContent: 'center',
+                alignItems: 'center',
+                position: 'absolute',
+                zIndex: -1,
+              }}
+              key={this.pic.key}
+              source={{uri: this.pic.videoUrl}}
+            />
+        </View>
+      </TouchableWithoutFeedback>
+    );
+  }
+
+  render = () => {
+    if (this.pic == null) {
+      return <View />;
+    }
+    return (
+      <TouchableWithoutFeedback onPress={
+        (e) => {
+          let data = e.touchHistory.touchBank[1];
+          let timeDiff = data.currentTimeStamp - data.previousTimeStamp;
+
+          let currentClickTime = (new Date()).getTime();
+
+          let time = currentClickTime;
+
+          let oneClickFunOld = () => {
+            if (time == this.post.lastClickTime && !this.post.doubleClick) {
+              this.post.doubleClick = true;
+            } else {
+              this.post.doubleClick = false;
+            }
+          };
+
+          let oneClickFun = () => {
+            this.post.doubleClick = false;
+            /* if (time == this.post.lastClickTime) {
+              if(!this.post.doubleClick){
+                this.post.doubleClick = false;  
+              }              
+            } else {
+              this.post.doubleClick = false;
+            } */
+          };
+
+          if (this.post.lastClickTime) {
+            let diff = currentClickTime - this.post.lastClickTime;
+
+            if (diff <= 500) {
+              setTimeout(()=>{
+                this.post.doubleClick = true;
+                this.post.starPost();
+                this.post.lastClickTime = currentClickTime;
+              },0)              
+            } else {   
+              setTimeout(()=>{                        
+                console.log("Hii here : 142")    
+                this.playPauseAction()  
+                this.post.doubleClick = false; 
+                this.post.lastClickTime = currentClickTime;
+              },0);
+            }
+          } 
+
+          // this.post.lastClickTime = currentClickTime;
+        }}
+      onLongPress={(e) => {
+        this.post.savePost();
+      }}>
         <View
           style={{
             width: this.myWidth,

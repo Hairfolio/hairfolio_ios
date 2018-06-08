@@ -55,7 +55,8 @@ const Hairfolio  = observer(({store}) => {
         ref={input => ShareStore.input = input}
         value={store.name}
         onChangeText={t => store.name = t}
-        onEndEditing={() => ShareStore.saveHairfolio(store)}
+        onEndEditing={() => {
+          ShareStore.saveHairfolio(store)}}
         style = {{
           backgroundColor: 'white',
           height: h(86),

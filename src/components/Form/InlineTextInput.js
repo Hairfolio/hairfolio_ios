@@ -44,6 +44,7 @@ export default class FormInlineTextInput extends React.Component {
   render() {
     return (<View style={{position: 'relative'}}>
       <TextInput
+        maxLength={this.props.max}
         editable={!this.props.blocked}
         {...this.props}
         onChangeText={(value) => {

@@ -96,7 +96,7 @@ class ContactDetailsStore {
 
   async init(contactId) {
     this.isLoading = true;
-    let store = await ServiceBackend.get(`/contacts/${contactId}`);
+    let store = await ServiceBackend.get(`contacts/${contactId}`);
     let data = store.contact;
     this.id = store.contact.id;
     this.mode = 'view';
@@ -333,7 +333,7 @@ class ContactDetailsStore {
       this.addressState = this.oldValues.addressState;
       this.addressPostCode = this.oldValues.addressPostCode;
       this.addressCity = this.oldValues.addressCity;
-      this.addressCountry = this.oldValues.addressCountr;
+      this.addressCountry = this.oldValues.addressCountry;
     } else {
       this.myBack();
     }

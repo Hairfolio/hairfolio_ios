@@ -91,6 +91,7 @@ export default class Profile extends React.Component {
     this._fetchProfile();
     this._fetchUserPosts();
     this._fetchUserHairfolios();
+    StatusBar.setBarStyle('light-content', true);  
     this.props.navigator.toggleTabs({
       to: 'shown',
     });
@@ -386,14 +387,14 @@ export default class Profile extends React.Component {
 
                 this.refs.headerContent.setNativeProps({
                   style: {
-                    opacity: opacityContent
+                    // opacity: opacityContent
                   }
                 });
 
                 if (this.refs.settings) {
                   this.refs.settings.setNativeProps({
                     style: {
-                      opacity: opacityContent
+                      // opacity: opacityContent
                     },
                     pointerEvents: opacityContent > 0 ? 'auto' : 'none'
                   });
@@ -402,7 +403,7 @@ export default class Profile extends React.Component {
                 if (this.refs.blackbook) {
                   this.refs.blackbook.setNativeProps({
                     style: {
-                      opacity: opacityContent
+                      // opacity: opacityContent
                     },
                     pointerEvents: opacityContent > 0 ? 'auto' : 'none'
                   });

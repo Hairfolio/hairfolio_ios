@@ -94,6 +94,8 @@ class BlackBookStore {
 
     let contacts = (await ServiceBackend.get('contacts')).contacts;
 
+    console.log("contacts ==>"+JSON.stringify(contacts))
+
     this.contacts = contacts.map(e => new Contact(e));
 
     this.isLoading = false;

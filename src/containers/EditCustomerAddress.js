@@ -110,6 +110,8 @@ export default class EditCustomerAddress extends PureComponent {
               placeholder="Zip"
               ref={(r) => this.addFormItem(r, 'zip')}
               validation={(v) => !!v}
+              keyboardType="numeric"
+              max={10}
             />
           </View>
         </View>

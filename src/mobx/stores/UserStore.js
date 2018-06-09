@@ -77,9 +77,15 @@ class UserStore {
         values.brand_attributes = brand;
 
         // delete brand  attributes if they don't have a value
-        if (values.brand_attributes && (!values.brand_attributes.name || values.brand_attributes.name == '')) {
-          delete values.brand_attributes;
+        if(values.brand_attributes){
+          if(values.brand_attributes.name.length <= 0 || !values.brand_attributes.name){
+            delete values.brand_attributes;
+          }
+
         }
+        // if (values.brand_attributes && (!values.brand_attributes.name || values.brand_attributes.name == '')) {
+        //   delete values.brand_attributes;
+        // }
       } else {
         let salon = {};
         _.each(values.business, (v, key) => salon[`${key}`] = v);
@@ -87,9 +93,15 @@ class UserStore {
         values.salon_attributes = salon;
 
         // delete salon attributes if they don't have a value
-        if (values.salon_attributes && (!values.salon_attributes.name || values.salon_attributes.name == '')) {
-          delete values.salon_attributes;
+        if(values.salon_attributes){
+          if(values.salon_attributes.name.length <=0  || !values.salon_attributes.name){
+            delete values.salon_attributes;
+          }
+
         }
+        // if (values.salon_attributes && (!values.salon_attributes.name || values.salon_attributes.name == '')) {
+        //   delete values.salon_attributes;
+        // }
       }
     }
     values['salon_user_id'] = values['business_salon_user_id'];
@@ -461,14 +473,14 @@ class UserStore {
           'instagram_token': token
         }
       );
-      if (res.user) {
+      // if (res.user) {
         this.user = res.user;
         this.userState = READY;
-      } else {
-        // alert("1 ==>"+JSON.stringify(res.errors))
-        this.userState = LOADING_ERROR;
-        throw new Error(res.errors);
-      }
+      // } else {
+      //   // alert("1 ==>"+JSON.stringify(res.errors))
+      //   this.userState = LOADING_ERROR;
+      //   throw new Error(res.errors);
+      // }
     } catch(error) {
       // alert(JSON.stringify(error))
       this.userState = LOADING_ERROR;
@@ -477,6 +489,7 @@ class UserStore {
   }
 
   @action async signUpWithEmail(value = {}, type) {
+    console.log("signUpWithEmail ==>"+JSON.stringify(value));
     this.userState = LOADING;
     if (value.business) {
       _.each(value.business, (v, key) => value[`business_${key}`] = v);
@@ -492,16 +505,12 @@ class UserStore {
     } else if (type == 'salon') {
       let name = value['business_name'];
       
-      if(value.salon_attributes){
+
         value.salon_attributes = {
           name: name
         };
 
-      }else{
-        value.salon = {
-          name: name
-        };
-      }
+      
       delete value.business_name;
      
       type = 'owner'

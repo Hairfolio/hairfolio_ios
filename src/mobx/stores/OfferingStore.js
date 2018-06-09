@@ -40,7 +40,7 @@ class OfferingStore {
   @action editOffering = (id, offering) => {
     this.editOfferingState = LOADING;
     return ServiceBackend.put(
-      `/users/${UserStore.user.id}/offerings/${id}`,
+      `users/${UserStore.user.id}/offerings/${id}`,
       {
         offering
       }

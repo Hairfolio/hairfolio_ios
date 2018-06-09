@@ -46,6 +46,9 @@ export default class SalonInfo extends React.Component {
       if (event.id == 'next') {
         if (!this.checkErrors()) {
           let formData = this.getFormValue();
+
+          console.log("salon formdata ==>"+JSON.stringify(formData))
+
           if(UserStore.user.salon){
             formData.business.name = UserStore.user.salon.name;
           }else{
@@ -53,7 +56,7 @@ export default class SalonInfo extends React.Component {
           }
           
           this.setState({'submitting': true});
-          UserStore.editUser(formData)
+          UserStore.editUser(formData,'owner')
           .then((r) => {
             this.setState({submitting: false});
             return r;

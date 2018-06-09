@@ -28,8 +28,8 @@ class UsersStore {
   @action getUser = async (userId) => {
     try {
       this.usersStates.set(userId, LOADING);
-      const res = await ServiceBackend.get(`/users/${userId}`);
-      const offerings = await ServiceBackend.get(`/users/${userId}/offerings`);
+      const res = await ServiceBackend.get(`users/${userId}`);
+      const offerings = await ServiceBackend.get(`users/${userId}/offerings`);
       this.users.set(userId, {
         ...res.user,
         offerings: offerings.offerings,

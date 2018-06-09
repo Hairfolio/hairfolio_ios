@@ -78,11 +78,54 @@ export default class Register2 extends PureComponent {
 
               let userId = UserStore.user.id;
 
-            let post_data = {
-              user: {
-                'account_type': this.checkUserType(OAuthStore.userType)
+
+              let post_data = {};
+
+            if(OAuthStore.userType == 'brand'){
+               post_data = {
+                user: {
+                  'brand_attributes':{
+                    "name": 'null',
+                    "info": null,
+                    "address": null,
+                    "city": null,
+                    "state": null,
+                    "zip": null,
+                    "website": null,
+                    "phone": null,
+                    "services": []
+                  },
+                  'account_type': this.checkUserType(OAuthStore.userType)
+                }
+              }              
+
+            }else if(OAuthStore.userType == 'salon'){
+
+              post_data = {
+                user: {
+                  'salon_attributes': {
+                    "name": "null",
+                    "info": null,
+                    "address":null,
+                    "city": null,
+                    "state": null,
+                    "zip": null,
+                    "website": null,
+                    "phone": null
+                  },
+                  'account_type': this.checkUserType(OAuthStore.userType)
+                }
+              };              
+
+            }else{
+               post_data = {
+                user: {
+                  'account_type': this.checkUserType(OAuthStore.userType)
+                }
               }
             }
+
+           
             
             ServiceBackend.put('users/'+userId, post_data).then(
               (response)=>{
@@ -238,7 +281,7 @@ export default class Register2 extends PureComponent {
     }     
   }
 
-  _loginWithFacebook= (item) => {
+  _loginWithFacebook3= (item) => {
     consumer_item = item;
     var type = TYPES[item.label];
     EnvironmentStore.loadEnv()
@@ -277,6 +320,89 @@ export default class Register2 extends PureComponent {
         )
       });
   } 
+
+  _loginWithFacebook= (item) => {
+    consumer_item = item;
+    var type = TYPES[item.label];
+    EnvironmentStore.loadEnv()
+      .then(() => LoginManager.logInWithReadPermissions(['public_profile']))
+      .then(() => AccessToken.getCurrentAccessToken())
+      .then(data => data.accessToken.toString())
+      .then(token => {
+        console.log("token==>" + token)
+
+        UserStore.signupWithFacebook(token, type).then(
+          (res)=>{
+            console.log("signupWithFacebook response==>" + JSON.stringify(res))
+            UserStore.user = res.user;
+            let userId = res.user.id;
+
+            let post_data = {};
+
+            if(type == 'brand'){
+               post_data = {
+                user: {
+                  'brand_attributes':{
+                    "name": 'null',
+                    "info": null,
+                    "address": null,
+                    "city": null,
+                    "state": null,
+                    "zip": null,
+                    "website": null,
+                    "phone": null,
+                    "services": []
+                  },
+                  'account_type': this.checkUserType(type)
+                }
+              }              
+
+            }else if(type == 'salon'){
+
+              post_data = {
+                user: {
+                  'salon_attributes': {
+                    "name": "null",
+                    "info": null,
+                    "address":null,
+                    "city": null,
+                    "state": null,
+                    "zip": null,
+                    "website": null,
+                    "phone": null
+                  },
+                  'account_type': this.checkUserType(type)
+                }
+              };              
+
+            }else{
+               post_data = {
+                user: {
+                  'account_type': this.checkUserType(type)
+                }
+              }
+            }
+
+            console.log("post_data ==>"+JSON.stringify(post_data))
+            
+            ServiceBackend.put('users/'+userId, post_data).then(
+              (response)=>{
+                console.log("_loginWithFacebook response==>"+JSON.stringify(response))
+                this._navigateToNextStep(type);
+              },
+              (err)=>{
+                console.log("_loginWithFacebook error==>"+JSON.stringify(err))
+              }
+            ); 
+          },
+          (error)=>{
+            console.log("signupWithFacebook error==>" + JSON.stringify(error))
+
+          }
+        )
+      });
+  } 
+
 
   _loginWithInstagram = (item) => {
     var type = TYPES[item.label];    

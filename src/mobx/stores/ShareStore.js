@@ -107,7 +107,8 @@ class SendStore {
 
     let userId = UserStore.user.id;
 
-    let res = (await ServiceBackend.get(`users/${userId}/follows?friends=true`)).users;
+    // let res = (await ServiceBackend.get(`users/${userId}/follows?friends=true`)).users;
+    let res = (await ServiceBackend.get(`users`)).users;
 
     let myUsers = await Promise.all(res.map(e => {
       let u = new SelectableUser();

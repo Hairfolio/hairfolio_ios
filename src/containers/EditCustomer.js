@@ -143,8 +143,8 @@ console.log("form Data=>"+JSON.stringify(formData))
   }
 
   initValues() {
-    // var rawValues = toJS(UserStore.user);
-    var rawValues = UserStore.user;
+    var rawValues = toJS(UserStore.user);
+    // var rawValues = UserStore.user;
     let business;
     let salonUserId;   
 
@@ -225,7 +225,7 @@ console.log("form Data=>"+JSON.stringify(formData))
 
       <View style={{height: StyleSheet.hairlineWidth}} />
 
-      {/* <PageInput
+       {/* <PageInput
         page={'hairfolio.EditCustomerAddress'}
         navigator={this.props.navigator}
         placeholder="Address"
@@ -237,7 +237,7 @@ console.log("form Data=>"+JSON.stringify(formData))
           }
         }}
         validation={(v) => true}
-      /> */}
+      />  */}
 
       <PageInput
         page={'hairfolio.EditCustomerAddress'}

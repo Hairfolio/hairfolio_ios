@@ -24,6 +24,8 @@ import Swipeout from 'Hairfolio/react-native-swipeout/index';
 import {SelectPeople, ToInput} from '../components/SelectPeople';
 import whiteBack from '../../resources/img/nav_white_back.png';
 import NavigatorStyles from '../common/NavigatorStyles';
+import BannerErrorContainer from '../components/BannerErrorContainer';
+import ServiceBackend from '../backend/ServiceBackend';
 
 @observer
 export default class WriteMessage extends PureComponent {
@@ -69,24 +71,34 @@ export default class WriteMessage extends PureComponent {
           animationStyle: 'fade',
         });
       } else if (event.id == 'right') {
-        WriteMessageStore.navigator = this.props.navigator;
-        WriteMessageStore.actionBtnAction();
+        if(WriteMessageStore.selectedItems.length > 0){
+          WriteMessageStore.navigator = this.props.navigator;
+          WriteMessageStore.actionBtnAction();
+        }else{
+          this.refs.ebc.error('Please select atleast one user to continue');
+        }
+        
       }
     }
   }
 
   render() {
     let store = WriteMessageStore;
+    
     let Content = LoadingPage(
       SelectPeople,
       store
     );
 
     return (
+      <BannerErrorContainer ref="ebc" style={{
+        flex: 1
+      }}>
       <View style={{flex: 1}}>
         <ToInput store={WriteMessageStore} />
         <Content />
       </View>
+      </BannerErrorContainer>
     );
   }
 };

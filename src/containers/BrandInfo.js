@@ -46,6 +46,8 @@ export default class BrandInfo extends PureComponent {
         if (!this.checkErrors()) {
           let formData = this.getFormValue();
 
+          console.log("brand formdata ==>"+JSON.stringify(formData))
+
           if(UserStore.user.brand){
             formData.business.name = UserStore.user.brand.name;
           }else{

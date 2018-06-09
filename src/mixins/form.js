@@ -52,6 +52,8 @@ export default {
   },
 
   setFormValue(value) {
+    console.log("setFormValue ==>"+JSON.stringify(value))
+
     _.each(value, (value, key) => {
       if (!this.fields[key])
         return;

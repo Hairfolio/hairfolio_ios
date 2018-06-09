@@ -14,6 +14,7 @@ import LoadingScreen from '../components/LoadingScreen';
 import CreatePostStore from '../mobx/stores/CreatePostStore';
 import ShareStore from '../mobx/stores/ShareStore';
 import { h } from 'Hairfolio/src/helpers';
+import BannerErrorContainer from '../components/BannerErrorContainer';
 
 @observer
 export default class Share extends PureComponent {
@@ -21,10 +22,20 @@ export default class Share extends PureComponent {
     super(props);
     AddBlackBookStore.load();
     ShareStore.resetButtons();
+    this.state={
+      active_index:0
+    }
+  }
+
+  handleChangeScreen = ({ i }) => {
+    this.setState({
+      active_index : i
+    })
   }
 
   render() {
     return (
+      
       <View
         style={{
           flex: 1,
@@ -45,7 +56,16 @@ export default class Share extends PureComponent {
                 alignItems: 'center'
               }}
               onPress={() => {
-                CreatePostStore.postPost(this.props.navigator);
+
+                if(this.state.active_index == 1){
+                  if(ShareStore.sendStore.selectedItems.length > 0){
+                    CreatePostStore.postPost(this.props.navigator);                  
+                  }else{                  
+                    alert('Please select atleast one user to continue');
+                  }
+                }else{
+                  CreatePostStore.postPost(this.props.navigator);    
+                }
               }}
             >
               <Text
@@ -66,6 +86,7 @@ export default class Share extends PureComponent {
         <ScrollableTabView
           renderTabBar={() => <LinkTabBar />}
           initialPage={0}
+          onChangeTab={this.handleChangeScreen}
           refs={e => ShareStore.tabView = e}
         >
           <ShareFollowers tabLabel="Followers" navigator={this.props.navigator} />

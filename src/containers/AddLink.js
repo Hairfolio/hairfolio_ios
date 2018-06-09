@@ -32,6 +32,10 @@ import ScrollableTabView from 'react-native-scrollable-tab-view'
 import LinkTabBar from '../components/post/LinkTabBar';
 
 const SearchBar = observer(({catalog}) => {
+  catalog.searchText="";
+  setTimeout(() => {
+    catalog.search();
+  }, 500);
   return (
     <View
       style = {{
@@ -176,6 +180,8 @@ const CatalogResults = observer(({catalog, navigator}) => {
 });
 
 const CatalogPage = observer(({ navigator }) => {
+  // AddLinkStore.catalog.searchText= "";
+  // AddLinkStore.catalog.search();
   return (
     <View style={{flex: 1}}>
       <SearchBar catalog={AddLinkStore.catalog} />

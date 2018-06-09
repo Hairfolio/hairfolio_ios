@@ -23,7 +23,15 @@ export default class EditCustomerAddress extends PureComponent {
   constructor(props) {
     super(props);
     if (this.props.currentValue) {
+      console.log("EditCustomerAddress ==>"+JSON.stringify(this.props.currentValue))
       this.setValue(this.props.currentValue);
+      // if(UserStore.user.brand){
+      //   this.setValue(UserStore.user.brand);
+      // }
+      // if(UserStore.user.salon){
+      //   this.setValue(UserStore.user.salon);
+      // }
+      
     }
     if (this.props.navigator) {
       this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
@@ -59,7 +67,15 @@ export default class EditCustomerAddress extends PureComponent {
   }
 
   setValue(value) {
-    this.setFormValue(value);
+    /* console.log("setValue ==>"+JSON.stringify(value))
+    
+    this.setFormValue({
+      "address": value.address,
+      "city" : value.city,
+      "state":value.state,
+      "zip":value.zip
+   }); */
+   this.setFormValue(value);
   }
 
   render() {

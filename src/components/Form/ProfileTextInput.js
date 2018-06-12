@@ -89,7 +89,7 @@ export default class ProfileTextInput extends PureComponent {
           textAlign: 'right'
         }}
         underlineColorAndroid="transparent"
-        value={this.state.value}
+        value={(this.state.value == 'null') ? "" : this.state.value}
       />
     </View>);
   }

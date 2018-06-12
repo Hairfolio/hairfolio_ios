@@ -78,10 +78,28 @@ export default class SalonStylist extends PureComponent {
   }
 
   _invite = () => {
+
+
+    Communications.email(
+      null,   
+      null,
+      ['maulika.kapure@agileinfoways.com', 'margi.patel@agileinfoways.com'],
+      'I\’d like to add you on Hairfolio',
+      `
+I’d like to add you as a stylist
+https://hairfolio.com/diverseawarenes
+
+-----
+Don’t have Hairfolio?
+Get it from the App Store:
+https://itunes.apple.com/us/app/hairfolio/id672…
+      `
+    );
+
     var contacts = this._searchList.getValue();
     if (!contacts.length)
       return;
-    Communications.email(
+    /* Communications.email(
       null,
       [],
       _.map(
@@ -98,7 +116,7 @@ Don’t have Hairfolio?
 Get it from the App Store:
 https://itunes.apple.com/us/app/hairfolio/id672…
       `
-    );
+    ); */
   }
 
   @autobind

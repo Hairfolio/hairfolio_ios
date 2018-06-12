@@ -29,8 +29,10 @@ import {
   windowHeight,
 } from 'Hairfolio/src/helpers';
 import Swipeout from 'Hairfolio/react-native-swipeout/index';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import whiteBack from '../../resources/img/nav_white_back.png';
 
+// const objMessageDetails={};
 @observer
 class MessageContent  extends React.Component {
 
@@ -263,7 +265,7 @@ class MessagesContent extends React.Component {
 
 import LoadingPage from '../components/LoadingPage'
 
-const MessageInput = observer(() => {
+const MessageInput = observer((method) => {
 
   let store = MessageDetailsStore;
 
@@ -317,13 +319,15 @@ const MessageInput = observer(() => {
       <TextInput
         onFocus={
           () => {
-            setTimeout(() => store.scrollToBottom(), 100);
+            // setTimeout(() => store.scrollToBottom(), 100);
+            setTimeout(() => method, 100);
           }
         }
 
         onEndEditing={
           () => {
-            setTimeout(() => store.scrollToBottom(), 100);
+            // setTimeout(() => store.scrollToBottom(), 100);
+            setTimeout(() => method, 100);
           }
         }
 
@@ -388,7 +392,17 @@ export default class MesageDetails extends PureComponent {
     ],
   };
 
+  constructor(props) {
+    super(props);
+    this.scrollToBottomList = this.scrollToBottomList.bind(this);
+  }
+
+  scrollToBottomList(){
+    this.refs.refScrollView.scrollToEnd({animated: true})
+  }
+
   render() {
+    // objMessageDetails = new MesageDetails();
     let store = MessageDetailsStore;
     let Content = LoadingPage(
       MessagesContent,
@@ -396,10 +410,17 @@ export default class MesageDetails extends PureComponent {
     );
 
     return (
-       <View style={{flex: 1}}>
-        <Content />
-        <MessageInput />
-        <KeyboardSpacer/>
+      <View style={{flex: 1}}>
+        <KeyboardAwareScrollView
+          alwaysBounceVertical={false}
+          ref='refScrollView'
+          onContentSizeChange={() => this.scrollToBottomList()}>
+          <Content />
+        </KeyboardAwareScrollView>
+        <MessageInput method={this.scrollToBottomList}/>     
+        <KeyboardSpacer onToggle={()=>{
+          this.scrollToBottomList();
+        }}/>
         <LoadingScreen style={{opacity: 0.6}} store={MessageDetailsStore.loadingStore} />
       </View>
     );

@@ -55,9 +55,120 @@ class UserStore {
 
   @action setMethod(method) {
     this.registrationMethod = method;
-  }   
+  }
   
   @action editUser(values = {}, type) {
+
+    console.log("editUser ==>"+JSON.stringify(values));
+    console.log("UserType ==>"+JSON.stringify(this.user.account_type));
+
+    this.userState = LOADING;
+
+    if (values.business) {
+      if (type == 'ambassador') {
+        let brand = {};
+        _.each(values.business, (v, key) => brand[`${key}`] = v);
+        delete values.business;
+        values.brand_attributes = brand;
+
+        // delete brand  attributes if they don't have a value
+        if(values.brand_attributes){
+          if(!values.brand_attributes.name){
+            delete values.brand_attributes;
+          }
+
+        }
+        // if (values.brand_attributes && (!values.brand_attributes.name || values.brand_attributes.name == '')) {
+        //   delete values.brand_attributes;
+        // }
+      } else {
+        let salon = {};
+        _.each(values.business, (v, key) => salon[`${key}`] = v);
+        delete values.business;
+        values.salon_attributes = salon;
+
+        // delete salon attributes if they don't have a value
+        if(values.salon_attributes){
+          if(!values.salon_attributes.name){
+            delete values.salon_attributes;
+          }
+
+        }
+        // if (values.salon_attributes && (!values.salon_attributes.name || values.salon_attributes.name == '')) {
+        //   delete values.salon_attributes;
+        // }
+      }
+    }
+
+
+    // if (values.experience_ids) {
+    //   values.experience_ids = values.experience_ids;
+    // } else {
+    //   values.experience_ids = [];
+    // }
+    // if (values.certificate_ids) {
+    //   values.certificate_ids = values.certificate_ids;
+    // } else {
+    //   values.certificate_ids = [];
+    // }
+    // if (values.business) {
+    //   if (type == 'ambassador') {
+    //     let brand = {};
+    //     _.each(values.business, (v, key) => brand[`${key}`] = v);
+    //     delete values.business;
+    //     values.brand_attributes = brand;
+
+    //     // delete brand  attributes if they don't have a value
+    //     if (values.brand_attributes && (!values.brand_attributes.name || values.brand_attributes.name == '')) {
+    //       delete values.brand_attributes;
+    //     }
+    //   } else {
+    //     let salon = {};
+    //     _.each(values.business, (v, key) => salon[`${key}`] = v);
+    //     delete values.business;
+    //     values.salon_attributes = salon;
+
+    //     // delete salon attributes if they don't have a value
+    //     if (values.salon_attributes && (!values.salon_attributes.name || values.salon_attributes.name == '')) {
+    //       delete values.salon_attributes;
+    //     }
+    //   }
+    // }
+    // values['salon_attributes'] = values['business_salon_user_id'];
+    // delete values['business_salon_user_id'];
+    // if (values['salon_user_id'] === -1) {
+    //   values['salon_user_id'] = null;
+    // }
+    if (_.isEmpty(values)) {
+      this.userState = READY;
+    } else {
+      try {
+        // alert(JSON.stringify(values));
+        // var user = values;
+        // console.log("USER121212=>"+JSON.stringify(values));
+        // var body = _.pick(values, ['experience_ids', 'certificate_ids']);
+        var body = {"user" : values};
+        console.log("BODY 106"+JSON.stringify(body));
+        // if(!_.isEmpty(user)) {
+        //   body.user = user;
+        // }
+        return ServiceBackend.put(`users/${this.user.id})}`, body)
+          .then(res => {
+            this.user = {
+              ...this.user,
+              ...res.user,
+            };
+            this.userState = READY;
+          });
+      } catch (error) {
+        this.userState = LOADING_ERROR;
+        throw error;
+      }
+    }
+
+  }
+  
+  @action editUserOLD(values = {}, type) {
     this.userState = LOADING;
     if (values.experience_ids) {
       values.experience_ids = values.experience_ids;
@@ -78,7 +189,7 @@ class UserStore {
 
         // delete brand  attributes if they don't have a value
         if(values.brand_attributes){
-          if(values.brand_attributes.name.length <= 0 || !values.brand_attributes.name){
+          if(!values.brand_attributes.name){
             delete values.brand_attributes;
           }
 
@@ -94,7 +205,7 @@ class UserStore {
 
         // delete salon attributes if they don't have a value
         if(values.salon_attributes){
-          if(values.salon_attributes.name.length <=0  || !values.salon_attributes.name){
+          if(!values.salon_attributes.name){
             delete values.salon_attributes;
           }
 

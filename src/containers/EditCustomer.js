@@ -115,6 +115,7 @@ console.log("form Data=>"+JSON.stringify(formData))
       return;
     }
     let formData = this.getFormValue();
+    console.log("form Data=>"+JSON.stringify(formData))
     let business = {};
     if (UserStore.user.account_type == 'stylist') {
       formData.description = formData.business_info;
@@ -122,6 +123,7 @@ console.log("form Data=>"+JSON.stringify(formData))
     }
     for (let key in formData) {
       if (key == 'business') {
+        formData.business.name = formData.business_name;
         for (let key2 in formData[key]) {
           business[key2] = formData[key][key2];
         }
@@ -239,13 +241,22 @@ console.log("form Data=>"+JSON.stringify(formData))
         validation={(v) => true}
       />  */}
 
-      <PageInput
+      {/* <PageInput
         page={'hairfolio.EditCustomerAddress'}
         navigator={this.props.navigator}
         placeholder="Address"
         title="Address"
         onBack={(r) => {this.addFormItem(r, 'business');}}
         validation={(v) => true}
+      /> */}
+
+      <PageInput
+        page={'hairfolio.StylistPlaceOfWork'}
+        placeholder="Address"
+        ref={(r) => this.addFormItem(r, 'business')}
+        validation={(v) => true}
+        title="Address"
+        navigator={this.props.navigator}
       />
 
       <View style={{height: StyleSheet.hairlineWidth}} />

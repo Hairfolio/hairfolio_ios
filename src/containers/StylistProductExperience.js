@@ -22,7 +22,10 @@ export default class StylistProductExperience extends React.Component {
 
   constructor(props) {
     super(props);
-    // EnvironmentStore.getExperiences(EnvironmentStore.experiencesNextPage);
+    setTimeout(()=>{
+      EnvironmentStore.getExperiences(EnvironmentStore.experiencesNextPage);
+    },250);
+    
     this.state = {
       selectedIds: toJS(UserStore.user.experiences.map(exp => exp.id)),
     }
@@ -46,11 +49,13 @@ export default class StylistProductExperience extends React.Component {
     ],
   }
 
-  fetchServices(){
-    EnvironmentStore.getExperiences(EnvironmentStore.experiencesNextPage);
-    this.state = {
-      selectedIds: toJS(UserStore.user.experiences.map(exp => exp.id)),
-    }
+  fetchServices() {
+    setTimeout(() => {
+      EnvironmentStore.getExperiences(EnvironmentStore.experiencesNextPage);
+      this.state = {
+        selectedIds: toJS(UserStore.user.experiences.map(exp => exp.id)),
+      }
+    }, 250)
   }
 
   onNavigatorEvent(event) {
@@ -132,8 +137,8 @@ export default class StylistProductExperience extends React.Component {
             if (!this.selectedIds)
               return;
 
-            this._searchList.setSelected(this.selectedIds);
-            delete this.selectedIds;
+            // this._searchList.setSelected(this.selectedIds);
+            // delete this.selectedIds;
           }}
           style={{
             flex: 1,

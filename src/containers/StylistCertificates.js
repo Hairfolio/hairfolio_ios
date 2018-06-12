@@ -158,8 +158,8 @@ export default class StylistCertificates extends React.Component {
             this._searchList = sL;
             if (!this.selectedIds)
               return;
-            this._searchList.setSelected(this.selectedIds);
-            delete this.selectedIds;
+            // this._searchList.setSelected(this.selectedIds);
+            // delete this.selectedIds;
           }}
           style={{
             flex: 1,

@@ -431,14 +431,14 @@ export default class UserAbout extends React.Component {
 
   renderSalon() {
     return (
-      <View>
+      <View>        
+        {this.renderProfessionalDescription()}
         <CollapsableContainer
           label="CONTACT"
           renderFooter={() => this.renderAddressFooter()}
         >
           {this.renderAddress()}
         </CollapsableContainer>
-        {this.renderProfessionalDescription()}
         <CollapsableContainer label="PRODUCTS">
           {this.renderCartouches(this.props.profile.experiences)}
         </CollapsableContainer>

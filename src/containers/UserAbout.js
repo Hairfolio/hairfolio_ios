@@ -358,7 +358,7 @@ export default class UserAbout extends React.Component {
     return (
       <View>
         <CollapsableContainer
-          label="ABOUT"
+          label="CONTACT"
           renderFooter={() => this.renderAddressFooter()}
         >
           {this.renderAddress()}

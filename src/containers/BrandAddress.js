@@ -21,7 +21,7 @@ import ServiceBackend from '../backend/ServiceBackend'
 
 @observer
 @mixin(formMixin)
-export default class StylistPlaceOfWork extends React.Component {
+export default class BrandAddress extends React.Component {
 
   constructor(props) {
     super(props);
@@ -66,17 +66,24 @@ export default class StylistPlaceOfWork extends React.Component {
 
         var currentUser = UserStore.user;
         console.log("user ==>" + JSON.stringify(UserStore.user));
+        const formData ={};
         if (this.state.selected) {          
-          if(currentUser.salon){
-            this.state.selected['info'] = currentUser.salon.info;
+          if(currentUser.brand){
+            this.state.selected['info'] = currentUser.brand.info;
+            formData = { brand_attributes: this.state.selected };
           }
+
+          // if(currentUser.brand){
+          //   this.state.selected['info'] = currentUser.brand.info;
+          //   const formData = { brand_attributes: this.state.selected };
+          // }
           console.log("state ==>"+JSON.stringify(this.state.selected))
           
-          const formData = { salon_attributes: this.state.selected };
+          
          
           UserStore.editUser(formData, UserStore.user.account_type)
           .then((res) => {
-            console.log("salon updated ==> " + JSON.stringify(res));
+            // console.log("salon updated ==> " + JSON.stringify(res));
             })
             .catch((e) => {
               this.refs.ebc.error(e);
@@ -102,10 +109,10 @@ export default class StylistPlaceOfWork extends React.Component {
 
     this.setFormValue({
       ...value,
-      'salon_user_id': value.salon_user_id || -1
+      'brand_user_id': value.brand_user_id || -1
     });
     this.setState({
-      selected: value.salon_user_id
+      selected: value.brand_user_id
     });
   }
 
@@ -119,7 +126,7 @@ export default class StylistPlaceOfWork extends React.Component {
     if (!value)
       return this.setState({ autocompleteList: [] });
     this.setState({ autocompleteState: LOADING });
-    ServiceBackend.get(`/users?account_type=owner&q=${value/*.toLowerCase()*/}`)
+    ServiceBackend.get(`/users?account_type=ambassador&q=${value/*.toLowerCase()*/}`)
       .then((autocompleteList) => {
         this.setState({
           autocompleteState: READY,
@@ -136,26 +143,26 @@ export default class StylistPlaceOfWork extends React.Component {
       .then((response) => {
         let user = response.user;
         console.log("user==>" + JSON.stringify(user));
-        if (user.salon) {
+        if (user.brand) {
           this.setFormValue({
-            name: user.salon.name,
-            'salon_user_id': user.salon.id,
-            address: user.salon.address,
-            city: user.salon.city,
-            state: user.salon.state,
-            zip: user.salon.zip,
-            website: user.salon.website,
-            phone: user.salon.phone,
+            name: user.brand.name,
+            'brand_user_id': user.brand.id,
+            address: user.brand.address,
+            city: user.brand.city,
+            state: user.brand.state,
+            zip: user.brand.zip,
+            website: user.brand.website,
+            phone: user.brand.phone,
           });
           var temp = {
-            name: user.salon.name,
-            'salon_user_id': user.salon.id,
-            address: user.salon.address,
-            city: user.salon.city,
-            state: user.salon.state,
-            zip: user.salon.zip,
-            website: user.salon.website,
-            phone: user.salon.phone,
+            name: user.brand.name,
+            'brand_user_id': user.brand.id,
+            address: user.brand.address,
+            city: user.brand.city,
+            state: user.brand.state,
+            zip: user.brand.zip,
+            website: user.brand.website,
+            phone: user.brand.phone,
           };
           this.setState({
             selected: temp,
@@ -208,7 +215,7 @@ export default class StylistPlaceOfWork extends React.Component {
           }} />
 
           <HiddenInput
-            ref={(r) => this.addFormItem(r, 'salon_user_id')}
+            ref={(r) => this.addFormItem(r, 'brand_user_id')}
           />
 
           <InlineTextInput
@@ -218,7 +225,7 @@ export default class StylistPlaceOfWork extends React.Component {
               if (this.state.selected)
                 this.setFormValue({
                   name: value,
-                  'salon_user_id': -1,
+                  'brand_user_id': -1,
                   address: '',
                   city: '',
                   state: '',
@@ -228,7 +235,7 @@ export default class StylistPlaceOfWork extends React.Component {
                 });
               this.setState({ selected: null });
             }}
-            placeholder="Salon name"
+            placeholder="Brand name"
             ref={(r) => this.addFormItem(r, 'name')}
             validation={(v) => !!v}
           />
@@ -261,32 +268,32 @@ export default class StylistPlaceOfWork extends React.Component {
               {() => <View>
                 {!this.state.selected ? _.map(this.state.autocompleteList, element => {
 
-                  let salon = element.salon;
+                  let brand = element.brand;
 
                   return (
                     <TouchableOpacity
-                      key={salon.id}
+                      key={brand.id}
                       onPress={() => {
                         this.setFormValue({
-                          name: salon.name,
-                          address: salon.address,
-                          city: salon.city,
-                          state: salon.state,
-                          zip: salon.zip,
-                          website: salon.website,
-                          phone: salon.phone,
-                          'salon_user_id': salon.id
+                          name: brand.name,
+                          address: brand.address,
+                          city: brand.city,
+                          state: brand.state,
+                          zip: brand.zip,
+                          website: brand.website,
+                          phone: brand.phone,
+                          'brand_user_id': brand.id
                         });
                         this.setState({
                           selected: {
-                            name: salon.name,
-                            address: salon.address,
-                            city: salon.city,
-                            state: salon.state,
-                            zip: salon.zip,
-                            website: salon.website,
-                            phone: salon.phone,
-                            'salon_user_id': salon.id
+                            name: brand.name,
+                            address: brand.address,
+                            city: brand.city,
+                            state: brand.state,
+                            zip: brand.zip,
+                            website: brand.website,
+                            phone: brand.phone,
+                            'brand_user_id': brand.id
                           },
                           autocompleteList: []
                         });
@@ -302,7 +309,7 @@ export default class StylistPlaceOfWork extends React.Component {
                         fontFamily: FONTS.HEAVY,
                         fontSize: SCALE.h(30),
                         color: COLORS.DARK
-                      }}>{salon.name}</Text>
+                      }}>{brand.name}</Text>
                     </TouchableOpacity>
                   );
                 }

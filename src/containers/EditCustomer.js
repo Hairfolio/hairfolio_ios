@@ -109,6 +109,9 @@ console.log("form Data=>"+JSON.stringify(formData))
   }
 
   _save = () => {
+    
+    console.log("User =>"+JSON.stringify(UserStore.user))
+
     this.setState({submitting: false});
     if (this.checkErrors()) {
       this.refs.ebc.error('Invalid information');
@@ -124,6 +127,7 @@ console.log("form Data=>"+JSON.stringify(formData))
     for (let key in formData) {
       if (key == 'business') {
         formData.business.name = formData.business_name;
+        formData.business.info = formData.business_info;
         for (let key2 in formData[key]) {
           business[key2] = formData[key][key2];
         }
@@ -169,8 +173,8 @@ console.log("form Data=>"+JSON.stringify(formData))
       rawValues.business_state = business.state;
       rawValues.business_zip = business.zip;
       rawValues.business_website = business.website;
-      rawValues.business_phone = business.phone;
-      rawValues.salon_user_id = salonUserId;
+      rawValues.business_phone = business.phone;      
+      
       rawValues.business = {
         name: business.name,
         address: business.address,
@@ -179,8 +183,13 @@ console.log("form Data=>"+JSON.stringify(formData))
         zip: business.zip,
         website: business.website,
         phone: business.phone,
-        'salon_user_id': salonUserId
       };
+      if(salonUserId){
+        rawValues.business['salon_user_id'] = salonUserId;
+        rawValues.salon_user_id = salonUserId;
+      }else{
+        rawValues.business['id'] = business.id;
+      }
     }
     if (UserStore.user.account_type === 'stylist') {
       rawValues.business_info = rawValues.description;
@@ -425,10 +434,19 @@ console.log("form Data=>"+JSON.stringify(formData))
         navigator={this.props.navigator}
       /> */}
 
-      <PageInput
+      {/* <PageInput
         page={'hairfolio.EditCustomerAddress'}
         placeholder="Address"
         ref={(r) => {this.addFormItem(r, 'business');}}
+        validation={(v) => true}
+        title="Address"
+        navigator={this.props.navigator}
+      /> */}
+
+      <PageInput
+        page={'hairfolio.BrandAddress'}
+        placeholder="Address"
+        ref={(r) => this.addFormItem(r, 'business')}
         validation={(v) => true}
         title="Address"
         navigator={this.props.navigator}
@@ -646,10 +664,15 @@ console.log("form Data=>"+JSON.stringify(formData))
         ref={(r) => this.addFormItem(r, 'business_name')}
         validation={(v) => !!v}
         onChangeText={(value) => {
-          console.log("UserStore.user.salon==>"+JSON.stringify(UserStore.user.salon))
+          
           if(UserStore.user.salon){
+            console.log("UserStore.user.salon==>"+JSON.stringify(UserStore.user.salon))
             UserStore.user.salon.name = value; 
-          }          
+          }
+          if(UserStore.user.brand){
+            console.log("UserStore.user.brand==>"+JSON.stringify(UserStore.user.brand))
+            UserStore.user.brand.name = value; 
+          }           
         }}
       />
     </View>);

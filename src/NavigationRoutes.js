@@ -50,6 +50,7 @@ import EditCustomer from './containers/EditCustomer';
 import EditCustomerAddress from './containers/EditCustomerAddress';
 import ChangePassword from './containers/ChangePassword';
 import SalonStylists from './containers/SalonStylists';
+import BrandAddress from './containers/BrandAddress';
 
 export const registerScreens = ()  => {
   Navigation.registerComponent('hairfolio.Register', () => Register);
@@ -99,5 +100,6 @@ export const registerScreens = ()  => {
   Navigation.registerComponent('hairfolio.ChangePassword', () => ChangePassword);
   Navigation.registerComponent('hairfolio.SalonStylists', () => SalonStylists);
   Navigation.registerComponent('hairfolio.AddBlackBook', () => AddBlackBook);
+  Navigation.registerComponent('hairfolio.BrandAddress', () => BrandAddress);
 };
 

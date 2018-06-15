@@ -13,12 +13,19 @@ import Contacts from 'react-native-contacts';
 import utils from '../utils';
 import {READY, LOADING, LOADING_ERROR} from '../constants';
 import whiteBack from '../../resources/img/nav_white_back.png';
+import ServiceBackend from '../backend/ServiceBackend';
 
 @observer
 export default class SalonStylist extends PureComponent {
-  state = {};
+
   constructor(props) {
     super(props);
+
+    this.state={
+      all_contacts:[]
+    }
+
+
     this.onWillFocus();
     if (this.props.navigator) {
       this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
@@ -48,7 +55,7 @@ export default class SalonStylist extends PureComponent {
         this.props.navigator.pop({
           animated: true,
         });
-      } else if (event.id == 'Invite') {
+      } else if (event.id == 'invite') {
         this._invite();
       }
     }
@@ -57,7 +64,14 @@ export default class SalonStylist extends PureComponent {
   loadContacts() {
     Contacts.getAll((err, contacts) => {
       if (err)
-        return this.loadContactsError();
+        return this.loadContactsError();    
+        
+        this.setState({
+          all_contacts:contacts  
+        });
+
+        console.log("loadContacts ==>"+JSON.stringify(this.state.all_contacts))
+
       this.setState({
         contactsStates: READY,
         contacts: new OrderedMap(
@@ -70,6 +84,8 @@ export default class SalonStylist extends PureComponent {
               })])
         )
       });
+
+      
     });
   }
 
@@ -77,29 +93,67 @@ export default class SalonStylist extends PureComponent {
     this.setState({contactsStates: LOADING_ERROR});
   }
 
-  _invite = () => {
+  _invite() {
 
-
-    Communications.email(
-      null,   
-      null,
-      ['maulika.kapure@agileinfoways.com', 'margi.patel@agileinfoways.com'],
-      'I\’d like to add you on Hairfolio',
-      `
-I’d like to add you as a stylist
-https://hairfolio.com/diverseawarenes
-
------
-Don’t have Hairfolio?
-Get it from the App Store:
-https://itunes.apple.com/us/app/hairfolio/id672…
-      `
-    );
+    var arr = [];
+    var contact_book = this.state.all_contacts;
 
     var contacts = this._searchList.getValue();
     if (!contacts.length)
       return;
-    /* Communications.email(
+
+    console.log("contact_book ==>" + JSON.stringify(contact_book));
+    console.log("contacts ==>" + JSON.stringify(contacts))
+
+    contact_book.map(
+      (single_contact, i) => {
+
+        contacts.map(
+          (sc, j) => {
+
+            if (single_contact.recordID == sc) {
+
+              if(single_contact.emailAddresses){
+                if(single_contact.emailAddresses.length > 0){
+                  console.log("match ==>" + single_contact.emailAddresses[0].email)
+                  arr.push(single_contact.emailAddresses[0].email);
+                }
+              }              
+            }
+          }
+        );
+
+      }
+    );
+
+    let post_data = {
+      emails: arr.join()
+    };
+    console.log("post_data ==>" + JSON.stringify(post_data))
+
+    ServiceBackend.post('/invite_users', post_data).then(
+      (response) => {
+        console.log("_invite result==>" + JSON.stringify(response))
+        if(response.status == 200 || response.status == '200'){
+          alert(response.message);
+        }else{
+          
+        }
+        
+      },
+      (err) => {
+        console.log("_invite error==>" + JSON.stringify(err))
+      }
+    );
+
+  }
+
+  _invite2() {
+
+    var contacts = this._searchList.getValue();
+    if (!contacts.length)
+      return;
+     Communications.email(
       null,
       [],
       _.map(
@@ -108,15 +162,15 @@ https://itunes.apple.com/us/app/hairfolio/id672…
       ),
       'I\’d like to add you on Hairfolio',
       `
-I’d like to add you as a stylist
-https://hairfolio.com/diverseawarenes
+        I’d like to add you as a stylist
+        https://hairfolio.com/diverseawarenes
 
------
-Don’t have Hairfolio?
-Get it from the App Store:
-https://itunes.apple.com/us/app/hairfolio/id672…
+        -----
+        Don’t have Hairfolio?
+        Get it from the App Store:
+        https://itunes.apple.com/us/app/hairfolio/id672…
       `
-    ); */
+    ); 
   }
 
   @autobind

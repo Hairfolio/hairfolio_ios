@@ -60,7 +60,7 @@ const ActivityFollowing = observer(({navigator}) => {
   
   return (
     <ScrollView>
-    {store.elements.map(p => <ActivityItem isMe={false} key={p.key} store={p} navigator={navigator} />)}
+    {store.elements.map(p => <ActivityItem isMe={true} key={p.key} store={p} navigator={navigator} />)}
     </ScrollView>
   );
 });

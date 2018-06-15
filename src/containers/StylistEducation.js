@@ -2,7 +2,7 @@ import React from 'react';
 import _ from 'lodash';
 import PureComponent from '../components/PureComponent';
 import {List, OrderedMap} from 'immutable';
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity,ActivityIndicator} from 'react-native';
 import { observer } from 'mobx-react';
 import { toJS } from 'mobx';
 import UserStore from '../mobx/stores/UserStore';
@@ -19,7 +19,10 @@ export default class StylistEducation extends PureComponent {
   state = {
     objEdu:[],
     singleItem:{},
-    flag_firstTime:false
+    flag_firstTime:false,
+    next_page:null,
+    nextPage:1,
+    isLoadingNextPage:false
   };
 
   constructor(props) {
@@ -62,10 +65,49 @@ export default class StylistEducation extends PureComponent {
     }
 
 
+    async fetchNextData() {
+      if (!this.state.isLoadingNextPage && this.state.nextPage != null) {
+        
+        this.setState({
+          isLoadingNextPage:true
+        });
+
+        let myId = UserStore.user.id;
+  
+        let res = (await ServiceBackend.get(`/users/${UserStore.user.id}/educations?page=${this.state.nextPage}`));
+  
+        let {educations, meta} = res;
+  
+        var arr = [];
+
+        arr = this.state.objEdu;
+  
+        for (let a = 0; a < educations.length; a++)  {
+          /* let tagItem = new TagItem();
+          await tagItem.init(tags[a]);
+          this.elements.push(tagItem); */
+          arr.push(educations[a]);
+        }
+        var educations2 = new OrderedMap(
+          arr.map(
+            education => [education.id, education]
+          )
+        );
+
+        this.setState({
+          singleItem:educations2.toObject(),
+          nextPage:meta.next_page,
+          isLoadingNextPage:false
+        });
+
+      }
+    }
+
+
   onNavigatorEvent(event) {
     if (event.id == 'willAppear') {
 
-      this.callApi();
+      this.fetchNextData();
       // if(!this.state.flag_firstTime){
       //   this.setState({
       //     flag_firstTime : true
@@ -170,6 +212,22 @@ export default class StylistEducation extends PureComponent {
           flex: 1,
           backgroundColor: 'transparent'
         }}
+        onEndReached={()=>{ 
+          this.fetchNextData()
+        }}
+        renderFooter={
+            () => {
+              if (this.state.nextPage != null) {
+                return (
+                  <View style={{flex: 1, paddingVertical: 20, alignItems: 'center', justifyContent: 'center'}}>
+                    <ActivityIndicator size='large' />
+                  </View>
+                )
+              } else {
+                return <View />;
+              }
+            }
+          }
       />
        
       }

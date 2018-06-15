@@ -107,6 +107,7 @@ export default class SafeList extends React.Component {
           if (this.props.onScroll)
             this.props.onScroll(e);
         }}
+        renderFooter={this.props.renderFooter}
         onEndReached={this.props.onEndReached}
         onEndReachedThreshold={10}
         ref="listView"

@@ -28,6 +28,8 @@ import NavigatorStyles from '../../common/NavigatorStyles';
 import UserStore from '../../mobx/stores/UserStore';
 
 const ActivityItem = observer(({store, isMe, navigator}) => {
+
+  // console.log("ActivityItem ==>"+JSON.stringify(store))
   let postContent;
 
   if (store.post) {

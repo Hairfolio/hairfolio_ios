@@ -20,6 +20,7 @@ class ServiceBackend extends Backend {
 
   async getBrands(serviceId) {
     return (await this.get(`brands?service_id=${serviceId}`)).brands;
+    // return (await this.get(`brands?serviceid=${serviceId}`)).brands;
   }
 
   async getLines(brandId) {

@@ -153,7 +153,7 @@ const ActivityItem = observer(({store, isMe, navigator}) => {
             <Text
               style={{fontFamily: FONTS.MEDIUM, color: '#3E3E3E'}}
             >
-              {store.user.id == getUserId() ? 'You ' : store.user.name + ' '}
+              {store.user.id == getUserId() ? 'You ' : store.user.name +' '+store.user.id+' '}
             </Text>
           </TouchableWithoutFeedback>
           {infoContent}

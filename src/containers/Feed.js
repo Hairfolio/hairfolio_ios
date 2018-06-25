@@ -148,11 +148,15 @@ export default class Feed extends PureComponent {
         StatusBar.setBarStyle('dark-content', true);        
         break;
       case 'bottomTabSelected':
+      console.log("bottomTabSelected ==>");
       StatusBar.setBarStyle('dark-content', true);
         NewMessageStore.load();
         FeedStore.load();
         FeedStore.hasLoaded = true;
         break;
+        case 'bottomTabReselected':
+          console.log("bottomTabReselected ==>");
+          break;
       default:
         break;
     }

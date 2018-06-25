@@ -47,6 +47,7 @@ class App {
           icon: house,
           selectedIcon: house,
           navigatorStyle: NavigatorStyles.tab,
+          onClickHandler: (index) => alert(`tab ${index} clicked`)
         },
         {
           screen: 'hairfolio.Search',

@@ -412,6 +412,7 @@ export default class MesageDetails extends PureComponent {
     return (
       <View style={{flex: 1}}>
         <KeyboardAwareScrollView
+          onKeyboardWillShow={() => { setTimeout(()=>{ this.scrollToBottomList() }, 150 ) }}
           alwaysBounceVertical={false}
           ref='refScrollView'
           onContentSizeChange={() => this.scrollToBottomList()}>

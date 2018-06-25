@@ -4,7 +4,7 @@ import { toJS } from 'mobx';
 import { observer } from 'mobx-react';
 import {Map, OrderedMap} from 'immutable';
 import {autobind} from 'core-decorators';
-import {View, Text} from 'react-native';
+import {View, Text, ActivityIndicator} from 'react-native';
 import {COLORS, FONTS, SCALE} from '../style';
 import EnvironmentStore from '../mobx/stores/EnvironmentStore';
 import UserStore from '../mobx/stores/UserStore';
@@ -14,11 +14,15 @@ import whiteBack from '../../resources/img/nav_white_back.png';
 import User from '../mobx/stores/User';
 import ServiceBackend from '../backend/ServiceBackend';
 var loadingState = "READY";
+var rows = [];
 @observer
 export default class StylistCertificates extends React.Component {
   state = {
     objEdu:[],
-    certiItem:null
+    certiItem:null,
+    next_page:null,
+    nextPage:1,
+    isLoadingNextPage:false
   };
 
   constructor(props) {
@@ -30,6 +34,7 @@ export default class StylistCertificates extends React.Component {
     //   selectedIds: toJS(UserStore.user.certificates.map(cert => cert.id)),
     // }
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+    this.fetchNextData = this.fetchNextData.bind(this,this.state.isLoadingNextPage);
   }
 
   static navigatorButtons = {
@@ -47,6 +52,62 @@ export default class StylistCertificates extends React.Component {
         buttonColor: COLORS.WHITE,
       }
     ],
+  }
+
+  async fetchNextData() {
+
+    var user = UserStore.user;
+
+    if (!this.state.isLoadingNextPage && this.state.nextPage != null) {
+
+      this.setState({
+        isLoadingNextPage: true
+      });
+
+      var meta_obj = {};
+      var res = null;
+      
+      ServiceBackend.get(`certificates?page=${this.state.nextPage}`)
+      .then(response => {   
+        res = response.certificates;
+        meta_obj = response.meta;   
+     
+        if (rows.length > 0) {
+          rows.push.apply(rows, res);
+        } else {
+          rows = res;
+        }
+      
+
+        this.setState({
+          objEdu: rows,
+          selectedIds: toJS(UserStore.user.certificates.map(cert => cert.id)),
+          nextPage: meta_obj.next_page,
+          isLoadingNextPage: false
+        });
+
+        let certificates = new OrderedMap(
+          rows.map((certificate) => {
+            if (this.state.selectedIds.find(currUsrCertId =>  currUsrCertId === certificate.id)) {
+              certificate.selected = true;
+            } else {
+              certificate.selected = false;
+            }
+            return [certificate.id, new Map(certificate)];
+          })
+        );
+
+        this.setState({
+          certiItem:certificates
+        })
+       
+      })
+      .catch(error => {
+        console.log(error);
+      });
+
+      
+    }
   }
 
   async callApi() {
@@ -81,7 +142,8 @@ export default class StylistCertificates extends React.Component {
 
   onNavigatorEvent(event) {
     if (event.id == 'willAppear') {
-      this.callApi();
+      // this.callApi();
+      this.fetchNextData();
     }
 
     if (event.type == 'NavBarButtonPress') {
@@ -131,6 +193,41 @@ export default class StylistCertificates extends React.Component {
     });
   }
 
+  renderContent(){
+    return(
+      <SearchList 
+          items={this.state.certiItem}
+          placeholder="Search for certificates"
+          updateSelectedIds = {this.updateCertificates}
+          xyz = {() => {this.fetchNextData()}}
+          loaderView={
+            () => {
+              if (this.state.nextPage != null) {
+                return (
+                  <View style={{flex: 1, paddingVertical: 20, alignItems: 'center', justifyContent: 'center'}}>
+                    <ActivityIndicator size='large' />
+                  </View>
+                )
+              } else {
+                return <View />;
+              }
+            }
+          }
+          ref={sL => {
+            this._searchList = sL;
+            if (!this.selectedIds)
+              return;
+            this._searchList.setSelected(this.selectedIds);
+            delete this.selectedIds;
+          }}
+          style={{
+            flex: 1,
+            backgroundColor: COLORS.LIGHT,
+          }}
+        />
+    )
+  }
+
   render() {
     // var temp = EnvironmentStore.certificates;
     // console.log("temp ==>"+JSON.stringify(temp))
@@ -150,22 +247,7 @@ export default class StylistCertificates extends React.Component {
       (this.state.certiItem) ?
     
       <LoadingContainer state={loadingState}>
-        {() => <SearchList 
-          items={this.state.certiItem}
-          placeholder="Search for certificates"
-          updateSelectedIds = {this.updateCertificates}
-          ref={sL => {
-            this._searchList = sL;
-            if (!this.selectedIds)
-              return;
-            // this._searchList.setSelected(this.selectedIds);
-            // delete this.selectedIds;
-          }}
-          style={{
-            flex: 1,
-            backgroundColor: COLORS.LIGHT,
-          }}
-        />}
+        {() => this.renderContent()}
       </LoadingContainer>
       :
       <View><Text></Text></View>

@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
 import {debounce} from 'core-decorators';
-import {View, Text, TextInput, StyleSheet, TouchableOpacity} from 'react-native';
+import {View, Text, TextInput, StyleSheet, TouchableOpacity, ListView} from 'react-native';
 import Icon from './Icon';
 import SafeList from './SafeList';
+import {  
+  windowWidth,
+  windowHeight,
+  } from '../helpers';
 
 import {COLORS, FONTS, SCALE} from '../style';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -177,18 +181,26 @@ export default class SearchList extends React.Component {
         </View>
       </View>
       <KeyboardAwareScrollView>
+    
       <SafeList
         dataSource={{items: items.toObject()}}
         dataSourceRowIdentities={[Array.from(items.keys())]}
         pageSize={10}
+        onEndReachedThreshold={10}
         renderRow={(item) => this.renderItem(item)}
         renderSeparator={(sId, rId) => <View key={`sep_${sId}_${rId}`} style={{height: StyleSheet.hairlineWidth, backgroundColor: 'transparent'}} />}
         style={{
           flex: 1,
-          backgroundColor: 'transparent'
+          backgroundColor: 'transparent',
+          height:windowHeight - 140
         }}
-        onEndReached={this.props.onEndReached}
-      />
+        onEndReached={()=>{ 
+          setTimeout(() => {this.setItems(this.props.items);},1000);
+            this.props.xyz()
+          }}
+        renderFooter={()=>{ this.props.loaderView() }}
+
+      /> 
       </KeyboardAwareScrollView>
     </View>
     );

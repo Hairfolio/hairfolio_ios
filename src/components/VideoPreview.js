@@ -61,6 +61,7 @@ class VideoPreview extends React.Component{
     this.post = props.post;
     this.state = {
       isPaused: true,
+      clearId:null
     };
   }
 
@@ -70,100 +71,50 @@ class VideoPreview extends React.Component{
     })
   }
 
-  renderOld = () => {
-    if (this.pic == null) {
-      return <View />;
-    }
-    return (
-      <TouchableWithoutFeedback onPress={this.playPauseAction}>
-        <View
-          style={{
-            width: this.myWidth,
-            height: this.myWidth * (4/3),
-            overflow: 'hidden',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-        >
-        {this.state.isPaused &&
-          <Image source={require('img/play_button.png')} />
-        }
-            <Video
-              paused={this.state.isPaused}
-              repeat={true}
-              resizeMode="contain"
-              onEnd={this.playPauseAction}
-              style={{
-                width: this.myWidth,
-                height: windowHeight * (4/3),
-                backgroundColor: 'black',
-                justifyContent: 'center',
-                alignItems: 'center',
-                position: 'absolute',
-                zIndex: -1,
-              }}
-              key={this.pic.key}
-              source={{uri: this.pic.videoUrl}}
-            />
-        </View>
-      </TouchableWithoutFeedback>
-    );
+  oneClickFun = () =>{
+
   }
+
+  doubleClickFun = () =>{
+    
+  }  
 
   render = () => {
     if (this.pic == null) {
       return <View />;
     }
     return (
-      <TouchableWithoutFeedback onPress={
+      <TouchableWithoutFeedback 
+        onPress={
         (e) => {
+          post = this.post;
           let data = e.touchHistory.touchBank[1];
           let timeDiff = data.currentTimeStamp - data.previousTimeStamp;
-
+          
           let currentClickTime = (new Date()).getTime();
 
-          let time = currentClickTime;
+          if (post.lastClickTime) {
+            let diff = currentClickTime - post.lastClickTime;
 
-          let oneClickFunOld = () => {
-            if (time == this.post.lastClickTime && !this.post.doubleClick) {
-              this.post.doubleClick = true;
-            } else {
-              this.post.doubleClick = false;
+
+            if(this.state.clearId){
+              clearTimeout(this.state.clearId)  
             }
-          };
+            var clearId = setTimeout(() => {
+              console.log("diff ==>"+diff);
 
-          let oneClickFun = () => {
-            this.post.doubleClick = false;
-            /* if (time == this.post.lastClickTime) {
-              if(!this.post.doubleClick){
-                this.post.doubleClick = false;  
-              }              
+               if (diff < 200) {
+              post.doubleClick = true;
+              post.starPost();
             } else {
-              this.post.doubleClick = false;
-            } */
-          };
-
-          if (this.post.lastClickTime) {
-            let diff = currentClickTime - this.post.lastClickTime;
-
-            if (diff <= 500) {
-              setTimeout(()=>{
-                this.post.doubleClick = true;
-                this.post.starPost();
-                this.post.lastClickTime = currentClickTime;
-              },0)              
-            } else {   
-              setTimeout(()=>{                        
-                console.log("Hii here : 142")    
-                this.playPauseAction()  
-                this.post.doubleClick = false; 
-                this.post.lastClickTime = currentClickTime;
-              },0);
+              post.doubleClick = false;
+              this.playPauseAction();
             }
-          } 
-
-          // this.post.lastClickTime = currentClickTime;
-        }}
+              }, 350);
+            this.setState({ clearId: clearId});
+          }
+          this.post.lastClickTime = currentClickTime;          
+        }}     
       onLongPress={(e) => {
         this.post.savePost();
       }}>
@@ -174,10 +125,11 @@ class VideoPreview extends React.Component{
             overflow: 'hidden',
             justifyContent: 'center',
             alignItems: 'center',
+            backgroundColor:'red'
           }}
         >
-        {this.state.isPaused &&
-          <Image source={require('img/play_button.png')} />
+        {this.state.isPaused &&          
+        <Image source={require('img/play_button.png')} />
         }
             <Video
               paused={this.state.isPaused}
@@ -200,6 +152,7 @@ class VideoPreview extends React.Component{
       </TouchableWithoutFeedback>
     );
   }
+  
 }
 
 export default VideoPreview;

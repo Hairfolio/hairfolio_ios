@@ -31,7 +31,7 @@ const Content = observer(({store, navigator}) => {
       <GridList
         navigator={navigator}
         noElementsText='There are no posts with this tag'
-        store={store} />
+        store={store} from={'from_feed'}/>
   </View>
   );
 });

@@ -120,7 +120,7 @@ class CommentsModel {
 class CommentsStore {
 
   @observable stack = [];
-  jump(postId, navigator) {
+  jump(postId, navigator, from_where) {
     let store = new CommentsModel(postId);
     store.myBack = () => {
       navigator.pop({ animated: true });
@@ -128,10 +128,49 @@ class CommentsStore {
     }
 
     this.stack.push(store);
-    navigator.push({
+
+    /* navigator.push({
       screen: 'hairfolio.Comments',
       navigatorStyle: NavigatorStyles.tab,
-    });
+      passProps: { 
+        [from_where]:true       
+      }
+    }); */
+    
+    if(from_where == 'from_feed'){
+      navigator.push({
+        screen: 'hairfolio.Comments',
+        navigatorStyle: NavigatorStyles.tab,
+        passProps: { 
+          from_feed:true       
+        }
+      });
+
+    }else if(from_where == 'from_search'){
+      navigator.push({
+        screen: 'hairfolio.Comments',
+        navigatorStyle: NavigatorStyles.tab,
+        passProps: { 
+          from_search:true       
+        }
+      });
+
+    }else if(from_where == 'from_profile'){
+      navigator.push({
+        screen: 'hairfolio.Comments',
+        navigatorStyle: NavigatorStyles.tab,
+        passProps: { 
+          from_profile:true       
+        }
+      });
+
+    }else{
+      navigator.push({
+        screen: 'hairfolio.Comments',
+        navigatorStyle: NavigatorStyles.tab,
+      });
+    }
+    
   }
 
   @computed get isEmpty() {

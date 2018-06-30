@@ -84,6 +84,9 @@ const PostActionButtons = observer(({post, navigator}) => {
             navigator.push({
               screen: 'hairfolio.StarGivers',
               navigatorStyle: NavigatorStyles.tab,
+              passProps:{
+              from_feed:true
+              }
             });
           }}
           style={{
@@ -110,7 +113,7 @@ const PostActionButtons = observer(({post, navigator}) => {
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => {
-            CommentsStore.jump(post.id, navigator);
+            CommentsStore.jump(post.id, navigator, 'from_feed');
           }}
   
           style={{
@@ -148,6 +151,7 @@ const PostActionButtons = observer(({post, navigator}) => {
               true,
               post,
               navigator,
+              'from_feed'
             );
           }}
         >
@@ -266,7 +270,7 @@ const PostActionButtons = observer(({post, navigator}) => {
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => {
-            CommentsStore.jump(post.id, navigator);
+            CommentsStore.jump(post.id, navigator, 'from_search');
           }}
   
           style={{
@@ -304,6 +308,7 @@ const PostActionButtons = observer(({post, navigator}) => {
               true,
               post,
               navigator,
+              'from_feed'
             );
           }}
         >

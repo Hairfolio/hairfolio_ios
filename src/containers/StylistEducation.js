@@ -105,6 +105,15 @@ export default class StylistEducation extends PureComponent {
 
 
   onNavigatorEvent(event) {
+
+    if (event.id == 'bottomTabSelected') {
+      // this.props.navigator.pop({animated: true})
+      this.props.navigator.resetTo({
+        screen: 'hairfolio.Profile',
+        animationType: 'fade',
+        navigatorStyle: NavigatorStyles.tab
+      });
+    }
     if (event.id == 'willAppear') {
 
       this.fetchNextData();

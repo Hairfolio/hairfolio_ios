@@ -29,7 +29,7 @@ class TagPostModel extends PostGridStore {
 class TagPostStore {
 
   @observable stack = [];
-  jump(name, title, navigator) {
+  jump(name, title, navigator, from_where) {
     let tagStore = new TagPostModel();
     tagStore.title = title;
     tagStore.load(name)
@@ -40,10 +40,42 @@ class TagPostStore {
       this.stack.pop();
     }
     this.stack.push(tagStore);
-    navigator.push({
+
+    /* navigator.push({
       screen: 'hairfolio.TagPosts',
       navigatorStyle: NavigatorStyles.tab,
-    });
+      passProps: { 
+        [from_where]:true       
+      }
+    }); */
+
+    if(from_where == 'from_feed'){
+      navigator.push({
+        screen: 'hairfolio.TagPosts',
+        navigatorStyle: NavigatorStyles.tab,
+        passProps: { 
+          from_feed:true       
+        }
+      });
+
+    }else if(from_where == 'from_search'){
+      navigator.push({
+        screen: 'hairfolio.TagPosts',
+        navigatorStyle: NavigatorStyles.tab,
+        passProps: { 
+          from_search:true       
+        }
+      });
+
+    }else{
+      navigator.push({
+        screen: 'hairfolio.TagPosts',
+        navigatorStyle: NavigatorStyles.tab,
+        passProps: {        
+        }
+      });
+    }
+    
   }
 
   @computed get isEmpty() {

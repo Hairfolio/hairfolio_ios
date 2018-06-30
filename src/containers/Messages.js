@@ -207,6 +207,23 @@ export default class Messages extends PureComponent {
       MessagesStore.load();
     }
 
+    if (event.id == 'bottomTabSelected') {
+      console.log("bottomTabSelected ==>");
+        this.props.navigator.resetTo({
+          screen: 'hairfolio.Feed',
+          animationType: 'fade',
+          navigatorStyle: NavigatorStyles.tab
+        });     
+    }
+
+    if (event.id == 'bottomTabReselected') {
+      console.log("bottomTabReselected ==>");
+        this.props.navigator.resetTo({
+          screen: 'hairfolio.Feed',
+          animationType: 'fade',
+          navigatorStyle: NavigatorStyles.tab
+        });     
+    }
 
     if (event.type == 'NavBarButtonPress') {
       if (event.id == 'back') {

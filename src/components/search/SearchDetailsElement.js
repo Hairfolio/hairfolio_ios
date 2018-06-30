@@ -142,6 +142,7 @@ const TagItem = observer(({item, navigator}) => {
             name,
             `#${name}`,
             navigator,
+            'from_search'
           );
         }
       }

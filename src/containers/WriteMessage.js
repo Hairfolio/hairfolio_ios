@@ -21,7 +21,7 @@ import LoadingScreen from '../components/LoadingScreen';
 import BlackHeader from '../components/BlackHeader';
 import WriteMessageStore from '../mobx/stores/WriteMessageStore';
 import Swipeout from 'Hairfolio/react-native-swipeout/index';
-import {SelectPeople, ToInput} from '../components/SelectPeople';
+import {SelectPeople} from '../components/SelectPeople';
 import whiteBack from '../../resources/img/nav_white_back.png';
 import NavigatorStyles from '../common/NavigatorStyles';
 import BannerErrorContainer from '../components/BannerErrorContainer';
@@ -33,9 +33,12 @@ export default class WriteMessage extends PureComponent {
     super(props);
     StatusBar.setBarStyle('light-content');
     WriteMessageStore.load();
-    if (this.props.navigator) {
-      this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
-    }
+    // if (this.props.navigator) {
+    //   this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+    // }
+    this.props.navigator.setOnNavigatorEvent((e) => {
+      this.onNavigatorEvent(e);
+    });
     this.props.navigator.setButtons({
       leftButtons: [
         {
@@ -64,6 +67,35 @@ export default class WriteMessage extends PureComponent {
   };
 
   onNavigatorEvent(event) {
+    if (event.id == 'bottomTabSelected') {
+      if(this.props.from_feed){
+        this.props.navigator.resetTo({
+          screen: 'hairfolio.Feed',
+          animationType: 'fade',
+          navigatorStyle: NavigatorStyles.tab
+        });
+      }
+
+      if(this.props.from_search){
+        this.props.navigator.resetTo({
+          screen: 'hairfolio.Search',
+          animationType: 'fade',
+          navigatorStyle: NavigatorStyles.tab
+        });
+      }
+
+      if(this.props.from_profile){
+        this.props.navigator.resetTo({
+          screen: 'hairfolio.Profile',
+          animationType: 'fade',
+          navigatorStyle: NavigatorStyles.tab
+        });
+      }
+             
+    } 
+    if (event.id == 'bottomTabReselected') {
+      console.log("bottomTabReselected ==>");
+    }
     if (event.type == 'NavBarButtonPress') {
       if (event.id == 'back') {
         this.props.navigator.pop({
@@ -77,8 +109,8 @@ export default class WriteMessage extends PureComponent {
         }else{
           this.refs.ebc.error('Please select atleast one user to continue');
         }
-        
-      }
+      } 
+      
     }
   }
 
@@ -95,7 +127,7 @@ export default class WriteMessage extends PureComponent {
         flex: 1
       }}>
       <View style={{flex: 1}}>
-        <ToInput store={WriteMessageStore} />
+        {/* <ToInput store={WriteMessageStore} /> */}
         <Content />
       </View>
       </BannerErrorContainer>

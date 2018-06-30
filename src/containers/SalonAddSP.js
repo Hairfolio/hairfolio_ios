@@ -19,6 +19,7 @@ import LoadingContainer from '../components/LoadingContainer';
 import DeleteButton from '../components/Buttons/Delete';
 import formMixin from '../mixins/form';
 import whiteBack from '../../resources/img/nav_white_back.png';
+import NavigatorStyles from '../common/NavigatorStyles';
 
 var flag_service = false;
 
@@ -69,6 +70,14 @@ export default class SalonAddSP extends PureComponent {
   };
 
   onNavigatorEvent(event) {
+    if (event.id == 'bottomTabSelected') {
+      // this.props.navigator.pop({animated: true})
+      this.props.navigator.resetTo({
+        screen: 'hairfolio.Profile',
+        animationType: 'fade',
+        navigatorStyle: NavigatorStyles.tab
+      });
+    }
     if (event.type == 'NavBarButtonPress') {
       if (event.id == 'back') {
         this.props.navigator.pop({

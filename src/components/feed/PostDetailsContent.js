@@ -24,10 +24,9 @@ import PostDetailsColorFormula from './PostDetailsColorFormula';
 import PostDescription from './PostDescription';
 
 
-const PostDetailsContent = observer(({navigator}) => {
+const PostDetailsContent = observer(({navigator, from}) => {
 
-
-  // alert(JSON.stringify(navigator));
+  // alert(JSON.stringify(from));
 
   if (PostDetailStore.isEmpty) {
     return null;
@@ -62,9 +61,10 @@ const PostDetailsContent = observer(({navigator}) => {
       <PostDetailsHeader
         store={value}
         navigator={navigator}
+        from={from}
       />
       <PostDetailsImageList
-        store={value}
+        store={value}        
       />
       <PostDescription
         style={{paddingTop: h(28)}}

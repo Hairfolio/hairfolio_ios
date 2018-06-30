@@ -54,7 +54,8 @@ const PostDescription = observer(({post, navigator, limitLinesNumbers, style = {
                   TagPostStore.jump(
                     e.hashtag,
                     `#${e.hashtag}`,
-                    navigator
+                    navigator,
+                    'from_feed'
                   );
                 }}
                 style = {{

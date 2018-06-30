@@ -27,6 +27,7 @@ import KeyboardScrollView from '../components/KeyboardScrollView';
 import BannerErrorContainer from '../components/BannerErrorContainer';
 import whiteBack from '../../resources/img/nav_white_back.png';
 import AppStore from '../mobx/stores/AppStore';
+import NavigatorStyles from '../common/NavigatorStyles';
 
 @observer
 @mixin(formMixin)
@@ -74,6 +75,14 @@ export default class EditCustomer extends PureComponent {
     }
     if (event.id == 'didDisappear') {
       // this.props.navigator.pop({animated: true})
+    }
+    if (event.id == 'bottomTabSelected') {
+      // this.props.navigator.pop({animated: true})
+      this.props.navigator.resetTo({
+        screen: 'hairfolio.Profile',
+        animationType: 'fade',
+        navigatorStyle: NavigatorStyles.tab
+      });
     }
     if (event.type == 'NavBarButtonPress') {
       if (event.id == 'cancel') {

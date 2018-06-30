@@ -16,6 +16,7 @@ import LoadingScreen from '../components/LoadingScreen';
 import WhiteHeader from '../components/WhiteHeader';
 import GridList from '../components/GridList'
 import TagPostStore from '../mobx/stores/TagPostStore';
+import NavigatorStyles from '../common/NavigatorStyles';
 
 const Content = observer(({store, navigator}) => {
   return (
@@ -37,6 +38,37 @@ const Content = observer(({store, navigator}) => {
 
 @observer
 export default class TagPosts extends PureComponent {
+  constructor(props) {
+    super(props)
+    this.props.navigator.setOnNavigatorEvent((e) => {
+      this.onNavigatorEvent(e);
+    });
+  }
+
+  onNavigatorEvent(event) {
+    if (event.id == 'bottomTabSelected') {
+      if(this.props.from_feed){
+        this.props.navigator.resetTo({
+          screen: 'hairfolio.Feed',
+          animationType: 'fade',
+          navigatorStyle: NavigatorStyles.tab
+        });  
+
+      }
+      if(this.props.from_search){
+        this.props.navigator.resetTo({
+          screen: 'hairfolio.Search',
+          animationType: 'fade',
+          navigatorStyle: NavigatorStyles.tab
+        });  
+      }
+          
+    } 
+    if (event.id == 'bottomTabReselected') {
+      console.log("bottomTabReselected ==>");
+    }
+  }
+
   render() {
     if (TagPostStore.isEmpty) {
       return null;

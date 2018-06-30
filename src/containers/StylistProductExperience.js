@@ -11,6 +11,7 @@ import {COLORS, FONTS, SCALE} from '../style';
 import SearchList from '../components/SearchList';
 import LoadingContainer from '../components/LoadingContainer';
 import whiteBack from '../../resources/img/nav_white_back.png';
+import NavigatorStyles from '../common/NavigatorStyles';
 
 @observer
 export default class StylistProductExperience extends React.Component {
@@ -59,6 +60,15 @@ export default class StylistProductExperience extends React.Component {
   }
 
   onNavigatorEvent(event) {
+    if (event.id == 'bottomTabSelected') {
+      // this.props.navigator.pop({animated: true})
+      this.props.navigator.resetTo({
+        screen: 'hairfolio.Profile',
+        animationType: 'fade',
+        navigatorStyle: NavigatorStyles.tab
+      });
+    }
+
     
     if (event.id == 'willAppear') {
       this.fetchServices()
@@ -131,6 +141,11 @@ export default class StylistProductExperience extends React.Component {
           items={experiences}
           placeholder="Search for products"
           updateSelectedIds = {this.updateProductExperience}
+          loaderView={
+            () => {
+              return <View />;
+            }
+          }
           ref={sL => {
             this._searchList = sL;
 

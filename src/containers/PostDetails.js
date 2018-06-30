@@ -17,7 +17,9 @@ import BlackHeader from '../components/BlackHeader';
 import PostDetailsContent from '../components/feed/PostDetailsContent';
 import ServiceBackend from '../backend/ServiceBackend';
 import PostDetailStore from '../mobx/stores/PostDetailStore';
+import NavigatorStyles from '../common/NavigatorStyles';
 let postDetails;
+
 @observer
 export default class PostDetails extends PureComponent {
   static navigatorStyle = {
@@ -50,6 +52,32 @@ export default class PostDetails extends PureComponent {
         // alert("hi")
         this.callApi();
         break;
+      case 'bottomTabSelected':
+        console.log("bottomTabSelected ==>");
+        if(this.props.from_search){          
+          this.props.navigator.resetTo({
+            screen: 'hairfolio.Search',
+            animationType: 'fade',
+            navigatorStyle: NavigatorStyles.tab
+          });  
+        }else if(this.props.from_feed){          
+          this.props.navigator.resetTo({
+            screen: 'hairfolio.Feed',
+            animationType: 'fade',
+            navigatorStyle: NavigatorStyles.tab
+          });  
+        }else if(this.props.from_profile){          
+          this.props.navigator.resetTo({
+            screen: 'hairfolio.Profile',
+            animationType: 'fade',
+            navigatorStyle: NavigatorStyles.tab
+          });  
+        }
+              
+        break;
+      case 'bottomTabReselected':
+        console.log("bottomTabReselected ==>");
+        break;
       default:
         break;
     }
@@ -64,12 +92,24 @@ export default class PostDetails extends PureComponent {
     // alert('postDetails==>'+postDetails)
   }
 
+  checkVal(){
+
+    if(this.props.from_search){          
+      return 'from_search';
+    }else if(this.props.from_feed){          
+      return 'from_feed';
+    }else if(this.props.from_profile){          
+      return 'from_profile';
+    }
+
+  }
+
   render() {
     return (
       <View style={{
         flex: 1,
       }}>
-      <PostDetailsContent navigator={this.props.navigator} value={postDetails}/>
+      <PostDetailsContent navigator={this.props.navigator} value={postDetails} from={this.checkVal()}/>
       </View>
     );
   }

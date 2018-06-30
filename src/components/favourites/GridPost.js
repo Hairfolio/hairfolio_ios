@@ -85,7 +85,8 @@ const ActionButtons = observer(({post}) => {
   );
 });
 
-const GridPost = observer(({post, navigator}) => {
+const GridPost = observer(({post, navigator, from}) => {
+  
   const windowEdge = Math.round(windowWidth / 2);
   return (
     <TouchableWithoutFeedback
@@ -94,7 +95,8 @@ const GridPost = observer(({post, navigator}) => {
           PostDetailStore.jump(
             false,
             post,
-            navigator
+            navigator,
+            from
           );
         }
       }

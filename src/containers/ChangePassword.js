@@ -14,6 +14,7 @@ import Categorie from '../components/Form/Categorie';
 import UserStore from '../mobx/stores/UserStore';
 import formMixin from '../mixins/form';
 import whiteBack from '../../resources/img/nav_white_back.png';
+import NavigatorStyles from '../common/NavigatorStyles';
 
 @observer
 @mixin(formMixin)
@@ -41,6 +42,15 @@ export default class ForgottenPassword extends PureComponent {
   };
 
   onNavigatorEvent(event) {
+
+    if (event.id == 'bottomTabSelected') {
+      // this.props.navigator.pop({animated: true})
+      this.props.navigator.resetTo({
+        screen: 'hairfolio.Profile',
+        animationType: 'fade',
+        navigatorStyle: NavigatorStyles.tab
+      });
+    }
 
     if(event.id == 'willAppear'){
       this.setFormValue({

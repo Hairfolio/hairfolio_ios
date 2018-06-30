@@ -25,6 +25,7 @@ import Swipeout from 'Hairfolio/react-native-swipeout/index';
 import ContactDetailsStore from '../mobx/stores/ContactDetailsStore';
 import LoadingPage from '../components/LoadingPage'
 import BlackBookContent from '../components/blackbook/BlackBookContent';
+import NavigatorStyles from '../common/NavigatorStyles';
 
 const ContactsDetailsHeader = observer(({store, navigator}) => {
 
@@ -552,6 +553,25 @@ const ContactDetailsContent = observer(({navigator, store}) => {
 
 @observer
 export default class ContactDetails extends PureComponent {
+  constructor(props) {
+    super(props);
+    this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+  }
+
+  onNavigatorEvent(event) {
+    switch(event.id) {      
+      case 'bottomTabSelected':
+        this.props.navigator.resetTo({
+          screen: 'hairfolio.Profile',
+          animationType: 'fade',
+          navigatorStyle: NavigatorStyles.tab
+        });     
+      break;
+      default:
+        break;
+    }
+  }
+
   render() {
     let store = ContactDetailsStore;
     return (

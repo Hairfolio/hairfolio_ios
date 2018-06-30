@@ -50,6 +50,7 @@ const PostHeader = observer(({post, navigator}) => {
           navigatorStyle: NavigatorStyles.tab,
           passProps: {
             userId: post.creator.id,
+            from_feed:true
           }
         });
       }}

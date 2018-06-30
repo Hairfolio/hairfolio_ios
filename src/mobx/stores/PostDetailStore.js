@@ -78,6 +78,7 @@ class PostDetailsModel {
               tag.hashtag,
               `#${tag.hashtag}`,
               this.navigator,
+              'from_feed'
             );
           }
         });
@@ -108,7 +109,8 @@ class PostDetailsModel {
             TagPostStore.jump(
               tag.hashtag,
               `#${tag.hashtag}`,
-              this.navigator
+              this.navigator,
+              'from_feed'
             );
           }
         });
@@ -124,7 +126,7 @@ class PostDetailsModel {
 class PostDetailStore {
   @observable stack = [];
 
-  jump(showTags, post, navigator) {
+  jump(showTags, post, navigator, from_where) {
     let postStore = new PostDetailsModel();
     postStore.navigator = navigator;
     postStore.showTags = showTags;
@@ -139,11 +141,52 @@ class PostDetailStore {
       this.stack.pop();
     }
     this.stack.push(postStore);
-    navigator.push({
+    
+    console.log("PostDetailsStore from_where ==>"+from_where)
+
+    /* navigator.push({
       screen: 'hairfolio.PostDetails',
       navigatorStyle: NavigatorStyles.tab,
       title: 'Post Details',
-    })
+      passProps: {
+        [from_where]: true
+      }
+    }) */
+
+    if (from_where == 'from_search') {
+      navigator.push({
+        screen: 'hairfolio.PostDetails',
+        navigatorStyle: NavigatorStyles.tab,
+        title: 'Post Details',
+        passProps: {
+          from_search: true
+        }
+      })
+    } else if (from_where == 'from_feed') {
+      navigator.push({
+        screen: 'hairfolio.PostDetails',
+        navigatorStyle: NavigatorStyles.tab,
+        title: 'Post Details',
+        passProps: {
+          from_feed: true
+        }
+      })
+    } else if (from_where == 'from_profile') {
+      navigator.push({
+        screen: 'hairfolio.PostDetails',
+        navigatorStyle: NavigatorStyles.tab,
+        title: 'Post Details',
+        passProps: {
+          from_profile: true
+        }
+      })
+    }else {
+      navigator.push({
+        screen: 'hairfolio.PostDetails',
+        navigatorStyle: NavigatorStyles.tab,
+        title: 'Post Details',
+      })
+    } 
   }
 
   @computed get isEmpty() {

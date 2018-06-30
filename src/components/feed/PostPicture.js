@@ -158,6 +158,7 @@ const PostPicture = observer(({post, navigator}) => {
               false,
               post,
               navigator,
+              'from_feed'
             );
           } else {
             post.doubleClick = false;

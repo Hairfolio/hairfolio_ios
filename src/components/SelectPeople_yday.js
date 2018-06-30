@@ -320,7 +320,32 @@ export class SelectPeople extends Component{
   render(){
     let store = WriteMessageStore;
     return(
-      <View>
+      <View>   
+      <ToInput states = { this.state} fetchNextData={ this.fetchNextData()} searchListView={ this.searchListView() }/>   
+      { this.showListView() }
+      </View>
+    )
+  }
+
+}
+
+@observer
+export class ToInput extends Component{
+
+  constructor(props){
+    super(props)
+    this.state = {};
+  }
+
+  componentWillMount(){
+    console.log("ToInput componentWillMount ==>"+JSON.stringify(this.props.states))
+    this.setState(this.props.states);
+  }
+
+  render(){
+    let store = WriteMessageStore;
+    return(
+
       <View
       style = {{
         height: h(95),
@@ -355,9 +380,9 @@ export class SelectPeople extends Component{
                 nextPage: 1,
                 isLoadingNextPage: false,                
               });
-              this.fetchNextData();
+              this.props.fetchNextData();
             }else{
-              this.searchListView();
+              this.props.searchListView();
             }
 
           }}
@@ -367,30 +392,7 @@ export class SelectPeople extends Component{
         }}
       />
     </View>
-      { this.showListView() }
-      </View>
-    )
-  }
-
-}
-
-@observer
-export class ToInput extends Component{
-
-  constructor(props){
-    super(props)
-  }
-
-  componentWillMount(){
-
-  }
-
-  render(){
-    let store = WriteMessageStore;
-    return(
-      <View>
-      <ToInput2 store={store}/>
-      </View>
+    
     )
   }
 

@@ -59,7 +59,7 @@ export default class Profile extends React.Component {
     console.log(msg)
   }
 
-  onNavigatorEvent(event) {
+  /* onNavigatorEvent(event) {
     switch(event.id) {
       case 'willAppear':
       this.props.navigator.popToRoot({
@@ -74,7 +74,7 @@ export default class Profile extends React.Component {
       default:
         break;
     }
-  }
+  } */
 
   componentWillMount() {
     this.fetchProfile();
@@ -105,6 +105,13 @@ export default class Profile extends React.Component {
         this.props.navigator.toggleTabs({
           to: 'shown',
         });
+        if (this.props.from_feed) {
+          this.props.navigator.resetTo({
+            screen: 'hairfolio.Feed',
+            animationType: 'fade',
+            navigatorStyle: NavigatorStyles.tab
+          });
+        }
         break;
       case 'willAppear':
         this.fetchProfile()

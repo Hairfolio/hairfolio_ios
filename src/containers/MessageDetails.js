@@ -109,7 +109,8 @@ class MessageContent  extends React.Component {
               PostDetailStore.jump(
                 false,
                 store.post,
-                this.props.navigator
+                this.props.navigator,
+                'from_feed'
               )
             }
           }
@@ -264,6 +265,7 @@ class MessagesContent extends React.Component {
 }
 
 import LoadingPage from '../components/LoadingPage'
+import NavigatorStyles from '../common/NavigatorStyles';
 
 const MessageInput = observer((method) => {
 
@@ -395,6 +397,25 @@ export default class MesageDetails extends PureComponent {
   constructor(props) {
     super(props);
     this.scrollToBottomList = this.scrollToBottomList.bind(this);
+    if (this.props.navigator) {
+      this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+    }
+  }
+
+  onNavigatorEvent(event) {
+    
+    if (event.id == 'bottomTabSelected') {
+      console.log("bottomTabSelected ==>");
+        this.props.navigator.resetTo({
+          screen: 'hairfolio.Feed',
+          animationType: 'fade',
+          navigatorStyle: NavigatorStyles.tab
+        });     
+    }
+    if (event.id == 'bottomTabReselected') {
+      console.log("bottomTabReselected ==>");
+         
+    }
   }
 
   scrollToBottomList(){

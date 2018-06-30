@@ -174,7 +174,7 @@ class WriteMessageStore {
 
     }
 
-    console.log("get items ==>"+JSON.stringify(users))
+    // console.log("get items ==>"+JSON.stringify(users))
 
     return users;
   }
@@ -205,10 +205,12 @@ class WriteMessageStore {
     // let res = (await ServiceBackend.get(`users/${userId}/follows?friends=true`)).users;
     let res = (await ServiceBackend.get(`users?limit=100`)).users;
     // let res = (await ServiceBackend.get(`users`)).users;
+    // console.log('res ==>'+JSON.stringify(res))
     let myUsers = await Promise.all(res.map(e => {
       let u = new SelectableUser();
       return u.init(e);
     }));
+    // console.log('myUsers ==>'+JSON.stringify(myUsers))
 
     this.users = myUsers;
 

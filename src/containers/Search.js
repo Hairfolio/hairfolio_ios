@@ -114,6 +114,22 @@ export default class Search extends PureComponent {
         this.props.navigator.toggleTabs({
           to: 'shown',
         });
+        break;
+        case 'bottomTabSelected':
+        console.log("bottomTabSelected ==>");
+        this.props.navigator.resetTo({
+          screen: 'hairfolio.Search',
+          animationType: 'fade',
+          navigatorStyle: NavigatorStyles.tab
+        });        
+        break;
+      case 'bottomTabReselected':
+        console.log("bottomTabReselected ==>");
+        this.props.navigator.resetTo({
+          screen: 'hairfolio.Search',
+          animationType: 'fade',
+          navigatorStyle: NavigatorStyles.tab
+        }); 
         break;        
       default:
         break;

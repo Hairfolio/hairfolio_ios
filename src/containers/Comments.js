@@ -180,9 +180,52 @@ const CommentInput = observer(({store}) => {
 });
 
 import LoadingPage from '../components/LoadingPage';
+import NavigatorStyles from '../common/NavigatorStyles';
 
 @observer
 export default class Comments extends PureComponent {
+  constructor(props) {
+    super(props);
+    this.props.navigator.setOnNavigatorEvent((e) => {
+      this.onNavigatorEvent(e);
+    });   
+  }
+
+  onNavigatorEvent(event) {
+    switch(event.id) {      
+      case 'bottomTabSelected':
+        console.log("bottomTabSelected ==>");
+        if(this.props.from_feed){
+          this.props.navigator.resetTo({
+            screen: 'hairfolio.Feed',
+            animationType: 'fade',
+            navigatorStyle: NavigatorStyles.tab
+          });  
+        }else if(this.props.from_search){
+          this.props.navigator.resetTo({
+            screen: 'hairfolio.Search',
+            animationType: 'fade',
+            navigatorStyle: NavigatorStyles.tab
+          });    
+
+        }else if(this.props.from_profile){
+          this.props.navigator.resetTo({
+            screen: 'hairfolio.Profile',
+            animationType: 'fade',
+            navigatorStyle: NavigatorStyles.tab
+          });    
+
+        }
+            
+        break;
+      case 'bottomTabReselected':
+        console.log("bottomTabReselected ==>");
+        break;
+      default:
+        break;
+    }
+  }
+
   render() {
     if (CommentsStore.isEmpty) {
       return null;
@@ -202,7 +245,7 @@ export default class Comments extends PureComponent {
         <BlackHeader
           onLeft={() => {
             this.props.navigator.pop({ animated: true })
-            this.props.navigator.pop({ animated: true })
+            // this.props.navigator.pop({ animated: true })
           }}
           title='Comments'/>
         <Content />

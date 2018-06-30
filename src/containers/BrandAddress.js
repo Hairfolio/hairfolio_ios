@@ -18,6 +18,7 @@ import UserStore from '../mobx/stores/UserStore';
 import { LOADING, READY, LOADING_ERROR } from '../constants';
 import whiteBack from '../../resources/img/nav_white_back.png';
 import ServiceBackend from '../backend/ServiceBackend'
+import NavigatorStyles from '../common/NavigatorStyles';
 
 @observer
 @mixin(formMixin)
@@ -55,6 +56,15 @@ export default class BrandAddress extends React.Component {
   }
 
   onNavigatorEvent(event) {
+    if (event.id == 'bottomTabSelected') {
+      // this.props.navigator.pop({animated: true})
+      this.props.navigator.resetTo({
+        screen: 'hairfolio.Profile',
+        animationType: 'fade',
+        navigatorStyle: NavigatorStyles.tab
+      });
+    }
+
     if (event.type == 'NavBarButtonPress') {
       if (event.id == 'back') {
         this.props.navigator.pop({

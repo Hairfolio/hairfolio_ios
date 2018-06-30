@@ -37,6 +37,13 @@ export default class BlackBook extends PureComponent {
         StatusBar.setBarStyle('light-content');
         BlackBookStore.reset();
         break;
+      case 'bottomTabSelected':
+        this.props.navigator.resetTo({
+          screen: 'hairfolio.Profile',
+          animationType: 'fade',
+          navigatorStyle: NavigatorStyles.tab
+        });     
+      break;
       default:
         break;
     }

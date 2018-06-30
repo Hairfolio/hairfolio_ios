@@ -39,8 +39,7 @@ const MyFooter = observer(({store}) => {
 });
 
 
-const GridList = observer(({store, noElementsText, navigator}) => {
-
+const GridList = observer(({store, noElementsText, navigator, from}) => {
   if (store.isLoading) {
     return (
       <View style={{marginTop: 20}}>
@@ -86,9 +85,9 @@ const GridList = observer(({store, noElementsText, navigator}) => {
                   flexWrap: 'wrap'
                 }}
               >
-                <GridPost key={el[0].key} post={el[0]} navigator={navigator} />
+                <GridPost key={el[0].key} post={el[0]} navigator={navigator} from={from}/>
                 {
-                  el[1] != null ?  <GridPost key={el[1].key} post={el[1]} navigator={navigator} /> :
+                  el[1] != null ?  <GridPost key={el[1].key} post={el[1]} navigator={navigator} from={from}/> :
                     <View
                       style = {{
                         width: windowWidth / 2,
@@ -117,7 +116,7 @@ const GridList = observer(({store, noElementsText, navigator}) => {
             flexWrap: 'wrap'
           }}
         >
-          {store.elements.map(p => <GridPost key={p.key} post={p} navigator={navigator} />)}
+          {store.elements.map(p => <GridPost key={p.key} post={p} navigator={navigator} from={from}/>)}
         </View>
       </ScrollView>
     );

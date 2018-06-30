@@ -14,6 +14,7 @@ import utils from '../utils';
 import {READY, LOADING, LOADING_ERROR} from '../constants';
 import whiteBack from '../../resources/img/nav_white_back.png';
 import ServiceBackend from '../backend/ServiceBackend';
+import NavigatorStyles from '../common/NavigatorStyles';
 
 @observer
 export default class SalonStylist extends PureComponent {
@@ -50,6 +51,14 @@ export default class SalonStylist extends PureComponent {
   };
 
   onNavigatorEvent(event) {
+    if (event.id == 'bottomTabSelected') {
+      // this.props.navigator.pop({animated: true})
+      this.props.navigator.resetTo({
+        screen: 'hairfolio.Profile',
+        animationType: 'fade',
+        navigatorStyle: NavigatorStyles.tab
+      });
+    }
     if (event.type == 'NavBarButtonPress') {
       if (event.id == 'back') {
         this.props.navigator.pop({
@@ -208,6 +217,11 @@ export default class SalonStylist extends PureComponent {
           <SearchList
             items={this.state.contacts}
             placeholder="Search for Stylists"
+            loaderView={
+            () => {
+              return <View />;
+            }
+          }
             ref={sL => this._searchList = sL}
             style={{
               flex: 1,

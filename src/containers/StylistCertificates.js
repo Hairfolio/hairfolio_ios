@@ -13,6 +13,7 @@ import SearchList from '../components/SearchList';
 import whiteBack from '../../resources/img/nav_white_back.png';
 import User from '../mobx/stores/User';
 import ServiceBackend from '../backend/ServiceBackend';
+import NavigatorStyles from '../common/NavigatorStyles';
 var loadingState = "READY";
 var rows = [];
 @observer
@@ -141,6 +142,15 @@ export default class StylistCertificates extends React.Component {
   }
 
   onNavigatorEvent(event) {
+    if (event.id == 'bottomTabSelected') {
+      // this.props.navigator.pop({animated: true})
+      this.props.navigator.resetTo({
+        screen: 'hairfolio.Profile',
+        animationType: 'fade',
+        navigatorStyle: NavigatorStyles.tab
+      });
+    }
+
     if (event.id == 'willAppear') {
       // this.callApi();
       this.fetchNextData();

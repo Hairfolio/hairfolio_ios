@@ -44,32 +44,39 @@ const PostDetailsActionButtons = observer(({store, navigator,from}) => {
           backgroundColor: 'transparent',
         }}
         onPress={() => {
-          StarGiversStore.load(store.post.id);                    
-          if(from == 'from_feed'){
-            navigator.push({
+          StarGiversStore.load(store.post.id); 
+          navigator.push({
             screen: 'hairfolio.StarGivers',
             navigatorStyle: NavigatorStyles.tab,
             passProps:{
-              from_feed:true
+              [from]:true
             }
-          });
-          }else if(from == 'from_search'){
-            navigator.push({
-            screen: 'hairfolio.StarGivers',
-            navigatorStyle: NavigatorStyles.tab,
-            passProps:{
-              from_search:true
-            }
-          });          
-          }else if(from == 'from_profile'){
-            navigator.push({
-            screen: 'hairfolio.StarGivers',
-            navigatorStyle: NavigatorStyles.tab,
-            passProps:{
-              from_profile:true
-            }
-          });
-          }
+          });                   
+          // if(from == 'from_feed'){
+          //   navigator.push({
+          //   screen: 'hairfolio.StarGivers',
+          //   navigatorStyle: NavigatorStyles.tab,
+          //   passProps:{
+          //     from_feed:true
+          //   }
+          // });
+          // }else if(from == 'from_search'){
+          //   navigator.push({
+          //   screen: 'hairfolio.StarGivers',
+          //   navigatorStyle: NavigatorStyles.tab,
+          //   passProps:{
+          //     from_search:true
+          //   }
+          // });          
+          // }else if(from == 'from_profile'){
+          //   navigator.push({
+          //   screen: 'hairfolio.StarGivers',
+          //   navigatorStyle: NavigatorStyles.tab,
+          //   passProps:{
+          //     from_profile:true
+          //   }
+          // });
+          // }
           
         }}
       >

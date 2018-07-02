@@ -74,6 +74,8 @@ export default class ActivityFollowing extends Component {
 
       var meta_obj = {};
 
+      console.log(`link ==> notifications?following=true&page=${this.state.nextPage}`);
+
       let result = (await ServiceBackend.get(`notifications?following=true&page=${this.state.nextPage}`));
       
       arr = result.notifications;
@@ -147,13 +149,14 @@ export default class ActivityFollowing extends Component {
     return (
       <InfiniteScroll
         horizontal={false}  //true - if you want in horizontal
-        onLoadMoreAsync={this.fetchNextData}
-        distanceFromEnd={10} // distance in density-independent pixels from the right end
         >
           <ListView
+          style={{height:windowHeight}}
+          onEndReached={this.fetchNextData}
+          onEndReachedThreshold={10}
           enableEmptySections={true}
           dataSource={this.state.dataSource}
-          renderRow={(p) => <ActivityItem isMe={false} key={p.key} store={p} navigator={navigator} />}
+          renderRow={(p) => <ActivityItem isMe={false} key={p.key} store={p} navigator={this.props.navigator} from={'from_star'} />}
           renderFooter={
             () => {
               if (this.state.nextPage != null) {

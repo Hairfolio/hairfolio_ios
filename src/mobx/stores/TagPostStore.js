@@ -41,15 +41,15 @@ class TagPostStore {
     }
     this.stack.push(tagStore);
 
-    /* navigator.push({
+    navigator.push({
       screen: 'hairfolio.TagPosts',
       navigatorStyle: NavigatorStyles.tab,
       passProps: { 
         [from_where]:true       
       }
-    }); */
+    });
 
-    if(from_where == 'from_feed'){
+    /* if(from_where == 'from_feed'){
       navigator.push({
         screen: 'hairfolio.TagPosts',
         navigatorStyle: NavigatorStyles.tab,
@@ -74,7 +74,7 @@ class TagPostStore {
         passProps: {        
         }
       });
-    }
+    } */
     
   }
 

@@ -152,7 +152,7 @@ export default class ActivityYou extends Component {
           <ListView
           enableEmptySections={true}
           dataSource={this.state.dataSource}
-          renderRow={(p) => <ActivityItem isMe={true} key={p.key} store={p} navigator={navigator} />}
+          renderRow={(p) => <ActivityItem isMe={true} key={p.key} store={p} navigator={this.props.navigator} from={'from_star'}/>}
           renderFooter={
             () => {
               if (this.state.nextPage != null) {

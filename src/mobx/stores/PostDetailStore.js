@@ -144,15 +144,15 @@ class PostDetailStore {
     
     console.log("PostDetailsStore from_where ==>"+from_where)
 
-    /* navigator.push({
+    navigator.push({
       screen: 'hairfolio.PostDetails',
       navigatorStyle: NavigatorStyles.tab,
       title: 'Post Details',
       passProps: {
         [from_where]: true
       }
-    }) */
-
+    })
+/* 
     if (from_where == 'from_search') {
       navigator.push({
         screen: 'hairfolio.PostDetails',
@@ -186,7 +186,7 @@ class PostDetailStore {
         navigatorStyle: NavigatorStyles.tab,
         title: 'Post Details',
       })
-    } 
+    }  */
   }
 
   @computed get isEmpty() {

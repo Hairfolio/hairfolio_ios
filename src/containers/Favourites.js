@@ -14,6 +14,7 @@ import ActivityYou from '../components/favourites/ActivityYou';
 import ActivityFollowing from '../components/favourites/ActivityFollowing';
 import ActivityYouStore from '../mobx/stores/ActivityYouStore';
 import ActivityFollowingStore from '../mobx/stores/ActivityFollowingStore';
+import NavigatorStyles from '../common/NavigatorStyles';
 
 @observer
 export default class Favourites extends PureComponent {
@@ -33,6 +34,14 @@ export default class Favourites extends PureComponent {
         ActivityFollowingStore.load();
         FavoriteStore.load();
         break;
+      case 'bottomTabSelected':
+      this.props.navigator.resetTo({
+        screen: 'hairfolio.Favourites',
+        animationType: 'fade',
+        navigatorStyle: NavigatorStyles.tab
+      });  
+      
+        break;
       default:
         break;
     }
@@ -49,9 +58,9 @@ export default class Favourites extends PureComponent {
         renderTabBar={() => <LinkTabBar />}
         initialPage={0}
       >
-        <FavouritesGrid tabLabel="Favorites" navigator={this.props.navigator} />
-        <ActivityYou tabLabel='You' navigator={this.props.navigator} />
-        <ActivityFollowing tabLabel='Following' navigator={this.props.navigator} />
+        <FavouritesGrid tabLabel="Favorites" navigator={this.props.navigator} from={'from_star'}/>
+        <ActivityYou tabLabel='You' navigator={this.props.navigator} from={'from_star'}/>
+        <ActivityFollowing tabLabel='Following' navigator={this.props.navigator} from={'from_star'}/>
       </ScrollableTabView>
     </View>
     );

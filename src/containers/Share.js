@@ -15,6 +15,7 @@ import CreatePostStore from '../mobx/stores/CreatePostStore';
 import ShareStore from '../mobx/stores/ShareStore';
 import { h } from 'Hairfolio/src/helpers';
 import BannerErrorContainer from '../components/BannerErrorContainer';
+import NavigatorStyles from '../common/NavigatorStyles';
 
 @observer
 export default class Share extends PureComponent {
@@ -24,6 +25,25 @@ export default class Share extends PureComponent {
     ShareStore.resetButtons();
     this.state={
       active_index:0
+    }
+
+    this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+  }
+
+  onNavigatorEvent(event) {
+    switch(event.id) {
+      case 'bottomTabSelected':   
+        CreatePostStore.reset();
+
+        this.props.navigator.resetTo({
+          screen: 'hairfolio.CreatePost',
+          animationType: 'fade',
+          navigatorStyle: NavigatorStyles.tab
+        }); 
+            
+        break;
+      default:
+        break;
     }
   }
 

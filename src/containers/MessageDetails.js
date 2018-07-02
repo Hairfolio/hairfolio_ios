@@ -403,14 +403,28 @@ export default class MesageDetails extends PureComponent {
   }
 
   onNavigatorEvent(event) {
-    
+    if (event.id == 'back') {
+      this.props.navigator.pop({
+        animated: true,
+      });
+    }
     if (event.id == 'bottomTabSelected') {
       console.log("bottomTabSelected ==>");
+      if(this.props.from_star){
+
+        this.props.navigator.resetTo({
+          screen: 'hairfolio.Favourites',
+          animationType: 'fade',
+          navigatorStyle: NavigatorStyles.tab
+        });   
+
+      }else{
         this.props.navigator.resetTo({
           screen: 'hairfolio.Feed',
           animationType: 'fade',
           navigatorStyle: NavigatorStyles.tab
-        });     
+        });   
+      }  
     }
     if (event.id == 'bottomTabReselected') {
       console.log("bottomTabReselected ==>");

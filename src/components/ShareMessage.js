@@ -38,7 +38,7 @@ const ShareMessage = observer(() => {
 
   return (
     <View style={{flex: 1, backgroundColor: '#F8F8F8'}}>
-      <ToInput store={store} />
+      {/* <ToInput store={store} /> */}
       <Content />
     </View>
   );

@@ -112,6 +112,13 @@ export default class Profile extends React.Component {
             navigatorStyle: NavigatorStyles.tab
           });
         }
+        if(this.props.from_star){          
+          this.props.navigator.resetTo({
+            screen: 'hairfolio.Favourites',
+            animationType: 'fade',
+            navigatorStyle: NavigatorStyles.tab
+          });  
+        }
         break;
       case 'willAppear':
         this.fetchProfile()
@@ -209,7 +216,7 @@ export default class Profile extends React.Component {
       });
   }
 
-  _tabsForStylistAmbassador = () => {
+  _tabsForStylistAmbassador = (from) => {
     return (
       <ScrollableTabView
         renderTabBar={() => <LinkTabBar />}
@@ -230,12 +237,13 @@ export default class Profile extends React.Component {
           tabLabel="Hairfolio"
           navigator={this.props.navigator}
           profile={this.state.user}
+          from_star={from}
         />
       </ScrollableTabView>
     );
   }
 
-  _tabsForConsumer = () => {
+  _tabsForConsumer = (from) => {
     return (
       <ScrollableTabView
         renderTabBar={() => <LinkTabBar />}
@@ -251,12 +259,13 @@ export default class Profile extends React.Component {
           tabLabel="Hairfolio"
           navigator={this.props.navigator}
           profile={this.state.user}
+          from_star={from}
         />
       </ScrollableTabView>
     );
   }
 
-  _tabsForOwner = () => {
+  _tabsForOwner = (from) => {
     return (
       <ScrollableTabView
         renderTabBar={() => <LinkTabBar />}
@@ -277,6 +286,7 @@ export default class Profile extends React.Component {
           tabLabel="Hairfolio"
           navigator={this.props.navigator}
           profile={this.state.user}
+          from_star={from}
         />
         <UserStylists
           tabLabel="Stylists"
@@ -290,13 +300,13 @@ export default class Profile extends React.Component {
   _tabsForAccountType = () => {
     switch (this.state.user.account_type) {
       case 'stylist':
-        return this._tabsForStylistAmbassador();
+        return this._tabsForStylistAmbassador(this.props.from_star);
       case 'ambassador':
-        return this._tabsForStylistAmbassador();
+        return this._tabsForStylistAmbassador(this.props.from_star);
       case 'owner':
-        return this._tabsForOwner();
+        return this._tabsForOwner(this.props.from_star);
       default:
-        return this._tabsForConsumer();
+        return this._tabsForConsumer(this.props.from_star);
     }
   }
 
@@ -564,10 +574,22 @@ export default class Profile extends React.Component {
 
                               MessageDetailsStore.createConversation(userObjects);
                               MessageDetailsStore.title = this.getName();
-                              this.props.navigator.push({
+                              if(this.props.from_star){
+                                this.props.navigator.push({
+                                screen: 'hairfolio.MessageDetails',
+                                navigatorStyle: NavigatorStyles.basicInfo,
+                                passProps:{
+                                  'from_star':true
+                                }
+                              });
+
+                              }else{
+                                this.props.navigator.push({
                                 screen: 'hairfolio.MessageDetails',
                                 navigatorStyle: NavigatorStyles.basicInfo,
                               });
+                              }
+                              
                             }
                           }
                         />

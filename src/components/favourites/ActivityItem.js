@@ -26,8 +26,9 @@ import TagPostStore from '../../mobx/stores/TagPostStore';
 import CommentsStore from '../../mobx/stores/CommentsStore';
 import NavigatorStyles from '../../common/NavigatorStyles';
 import UserStore from '../../mobx/stores/UserStore';
+import form from '../../mixins/form';
 
-const ActivityItem = observer(({store, isMe, navigator}) => {
+const ActivityItem = observer(({store, isMe, navigator, from}) => {
 
   // console.log("ActivityItem ==>"+JSON.stringify(store))
   let postContent;
@@ -56,6 +57,7 @@ const ActivityItem = observer(({store, isMe, navigator}) => {
                   navigatorStyle: NavigatorStyles.tab,
                   passProps: {
                     userId: store.user2.id,
+                    [from]:true
                   }
                 });
                 PostDetailStore.clear();
@@ -84,6 +86,7 @@ const ActivityItem = observer(({store, isMe, navigator}) => {
                   navigatorStyle: NavigatorStyles.tab,
                   passProps: {
                     userId: store.user2.id,
+                    [from]:true
                   }
                 });
                 PostDetailStore.clear();
@@ -143,6 +146,7 @@ const ActivityItem = observer(({store, isMe, navigator}) => {
                 navigatorStyle: NavigatorStyles.tab,
                 passProps: {
                   userId: store.user.id,
+                  [from]:true
                 }
               });
               PostDetailStore.clear();

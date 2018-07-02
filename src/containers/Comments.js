@@ -215,7 +215,14 @@ export default class Comments extends PureComponent {
             navigatorStyle: NavigatorStyles.tab
           });    
 
+        }else if(this.props.from_star){          
+          this.props.navigator.resetTo({
+            screen: 'hairfolio.Favourites',
+            animationType: 'fade',
+            navigatorStyle: NavigatorStyles.tab
+          });  
         }
+
             
         break;
       case 'bottomTabReselected':

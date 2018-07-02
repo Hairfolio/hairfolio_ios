@@ -72,6 +72,12 @@ export default class PostDetails extends PureComponent {
             animationType: 'fade',
             navigatorStyle: NavigatorStyles.tab
           });  
+        }else if(this.props.from_star){          
+          this.props.navigator.resetTo({
+            screen: 'hairfolio.Favourites',
+            animationType: 'fade',
+            navigatorStyle: NavigatorStyles.tab
+          });  
         }
               
         break;
@@ -100,6 +106,8 @@ export default class PostDetails extends PureComponent {
       return 'from_feed';
     }else if(this.props.from_profile){          
       return 'from_profile';
+    }else if(this.props.from_star){          
+      return 'from_star';
     }
 
   }

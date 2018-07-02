@@ -30,6 +30,7 @@ import ReactNative, { NativeModules } from 'react-native';
 const RCTUIManager = NativeModules.UIManager;
 import ScrollableTabView from 'react-native-scrollable-tab-view'
 import LinkTabBar from '../components/post/LinkTabBar';
+import NavigatorStyles from '../common/NavigatorStyles';
 
 const SearchBar = observer(({catalog}) => {
   catalog.searchText="";
@@ -364,6 +365,31 @@ const ManualPage = observer(({ navigator }) => {
 @observer
 @autobind
 export default class AddLink extends Component {
+
+  constructor(props) {
+    super(props);
+    this.props.navigator.toggleTabs({
+      to: 'shown',
+    });
+    this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+  }
+
+  onNavigatorEvent(event) {
+    switch(event.id) {
+      case 'bottomTabSelected':   
+        CreatePostStore.reset();
+
+        this.props.navigator.resetTo({
+          screen: 'hairfolio.CreatePost',
+          animationType: 'fade',
+          navigatorStyle: NavigatorStyles.tab
+        }); 
+            
+        break;
+      default:
+        break;
+    }
+  }
   render() {
     let store = AddLinkStore;
 

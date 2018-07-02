@@ -15,7 +15,7 @@ import HairfolioStore from '../mobx/stores/HairfolioStore';
 import Swipeout from 'Hairfolio/react-native-swipeout/index';
 import HairfolioPostStore from '../mobx/stores/HairfolioPostStore';
 
-const HairfolioItem = observer(({store, isEditable, navigator}) => {
+const HairfolioItem = observer(({store, isEditable, navigator, from}) => {
   var swipeoutBtns = [
     {
       height: h(220),
@@ -82,10 +82,23 @@ const HairfolioItem = observer(({store, isEditable, navigator}) => {
               HairfolioPostStore.title = 'Saved Inspo';
             }
             HairfolioPostStore.load(store);
-            navigator.push({
+            if(from){
+              navigator.push({
+                screen: 'hairfolio.HairfolioPosts',
+                navigatorStyle: NavigatorStyles.tab,
+                passProps: {
+                  'from_star': true
+                }
+              });
+
+            }else{
+              navigator.push({
               screen: 'hairfolio.HairfolioPosts',
               navigatorStyle: NavigatorStyles.tab,
             });
+
+            }
+            
           }
         }
       >
@@ -175,7 +188,7 @@ class HairfolioEdit extends React.Component {
   }
 }
 
-const HairfolioList = observer(({navigator}) => {
+const HairfolioList = observer(({navigator, from}) => {
   let store = HairfolioStore;
 
   if (store.isLoading) {
@@ -187,7 +200,7 @@ const HairfolioList = observer(({navigator}) => {
   } else {
     return (
       <View style={{flex: 1}}>
-        {store.hairfolios.map(e => <HairfolioItem isEditable={store.isEditable} key={e.id} store={e} navigator={navigator} />)}
+        {store.hairfolios.map(e => <HairfolioItem isEditable={store.isEditable} key={e.id} store={e} navigator={navigator} from={from}/>)}
         {store.isEditable ? <HairfolioEdit /> : <View />}
       </View>
     );
@@ -198,6 +211,7 @@ export default class UserHairfolio extends React.Component {
   constructor(props) {
     super(props);
     HairfolioStore.load(this.props.profile.id);
+    // alert(this.props.from_star)
   }
 
   state = {
@@ -212,7 +226,7 @@ export default class UserHairfolio extends React.Component {
           backgroundColor: COLORS.WHITE,
         }}
       >
-        <HairfolioList  navigator={this.props.navigator}/>
+        <HairfolioList  navigator={this.props.navigator} from={this.props.from_star}/>
       </View>
     );
   }

@@ -47,8 +47,13 @@ export default class StarGivers extends PureComponent {
           animationType: 'fade',
           navigatorStyle: NavigatorStyles.tab
         });  
-      }
-           
+      }else if(this.props.from_star){          
+        this.props.navigator.resetTo({
+          screen: 'hairfolio.Favourites',
+          animationType: 'fade',
+          navigatorStyle: NavigatorStyles.tab
+        });  
+      }           
     } 
     if (event.id == 'bottomTabReselected') {
       console.log("bottomTabReselected ==>");

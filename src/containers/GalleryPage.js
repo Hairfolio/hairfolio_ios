@@ -459,10 +459,28 @@ export default class GalleryPage extends Component {
     this.props.navigator.toggleTabs({
       to: 'shown',
     });
+    this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
   }
 
   static navigatorStyle = {
     drawUnderTabBar: true,
+  }
+
+  onNavigatorEvent(event) {
+    switch(event.id) {
+      case 'bottomTabSelected':   
+        CreatePostStore.reset();
+
+        this.props.navigator.resetTo({
+          screen: 'hairfolio.CreatePost',
+          animationType: 'fade',
+          navigatorStyle: NavigatorStyles.tab
+        }); 
+            
+        break;
+      default:
+        break;
+    }
   }
 
   scrollToElement(reactNode) {

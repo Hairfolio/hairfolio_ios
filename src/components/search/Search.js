@@ -229,8 +229,7 @@ const PopularPostHeader = observer(({store}) => {
             color: '#BFBFBF',
             fontSize: h(28),
             fontFamily: FONTS.ROMAN
-          }}
-        >
+          }}>
           POPULAR POSTS
         </Text>
 
@@ -253,6 +252,7 @@ const Search = observer(({navigator}) => {
       style={{
         marginTop: 20,
         flex: 1,
+        
       }}
       bounces={false}
       enableEmptySections
@@ -269,7 +269,7 @@ const Search = observer(({navigator}) => {
             <View
               style={{
                 flexDirection: 'row',
-                flexWrap: 'wrap'
+                flexWrap: 'wrap',
               }}
             >
               <GridPost key={el[0].key} post={el[0]} navigator={navigator}/>

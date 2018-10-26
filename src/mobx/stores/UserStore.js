@@ -401,6 +401,8 @@ class UserStore {
   }
 
   @action followUser(id) {
+
+    
     this.followingStates.set(id, LOADING);
     ServiceBackend.post(
       `users/${id}/follows`,

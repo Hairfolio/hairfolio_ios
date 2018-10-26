@@ -31,11 +31,17 @@ import UserAbout from '../containers/UserAbout';
 import UserStylists from '../containers/UserStylists';
 import NavigatorStyles from '../common/NavigatorStyles';
 import whiteBack from '../../resources/img/nav_white_back.png';
+import SearchDetailsStore from '../mobx/stores/search/SearchDetailsStore';
+import { s } from '../helpers';
+
 
 @observer
-export default class Profile extends React.Component {
+export default class Profile extends React.Component {  
+
+
   constructor(props) {
     super(props);
+    
     if (this.props.userId) {
       this.state = {
         followed: false,
@@ -77,6 +83,7 @@ export default class Profile extends React.Component {
   } */
 
   componentWillMount() {
+    
     this.fetchProfile();
   }
 
@@ -86,6 +93,7 @@ export default class Profile extends React.Component {
   }
   
   fetchProfile(){
+    
     this.showLog("testMethod ==>");
     StoreFactory.initUserStore(this.userId);
     this._fetchProfile();
@@ -144,6 +152,7 @@ export default class Profile extends React.Component {
   }
 
   _userStateChanged = (newState) => {
+
     if (newState === READY) {
       const user = UsersStore.users.get(this.userId);
       this.setState({
@@ -239,6 +248,7 @@ export default class Profile extends React.Component {
           profile={this.state.user}
           from_star={from}
         />
+        
       </ScrollableTabView>
     );
   }
@@ -293,6 +303,7 @@ export default class Profile extends React.Component {
           navigator={this.props.navigator}
           profile={this.state.user}
         />
+
       </ScrollableTabView>
     );
   }
@@ -542,6 +553,23 @@ export default class Profile extends React.Component {
                                 followed: !this.state.followed
                               })
                               UserStore.followUser(this.state.user.id);
+                              let s_store = SearchDetailsStore[this.props.store_name];
+                              // alert(this.props.store_name)
+                              //let s_store = SearchDetailsStore.salonStore;
+                              
+                                  s_store=s_store.allUsers;
+
+                              for(var i=0; i<s_store.length; i++)
+                              {
+                                  if(s_store[i].user.id == this.state.user.id) 
+                                  {
+                                    s_store[i].isFollowing = true;
+                                                                        
+                                  }
+                              }
+                              console.log("SalonSearch ==>"+JSON.stringify(s_store));
+
+                              
                             }}
                           />
                         :
@@ -554,6 +582,20 @@ export default class Profile extends React.Component {
                                 followed: !this.state.followed
                               })
                               UserStore.unfollowUser(this.state.user.id);
+                              //let s_store = SearchDetailsStore.salonStore;
+                              let s_store = SearchDetailsStore[this.props.store_name];
+                                  s_store=s_store.allUsers;
+
+                               for(var i=0; i<s_store.length; i++)
+                              {
+                                  if(s_store[i].user.id == this.state.user.id) 
+                                  {
+                                    s_store[i].isFollowing = false;
+                                                                        
+                                  }
+                              }
+                              console.log("SalonSearch ==>"+JSON.stringify(s_store));
+                              
                             }}
                           />
                         }
@@ -616,10 +658,11 @@ export default class Profile extends React.Component {
             }}>
               <TouchableOpacity
                 onPress={() => {
+                  
                   this.props.navigator.push({
                     screen: 'hairfolio.EditCustomer',
                     navigatorStyle: NavigatorStyles.basicInfo,
-                    title: 'Settings',
+                    title: 'Settings'
                   });
                 }}
               >

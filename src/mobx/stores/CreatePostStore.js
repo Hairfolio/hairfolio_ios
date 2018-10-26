@@ -600,6 +600,8 @@ class CreatePostStore {
 
       ShareStore.share(data.post.photos_attributes[0].asset_url);
 
+      console.log("Create post ==>"+JSON.stringify(data))
+
       let res = await ServiceBackend.post('/posts', data);
 
       const contactsDetails = (AddBlackBookStore.selectedItems) ?

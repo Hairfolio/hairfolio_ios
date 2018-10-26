@@ -89,6 +89,7 @@ const GridPost = observer(({post, navigator, from}) => {
   
   const windowEdge = Math.round(windowWidth / 2);
   return (
+    
     <TouchableWithoutFeedback
       onPress={
         () => {

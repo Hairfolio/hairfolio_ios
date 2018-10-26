@@ -43,6 +43,7 @@ export default class PostDetails extends PureComponent {
 
   onNavigatorEvent(event) {
     switch(event.id) {
+
       case 'willDisappear':
         this.props.navigator.toggleTabs({
           to: 'shown',

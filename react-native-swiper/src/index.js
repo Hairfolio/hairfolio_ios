@@ -147,7 +147,7 @@ export default class extends Component {
     loadMinimal: false,
     loadMinimalSize: 1,
     autoplay: false,
-    autoplayTimeout: 2.5,
+    autoplayTimeout: 5000,
     autoplayDirection: true,
     index: 0
   }

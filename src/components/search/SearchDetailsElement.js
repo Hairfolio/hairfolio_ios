@@ -25,7 +25,11 @@ import FollowUserList from '../FollowUserList';
 import TagPostStore from '../../mobx/stores/TagPostStore';
 import ScrollableTabView from 'react-native-scrollable-tab-view';
 import LinkTabBar from '../post/LinkTabBar';
-import SearchDetailsStore from '../../mobx/stores/search/SearchDetailsStore'
+import SearchDetailsStore from '../../mobx/stores/search/SearchDetailsStore';
+//import { observer } from "mobx-react/native";
+//import { observable } from "mobx";
+
+
 
 const SearchHeader = observer(({navigator}) => {
   return (
@@ -33,7 +37,7 @@ const SearchHeader = observer(({navigator}) => {
       style = {{
         backgroundColor: '#3E3E3E',
         height: h(136),
-        paddingTop: 20
+        paddingTop: 20,
       }}
     >
       <View
@@ -122,11 +126,17 @@ const SearchHeader = observer(({navigator}) => {
 });
 
 const StylistSearch = observer(({store, navigator}) => {
+
+  let s_store = SearchDetailsStore.stylistStore; 
+  
+  console.log("SalonSearch ==>"+JSON.stringify(s_store.allUsers));
+
   return (
     <FollowUserList
-      store={store}
+      store={s_store.allUsers}
       navigator={navigator}
       noResultText='Nothing was found'
+      store_name="stylistStore"
     />
   );
 });
@@ -181,7 +191,7 @@ const TagSearch = observer(({store, navigator}) => {
 
   return (
     <ScrollView>
-      {store.tags.map(e => <TagItem key={e.key} item={e} navigator={navigator}/>)}
+      {store.tags.map(e => <TagItem key={e.key} item={e} navigator={navigator}  />)}
     </ScrollView>
   );
 });
@@ -189,38 +199,60 @@ const TagSearch = observer(({store, navigator}) => {
 
 
 const NearbySearch = observer(({store, navigator}) => {
+  
+  let s_store = SearchDetailsStore.nearbyStore; 
+
   return (
     <FollowUserList
-      store={store}
+      store={s_store.allUsers}
       navigator={navigator}
       noResultText='Nothing was found'
+      store_name="nearbyStore"
     />
   );
 
 });
 
 const SalonSearch = observer(({store, navigator}) => {
+  // alert(JSON.stringify(store))
+
+  let s_store = SearchDetailsStore.salonStore; 
+  
+
   return (
+    // <FollowUserList
+    //   store={store}
+    //   navigator={navigator}
+    //   noResultText='Nothing was found'
+    // />
+
     <FollowUserList
-      store={store}
+      store={s_store.allUsers}
       navigator={navigator}
       noResultText='Nothing was found'
+      store_name="salonStore"
     />
   );
 
 });
 
+
 const BrandSearch = observer(({store, navigator}) => {
+
+  let s_store = SearchDetailsStore.brandStore; 
+
   return (
     <FollowUserList
-      store={store}
+      store={s_store.allUsers}
       navigator={navigator}
       noResultText='Nothing was found'
+      store_name="brandStore"
     />
   );
 });
 
 let SearchPage = (Class, store, props) => observer(() => {
+  
   if (store.isLoading) {
     return <ActivityIndicator size='large'/>;
   }
@@ -239,12 +271,14 @@ let SearchPage = (Class, store, props) => observer(() => {
       </Text>
     );
   } else {
+    
     return  <Class store={store} {...props} />
   }
 })
 
 
-const SearchDetailsElement = observer(({navigator}) => {
+const SearchDetailsElement2 = observer(({navigator}) => {
+  
   const StylistPage = SearchPage(StylistSearch, SearchDetailsStore.stylistStore, { navigator });
   const TagPage = SearchPage(TagSearch, SearchDetailsStore.hashStore, { navigator });
   const SalonPage = SearchPage(SalonSearch, SearchDetailsStore.salonStore, { navigator });
@@ -256,16 +290,30 @@ const SearchDetailsElement = observer(({navigator}) => {
       <SearchHeader navigator={navigator} />
         <ScrollableTabView
           renderTabBar={() => <LinkTabBar />}
-          initialPage={0}
-        >
+          initialPage={0} >
+
           <StylistPage tabLabel='Stylists' navigator={navigator} />
           <TagPage tabLabel='Tags' navigator={navigator} />
           <SalonPage tabLabel='Salon' navigator={navigator} />
           <BrandPage tabLabel='Brand' navigator={navigator} />
           <NearbyPage tabLabel='Nearby' navigator={navigator} />
+          
         </ScrollableTabView>
     </View>
   );
 });
 
-export default SearchDetailsElement;
+
+export default class SearchDetailsElement extends Component{
+
+  @observable tempStoreData = [];
+
+  render(){
+
+    return(<SearchDetailsElement2 navigator={this.props.navigator}/>)
+
+  }
+
+}
+
+//export default SearchDetailsElement;

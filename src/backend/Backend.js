@@ -24,8 +24,6 @@ export default class Backend {
     if (token) {
       headers.Authorization = token;
     }
-
-
     return headers;
   }
 
@@ -52,6 +50,8 @@ export default class Backend {
   }
 
   async post(url, data) {
+    console.log("Backend post url==>"+BASE_URL + url);
+    console.log("Backend post data==>"+JSON.stringify(data));
     const prevToken = UserStore.token;
     window.head = this.getHeaders();
     window.data = data;

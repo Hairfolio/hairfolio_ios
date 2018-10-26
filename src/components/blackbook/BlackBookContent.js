@@ -27,6 +27,7 @@ import AlphabetListView from 'react-native-alphabetlistview';
 import NavigatorStyles from '../../common/NavigatorStyles';
 import InfiniteScroll from 'react-native-infinite-scroll';
 import ServiceBackend from '../../backend/ServiceBackend';
+import Picture from '../../mobx/stores/Picture';
 
 const Header = observer(({title}) => {
   let textStyle = {

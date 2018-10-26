@@ -2,10 +2,11 @@ package com.hairfolio;
 
 import android.app.Application;
 
+import com.facebook.CallbackManager;
 import com.facebook.react.ReactApplication;
-import com.reactnativenavigation.NavigationReactPackage;
 import fr.bamlab.rnimageresizer.ImageResizerPackage;
 import com.barefootcoders.android.react.KDSocialShare.KDSocialShare;
+import com.reactnativenavigation.bridge.NavigationReactPackage;
 import com.zyu.ReactNativeWheelPickerPackage;
 import com.brentvatne.react.ReactVideoPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
@@ -27,6 +28,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class MainApplication extends Application implements ReactApplication {
+  private static CallbackManager mCallbackManager = CallbackManager.Factory.create();
 
   private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
     @Override
@@ -48,7 +50,7 @@ public class MainApplication extends Application implements ReactApplication {
             new LinearGradientPackage(),
             new ImagePickerPackage(),
             new RNFetchBlobPackage(),
-            new FBSDKPackage(),
+            new FBSDKPackage(mCallbackManager),
             new ReactNativeContacts(),
             new RNCameraKitPackage(),
             new RCTCameraPackage(),
@@ -66,5 +68,9 @@ public class MainApplication extends Application implements ReactApplication {
   public void onCreate() {
     super.onCreate();
     SoLoader.init(this, /* native exopackage */ false);
+  }
+
+  protected static CallbackManager getCallbackManager() {
+    return mCallbackManager;
   }
 }

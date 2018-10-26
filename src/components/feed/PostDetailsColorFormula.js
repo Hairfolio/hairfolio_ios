@@ -142,8 +142,8 @@ const ServiceInfo = observer(({canEdit, store, navigator}) => {
 
     // AddServiceStore.reset();
     AddServiceStore.init(store);
-    AddServiceStore.posX = a.nativeEvent.locationX;
-    AddServiceStore.posY = a.nativeEvent.locationY;
+    // AddServiceStore.posX = a.nativeEvent.locationX;
+    // AddServiceStore.posY = a.nativeEvent.locationY;
     let myId = store.id;
     AddServiceStore.save = async (obj) => {
       obj.id = myId;

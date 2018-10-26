@@ -25,8 +25,10 @@ class NewMessageStore {
   }
 
   async load() {
+    
     let userId = UserStore.user.id;
     let res = (await ServiceBackend.get(`users/${userId}`)).user;
+    
     this.newMessageNumber = res.unread_messages_count;
   }
 }

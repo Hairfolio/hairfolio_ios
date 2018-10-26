@@ -22,20 +22,24 @@ import {
   ActivityIndicator
 } from 'Hairfolio/src/helpers';
 
-const FollowUserRow = observer(({store, navigator}) => {
+const FollowUserRow = observer(({ store, navigator,store_name }) => {
+  
   return (
     <TouchableWithoutFeedback
+
       onPress={() => {
         navigator.push({
           screen: 'hairfolio.Profile',
           navigatorStyle: NavigatorStyles.tab,
           passProps: {
             userId: store.user.id,
+            store_name:store_name,
           }
         });
         PostDetailStore.clear();
         TagPostStore.clear();
         CommentsStore.clear();
+        
       }}
     >
       <View
@@ -79,7 +83,8 @@ const FollowUserRow = observer(({store, navigator}) => {
   );
 });
 
-const FollowUserList = observer(({store, style = {}, noResultText = 'There have been no starrers yet.', navigator}) => {
+const FollowUserList = observer(({store, style = {}, noResultText = 'There have been no starrers yet.', navigator, store_name}) => {
+  
   if (store.isLoading) {
     return (
       <View style = {{ marginTop: 20 }}>
@@ -112,8 +117,9 @@ const FollowUserList = observer(({store, style = {}, noResultText = 'There have 
         marginBottom:50
       }]}
     >
-      {store.users.map(e => (
+      {store.map(e => (
         <FollowUserRow
+          store_name={store_name}
           store={e}
           key={e.key}
           navigator={navigator}

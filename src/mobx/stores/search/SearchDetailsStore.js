@@ -11,6 +11,7 @@ class SearchUserFollowStore {
   @observable users = [];
   @observable isLoading = false;
   @observable wasLoaded = false;
+ 
 
   constructor() {
   }
@@ -39,28 +40,68 @@ class SearchUserFollowStore {
 
   }
 
+
   @computed get isEmpty() {
     return this.users.length == 0;
   }
+
+  @computed get allUsers() {
+    return this.users;
+  }
+  
+  setAllUsersval(arrUsers){
+     this.users = arrUsers;
+  }
+ 
 }
 
 class SearchStylistStore extends SearchUserFollowStore {
+  @observable searchUserFollowStore = new SearchUserFollowStore();
+
   async backendSearch(name) {
     let searchString =  `users?account_type=stylist&q=${name}`;
     return await ServiceBackend.get(searchString);
   }
+  setAllUsers(arrUsers){
+    this.searchUserFollowStore.setAllUsersval(arrUsers);
+  }
+
+  getAllUsers(){
+    return this.searchUserFollowStore.allUsers();
+  }
+
 }
 
 class SearchBrandStore extends SearchUserFollowStore {
   async backendSearch(name) {
     return await ServiceBackend.get(`users?account_type=ambassador&q=${name}`);
   }
+  @observable searchUserFollowStore = new SearchUserFollowStore();
+
+  setAllUsers(arrUsers){
+    this.searchUserFollowStore.setAllUsersval(arrUsers);
+  }
+
+  getAllUsers(){
+    return this.searchUserFollowStore.allUsers();
+  }
 }
 
 class SearchSalonStore extends SearchUserFollowStore {
+  @observable searchUserFollowStore = new SearchUserFollowStore();
+
   async backendSearch(name) {
     return await ServiceBackend.get(`users?account_type=owner&q=${name}`);
   }
+
+  setAllUsers(arrUsers){
+    this.searchUserFollowStore.setAllUsersval(arrUsers);
+  }
+
+  getAllUsers(){
+    return this.searchUserFollowStore.allUsers();
+  }
+
 }
 
 
@@ -74,6 +115,8 @@ class SearchNearbyStore extends SearchUserFollowStore {
         {enableHighAccuracy: false, timeout: 20000, maximumAge: 1000}
       );
     });
+
+
 
   }
   async backendSearch(name) {
@@ -92,6 +135,16 @@ class SearchNearbyStore extends SearchUserFollowStore {
     this.wasLoaded = false;
     this.search('');
   }
+
+  @observable searchUserFollowStore = new SearchUserFollowStore();
+
+     setAllUsers(arrUsers){
+       this.searchUserFollowStore.setAllUsersval(arrUsers);
+     }
+
+     getAllUsers(){
+      return this.searchUserFollowStore.allUsers();
+     }
 
 }
 
@@ -124,6 +177,8 @@ class SearchHashStore {
     this.wasLoaded = true;
     this.isLoading = false;
   }
+
+
 }
 
 class SearchDetailsStore {
@@ -153,6 +208,8 @@ class SearchDetailsStore {
     this.nearbyStore.reset();
     this.searchString = '';
   }
+
+  
 }
 
 const store = new SearchDetailsStore();

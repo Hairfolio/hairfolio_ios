@@ -72,6 +72,7 @@ class App {
           selectedIcon: profile,
           navigatorStyle: NavigatorStyles.tab,
         },
+       
       ],
       tabsStyle: {
         tabBarButtonColor: COLORS.BOTTOMBAR_NOTSELECTED,

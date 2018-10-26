@@ -7,6 +7,7 @@ import {_, moment, React, Text} from 'Hairfolio/src/helpers';
 
 import Post from './Post';
 
+
 export default class PostStore {
   @observable elements = [];
 

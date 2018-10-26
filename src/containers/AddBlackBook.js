@@ -89,7 +89,7 @@ export default class AddBlackBook extends PureComponent {
             </TouchableOpacity>
           }
         />
-        <ToInput store={store} />
+        {/* <ToInput store={store} /> */}
         <Content />
       </View>
     );

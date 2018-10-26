@@ -105,7 +105,12 @@ export default class Post {
             picture.addLinkTag(item.position_left, item.position_top, item);
   
           } else {
-            picture.addHashTag(item.position_left, item.position_top, item.tag.name);
+            console.log("Item tag ==>"+JSON.stringify(item.tag))
+            // picture.addHashTag(item.position_left, item.position_top, '#redken');
+            if (item.tag) {
+              picture.addHashTag(item.position_left, item.position_top, item.tag.name);
+            }
+            
           }
   
           if (item.tag) {

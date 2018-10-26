@@ -105,7 +105,6 @@ export default class SearchDetails extends PureComponent {
     this.props.navigator.pop({animated: true})
   }
 
-  
 
   render() {
     return (

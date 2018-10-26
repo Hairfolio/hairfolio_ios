@@ -32,7 +32,7 @@ import {
 import NewMessageStore from '../mobx/stores/NewMessageStore';
 import NavigatorStyles from '../common/NavigatorStyles';
 
-const NewMessageNumber = observer(() => {
+const NewMessageNumber = observer(() => { 
 
   const store = NewMessageStore;
 
@@ -113,8 +113,6 @@ const FeedHeader = observer((props) => {
 });
 
 
-
-
 @observer
 export default class Feed extends PureComponent {
   constructor(props) {
@@ -123,6 +121,7 @@ export default class Feed extends PureComponent {
   }
 
   componentDidMount() {
+
     StatusBar.setBarStyle('dark-content', true);   
     NewMessageStore.load();
     FeedStore.load();
@@ -135,7 +134,7 @@ export default class Feed extends PureComponent {
   }
 
   onNavigatorEvent(event) {
-    
+
     switch(event.id) {
       case 'willAppear':
       // StatusBar.setBarStyle('dark-content');
@@ -148,15 +147,15 @@ export default class Feed extends PureComponent {
         StatusBar.setBarStyle('dark-content', true);        
         break;
       case 'bottomTabSelected':
-      console.log("bottomTabSelected ==>");
-      StatusBar.setBarStyle('dark-content', true);
-        NewMessageStore.load();
-        FeedStore.load();
-        FeedStore.hasLoaded = true;
+          console.log("bottomTabSelected ==>");
+          StatusBar.setBarStyle('dark-content', true);
+          NewMessageStore.load();
+          FeedStore.load();
+          FeedStore.hasLoaded = true;
         break;
         case 'bottomTabReselected':
           console.log("bottomTabReselected ==>");
-          break;
+        break;
       default:
         break;
     }

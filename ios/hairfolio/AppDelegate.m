@@ -28,38 +28,24 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+  // facebook sdk
+  [[FBSDKApplicationDelegate sharedInstance] application:application
+                           didFinishLaunchingWithOptions:launchOptions];
   
-  //void dispatch_after(dispatch_time_t when, dispatch_queue_t queue, dispatch_block_t block);
+  [Fabric with:@[[Crashlytics class], [Twitter class]]];
+  
+  // Pinterest configuration
+  [PDKClient configureSharedInstanceWithAppId:@"4881270499925049265"];
+  
+  
+  
+  
+  NSURL *jsCodeLocation;
 
- // dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-    
-    NSLog(@"______run code after 5  second");
-    
-    // facebook sdk
-    [[FBSDKApplicationDelegate sharedInstance] application:application
-                             didFinishLaunchingWithOptions:launchOptions];
-    
-    [Fabric with:@[[Crashlytics class], [Twitter class]]];
-    
-    // Pinterest configuration
-    [PDKClient configureSharedInstanceWithAppId:@"4881270499925049265"];
-    
-    
-  if (self.window == nil){
-    self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
-  }
-    
-    NSURL *jsCodeLocation;
-    
-    jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index.ios" fallbackResource:nil];
-  
-    self.window.backgroundColor = [UIColor whiteColor];
-    [[RCCManager sharedInstance] initBridgeWithBundleURL:jsCodeLocation launchOptions:launchOptions];
-    
- // });
-  
-  
-  
+  jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index.ios" fallbackResource:nil];
+  self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+  self.window.backgroundColor = [UIColor whiteColor];
+  [[RCCManager sharedInstance] initBridgeWithBundleURL:jsCodeLocation launchOptions:launchOptions];
   return YES;
 }
 
@@ -68,50 +54,50 @@
 }
 
 
-- (BOOL)application:(UIApplication *)application
-            openURL:(NSURL *)url
-            options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options {
-  
-  if ([url.absoluteString hasPrefix:@"fb"]) {
-    return [[FBSDKApplicationDelegate sharedInstance] application:application
-                                                          openURL:url
-                                                sourceApplication:options[UIApplicationOpenURLOptionsSourceApplicationKey]
-                                                       annotation:options[UIApplicationOpenURLOptionsAnnotationKey]
-            ];
-    
-  }
-  
+//- (BOOL)application:(UIApplication *)application
+//            openURL:(NSURL *)url
+//            options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options {
+//
+//  if ([url.absoluteString hasPrefix:@"fb"]) {
+//    return [[FBSDKApplicationDelegate sharedInstance] application:application
+//                                                          openURL:url
+//                                                sourceApplication:options[UIApplicationOpenURLOptionsSourceApplicationKey]
+//                                                       annotation:options[UIApplicationOpenURLOptionsAnnotationKey]
+//            ];
+//
+//  }
+//
+//  if ([url.absoluteString hasPrefix:@"pdk"] || [url.absoluteString hasPrefix:@"pinterest"]) {
+//    return [[PDKClient sharedInstance] handleCallbackURL:url];
+//  }
+//
+//
+//  return [RCTLinkingManager application:application
+//                                openURL:url
+//                      sourceApplication:options[UIApplicationOpenURLOptionsSourceApplicationKey]
+//                             annotation:options[UIApplicationOpenURLOptionsAnnotationKey]];
+//
+//}
+
+
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
+  sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+{
   if ([url.absoluteString hasPrefix:@"pdk"] || [url.absoluteString hasPrefix:@"pinterest"]) {
     return [[PDKClient sharedInstance] handleCallbackURL:url];
   }
   
-  
-  return [RCTLinkingManager application:application
-                                openURL:url
-                      sourceApplication:options[UIApplicationOpenURLOptionsSourceApplicationKey]
-                             annotation:options[UIApplicationOpenURLOptionsAnnotationKey]];
-  
+  if ([url.absoluteString hasPrefix:@"fb"]) {
+    return [[FBSDKApplicationDelegate sharedInstance] application:application
+                                                          openURL:url
+                                                sourceApplication:sourceApplication
+                                                       annotation:annotation];
+    
+  }
+  return [RCTLinkingManager application:application openURL:url
+                      sourceApplication:sourceApplication annotation:annotation];
 }
 
-/*
- - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
- sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
- {
- if ([url.absoluteString hasPrefix:@"pdk"] || [url.absoluteString hasPrefix:@"pinterest"]) {
- return [[PDKClient sharedInstance] handleCallbackURL:url];
- }
- 
- if ([url.absoluteString hasPrefix:@"fb"]) {
- return [[FBSDKApplicationDelegate sharedInstance] application:application
- openURL:url
- sourceApplication:sourceApplication
- annotation:annotation];
- 
- }
- return [RCTLinkingManager application:application openURL:url
- sourceApplication:sourceApplication annotation:annotation];
- }
- */
 
 RCTLogFunction CrashlyticsReactLogFunction = ^(
                                                RCTLogLevel level,

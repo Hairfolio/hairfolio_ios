@@ -131,7 +131,7 @@ export default class Search extends PureComponent {
           navigatorStyle: NavigatorStyles.tab
         }); 
         break;        
-      default:
+        default:
         break;
     }
   }

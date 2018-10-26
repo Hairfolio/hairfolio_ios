@@ -196,8 +196,9 @@ export default class SearchList extends React.Component {
         }}
         onEndReached={()=>{ 
           setTimeout(() => {this.setItems(this.props.items);},1000);
-            this.props.xyz()
+            this.props.xyz
           }}
+          
         renderFooter={()=>{ this.props.loaderView() }}
 
       /> 

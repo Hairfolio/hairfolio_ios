@@ -51,9 +51,9 @@
 		5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
 		61B3A7D63AD745758F0E4A4A /* libRNBlur.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6FDF2EC1B4944246B685F55F /* libRNBlur.a */; };
 		7E3E24275BA44FCDA84C1153 /* libRCTVideo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 610EF7FE95244465A8A2D9D3 /* libRCTVideo.a */; };
+		7E436FC023A0E5F300B5F487 /* libReactNativeNavigation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E436FBF23A0E5D400B5F487 /* libReactNativeNavigation.a */; };
 		81C97855FCB24A30960BE060 /* libRNFS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A616B291BF74BAEA7CA4BD0 /* libRNFS.a */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
-		83525DA5CE644E67945C8EEA /* libReactNativeNavigation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FA61CFCF026644EB99E88C9E /* libReactNativeNavigation.a */; };
 		88A9207C064142DFA1BF6BB0 /* libRNShare.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BCECB3B0BFED4BA28483E3E7 /* libRNShare.a */; };
 		904114C4F8A61A469C4F5A6F /* libPods-Hairfolio.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F652E99410B68CEA3524C3C4 /* libPods-Hairfolio.a */; };
 		960ACEF21EB160DA00869CCF /* TwitterCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 960ACEF01EB160DA00869CCF /* TwitterCore.framework */; };
@@ -183,13 +183,6 @@
 			proxyType = 2;
 			remoteGlobalIDString = 83CBBA2E1A601D0E00E9B192;
 			remoteInfo = React;
-		};
-		1AAFF3C32012387A0004E047 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BB5A9D4D020B4FFF8C078F89 /* ReactNativeNavigation.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = D8AFADBD1BEE6F3F00A4592D;
-			remoteInfo = ReactNativeNavigation;
 		};
 		25FAABAA21EF204500E2D8D1 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -387,6 +380,13 @@
 			remoteGlobalIDString = 134814201AA4EA6300B7C361;
 			remoteInfo = RCTLinking;
 		};
+		7E436FBE23A0E5D400B5F487 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7E436FBA23A0E5D400B5F487 /* ReactNativeNavigation.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D8AFADBD1BEE6F3F00A4592D;
+			remoteInfo = ReactNativeNavigation;
+		};
 		832341B41AAA6A8300B99B32 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */;
@@ -577,6 +577,7 @@
 		7A976B1A840045DBACD5A047 /* BVLinearGradient.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = BVLinearGradient.xcodeproj; path = "../node_modules/react-native-linear-gradient/BVLinearGradient.xcodeproj"; sourceTree = "<group>"; };
 		7B0753FCE4C543A185F9FF71 /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
 		7BED397534DF4FFCB3BDAE2E /* RNVectorIcons.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNVectorIcons.xcodeproj; path = "../node_modules/react-native-vector-icons/RNVectorIcons.xcodeproj"; sourceTree = "<group>"; };
+		7E436FBA23A0E5D400B5F487 /* ReactNativeNavigation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactNativeNavigation.xcodeproj; path = "../node_modules/react-native-navigation/ios/ReactNativeNavigation.xcodeproj"; sourceTree = "<group>"; };
 		81129376B37B4CE682DA0133 /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
 		82B772CF8B364478B4E3EDE3 /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
@@ -601,7 +602,6 @@
 		A5C6EC5B565A4DFD8A03E33B /* Entypo.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Entypo.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Entypo.ttf"; sourceTree = "<group>"; };
 		AFAE4439DB0F445CBD56E648 /* libRNFetchBlob.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNFetchBlob.a; sourceTree = "<group>"; };
 		B09221C0B1B2433BA8C5C9F6 /* RNFirebase.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNFirebase.xcodeproj; path = "../node_modules/react-native-firebase/ios/RNFirebase.xcodeproj"; sourceTree = "<group>"; };
-		BB5A9D4D020B4FFF8C078F89 /* ReactNativeNavigation.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = ReactNativeNavigation.xcodeproj; path = "../node_modules/react-native-navigation/ios/ReactNativeNavigation.xcodeproj"; sourceTree = "<group>"; };
 		BCECB3B0BFED4BA28483E3E7 /* libRNShare.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNShare.a; sourceTree = "<group>"; };
 		C0E061BDF7223B796264F2A0 /* Pods-Hairfolio.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Hairfolio.release.xcconfig"; path = "Pods/Target Support Files/Pods-Hairfolio/Pods-Hairfolio.release.xcconfig"; sourceTree = "<group>"; };
 		C10F905E966624680098C15B /* Pods-Hairfolio.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Hairfolio.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Hairfolio/Pods-Hairfolio.debug.xcconfig"; sourceTree = "<group>"; };
@@ -712,11 +712,11 @@
 				1ED351D5C39A4024B5D91269 /* libBVLinearGradient.a in Frameworks */,
 				F1CBCB1F63464B219EC808B0 /* libRNSpinkit.a in Frameworks */,
 				960ACEF21EB160DA00869CCF /* TwitterCore.framework in Frameworks */,
+				7E436FC023A0E5F300B5F487 /* libReactNativeNavigation.a in Frameworks */,
 				3C3CFE5B973240A489E89407 /* libRNVectorIcons.a in Frameworks */,
 				7E3E24275BA44FCDA84C1153 /* libRCTVideo.a in Frameworks */,
 				960ACEF31EB160DA00869CCF /* TwitterKit.framework in Frameworks */,
 				DD5554A521DF51A8007F60BC /* libRCTImageMarker.a in Frameworks */,
-				83525DA5CE644E67945C8EEA /* libReactNativeNavigation.a in Frameworks */,
 				81C97855FCB24A30960BE060 /* libRNFS.a in Frameworks */,
 				904114C4F8A61A469C4F5A6F /* libPods-Hairfolio.a in Frameworks */,
 				BB03B2AFD3364854BB346581 /* libRNFirebase.a in Frameworks */,
@@ -866,14 +866,6 @@
 				70093115ABB64D1B9A8DEA44 /* libQRCode.a */,
 			);
 			name = "Recovered References";
-			sourceTree = "<group>";
-		};
-		1AAFF3C02012387A0004E047 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				1AAFF3C42012387A0004E047 /* libReactNativeNavigation.a */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		1BF8D4EF8E024020243D00E4 /* Pods */ = {
@@ -1048,9 +1040,18 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		7E436FBB23A0E5D400B5F487 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				7E436FBF23A0E5D400B5F487 /* libReactNativeNavigation.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				7E436FBA23A0E5D400B5F487 /* ReactNativeNavigation.xcodeproj */,
 				DD99C2BD22D4D77200023A5A /* RNSVG.xcodeproj */,
 				E16AABA92292A59B00A1EAC5 /* imageCropPicker.xcodeproj */,
 				E13205AB228FE92500C92260 /* RNRecorder.xcodeproj */,
@@ -1089,7 +1090,6 @@
 				DF8B4276902F438B924443DF /* RNSpinkit.xcodeproj */,
 				7BED397534DF4FFCB3BDAE2E /* RNVectorIcons.xcodeproj */,
 				743D6F0EFC094A5887C0D324 /* RCTVideo.xcodeproj */,
-				BB5A9D4D020B4FFF8C078F89 /* ReactNativeNavigation.xcodeproj */,
 				B09221C0B1B2433BA8C5C9F6 /* RNFirebase.xcodeproj */,
 				F0A86040534C499C9A27C8D5 /* RNShare.xcodeproj */,
 				C5D179D2EC4F4C26B729759E /* RCTCamera.xcodeproj */,
@@ -1444,8 +1444,8 @@
 					ProjectRef = E1320569228FE8D400C92260 /* ReactNativeCameraKit.xcodeproj */;
 				},
 				{
-					ProductGroup = 1AAFF3C02012387A0004E047 /* Products */;
-					ProjectRef = BB5A9D4D020B4FFF8C078F89 /* ReactNativeNavigation.xcodeproj */;
+					ProductGroup = 7E436FBB23A0E5D400B5F487 /* Products */;
+					ProjectRef = 7E436FBA23A0E5D400B5F487 /* ReactNativeNavigation.xcodeproj */;
 				},
 				{
 					ProductGroup = 2B7772451EB019CC00DDFABF /* Products */;
@@ -1554,13 +1554,6 @@
 			fileType = archive.ar;
 			path = libReact.a;
 			remoteRef = 146834031AC3E56700842450 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		1AAFF3C42012387A0004E047 /* libReactNativeNavigation.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libReactNativeNavigation.a;
-			remoteRef = 1AAFF3C32012387A0004E047 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		25FAABAB21EF204500E2D8D1 /* libRNFirebase.a */ = {
@@ -1757,6 +1750,13 @@
 			fileType = archive.ar;
 			path = libRCTLinking.a;
 			remoteRef = 78C398B81ACF4ADC00677621 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		7E436FBF23A0E5D400B5F487 /* libReactNativeNavigation.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libReactNativeNavigation.a;
+			remoteRef = 7E436FBE23A0E5D400B5F487 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		832341B51AAA6A8300B99B32 /* libRCTText.a */ = {
@@ -2027,8 +2027,8 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Hairfolio/Hairfolio.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Stephen D'Amico (248T269W7Z)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Stephen D'Amico (248T269W7Z)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: HAIRFOLIO, LLC (NBCQ5976BP)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: HAIRFOLIO, LLC (NBCQ5976BP)";
 				CODE_SIGN_STYLE = Manual;
 				DEAD_CODE_STRIPPING = NO;
 				DEFINES_MODULE = YES;
@@ -2078,7 +2078,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.hairfolio.hairfolio;
 				PRODUCT_NAME = Hairfolio;
 				PROVISIONING_PROFILE = "65bca1db-a4da-4add-b607-ff70cf9ef6a4";
-				PROVISIONING_PROFILE_SPECIFIER = dev_profile_HF_2019_dec_6;
+				PROVISIONING_PROFILE_SPECIFIER = Hairfolio_28_jan_dist;
 				SWIFT_OBJC_BRIDGING_HEADER = "Hairfolio-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_REFLECTION_METADATA_LEVEL = none;
@@ -2095,8 +2095,8 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Hairfolio/Hairfolio.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Stephen D'Amico (248T269W7Z)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Stephen D'Amico (248T269W7Z)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: HAIRFOLIO, LLC (NBCQ5976BP)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: HAIRFOLIO, LLC (NBCQ5976BP)";
 				CODE_SIGN_STYLE = Manual;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = NBCQ5976BP;
@@ -2145,7 +2145,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.hairfolio.hairfolio;
 				PRODUCT_NAME = Hairfolio;
 				PROVISIONING_PROFILE = "65bca1db-a4da-4add-b607-ff70cf9ef6a4";
-				PROVISIONING_PROFILE_SPECIFIER = dev_profile_HF_2019_dec_6;
+				PROVISIONING_PROFILE_SPECIFIER = Hairfolio_28_jan_dist;
 				SWIFT_OBJC_BRIDGING_HEADER = "Hairfolio-Bridging-Header.h";
 				SWIFT_REFLECTION_METADATA_LEVEL = none;
 				SWIFT_VERSION = 4.2;
@@ -2170,8 +2170,8 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Stephen D'Amico (248T269W7Z)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Stephen D'Amico (248T269W7Z)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: HAIRFOLIO, LLC (NBCQ5976BP)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: HAIRFOLIO, LLC (NBCQ5976BP)";
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 243;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -2213,8 +2213,8 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Stephen D'Amico (248T269W7Z)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Stephen D'Amico (248T269W7Z)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: HAIRFOLIO, LLC (NBCQ5976BP)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: HAIRFOLIO, LLC (NBCQ5976BP)";
 				COPY_PHASE_STRIP = YES;
 				CURRENT_PROJECT_VERSION = 243;
 				ENABLE_NS_ASSERTIONS = NO;

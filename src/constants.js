@@ -13,7 +13,10 @@ export const UPDATING_ERROR = "UPDATING_ERROR";
 export const BOTTOMBAR_HEIGHT = SCALE.h(105);
 export const STATUSBAR_HEIGHT = 20;
 export const USERPROFILEBAR_HEIGHT = SCALE.h(102);
+
+// Live URL
 export const BASE_URL = "http://54.183.167.119/v2/";
+
 export const CLOUD_PRESET = "lbftvax4"; //"fbms4wmw";
 export const CLOUD_URL =
   "https://api.cloudinary.com/v1_1/drdal2urr/image/upload";

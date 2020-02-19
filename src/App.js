@@ -54,6 +54,11 @@ class App {
       tabs: [
         {
           screen: 'hairfolio.Feed',
+          // screen: 'hairfolio.Timeline',
+          // screen: 'hairfolio.CreateLogScreen',
+          // screen: 'hairfolio.ClientDetails',          
+          // screen: 'hairfolio.ProductModal',
+          // screen: 'hairfolio.ShareModal',
           icon: house,
           selectedIcon: house,
           navigatorStyle: NavigatorStyles.tab

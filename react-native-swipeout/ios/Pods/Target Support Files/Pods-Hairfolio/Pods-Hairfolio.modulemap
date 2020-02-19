@@ -1,6 +1,0 @@
-module Pods_Hairfolio {
-  umbrella header "Pods-Hairfolio-umbrella.h"
-
-  export *
-  module * { export * }
-}

@@ -198,9 +198,61 @@ RCT_EXPORT_METHOD(getPhotosFromAlbums:(NSString *)name callback:(RCTResponseSend
   callback(@[arr]);
 }
 
-
-
-
+RCT_EXPORT_METHOD(getPhotosFromAlbumsWithoutVideo:(NSString *)name callback:(RCTResponseSenderBlock)callback) {
+  
+  NSMutableArray *arr = [[NSMutableArray alloc] init];
+  
+  PHFetchResult *userAlbums = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeAlbum subtype:PHAssetCollectionSubtypeAny options:nil];
+  PHFetchResult *smartAlbums = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeSmartAlbum subtype:PHAssetCollectionSubtypeAny options:nil];
+  
+  for (PHFetchResult * album in @[userAlbums, smartAlbums]) {
+    
+    [album enumerateObjectsUsingBlock:^(PHAssetCollection *collection, NSUInteger idx, BOOL *stop) {
+      if ([collection.localizedTitle isEqualToString:name]) {
+        
+        // PHFetchOptions *fetchOption = [PHFetchOptions init];
+        
+        PHFetchResult *assetsInCollection = [PHAsset fetchAssetsInAssetCollection:collection options:nil];
+        
+        for (PHAsset *asset in assetsInCollection) {
+          
+          //          NSLog(@"asset==> %@",asset);
+          
+          if (asset.mediaType == PHAssetMediaTypeImage) {
+            NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+            
+            [dict setObject:asset.localIdentifier forKey:@"id"];
+            [dict setObject:asset.creationDate forKey:@"creationDate"];
+            
+            long seconds = lroundf(asset.duration); // Since modulo operator (%) below needs int or long
+            long min = (seconds % 3600) / 60;
+            long sec = seconds % 60;
+            
+            if (asset.mediaType == PHAssetMediaTypeVideo) {
+              [dict setObject:@"true" forKey:@"isVideo"];
+            } else {
+              [dict setObject:@"false" forKey:@"isVideo"];
+            }
+            
+            [dict setObject:[NSString stringWithFormat:@"%ld:%02ld", min, sec] forKey:@"duration"];
+            [arr addObject:dict];
+            
+            //             NSLog(@"BEFORE sort==> %@",arr);
+            
+            NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"creationDate" ascending: YES];
+            NSArray *sortedArray = [arr sortedArrayUsingDescriptors:[NSArray arrayWithObject:sortDescriptor]];
+            //            [sortDescriptor release];
+            
+            //            NSLog(@"AFTER sort==> %@",sortedArray);
+            __block arr = sortedArray;
+          }
+        }
+      }
+    }];
+  }
+  
+  callback(@[arr]);
+}
 
 RCT_EXPORT_METHOD(getAlbumNames:(RCTResponseSenderBlock)callback) {
   
@@ -211,20 +263,20 @@ RCT_EXPORT_METHOD(getAlbumNames:(RCTResponseSenderBlock)callback) {
   
   for (PHFetchResult * album in @[smartAlbums, userAlbums]) {
     
-      NSLog(@"album==> %@",album);
+    NSLog(@"album==> %@",album);
     
-      [album enumerateObjectsUsingBlock:^(PHAssetCollection *collection, NSUInteger idx, BOOL *stop) {
-        
+    [album enumerateObjectsUsingBlock:^(PHAssetCollection *collection, NSUInteger idx, BOOL *stop) {
+      
       NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
-       
+      
       NSLog(@" dict==> %@",dict);
-        
+      
       NSLog(@" collection==> %@",collection);
       
       [dict setObject:collection.localizedTitle forKey:@"title"];
       
       NSLog(@" album title==> %@",[dict objectForKey:@"title"]);
-        
+      
       PHFetchResult *assetsInCollection = [PHAsset fetchAssetsInAssetCollection:collection options:nil];
       
       NSLog(@"assetsInCollection==> %@",assetsInCollection);
@@ -239,7 +291,59 @@ RCT_EXPORT_METHOD(getAlbumNames:(RCTResponseSenderBlock)callback) {
         break;
       }
       
-     // "assets-library://asset/asset.JPG?id=0DCDB4CA-BB79-477A-983F-8596A7AC55EE&ext=JPG"
+      // "assets-library://asset/asset.JPG?id=0DCDB4CA-BB79-477A-983F-8596A7AC55EE&ext=JPG"
+      
+      if (assetsInCollection.count > 0) {
+        
+        [arr addObject:dict];
+      }
+      
+    }];
+  }
+  
+  callback(@[arr]);
+}
+
+RCT_EXPORT_METHOD(getAlbumNamesWithoutVideo:(RCTResponseSenderBlock)callback) {
+  
+  NSMutableArray *arr = [[NSMutableArray alloc] init];
+  
+  PHFetchResult *userAlbums = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeAlbum subtype:PHAssetCollectionSubtypeAny options:nil];
+  PHFetchResult *smartAlbums = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeSmartAlbum subtype:PHAssetCollectionSubtypeAny options:nil];
+  
+  for (PHFetchResult * album in @[smartAlbums, userAlbums]) {
+    
+    NSLog(@"album==> %@",album);
+    
+    [album enumerateObjectsUsingBlock:^(PHAssetCollection *collection, NSUInteger idx, BOOL *stop) {
+      
+      NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+      
+      NSLog(@" dict==> %@",dict);
+      
+      NSLog(@" collection==> %@",collection);
+      
+      [dict setObject:collection.localizedTitle forKey:@"title"];
+      
+      NSLog(@" album title==> %@",[dict objectForKey:@"title"]);
+      
+      PHFetchOptions *options = [[PHFetchOptions alloc] init];
+      options.predicate = [NSPredicate predicateWithFormat:@"mediaType = %d",PHAssetMediaTypeImage];
+
+      
+      PHFetchResult *assetsInCollection = [PHAsset fetchAssetsInAssetCollection:collection options:options];
+      
+      NSLog(@"assetsInCollection==> %@",assetsInCollection);
+      
+      
+      [dict setObject:[NSNumber numberWithInt:assetsInCollection.count] forKey:@"count"];
+      for (PHAsset *asset in assetsInCollection)
+      {
+        [dict setObject:asset.localIdentifier forKey:@"uri"];
+        break;
+      }
+      
+      // "assets-library://asset/asset.JPG?id=0DCDB4CA-BB79-477A-983F-8596A7AC55EE&ext=JPG"
       
       if (assetsInCollection.count > 0) {
         

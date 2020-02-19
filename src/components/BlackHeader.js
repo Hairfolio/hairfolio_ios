@@ -3,7 +3,7 @@ import { COLORS } from '../helpers';
 
 var { height, width } = Dimensions.get('window');
 
-const BlackHeader = observer(({title, onLeft, onRenderRight, onRenderLeft}) => {
+const BlackHeader = observer(({title, onLeft, onRenderRight, onRenderLeft, renderTitleStyle}) => {
 
   let renderRight = () => null;
   if (onRenderRight) {
@@ -55,13 +55,13 @@ const BlackHeader = observer(({title, onLeft, onRenderRight, onRenderLeft}) => {
       </TouchableOpacity>
       <Text
         numberOfLines={1}
-        style={{
+        style={[{
           flex: 1,
           fontFamily: FONTS.ROMAN,
           fontSize: h(34),
           color: COLORS.WHITE,
           textAlign: 'center',
-        }}
+        }, (renderTitleStyle) && renderTitleStyle]}
       >
         {title}
       </Text>

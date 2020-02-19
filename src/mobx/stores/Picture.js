@@ -339,7 +339,7 @@ class Picture {
 
 
   async toJSON(upload = true, obj = {}) {
-    console.log('Picture JSON called ==>')
+    // console.log('Picture JSON called ==>')
     let ret = {};
 
     let json, formdata;
@@ -501,6 +501,8 @@ class Picture {
   }
 
   @computed get selected() {
+    // console.log('Picture selected ==> '+JSON.stringify(this));
+    // console.log('Picture selected ==> '+JSON.stringify(this.parent.selectedPicture));
     return this.parent.selectedPicture == this;
   }
 

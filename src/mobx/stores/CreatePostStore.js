@@ -16,7 +16,6 @@ import FilterStore from './FilterStore';
 import Picture from './Picture';
 import ShareStore from './ShareStore';
 import UserStore from './UserStore';
-import ImagePicker from 'react-native-image-crop-picker';
 import { BASE_URL } from '../../constants';
 import ImageCropPicker from 'react-native-image-crop-picker';
 import EditPostStore from './EditPostStore';
@@ -793,7 +792,7 @@ class CreatePostStore {
     this.inputMethod = 'Photo';
     this.lastTakenPicture = {};
     // this.groupName = 'Camera Roll';
-    this.groupName = 'Recents';
+    this.groupName = 'Recents'; //ly Added';
     this.libraryPictures = [];
     this.selectedPictures = [];
     this.isVideoSelected = false;

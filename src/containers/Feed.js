@@ -499,6 +499,18 @@ export default class Feed extends PureComponent {
 
         {content}
         <Toast ref="toast" />
+        <TouchableOpacity
+          onPress={()=>{
+            BlackBookStore.reset();
+            BlackBookStore.show = true;
+            this.props.navigator.push({
+              screen: 'hairfolio.BlackBook',
+              navigatorStyle: NavigatorStyles.tab,
+            });
+          }}
+          style={{ position: 'absolute', bottom: 15, right: 15,  borderRadius: 20, alignItems: 'center', justifyContent: 'center' }}>
+          <Image source={require('img/addUser.png')} style={{width:40,height:40}}/>
+        </TouchableOpacity>
 
         {store.isQrLoading ? (
           <View

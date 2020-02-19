@@ -79,8 +79,12 @@ export const COLORS = {
   RED: "#F7524C",
   DISCOUNT_RED: "#e74c3c", //"#FF0000"
   DROPSHADOW:'rgba(0,0,0,0.5)',
-  BADGE_COLOR:'#eb4d4b'
-  
+  BADGE_COLOR:'#eb4d4b',
+  TIMELINE_COLOR: '#959C97',
+  NOTE_TITLE_COLOR: '#71C699',
+  NOTE_TEXT_COLOR: '#717273',
+  FORMULA_CARD_COLOR: "white",
+  NOTES_CARD_COLOR: 'rgb(223,224,225)',
   
 };
 

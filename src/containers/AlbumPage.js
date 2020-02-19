@@ -5,6 +5,7 @@ import { Dimensions, Image, ScrollView, Text, TouchableHighlight, TouchableOpaci
 import { COLORS } from '../helpers';
 import AlbumStore from '../mobx/stores/AlbumStore';
 import CreatePostStore from '../mobx/stores/CreatePostStore';
+import CreateLogStore from '../mobx/stores/CreateLogStore';
 import { FONTS, h } from '../style';
 var { height, width } = Dimensions.get('window');
 
@@ -103,8 +104,15 @@ export default class AlbumPage extends Component {
         text={el.text}
         onPress={() => {
           // alert(JSON.stringify(this.props.fromScreen))
+          if (this.props.fromScreen == 'CreateLogScreen') {
+            CreateLogStore.changeGroupName(el.title);
+            this.props.navigator.pop({ animated: true });
+            
+          }
+          else {            
             CreatePostStore.changeGroupName(el.title);
-            this.props.navigator.pop({ animated: true });        
+            this.props.navigator.pop({ animated: true });
+          }
         }}
         uri={el.uri}
         key={el.key}

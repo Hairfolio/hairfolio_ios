@@ -245,7 +245,7 @@ class ProductTag extends React.Component {
               (this.props.pic.final_price) ?              
                 <Text style={styles.finalPriceView}> ${this.props.pic.final_price}</Text>
                 :
-                <Text style={styles.finalPriceView}> ${this.props.pic.price}</Text>
+                <Text style={styles.finalPriceView}> ${(this.props.pic.price) ? this.props.pic.price.toFixed(2):0}</Text>
             }
           </View>
           <View style={styles.imageGoParentView}>

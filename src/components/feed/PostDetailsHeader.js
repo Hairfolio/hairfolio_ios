@@ -385,7 +385,7 @@ const PostDetailsHeader = observer(({ store, navigator, from }) => {
           store.selectedPicture.isVideo ?
             <VideoPreview picture={store.selectedPicture} post={post} /> :
             <Image
-              style={{ height: windowWidth * (4 / 2.7), width: windowWidth, flex: 1 }}
+              style={{ height: windowWidth * (4 / 2.7), width: windowWidth, flex: 1,resizeMode:'contain' }}
               defaultSource={placeholder_icon}
               source={(store.selectedPicture) ? store.selectedPicture.getSource(2 * windowWidth, 2 * windowWidth) : placeholder_icon}
             // source={store.imageToDisplay}

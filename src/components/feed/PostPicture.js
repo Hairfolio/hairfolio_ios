@@ -30,7 +30,8 @@ class InstantSwiper extends React.Component {
             top: 0,
             left: 0,
             height: windowWidth,
-            width: windowWidth
+            width: windowWidth,
+            resizeMode:'contain',
           }}
           defaultSource={placeholder_icon}
           source={(pic) ? pic.getSource(windowWidth * 2, windowWidth * 2) : placeholder_icon}
@@ -80,7 +81,7 @@ class InstantSwiper extends React.Component {
             width: windowWidth,
             flex:1
           }}
-          resizeMode={'cover'}
+          resizeMode={'contain'}
           defaultSource={placeholder_icon}
           source={(pic) ? pic.getSource(windowWidth * 2, windowWidth * 2) : placeholder_icon}
         />

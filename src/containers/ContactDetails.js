@@ -42,8 +42,15 @@ const ContactsDetailsHeader = observer(({store, navigator,fromScreen}) => {
   return (
     <BlackHeader
       onLeft={() => {
-        navigator.pop({ animated: true })
-        ContactDetailsStore.reset()  
+        ContactDetailsStore.isScreenPop = false;
+        if (fromScreen == "ClientDetails") {
+          navigator.pop({ animated: true })
+        }
+        else {
+          navigator.pop({ animated: true })
+          ContactDetailsStore.reset()
+        }
+        
       }}
       title= { <View style={{width:150,height:25,marginTop:5}}><Text numberOfLines={1}  style={{flex: 1,
         fontFamily: FONTS.Regular,
@@ -566,13 +573,31 @@ export default class ContactDetails extends PureComponent {
   }
 
   onNavigatorEvent(event) {
+    
     switch(event.id) {      
       case 'bottomTabSelected':
-        this.props.navigator.resetTo({
-          screen: 'hairfolio.Profile',
-          animationType: 'fade',
-          navigatorStyle: NavigatorStyles.tab
-        });     
+        // this.props.navigator.resetTo({
+        //   screen: 'hairfolio.Profile',
+        //   animationType: 'fade',
+        //   navigatorStyle: NavigatorStyles.tab
+        // });     
+        break;
+      case 'willAppear':          
+        if (this.props.fromScreen == "ClientDetails") {
+          ContactDetailsStore.rightHeaderClick();
+        }
+        if (this.props.fromScreen == "BlackBook" || this.props.fromScreen == "ClientDetails") {
+          // ContactDetailsStore.isScreenPop = true;
+        }
+        break;
+      case 'willDisappear':
+        if (ContactDetailsStore.isScreenPop) {    
+          this.props.navigator.popToRoot({ animated: true });
+        }
+          // this.props.navigator.switchToTab({
+          //   tabIndex: 4,
+          // });
+              
         break;
       default:
         break;
@@ -582,6 +607,13 @@ export default class ContactDetails extends PureComponent {
   render() {
     
     let store = ContactDetailsStore;
+    if (store.isLoading) {
+      return (
+        <View style={{marginTop: 20}}>
+          <ActivityIndicator size='large' />
+        </View>
+      );
+    }
     return (
       <View style={{flex: 1}}>
         <ContactsDetailsHeader store={store} navigator={this.props.navigator} fromScreen={this.props.fromScreen}/>

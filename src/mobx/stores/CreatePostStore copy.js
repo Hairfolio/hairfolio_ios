@@ -16,7 +16,6 @@ import FilterStore from './FilterStore';
 import Picture from './Picture';
 import ShareStore from './ShareStore';
 import UserStore from './UserStore';
-import ImagePicker from 'react-native-image-crop-picker';
 import { BASE_URL } from '../../constants';
 import ImageCropPicker from 'react-native-image-crop-picker';
 

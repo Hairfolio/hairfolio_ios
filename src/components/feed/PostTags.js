@@ -167,7 +167,7 @@ class ProductTag extends React.Component {
                    {(this.props.pic.discount_percentage != null) ?
             
             <View style={{flexDirection:'row'}}>
-            <Text style={styles.priceView}> ${this.props.pic.price}</Text>
+            <Text style={styles.priceView}> ${(this.props.pic.price) ? (this.props.pic.price).toFixed(2) : 0}</Text>
             <Text style={styles.finalPriceView}> ${this.props.pic.final_price}</Text>
             </View>
 

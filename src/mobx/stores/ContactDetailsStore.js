@@ -39,6 +39,8 @@ class ContactDetailsStore {
   @observable addressCity = 'Brentwood';
   @observable addressCountry = 'United States';
 
+  @observable isScreenPop = true;
+
   @computed get hasPrimaryEmail() {
     return this.emailPrimary.length > 0;
   }
@@ -91,6 +93,7 @@ class ContactDetailsStore {
     this.addressCountry = '';
     this.notes = [];
     this.isLoading = false;
+    this.contactID = '';
   }
 
 
@@ -109,6 +112,7 @@ class ContactDetailsStore {
 
     this.firstName = data.first_name;
     this.lastName = data.last_name;
+    this.contactID = data.id;
 
     if (data.asset_url) {
       let pic = { uri: data.asset_url, isStatic: true };
@@ -269,6 +273,7 @@ class ContactDetailsStore {
   }
 
   async rightHeaderClick(navigator) {
+    this.isScreenPop = false;
     if (this.mode == 'view') {
       this.mode = 'edit';
 
@@ -293,10 +298,12 @@ class ContactDetailsStore {
       this.isLoading = true;
       if (this.firstName.length == 0) {
         alert('Please Fill in a firstName');
+        this.isLoading = false;
         return;
       }
       if (this.lastName.length == 0) {
         alert('Please Fill in a lastName');
+        this.isLoading = false;
         return;
       }
       let data = this.createData();
@@ -308,18 +315,23 @@ class ContactDetailsStore {
       }
       
     } else {
+      this.isLoading = true;
       if (this.firstName.length == 0) {
         alert('Please Fill in a firstName');
+        this.isLoading = false;
         return;
       }
       if (this.lastName.length == 0) {
         alert('Please Fill in a lastName');
+        this.isLoading = false;
         return;
       }
       let data = this.createData();
       let res = await ServiceBackend.post('contacts', { contact: data });
-
-      navigator.pop({ animated: true })
+      if (res) {
+        this.isLoading = false;
+        navigator.pop({ animated: true })
+      }      
     }
   }
 
@@ -365,6 +377,14 @@ class ContactDetailsStore {
 
     if (this.picture == null) {
       return require('img/contact_camera.png');
+    } else {
+      return this.picture.getSource(120, 120);
+    }
+  }
+
+  @computed get clientProfileImage() {
+    if (this.picture == null) {
+      return require('img/profile_placeholder.png');
     } else {
       return this.picture.getSource(120, 120);
     }

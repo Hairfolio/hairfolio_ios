@@ -94,7 +94,7 @@ export default class Backend {
       timeout: 60000, // req/res timeout in ms, 0 to disable, timeout reset on redirect
       body: JSON.stringify(data)
     });
-    this.showLog2("Backend.js == post == response ==>" + JSON.stringify(response)); 
+    // this.showLog2("Backend.js == post == response ==>" + JSON.stringify(response)); 
   
     let json = await response.json();
     this.showLog2("post api response ==>" + JSON.stringify(json)); 

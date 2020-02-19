@@ -1,1 +1,0 @@
-../../../DYQRCodeDecoder/Class/DYQRCodeDecoderViewController.h

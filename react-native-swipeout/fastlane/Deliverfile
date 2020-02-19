@@ -1,3 +1,0 @@
-username ENV["APPLE_ID"]
-
-app_identifier "com.hairfolio.hairfolio"

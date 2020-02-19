@@ -136,7 +136,7 @@ class ProductTag extends React.Component {
               <Text style={[styles.finalPriceView,{marginLeft:10}]}>${this.props.pic.final_price}</Text>
             </View>
           :
-          <Text style={styles.finalPriceView}>${this.props.pic.final_price}</Text>
+          <Text style={styles.finalPriceView}>${(this.props.pic.final_price) ? (this.props.pic.final_price.toFixed(2)) : 0 }</Text>
           }
         </TouchableOpacity>
         <TouchableOpacity style={styles.imageGoParentView}

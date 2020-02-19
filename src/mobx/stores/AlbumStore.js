@@ -52,6 +52,18 @@ class AlbumStore {
       this.albums = results.map((el) => new Album(el.title, el.count, el.uri));
     });
   }
+
+  loadWithoutVideo() {
+    PhotoAlbum.getAlbumNamesWithoutVideo((results) => {
+      //Sorting albums before display
+      results.sort(function(a,b){
+        // Turn your strings into dates, and then subtract them
+        // to get a value that is either negative, positive, or zero.
+        return new Date(b.creationDate) - new Date(a.creationDate);
+      });
+      this.albums = results.map((el) => new Album(el.title, el.count, el.uri));
+    });
+  }
 };
 
 const albumStore = new AlbumStore();

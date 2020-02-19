@@ -5,6 +5,7 @@ import ServiceBackend from '../../backend/ServiceBackend';
 import NavigatorStyles from '../../common/NavigatorStyles';
 import BlackBookStore from '../../mobx/stores/BlackBookStore';
 import ContactDetailsStore from '../../mobx/stores/ContactDetailsStore';
+import CreateLogStore from '../../mobx/stores/CreateLogStore';
 import Picture from '../../mobx/stores/Picture';
 import { showLog } from '../../helpers';
 import { COLORS } from '../../style';
@@ -48,9 +49,12 @@ const Cell = observer(({item, showBorder, navigator}) => {
       underlayColor={COLORS.ABOUT_SEPARATOR}
       onPress={
         () => {
+          ContactDetailsStore.isScreenPop = false;
           ContactDetailsStore.init(item.data.id);
+          CreateLogStore.isNoteCreated = false;
           navigator.push({
-            screen: 'hairfolio.ContactDetails',
+            // screen: 'hairfolio.ContactDetails',
+            screen: 'hairfolio.ClientDetails',//'hairfolio.ContactDetails',
             navigatorStyle: NavigatorStyles.tab,
           })
         }
@@ -136,21 +140,60 @@ export default class BlackBookContent extends Component {
     
     this.fetchNextData = this.fetchNextData.bind(this,this.state.isLoadingNextPage);
     
+
+    this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
   }
 
-  componentWillMount(){
+  onNavigatorEvent(event) {
+    showLog("EVENT ID Blackbook content ==> " + event.id )
+    if (event.id == 'willAppear') {
+      CreateLogStore.isNoteCreated = false;
+    } else if(event.id == 'didAppear') {
+      this.setState({
+        nextPage: 1
+      }, () => {
+        this.fetchNextData()
+      })
+    } else if(event.id == 'didDisappear') {
+      if(this.state.nextPage == 1) {
+        this.setState({
+          dataSource: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
+        })
+        arr_data = [];
+        rows = [];
+      }
+    }
+  }
+
+  componentWillMount() {
+    // alert('componentWillMount')
     arr_data = [];
-    rows =[];
-    this.fetchNextData()
+    rows = [];
+    // setTimeout(() => {      
+      // this.fetchNextData()
+    // },1000)
   } 
 
-  async fetchNextData() {
+  // shouldComponentUpdate(nextProps, nextState) {
+  //   alert('shouldComponentUpdate' + JSON.stringify(nextProps) + "   " + JSON.stringify(nextState))
+  //   return true;
+  // }
 
+  async fetchNextData() {
+    showLog("!this.state.isLoadingNextPage ==> " + !this.state.isLoadingNextPage + " this.state.nextPage" + this.state.nextPage)
     if (!this.state.isLoadingNextPage && this.state.nextPage != null) {
 
       this.setState({
         isLoadingNextPage: true
       });
+      if(this.state.nextPage == 1) {
+        showLog("INSIDE REMOVING ALL");
+        this.setState({
+          dataSource: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
+        })
+        arr_data = [];
+        rows = [];
+      }
 
       var meta_obj = {};
       var new_arr = [];
@@ -159,7 +202,7 @@ export default class BlackBookContent extends Component {
 
       ServiceBackend.get(`contacts?page=${this.state.nextPage}`).then(
         (res) => {  
-          
+          // rows = [];
           res.contacts.map(e => rows.push(e));
 
           
@@ -195,15 +238,20 @@ export default class BlackBookContent extends Component {
             }
 
             showLog("arr_data ==>" + JSON.stringify(arr_data))
+            showLog("arr_data length==>" + this.state.arr_contacts.length)
+            // this.setState({ arr_contacts: [] }, () => {   
+              // alert('hi')
+              this.setState({              
+                modified_contacts: arr,
+                pure_contacts: res.contacts,
+                dataSource: this.state.dataSource.cloneWithRows(arr_data),
+                nextPage: meta_obj.next_page,
+                isLoadingNextPage: false,
+                arr_contacts: arr_data
+              });
+            // })
 
-            this.setState({
-              modified_contacts: arr,
-              pure_contacts: res.contacts,
-              dataSource: this.state.dataSource.cloneWithRows(arr_data),
-              nextPage: meta_obj.next_page,
-              isLoadingNextPage: false,
-              arr_contacts: arr_data
-            });
+            showLog("arr_data length==>1 " + this.state.arr_contacts.length)
           }
 
         },
@@ -380,9 +428,17 @@ export default class BlackBookContent extends Component {
   }
 
   loadMoreData(){
-    setTimeout( ()=>{
+    setTimeout(() => {
+      // alert('loadMoreData')
       this.fetchNextData();
     }, 1500);
+  }
+
+  componentWillUnmount() {
+    // alert('componentWillUnmount')
+    // arr_data = [];
+    // rows = [];
+    // this.setState({arr_contacts:[]})
   }
 
   renderContactList(inputText){
@@ -470,7 +526,44 @@ export default class BlackBookContent extends Component {
                   }}
                 >
                   No Results
-            </Text>
+                </Text>
+
+                {/* {(!this.state.isLoadingNextPage) 
+                  ?
+                <View style= {{marginHorizontal: windowWidth/2.5,
+                  paddingTop: h(38),
+                  }}>
+                <TouchableOpacity
+                  
+                  onPress={() => {this.setState({
+                    nextPage: 1
+                  }, () => {
+                    this.fetchNextData()
+                  })}}
+                >
+                  <Text style={{ fontSize: h(34),
+                    textAlign: 'center',
+                    fontFamily: FONTS.BOOK,
+                    backgroundColor: COLORS.DARK,
+                    color: COLORS.WHITE
+                  }}>
+                    {'retry'}
+                  </Text>
+                </TouchableOpacity>
+                  </View>
+                :
+                  null
+                } */}
+
+                {(this.state.isLoadingNextPage) 
+                  ?
+                    (<View style={{ flex: 1, paddingVertical: 20, alignItems: 'center', justifyContent: 'center'}}>
+                      <ActivityIndicator size='large' />
+                    </View>)
+                  :
+                    null
+                }
+              
               </View>
           }
         </View>

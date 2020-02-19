@@ -78,6 +78,13 @@ import Wallet from './containers/Wallet';
 import WishList from './containers/WishList';
 import WithDrawAmount from './containers/WithDrawAmount';
 import WriteMessage from './containers/WriteMessage';
+import ClientDetails from './containers/ClientDetails';
+import ProductModal from './containers/ProductModal';
+import ShareModal from './containers/ShareModal';
+import CreateLogLibrary from './containers/CreateLogLibrary';
+import CreateLogScreen from './containers/CreateLogScreen';
+import Timeline from './containers/Timeline';
+// import NativeButton from '../react-native-swipeout/NativeButton';
 
 
 export const registerScreens = ()  => {
@@ -160,4 +167,11 @@ export const registerScreens = ()  => {
   Navigation.registerComponent('hairfolio.BankAccountList',() => BankAccountList);
   Navigation.registerComponent('hairfolio.CategoryRelatedProductsList',() => CategoryRelatedProductsList);
   Navigation.registerComponent('hairfolio.RelatedProductViewAll',() => RelatedProductViewAll);
+  Navigation.registerComponent('hairfolio.ClientDetails',() => ClientDetails);
+  Navigation.registerComponent('hairfolio.ProductModal',() => ProductModal)
+  Navigation.registerComponent('hairfolio.ShareModal',() => ShareModal)
+  Navigation.registerComponent('hairfolio.CreateLogLibrary',() => CreateLogLibrary)
+  Navigation.registerComponent('hairfolio.CreateLogScreen',() => CreateLogScreen)
+  Navigation.registerComponent('hairfolio.Timeline',() => Timeline)
 };
+

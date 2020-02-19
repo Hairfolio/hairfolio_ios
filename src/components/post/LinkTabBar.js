@@ -1,22 +1,5 @@
-import {
-  _, // lodash
-  observer, // mobx
-  h,
-  FONTS,
-  autobind,
-  React, // react
-  Component,
-  windowWidth,
-  windowHeight,
-  // react-native components
-  AlertIOS,
-  Modal,
-  ScrollView,
-  WebView,
-  Animated,
-  PickerIOS, Picker, StatusBar, Platform, View, TextInput, Text, Image, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, StyleSheet
-} from 'Hairfolio/src/helpers';
-
+import { Animated, FONTS, h, React, StyleSheet, Text, TouchableOpacity, View } from 'Hairfolio/src/helpers';
+import { COLORS } from '../../helpers';
 
 const Button = (props) => {
   return <TouchableOpacity {...props}>
@@ -49,7 +32,7 @@ const LinkTabBar = React.createClass({
 
   renderTab(name, page, isTabActive, onPressHandler) {
     const { activeTextColor, inactiveTextColor, textStyle, } = this.props;
-    const textColor = isTabActive ? '#3E3E3E' : '#868686';
+    const textColor = isTabActive ? COLORS.DARK3 : COLORS.GRAY2;
     const fontFamily = isTabActive ? FONTS.HEAVY : FONTS.ROMAN;
 
     return <Button
@@ -75,7 +58,7 @@ const LinkTabBar = React.createClass({
       position: 'absolute',
       width: containerWidth / numberOfTabs,
       height: h(3),
-      backgroundColor: '#3E3E3E',
+      backgroundColor: COLORS.DARK3,
       bottom: 0,
     };
 
@@ -109,7 +92,7 @@ const styles = StyleSheet.create({
     borderTopWidth: 0,
     borderLeftWidth: 0,
     borderRightWidth: 0,
-    borderColor: '#ccc',
+    borderColor: COLORS.ABOUT_SEPARATOR,
   },
 });
 

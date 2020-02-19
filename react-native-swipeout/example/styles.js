@@ -41,7 +41,8 @@ var styles = StyleSheet.create({
   statusbar: {
     backgroundColor: '#fff',
     height: 22,
-  }
-})
+  },
+ 
+})  
 
 export default styles;
